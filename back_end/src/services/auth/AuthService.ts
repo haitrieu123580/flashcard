@@ -2,19 +2,23 @@ import { Container, Service, Inject } from "typedi";
 import { Request, Response } from "express";
 import dotenv from 'dotenv'
 import AuthServiceInterface from "./AuthServiceInterface";
-import UserRepoInterface from "../../repositories/user/UserRepoInterface";
-import UserRepo from "../../repositories/user/UseRepo";
-import { comparePassword } from "../../helper/HashingPassword";
-import { genAccessToken, genRefreshToken, verifyToken } from "../../helper/JwtHelper";
-import { SuccessResponse, FailureMsgResponse, InternalErrorResponse } from "../../core/ApiResponse";
-import { UserProfile } from "../../dto/UserProfile";
-// import { ApiResponse } from "../../core/ApiResponse";
+import UserRepoInterface from "@repositories/user/UserRepoInterface";
+import UserRepo from "@repositories/user/UseRepo";
+import { comparePassword } from "@helper/HashingPassword";
+import { genAccessToken, genRefreshToken, verifyToken } from "@helper/JwtHelper";
+import { SuccessResponse, FailureMsgResponse, InternalErrorResponse } from "@src/core/ApiResponse";
+import { UserProfile } from "@dto/auth/UserProfile";
+import { isValidEmail } from "@helper/CheckValidEmail";
+import EmailService from "@services/mail/MailService";
+
 dotenv.config();
 @Service()
 class AuthService implements AuthServiceInterface {
     private userRepo: UserRepoInterface;
+    private emailService: any;
     constructor() {
         this.userRepo = Container.get(UserRepo);
+        this.emailService = Container.get(EmailService);
     }
 
     public sign_in = async (req: Request, res: Response): Promise<any> => {
@@ -25,7 +29,6 @@ class AuthService implements AuthServiceInterface {
                     const access_token = genAccessToken(userData.id, userData.username);
                     const refresh_token = genRefreshToken(userData.id, userData.username);
                     const result = await this.userRepo.storeToken(userData.id, refresh_token);
-                    // return { access_token, refresh_token, exprires_access_token: "1d" }
                     return new SuccessResponse('Login Success', {
                         access_token, refresh_token, exprires_access_token: "1d"
                     }).send(res);
@@ -45,7 +48,13 @@ class AuthService implements AuthServiceInterface {
             }
             else {
                 const newUser = await this.userRepo.createUser(req.body)
-                return new SuccessResponse('User Created', newUser).send(res);
+                if (!newUser) {
+                    return new FailureMsgResponse('Create User Failed').send(res);
+                }
+                else {
+                    const userProfile = await this.userRepo.me(newUser.id);
+                    return new SuccessResponse('User Created', userProfile).send(res);
+                }
             }
         } catch (error) {
             console.log(error)

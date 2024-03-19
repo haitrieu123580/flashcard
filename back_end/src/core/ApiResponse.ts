@@ -96,6 +96,16 @@ export class FailureMsgResponse extends ApiResponse {
     }
 }
 
+export class FailureResponse<T> extends ApiResponse {
+    constructor(message: string, private data: T) {
+        super(StatusCode.FAILURE, ResponseStatus.SUCCESS, message);
+    }
+
+    send(res: Response, headers: { [key: string]: string } = {}): Response {
+        return super.prepare<FailureResponse<T>>(res, this, headers);
+    }
+}
+
 export class SuccessResponse<T> extends ApiResponse {
     constructor(message: string, private data: T) {
         super(StatusCode.SUCCESS, ResponseStatus.SUCCESS, message);

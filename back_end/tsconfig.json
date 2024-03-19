@@ -1,10 +1,9 @@
 {
    "compilerOptions": {
-      "target": "ES2017",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      // "baseUrl": "src",
-      "outDir": "dist",
+      "target": "ES2020",
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "outDir": "./dist",
       "forceConsistentCasingInFileNames": true,
       "noImplicitAny": true,
       "skipLibCheck": true,
@@ -14,15 +13,39 @@
       "experimentalDecorators": true,
       "allowJs": true,
       "esModuleInterop": true,
-      "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+      "baseUrl": "./",
+      "paths": {
+         "@src/*": [
+            "src/*"
+          ],
+         "@routers/*": [
+            "src/routers/*"
+         ],
+         "@services/*": [
+            "src/services/*"
+         ],
+         "@repositories/*": [
+            "src/repositories/*"
+         ],
+         "@controllers/*": [
+            "src/controllers/*"
+         ],
+         "@entity/*": [
+            "src/entity/*"
+         ],
+         "@middleware/*": [
+            "src/middleware/*"
+         ],
+         "@dto/*": [
+            "src/dto/*"
+         ],
+         "@helper/*": [
+            "src/helper/*"
+         ],
+      }
    },
    "include": [
       "src/**/*.ts",
       "types/**/*.d.ts"
-   ],
+   ]
 }

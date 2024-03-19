@@ -1,9 +1,8 @@
-import AuthServiceInterface from "../../services/auth/AuthServiceInterface";
+import AuthServiceInterface from "@services/auth/AuthServiceInterface";
 import { Request, Response } from "express";
 import Container from 'typedi';
-import AuthService from "../../services/auth/AuthService";
+import AuthService from "@services/auth/AuthService";
 // import { BadRequestError, AuthFailureError } from "../../core/ApiError";
-import { SuccessResponse, AuthFailureResponse, InternalErrorResponse } from "../../core/ApiResponse";
 class AuthController {
     private authService: AuthServiceInterface;
     constructor() {
@@ -21,6 +20,5 @@ class AuthController {
     get_token = async (req: Request, res: Response) => {
         await this.authService.get_access_token_by_refresh_token(req, res);
     }
-
 }
 export default AuthController;

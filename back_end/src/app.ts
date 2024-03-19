@@ -1,11 +1,12 @@
 import 'reflect-metadata';
+import 'module-alias/register';
 import express, { Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
-import authRoutes from './routers/auth/index';
-import userRouter from './routers/user/index';
-import passportRouter from './routers/passport/index';
+import authRoutes from '@routers/auth/index';
+import userRouter from '@routers/user/index';
+import passportRouter from '@routers/passport/index';
 import { AppDataSource } from "./data-source"
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yaml';
@@ -22,11 +23,6 @@ const app: Application = express();
 AppDataSource.initialize().then(async () => {
     console.log("Database connection established successfully.");
 }).catch(error => console.log(error))
-
-
-// Swagger
-const file = fs.readFileSync(__dirname + '/docs/swagger.yaml', 'utf8');
-const swaggerDocument = YAML.parse(file);
 
 
 // Swagger

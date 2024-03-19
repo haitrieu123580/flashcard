@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 const isValidRequest = (targetRequest: any) => {
     return async (request: Request, response: Response, next: NextFunction) => {
         try {
-            if (validateRequest(request.body, targetRequest)) {
+            if (validateRequest(request.body, targetRequest) && validateNotNull(request.body)) {
                 next();
             } else {
                 response.status(400).json({ error: 'Invalid request format' });
@@ -23,5 +23,13 @@ const validateRequest = (requestData: any, expectedType: any): boolean => {
     }
     return true;
 };
+const validateNotNull = (requestData: any): boolean => {
+    for (const key in requestData) {
 
+        if (requestData[key] === "" || requestData[key] === null || requestData[key] === undefined) {
+            return false;
+        }
+    }
+    return true;
+};
 export default isValidRequest;

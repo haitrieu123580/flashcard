@@ -1,25 +1,30 @@
-import { Entity, PrimaryGeneratedColumn, Column, Generated } from "typeorm"
+import { Entity, Column, Unique, OneToOne, JoinColumn, Generated } from "typeorm"
+import { BaseEntity } from "./BaseEntity"
+import { PasswordResetOtps } from "./PasswordResetOtps"
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    @Generated("uuid")
-    id: string
-
-    @Column()
+    @Column(
+        {
+            name: "email",
+            unique: true,
+            nullable: false,
+        }
+    )
     email: string
 
-    @Column()
+    @Column(
+        {
+            name: "username",
+            unique: true,
+            nullable: false,
+        }
+    )
     username: string
 
     @Column()
     password: string
-
-    // @Column({
-    //     nullable: true
-    // })
-    // access_token: string
 
     @Column({
         nullable: true
@@ -31,4 +36,11 @@ export class User {
     })
     avatar: string
 
+
+    @OneToOne(() => PasswordResetOtps, {
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE"
+    })
+    @JoinColumn()
+    passwordResetOtps: PasswordResetOtps
 }

@@ -1,5 +1,3 @@
-import { User } from "../../entity/User";
-import { UserProfile } from "../../resources/auth/UserProfile";
 import { Request, Response } from "express";
 interface AuthServiceInterface {
     sign_in: (req: Request, res: Response) => Promise<any>;
