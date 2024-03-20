@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface FormInputProps {
     control: any;
     type: string;
@@ -8,7 +10,7 @@ export interface FormInputProps {
     classNameInput?: string;
     classNameLabel?: string;
     classNameIcon?: string;
-    icon?: string;
+    icon?: any;
     alignIcon?: string;
     onClickIcon?: (e: React.MouseEvent) => void;
     onChange?: (value: boolean | string) => void;

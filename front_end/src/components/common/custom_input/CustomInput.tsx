@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Constants from '@/utils/Constants';
 import { FormInputProps } from '@/types/FormInputProps';
-import { cn, isFunction } from '@/utils/Utils';
+import { isFunction } from '@/utils/Utils';
 import {
     FormControl,
     FormDescription,
@@ -41,8 +41,6 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
             onChange,
             onKeyUp,
             description,
-            errorServer,
-            errorServerMap,
             maxLength,
             options,
             value,
@@ -53,7 +51,6 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
             onChangeSelect,
             classNameContent,
             labelCheckbox,
-
             required = false,
         },
         ref,
@@ -63,10 +60,6 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
                 onClickIcon(e);
             }
         };
-
-        const errorMessageObj = (errorServerMap || []).find(
-            (error: any) => error.message === errorServer,
-        );
         return (
             <FormField
                 control={control}
@@ -128,7 +121,6 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
                                     disabled,
                                     readOnly,
                                     classNameIcon,
-
                                     autoFocus,
                                     classNameContent,
                                     labelCheckbox,
@@ -137,9 +129,7 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
                             {description ? (
                                 <FormDescription>{description}</FormDescription>
                             ) : null}
-                            {errorMessageObj && (
-                                <FormMessage />
-                            )}
+                            <FormMessage />
                         </FormItem>
                     );
                 }}

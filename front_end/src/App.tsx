@@ -2,7 +2,8 @@ import './i18n';
 import 'react-toastify/dist/ReactToastify.css';
 import { ThemeProvider } from "@/components/themes/ThemeProvider";
 import { ToastContainer } from 'react-toastify';
-import RouterProvider from "@/routes/RouterProvider";
+import { Toaster } from "@/components/ui/toaster"
+import CustomRouterProvider from "@/routes/CustomRouterProvider";
 import { Provider } from 'react-redux';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallbackRenderer from "@/components/common/error-fallback-render/ErrorFallbackRenderer";
@@ -15,7 +16,7 @@ function App() {
       <ErrorBoundary fallbackRender={ErrorFallbackRenderer}>
         <ThemeProvider>
           <div className='App'>
-            <ToastContainer
+            {/* <ToastContainer
               position="top-right"
               autoClose={5000}
               hideProgressBar={true}
@@ -27,8 +28,9 @@ function App() {
               pauseOnHover
               theme="light"
               limit={1}
-            />
-            <RouterProvider />
+            /> */}
+            <Toaster />
+            <CustomRouterProvider />
           </div>
         </ThemeProvider>
       </ErrorBoundary>

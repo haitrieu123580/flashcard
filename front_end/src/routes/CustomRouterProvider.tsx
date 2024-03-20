@@ -1,42 +1,10 @@
 import { routerPaths } from './path';
-import { useSelector, useDispatch } from 'react-redux'
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { publicRoutes, protectedRoutes } from './MainRouters'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 // import { getProfileAction, getAccessTokenByRefreshTokenAction } from '@/redux/auth/slice';
-const RouterProvider = () => {
-    // const dispatch = useDispatch();
-    // const { token } = useSelector((state: any) => state.Auth);
-    // const { profile } = useSelector((state: any) => state.Auth);
-    // const [canAccess, setCanAccess] = useState(false);
-    // const getProfileByAccessToken = () => {
-    //     dispatch(getProfileAction({
-    //         onSuccess: (data: any) => {
-    //             if (data) {
-    //                 setCanAccess(true);
-    //             }
-    //         }
-    //     }))
-    // }
-    // const getAccessTokenByRefreshToken = () => {
-    //     // get refresh token from local storage
-    //     // if refresh token is not available, redirect to login page
-    //     // if refresh token is available, dispatch getAccessTokenByRefreshTokenActionSuccess
-    //     // if getAccessTokenByRefreshTokenActionSuccess is success, set canAccess to true
-    // }
-    // useEffect(() => {
-    //     if (!profile) {
+const CustomRouterProvider = () => {
 
-    //         getProfileByAccessToken();
-    //     }
-    //     if (!canAccess) {
-    //         console.log(canAccess, "canAccess")
-    //         getAccessTokenByRefreshToken();
-    //     }
-    //     if (profile) {
-    //         setCanAccess(true);
-    //     }
-    // }, [])
     return (
         <Router>
             <Suspense fallback={<div>Loading...</div>}>
@@ -81,4 +49,4 @@ const RouterProvider = () => {
     )
 }
 
-export default RouterProvider
+export default CustomRouterProvider

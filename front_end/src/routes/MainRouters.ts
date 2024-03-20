@@ -5,6 +5,7 @@ import { routerPaths } from './path';
 const Login = lazy(() => import('@/pages/login/Login'))
 const Home = lazy(() => import('@/pages/home/Home'))
 const Profile = lazy(() => import('@/pages/profile/Profile'))
+const ForgotPassword = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'))
 const publicRoutes = [
     {
         path: routerPaths.HOME,
@@ -14,6 +15,11 @@ const publicRoutes = [
     {
         path: routerPaths.LOGIN,
         component: Login,
+        layout: MainLayout,
+    },
+    {
+        path: routerPaths.FORGOT_PASSWORD,
+        component: ForgotPassword,
         layout: MainLayout,
     },
 ]
