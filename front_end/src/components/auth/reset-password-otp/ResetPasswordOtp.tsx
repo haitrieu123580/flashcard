@@ -1,10 +1,13 @@
-"use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useSelector, useDispatch } from 'react-redux';
+import { resetPasswordAction } from "@/redux/forgot-password/slice"
+import { toast } from "@/components/ui/use-toast";
+import { useTranslation } from "react-i18next"
+import { useState } from "react"
 import {
     Form,
     FormControl,
@@ -20,29 +23,49 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 
-const FormSchema = z.object({
-    pin: z.string().min(6, {
-        message: "Your one-time password must be 6 characters.",
-    }),
-})
+export function ResetPasswordOtp(props: any) {
+    const { email } = useSelector((state: any) => state.PasswordReset)
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+    const { setOpen } = props;
+    const FormSchema = z.object({
+        otp: z.string().min(4, {
+            message: "Your one-time password must be 4 characters.",
+        }),
+        password: z.string().min(6, {
+            message: t("login.invalidPassword")
+        }),
+        email: z.string().email(),
+    })
 
-export function ResetPasswordOtp() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            pin: "",
+            otp: "",
+            email: email,
+            password: "",
         },
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        // toast({
-        //     title: "You submitted the following values:",
-        //     description: (
-        //         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        //             <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        //         </pre>
-        //     ),
-        // })
+    function onSubmit(values: z.infer<typeof FormSchema>) {
+        dispatch(resetPasswordAction({
+            data: values,
+            onSuccess: (message: any) => {
+                toast({
+                    title: message,
+                    description: "You can now login with your new password.",
+                    variant: 'default',
+                })
+                setOpen(false);
+            },
+            onError: (message: any) => {
+                toast({
+                    title: message,
+                    // description: message,
+                    variant: 'destructive',
+                })
+            }
+        }));
     }
 
     return (
@@ -50,7 +73,7 @@ export function ResetPasswordOtp() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
                 <FormField
                     control={form.control}
-                    name="pin"
+                    name="otp"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>One-Time OTP</FormLabel>
@@ -61,8 +84,6 @@ export function ResetPasswordOtp() {
                                         <InputOTPSlot index={1} />
                                         <InputOTPSlot index={2} />
                                         <InputOTPSlot index={3} />
-                                        <InputOTPSlot index={4} />
-                                        <InputOTPSlot index={5} />
                                     </InputOTPGroup>
                                 </InputOTP>
                             </FormControl>
@@ -73,7 +94,19 @@ export function ResetPasswordOtp() {
                         </FormItem>
                     )}
                 />
-
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>New Password</FormLabel>
+                            <FormControl>
+                                <Input type={"password"} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <Button type="submit">Submit</Button>
             </form>
         </Form>

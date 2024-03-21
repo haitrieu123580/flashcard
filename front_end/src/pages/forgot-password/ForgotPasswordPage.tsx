@@ -1,4 +1,11 @@
 import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import Constants from "@/utils/Constants"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslation } from "react-i18next"
+import { toast } from "@/components/ui/use-toast";
 import {
     Card,
     CardContent,
@@ -10,91 +17,105 @@ import {
 import { FormInput } from "@/components/common/custom_input/CustomInput"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import Constants from "@/utils/Constants"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { ResetPasswordOtp } from "@/components/auth/reset-password-otp/ResetPasswordOtp"
 import {
     Dialog,
     DialogContent,
-    DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    forgotPasswordAction,
+} from "@/redux/forgot-password/slice"
+
 const ForgotPasswordPage = () => {
+    const dispatch = useDispatch();
     const [showOtpDialog, setShowOtpDialog] = useState(false)
+    const { email } = useSelector((state: any) => state.PasswordReset)
+
+    const { t } = useTranslation();
     const formSchema = z.object({
-        email: z.string().min(2, {
-            message: "",
+        email: z.string().email({
+            message: t("login.invalidEmail"),
         }),
 
     })
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
+            email: email || "",
         },
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
-        setShowOtpDialog(true)
-        // dispatch(loginAction({
-        //     data: values,
-        //     onSuccess: () => {
-        //         ShowToastify.showSuccessToast(t("login.success"))
-        //         navigate(routerPaths.PROFILE);
-        //     },
-        //     onError: () => {
-        //         ShowToastify.showErrorToast(t("login.error"))
-        //     }
-        // }));
+        dispatch(forgotPasswordAction({
+            data: values,
+            onSuccess: () => {
+                setShowOtpDialog(true);
+            },
+            onError: (message: any) => {
+                setShowOtpDialog(false);
+                toast({
+                    title: message,
+                    // description: message,
+                    variant: 'destructive',
+                })
+            }
+        }));
     }
     return (
-        <Card className="!px-0" >
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <CardHeader>
-                        <CardTitle>Forgot Password</CardTitle>
-                        <CardDescription>
-                            Enter your email address and we will send you an otp to reset your password.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <div className="space-y-1">
-                            <FormInput
-                                control={form.control}
-                                fieldName="email"
-                                label="Email"
-                                placeholder="Enter your email address"
-                                type={Constants.INPUT_TYPE.EMAIL}
-                                required={true}
-                            />
-                        </div>
-                    </CardContent>
+        <>
+            <Card className="!px-0" >
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <CardHeader>
+                            <CardTitle>Forgot Password</CardTitle>
+                            <CardDescription>
+                                Enter your email address and we will send you an otp to reset your password.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <div className="space-y-1">
+                                <FormInput
+                                    control={form.control}
+                                    fieldName="email"
+                                    label="Email"
+                                    placeholder="Enter your email address"
+                                    type={Constants.INPUT_TYPE.EMAIL}
+                                    required={true}
+                                />
+                            </div>
+                        </CardContent>
 
-                    <CardFooter>
-                        <Button
-                            type="submit"
-                            variant="default"
-                            className="m-auto w-full"
-                        >Submit</Button>
-                    </CardFooter>
-                </form>
-            </Form>
+                        <CardFooter>
+                            <Button
+                                type="submit"
+                                variant="default"
+                                className="m-auto w-full"
+                            >{!email ? "Submit" : "Re-send"}</Button>
+                        </CardFooter>
+                    </form>
+                </Form>
+
+            </Card >
             {showOtpDialog && (
                 <>
+
                     <Dialog open={showOtpDialog} onOpenChange={setShowOtpDialog} >
-                        {/* <DialogTrigger className="rounded-sm text-sm p-1 w-fit font-semibold hover:bg-slate-100 ">
-                            <span>Open OTP Dialog</span>
-                        </DialogTrigger> */}
-                        <DialogContent>
+                        <DialogContent onInteractOutside={() => {
+                            setShowOtpDialog(true);
+                        }}>
                             <div className="w-full">
-                                <ResetPasswordOtp />
+                                <ResetPasswordOtp setOpen={setShowOtpDialog} />
                             </div>
+                            {/* <Card className="!px-0 mt-20" >
+                                <CardContent className="space-y-2">
+                                    <ResetPasswordOtp setOpen={setShowOtpDialog} />
+                                </CardContent>
+                            </Card> */}
                         </DialogContent>
                     </Dialog>
                 </>
             )
             }
-        </Card >
+        </>
     )
 }
 

@@ -15,3 +15,20 @@ export const GetNewAccessTokenApi = async (refresh_token: string | any) => {
     const response = await AxiosConfig.post(`${BASE_URL}/get-token`, JSON.stringify({ refresh_token }));
     return response;
 }
+
+export const SignupApi = async (data: any) => {
+    //data already convert to json
+    const response = await AxiosConfig.post(`${BASE_URL}/sign-up`, data);
+    return response;
+}
+
+export const ForgotPasswordApi = async (data: any) => {
+    //data already convert to json
+    const response = await AxiosConfig.post(`${BASE_URL}/forgot-password`, data);
+    return response;
+}
+
+export const ResetPasswordApi = async (data: any) => {
+    const response = await AxiosConfig.post(`${BASE_URL}/reset-password`, data);
+    return response;
+}

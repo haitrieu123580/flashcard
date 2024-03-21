@@ -16,15 +16,24 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { useDispatch } from 'react-redux';
+import { toast } from "@/components/ui/use-toast";
+import { registerAction } from "@/redux/auth/slice";
+import { useNavigate } from 'react-router-dom';
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
-export function RegisterForm() {
+export function RegisterForm(props: any) {
     const { t } = useTranslation();
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { setOpen } = props;
     const formSchema = z.object({
         username: z.string().min(2, {
             message: t("login.invalidUsername"),
+        }),
+        email: z.string().email({
+            message: t("login.invalidEmail"),
         }),
         password: z.string().min(6, {
             message: t("login.invalidPassword")
@@ -34,20 +43,31 @@ export function RegisterForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             username: "",
+            email: "",
             password: "",
         },
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // dispatch(loginAction({
-        //     data: values,
-        //     onSuccess: () => {
-        //         ShowToastify.showSuccessToast(t("login.success"))
-        //         navigate(routerPaths.PROFILE);
-        //     },
-        //     onError: () => {
-        //         ShowToastify.showErrorToast(t("login.error"))
-        //     }
-        // }));
+        dispatch(registerAction({
+            data: values,
+            onSuccess: () => {
+                setOpen(false);
+                toast({
+                    title: 'Sign-up success',
+                    description: 'Welcome!',
+                    variant: 'default',
+                })
+                // navigate(routerPaths.PROFILE);
+            },
+            onError: (message: any) => {
+                setOpen(true);
+                toast({
+                    title: 'Register failed',
+                    description: message || "Please register again!",
+                    variant: 'destructive',
+                })
+            }
+        }));
     }
     const googleAuth = () => {
         window.open(`${BACKEND_URL}/passport/google`, "_self");

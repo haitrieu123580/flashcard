@@ -12,18 +12,24 @@ import { FormInput } from "@/components/common/custom_input/CustomInput"
 import { useForm } from "react-hook-form"
 import { Form } from "@/components/ui/form"
 import Constants from "@/utils/Constants"
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 import { Separator } from '@/components/ui/separator';
 import GoogleIcon from "@/components/common/icons/GoogleIcon"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { routerPaths } from '@/routes/path';
+import { useDispatch } from 'react-redux';
+import { toast } from "@/components/ui/use-toast";
+import { loginAction } from "@/redux/auth/slice";
+import { useNavigate } from 'react-router-dom';
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
-export function LoginForm() {
+export function LoginForm(props: any) {
     const { t } = useTranslation();
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { setOpen } = props;
     const formSchema = z.object({
         username: z.string().min(2, {
             message: t("login.invalidUsername"),
@@ -40,16 +46,30 @@ export function LoginForm() {
         },
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // dispatch(loginAction({
-        //     data: values,
-        //     onSuccess: () => {
-        //         ShowToastify.showSuccessToast(t("login.success"))
-        //         navigate(routerPaths.PROFILE);
-        //     },
-        //     onError: () => {
-        //         ShowToastify.showErrorToast(t("login.error"))
-        //     }
-        // }));
+        dispatch(loginAction({
+            data: values,
+            onSuccess: () => {
+                setOpen(false);
+                navigate(routerPaths.HOME);
+                toast({
+                    title: 'Login success',
+                    description: 'Welcome back!',
+                    variant: 'default',
+                })
+            },
+            onError: () => {
+                setOpen(true);
+                toast({
+                    title: 'Login failed',
+                    description: 'Please login again!',
+                    variant: 'destructive',
+                })
+            }
+        }));
+    }
+    const gotoForgotPassword = () => {
+        setOpen(false);
+        navigate(routerPaths.FORGOT_PASSWORD);
     }
     const googleAuth = () => {
         window.open(`${BACKEND_URL}/passport/google`, "_self");
@@ -85,7 +105,13 @@ export function LoginForm() {
                                 required={true}
                                 type={Constants.INPUT_TYPE.PASSWORD}
                             />
-                            <Link to={routerPaths.FORGOT_PASSWORD} className="text-[12px] text-slate-800 font-bold space-y-1">Forgot password?</Link>
+                            <Button variant={"link"}
+                                type="button"
+                                onClick={gotoForgotPassword}
+                            >
+                                Forgot password?
+                            </Button>
+                            {/* <Link to={routerPaths.FORGOT_PASSWORD} className="text-[12px] text-slate-800 font-bold space-y-1">Forgot password?</Link> */}
                         </div>
                         <div className="space-y-1">
                             <Button

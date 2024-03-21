@@ -8,7 +8,8 @@ import { GetProfilePayload } from "@/types/GetProfilePayload";
 import {
   LoginApi,
   GetProfileApi,
-  GetNewAccessTokenApi
+  GetNewAccessTokenApi,
+  SignupApi,
 } from "@/api/AuthApi";
 import {
   loginAction,
@@ -16,13 +17,14 @@ import {
   getProfileAction,
   getProfileActionSuccess,
   getAccessTokenByRefreshTokenAction,
-  getAccessTokenByRefreshTokenActionSuccess,
+  // getAccessTokenByRefreshTokenActionSuccess,
+  registerAction,
+  registerActionSuccess,
 } from "./slice";
 
 function* watchLogin() {
-  yield takeEvery(loginAction.type, function* ({ payload }: PayloadAction<LoginPayload>): Generator<any, void, any> {
+  yield takeLatest(loginAction.type, function* ({ payload }: PayloadAction<LoginPayload>): Generator<any, void, any> {
     const { onSuccess, onError, data } = payload;
-    console.log("login saga payload: ", payload)
     try {
       const res = yield call(LoginApi, data);
       if (res.status === HttpCode.OK) {
@@ -74,6 +76,35 @@ function* watchGetProfile() {
   });
 }
 
+function* watchRegister() {
+  yield takeLatest(registerAction.type, function* ({ payload }: any): Generator<any, void, any> {
+    const { onSuccess, onError, data } = payload;
+    console.log("data: ", data)
+    try {
+      const res = yield call(SignupApi, data);
+      if (res.status === HttpCode.OK) {
+        if (res?.data?.statusCode == ApiCode.SUCCESS) {
+          yield put(
+            registerActionSuccess({
+              // data: res?.data?.data,
+            })
+          );
+          onSuccess && onSuccess();
+        }
+        else if (res?.data?.statusCode == ApiCode.FAILURE) {
+          onError && onError(res?.data?.message);
+        }
+      }
+      if (res.status === HttpCode.BAD_REQUEST) {
+        onError && onError(res?.data?.message);
+      }
+    } catch (error) {
+      console.log("error: ", error)
+      onError && onError();
+    }
+  });
+}
+
 function* watchGetNewAccessToken() {
   yield takeEvery(getAccessTokenByRefreshTokenAction.type, function* ({ payload }: any): Generator<any, void, any> {
     const { onSuccess, onError } = payload;
@@ -97,5 +128,6 @@ export default function* AuthSaga() {
     fork(watchLogin),
     fork(watchGetProfile),
     fork(watchGetNewAccessToken),
+    fork(watchRegister),
   ]);
 }

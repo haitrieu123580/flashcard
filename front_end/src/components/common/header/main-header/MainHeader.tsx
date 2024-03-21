@@ -23,7 +23,13 @@ import { routerPaths } from "@/routes/path"
 import { Search } from 'lucide-react';
 import { PlusCircle } from 'lucide-react';
 import { Folder } from "lucide-react"
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import UserPopover from "@/components/auth/user-popover/UserPopover"
 const MainHeader = () => {
+    const { loggedIn } = useSelector((state: any) => state.Auth)
+    const [openDialogLogin, setOpenDialogLogin] = useState(false)
+    const [openDialogRegister, setOpenDialogRegister] = useState(false)
     const form = useForm()
     const onSubmit = (data: any) => {
 
@@ -59,7 +65,7 @@ const MainHeader = () => {
                         <PopoverTrigger className="text-sm p-1">
                             <PlusCircle />
                         </PopoverTrigger>
-                        <PopoverContent>
+                        <PopoverContent className="w-fit">
                             <div className="grid gap-4">
                                 <div className="grid gap-2">
                                     <div className="grid grid-cols-3 items-center gap-4">
@@ -84,23 +90,33 @@ const MainHeader = () => {
                             </div>
                         </PopoverContent>
                     </Popover>
-
-                    <Dialog>
-                        <DialogTrigger className="rounded-sm text-sm p-1 w-fit font-semibold  bg-background hover:dark:text-inherit">
-                            Sign in
-                        </DialogTrigger>
-                        <DialogContent>
-                            <LoginForm />
-                        </DialogContent>
-                    </Dialog>
-                    <Dialog>
-                        <DialogTrigger className="rounded-sm text-sm p-1 w-fit font-semibold  bg-background hover:dark:text-inherit">
-                            Sign up
-                        </DialogTrigger>
-                        <DialogContent>
-                            <RegisterForm />
-                        </DialogContent>
-                    </Dialog>
+                    {loggedIn
+                        ? (
+                            <>
+                                <UserPopover />
+                                <div></div>
+                            </>
+                        )
+                        : (
+                            <>
+                                <Dialog open={openDialogLogin} onOpenChange={setOpenDialogLogin}>
+                                    <DialogTrigger className="rounded-sm text-sm p-1 w-fit font-semibold  bg-background hover:dark:text-inherit">
+                                        Sign in
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <LoginForm setOpen={setOpenDialogLogin} />
+                                    </DialogContent>
+                                </Dialog>
+                                <Dialog open={openDialogRegister} onOpenChange={setOpenDialogRegister}>
+                                    <DialogTrigger className="rounded-sm text-sm p-1 w-fit font-semibold  bg-background hover:dark:text-inherit">
+                                        Sign up
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <RegisterForm setOpen={setOpenDialogRegister} />
+                                    </DialogContent>
+                                </Dialog>
+                            </>
+                        )}
                 </div>
             </div>
             <Separator />
