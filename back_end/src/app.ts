@@ -4,17 +4,19 @@ import express, { Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
-import authRoutes from '@routers/auth/index';
-import userRouter from '@routers/user/index';
-import passportRouter from '@routers/passport/index';
-import { AppDataSource } from "./data-source"
+import './services/oauth/Passport';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yaml';
 import fs from 'fs';
 import path from 'path';
-import './services/oauth/Passport';
 import passport from 'passport';
 import session from 'express-session';
+import { AppDataSource } from "./data-source"
+import authRoutes from '@routers/auth/index';
+import userRouter from '@routers/user/index';
+import passportRouter from '@routers/passport/index';
+import vocabRouter from '@routers/vocabulary-set/index';
+
 dotenv.config();
 
 const app: Application = express();
@@ -48,6 +50,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)
 app.use('/passport', passportRouter)
+app.use('/api/vocabulary-set', vocabRouter)
 
 app.listen(process.env.PORT || 8000, () => {
     console.log(`server is running on http://localhost:${process.env.PORT || 8000}`)

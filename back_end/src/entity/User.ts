@@ -1,6 +1,7 @@
-import { Entity, Column, Unique, OneToOne, JoinColumn, Generated } from "typeorm"
+import { Entity, Column, Unique, OneToOne, JoinColumn, OneToMany } from "typeorm"
 import { BaseEntity } from "./BaseEntity"
 import { PasswordResetOtps } from "./PasswordResetOtps"
+import { Sets } from "./Sets"
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,10 +24,11 @@ export class User extends BaseEntity {
     )
     username: string
 
-    @Column()
+    @Column({ select: false, nullable: false })
     password: string
 
     @Column({
+        select: false,
         nullable: true
     })
     token: string
@@ -43,4 +45,10 @@ export class User extends BaseEntity {
     })
     @JoinColumn()
     passwordResetOtps: PasswordResetOtps
+
+    @OneToMany(() => Sets, set => set.user, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    sets: Sets[]
 }

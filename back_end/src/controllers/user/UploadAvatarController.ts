@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Container, Inject } from 'typedi';
 import UserService from "../../services/user/UserService";
 import UserServiceInterface from "../../services/user/UserServiceInterface";
-import S3Service from "../../services/s3/S3Service";
+import { S3Service } from "@services/s3/S3Service";
 import multer from "multer";
 import getUser from "../../helper/GetUserRequest";
 const upload = multer();
@@ -33,7 +33,7 @@ class UploadAvatarController {
 
     getAvatar = async (req: Request, res: Response) => {
         try {
-            const key = req.params.key;
+            const key = req.params.key; // key of image in s3
             const readStream = await this.s3Service.getFileStream(key);
             readStream.pipe(res)
         } catch (error) {

@@ -5,7 +5,7 @@ import fs from 'fs'
 dotenv.config();
 
 @Service()
-class S3Service {
+export class S3Service {
     private s3 = new S3({
         region: process.env.AWS_S3_BUCKGET_REGION,
         accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
@@ -13,11 +13,12 @@ class S3Service {
     })
 
     public uploadFile = async (file: any): Promise<any> => {
-        const fileStream = fs.createReadStream(file.path);
+        const blob = fs.readFileSync(file.path)
         return this.s3.upload({
             Bucket: String(process.env.AWS_S3_BUCKGET_NAME),
-            Body: fileStream,
-            Key: file.filename
+            Body: blob,
+            Key: `${file.filename}`, //with .type aldready
+            ContentType: file.mimetype,
         }).promise();
     }
     public getFileStream = async (fileKey: string) => {
@@ -30,4 +31,3 @@ class S3Service {
     //delete
 
 }
-export default S3Service;

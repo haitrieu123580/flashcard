@@ -8,17 +8,13 @@ import { comparePassword } from "@helper/HashingPassword";
 import { genAccessToken, genRefreshToken, verifyToken } from "@helper/JwtHelper";
 import { SuccessResponse, FailureMsgResponse, InternalErrorResponse } from "@src/core/ApiResponse";
 import { UserProfile } from "@dto/auth/UserProfile";
-import { isValidEmail } from "@helper/CheckValidEmail";
-import EmailService from "@services/mail/MailService";
 
 dotenv.config();
 @Service()
 class AuthService implements AuthServiceInterface {
     private userRepo: UserRepoInterface;
-    private emailService: any;
     constructor() {
         this.userRepo = Container.get(UserRepo);
-        this.emailService = Container.get(EmailService);
     }
 
     public sign_in = async (req: Request, res: Response): Promise<any> => {
@@ -100,7 +96,7 @@ class AuthService implements AuthServiceInterface {
             const user = await this.userRepo.me(String(id))
             const userProfile = new UserProfile(user);
             if (user) {
-                return new SuccessResponse('User Profile', userProfile).send(res);
+                return new SuccessResponse('User Profile', user).send(res);
             }
             return new FailureMsgResponse('User not found').send(res);
         } catch (error) {
