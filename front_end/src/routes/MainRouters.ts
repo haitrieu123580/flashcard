@@ -6,6 +6,7 @@ const Login = lazy(() => import('@/pages/login/Login'))
 const Home = lazy(() => import('@/pages/home/Home'))
 const Profile = lazy(() => import('@/pages/profile/Profile'))
 const ForgotPassword = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'))
+const PublicSets = lazy(() => import('@/pages/public-sets/PublicSets'))
 const publicRoutes = [
     {
         path: routerPaths.HOME,
@@ -20,6 +21,11 @@ const publicRoutes = [
     {
         path: routerPaths.FORGOT_PASSWORD,
         component: ForgotPassword,
+        layout: MainLayout,
+    },
+    {
+        path: routerPaths.PUBLIC_SETS,
+        component: PublicSets,
         layout: MainLayout,
     },
 ]

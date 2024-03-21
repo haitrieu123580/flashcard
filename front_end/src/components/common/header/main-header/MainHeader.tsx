@@ -119,7 +119,6 @@ const MainHeader = () => {
                         )}
                 </div>
             </div>
-            <Separator />
         </div>
     )
 }

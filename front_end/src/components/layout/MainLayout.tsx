@@ -4,6 +4,8 @@ import { ModeToggle } from '@/components/themes/ModeToggle';
 import MainHeader from '../common/header/main-header/MainHeader';
 import MainHeaderMobile from '../common/header/main-header/MainHeaderMobile';
 import MaxWidthWrapper from '../common/MaxWidthWrapper';
+import Footer from '../common/footer/Footer';
+import { Separator } from '../ui/separator';
 type MainLayoutProps = {
     children: ReactNode;
 };
@@ -12,12 +14,16 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     return (
         <div>
             {/* <div className='fixed right-10 top-5'><LocalesToggle /> </div> */}
-            <MainHeaderMobile />
-            <MainHeader />
+            <div className='sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+                <MainHeaderMobile />
+                <MainHeader />
+                <Separator />
+            </div>
             <MaxWidthWrapper>
                 <div className='mt-10'>{children}</div>
+                <div className='fixed bottom-10 right-10'><ModeToggle /></div>
             </MaxWidthWrapper>
-            <div className='fixed bottom-10 right-10'><ModeToggle /></div>
+            <Footer />
         </div>
     );
 };

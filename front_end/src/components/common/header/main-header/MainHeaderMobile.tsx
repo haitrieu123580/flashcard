@@ -60,7 +60,6 @@ const MainHeaderMobile = () => {
                     </Form>
                 </MaxWidthWrapper>
             </div>
-            <Separator />
         </>
     )
 }
