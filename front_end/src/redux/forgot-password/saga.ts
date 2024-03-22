@@ -33,7 +33,7 @@ function* watchForgotPassword() {
       }
 
     } catch (error) {
-
+      isFunction(payload.onError) && payload.onError(`Internal server error`);
     }
   });
 }
