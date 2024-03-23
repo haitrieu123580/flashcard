@@ -10,11 +10,12 @@ import {
 import { Link } from "react-router-dom"
 import { routerPaths } from "@/routes/path"
 import { Button } from "@/components/ui/button"
-
-const NewsetSets = () => {
+import { cn } from "@/lib/utils"
+const NewsetSets = (props: any) => {
+    const { className } = props
     return (
         <>
-            <Card>
+            <Card className={cn("w-full h-full", className)}>
                 <CardHeader>
                     <CardTitle className="flex justify-between items-end">
                         <span>Newest Sets</span>
@@ -26,12 +27,12 @@ const NewsetSets = () => {
                 <CardContent>
                     <Carousel>
                         <CarouselContent>
-                            <CarouselItem className="basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/5"><SetItem /></CarouselItem>
+                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
+                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
+                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
+                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
+                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
+                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
 
                         </CarouselContent>
                         <CarouselPrevious />

@@ -7,10 +7,13 @@ import { useForm } from 'react-hook-form'
 import Constants from '@/utils/Constants'
 import { ChevronDown } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { routerPaths } from '@/routes/path'
 
 const PublicSets = () => {
     const form = useForm();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [pageNumber, setPageNumber] = useState(1);
     const [filter, setFilter] = useState("") //get default filter from redux
     const increasePageNumber = () => {
@@ -23,6 +26,9 @@ const PublicSets = () => {
     const onSelectFilter = (filter: any) => {
         setFilter(filter)
         console.log(pageNumber, filter)
+    }
+    const gotoCard = () => {
+        navigate(routerPaths.LEARN_FLASHCARD)
     }
     return (
         <div>
@@ -42,12 +48,12 @@ const PublicSets = () => {
                 </Form>
             </div>
             <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
-                <div className='row-span-1 md:col-span-2'><SetItem /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem /></div>
+                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
+                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
+                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
+                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
+                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
+                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
             </div>
             <div className='mt-10 flex justify-center'>
                 <Button variant={'ghost'} onClick={(e) => { e.preventDefault(); increasePageNumber(); }}><ChevronDown /></Button>

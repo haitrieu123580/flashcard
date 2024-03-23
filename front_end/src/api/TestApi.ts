@@ -1,5 +1,5 @@
 import axios from "axios";
-// const BASE_URL = process.env.REACT_APP_SERVER_URL;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const config = {
     headers: {
         'Content-Type': 'application/json',

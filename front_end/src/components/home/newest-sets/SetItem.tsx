@@ -8,9 +8,11 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 
-const SetItem = () => {
+const SetItem = (props: any) => {
+    const { onClick } = props;
+
     return (
-        <Card className="group overflow-hidden">
+        <Card className="group overflow-hidden" onClick={onClick}>
             <CardHeader>
                 <CardTitle>
                     Sets name

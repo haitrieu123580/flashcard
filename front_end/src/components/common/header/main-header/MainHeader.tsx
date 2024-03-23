@@ -1,5 +1,4 @@
 import Logo from "@/components/common/logo/Logo"
-import { Separator } from "@/components/ui/separator"
 import MaxWidthWrapper from "../../MaxWidthWrapper"
 import { FormInput } from "../../custom_input/CustomInput"
 import { useForm } from "react-hook-form"
@@ -36,17 +35,17 @@ const MainHeader = () => {
     }
     return (
         <div className='hidden md:block md:w-full h-20'>
-            <div className='w-full p-6 grid grid-flow-row md:grid-cols-12 items-center'>
-                <div className="flex items-center row-span-1 md:col-span-1">
+            <div className='w-full p-6 flex justify-between items-center'>
+                <div className="w-1/6 flex items-center row-span-1 md:col-span-1">
                     <Logo />
-                    <Button variant={"ghost"}>
+                    <Button variant={"link"}>
                         <Link to={routerPaths.HOME}>Home</Link>
                     </Button>
-                    <Button variant={"ghost"}>Your library</Button>
+                    <Button variant={"link"} className="w-fit">Your library</Button>
                 </div>
-                <MaxWidthWrapper className="row-span-12 md:col-span-10">
+                <MaxWidthWrapper >
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <form className="" onSubmit={form.handleSubmit(onSubmit)}>
                             <FormInput
                                 control={form.control}
                                 fieldName="search"
@@ -60,7 +59,21 @@ const MainHeader = () => {
                         </form>
                     </Form>
                 </MaxWidthWrapper>
-                <div className="col-span-1 flex justify-between gap-1">
+                {/* <Form {...form}>
+                    <form className="!w-3/6 p-0" onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormInput
+                            control={form.control}
+                            fieldName="search"
+                            // label="Search"
+                            placeholder="Search"
+                            type="text"
+                            className="w-full"
+                            icon={<Search />}
+                            alignIcon="left"
+                        />
+                    </form>
+                </Form> */}
+                <div className="w-1/6 flex justify-end gap-1">
                     <Popover>
                         <PopoverTrigger className="text-sm p-1">
                             <PlusCircle />
