@@ -12,7 +12,13 @@ class UserRepo implements UserRepoInterface {
             {
                 where: {
                     username: username
-                }
+                },
+                select: [
+                    'id',
+                    'username',
+                    'email',
+                    'password',
+                ]
             }
         )
         return result;

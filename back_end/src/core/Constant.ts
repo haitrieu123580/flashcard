@@ -6,4 +6,9 @@ export class Constants {
         EDIT_MODE: 2,
         DELETE_MODE: 3,
     }
+
+    static USER_ROLE = {
+        ADMIN: 1,
+        USER: 10,
+    }
 }

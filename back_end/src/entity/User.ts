@@ -2,7 +2,7 @@ import { Entity, Column, Unique, OneToOne, JoinColumn, OneToMany } from "typeorm
 import { BaseEntity } from "./BaseEntity"
 import { PasswordResetOtps } from "./PasswordResetOtps"
 import { Sets } from "./Sets"
-
+import { Constants } from "../core/Constant"
 @Entity()
 export class User extends BaseEntity {
 
@@ -38,6 +38,11 @@ export class User extends BaseEntity {
     })
     avatar: string
 
+    @Column({
+        nullable: true,
+        default: Constants.USER_ROLE.USER
+    })
+    role: number
 
     @OneToOne(() => PasswordResetOtps, {
         onDelete: "SET NULL",

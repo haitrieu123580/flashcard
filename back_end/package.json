@@ -5,7 +5,8 @@
    "scripts": {
       "start": "ts-node ./src/index.ts",
       "dev": "nodemon ./src/app.ts",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "typeorm": "typeorm-ts-node-commonjs",
+      "seed": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/data-source.ts"
    },
    "_moduleAliases": {
       "@src": "src",
@@ -51,7 +52,7 @@
       "swagger-ui-express": "^5.0.0",
       "typedi": "^0.10.0",
       "typeorm": "0.3.19",
-      "typeorm-seeding": "^1.6.1",
+      "typeorm-extension": "^3.5.0",
       "winston": "^3.11.0",
       "yaml": "^2.3.4"
    },
