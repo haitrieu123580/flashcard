@@ -20,4 +20,25 @@ export default class Constants {
         INPUT_CHECK: 'input_check',
         RE_CAPTCHA: 're_captcha',
     };
+
+    static DEFAULT_PAGESIZE = 9;
+
+    static SORT_BY = [
+        {
+            key: "latest",
+            label: "Latest"
+        },
+        {
+            key: "newest",
+            label: "Newest"
+        },
+        {
+            key: "desc",
+            label: "Z-A"
+        },
+        {
+            key: "asc",
+            label: "A-z"
+        },
+    ]
 }

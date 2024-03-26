@@ -1,5 +1,5 @@
 import SetItem from '@/components/home/newest-sets/SetItem'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { FormInput } from '@/components/common/custom_input/CustomInput'
 import { Form } from '@/components/ui/form'
@@ -9,27 +9,68 @@ import { ChevronDown } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { routerPaths } from '@/routes/path'
-
+import { getAllSetsAction } from '@/redux/public-sets/slice'
+// import { useParams } from 'react-router-dom'
 const PublicSets = () => {
     const form = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { data } = useSelector((state: any) => state.Sets)
     const [pageNumber, setPageNumber] = useState(1);
-    const [filter, setFilter] = useState("") //get default filter from redux
+    const [filter, setFilter] = useState("")
+
+    const searchParams = new URLSearchParams(location.search);
+    let searchFilter = searchParams.get('filter') || null;
+
     const increasePageNumber = () => {
         setPageNumber(pageNumber + 1);
-        console.log(pageNumber + 1, filter)
-    }
-    const onSubmit = () => {
+        getSets(pageNumber + 1, filter);
+        const queryParams = new URLSearchParams(filter).toString();
 
     }
+
     const onSelectFilter = (filter: any) => {
-        setFilter(filter)
-        console.log(pageNumber, filter)
+        setFilter(filter);
+        getSets(pageNumber, filter);
+
+        // console.log(pageNumber, filter)
     }
     const gotoCard = () => {
         navigate(routerPaths.LEARN_FLASHCARD)
     }
+    const getSets = (pageNumber: number, query: string | null | undefined) => {
+        dispatch({
+            type: getAllSetsAction.type,
+            payload: {
+                page_size: Constants.DEFAULT_PAGESIZE,
+                page_index: pageNumber,
+                query: query,
+                onSuccess: () => {
+                    const param: Record<string, string> = {
+                        page_size: Constants.DEFAULT_PAGESIZE.toString(),
+                        page_index: pageNumber.toString(),
+                        query: query || "",
+                    }
+                    const queryParams = new URLSearchParams(param).toString();
+                    navigate(`${routerPaths.PUBLIC_SETS}?${queryParams}`);
+                }
+            }
+        })
+    }
+    const [dispalyArraySets, setDisplayArraySets] = useState<any[]>([]);
+
+    useEffect(() => {
+        getSets(
+            pageNumber,
+            null
+        )
+    }, [])
+
+    useEffect(() => {
+        if (data) {
+            setDisplayArraySets([...dispalyArraySets, ...data])
+        }
+    }, [data])
     return (
         <div>
             <div className='flex justify-end'>
@@ -39,21 +80,17 @@ const PublicSets = () => {
                             control={form.control}
                             fieldName="sort_by"
                             type={Constants.INPUT_TYPE.SELECT}
-                            options={[{ key: "1", label: "1" }, { key: "2", label: "2" }]}
+                            options={Constants.SORT_BY}
                             placeholder="Sort by"
                             onChangeSelect={onSelectFilter}
                         />
-                        {/* <Button>Search</Button> */}
                     </form>
                 </Form>
             </div>
             <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
-                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
-                <div className='row-span-1 md:col-span-2'><SetItem onClick={gotoCard} /></div>
+                {Array.isArray(dispalyArraySets) && dispalyArraySets.map((set, index) => {
+                    return <div key={index} className='row-span-1 md:col-span-2'><SetItem data={set} onClick={gotoCard} /></div>
+                })}
             </div>
             <div className='mt-10 flex justify-center'>
                 <Button variant={'ghost'} onClick={(e) => { e.preventDefault(); increasePageNumber(); }}><ChevronDown /></Button>

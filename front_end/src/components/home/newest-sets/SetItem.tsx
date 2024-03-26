@@ -9,17 +9,17 @@ import {
 import { Badge } from "@/components/ui/badge"
 
 const SetItem = (props: any) => {
-    const { onClick } = props;
-
+    const { onClick, data } = props;
+    const { name, description, totalCards, created_by, image } = data || {};
     return (
         <Card className="group overflow-hidden" onClick={onClick}>
             <CardHeader>
                 <CardTitle>
-                    Sets name
+                    {name || ""}
                 </CardTitle>
                 <CardDescription className="flex gap-1 flex-wrap">
-                    <Badge variant="default">Topic</Badge>
-                    <Badge variant="default">{`${1} cards`}</Badge>
+                    {/* <Badge variant="default">Topic</Badge> */}
+                    <Badge variant="default">{`${totalCards} cards`}</Badge>
                 </CardDescription>
             </CardHeader>
             <CardContent className="">
@@ -28,11 +28,11 @@ const SetItem = (props: any) => {
                         ratio={1 / 1}
                         className="h-auto w-auto object-cover transition-all hover:scale-105 aspect-square "
                     >
-                        <img src="https://github.com/shadcn.png" alt="set" />
+                        <img src={image} alt="set" />
                     </AspectRatio>
                     <div className="absolute hidden bottom-0 z-10 bg-gray-700 opacity-50 w-full h-full group-hover:block"></div>
                     <div className="hidden absolute p-2 text-left text-wrap bottom-1/2 translate-y-[50%] z-10 text-white break-words group-hover:block ">
-                        created by abaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        {created_by}
                     </div>
                 </div>
             </CardContent>
@@ -41,7 +41,7 @@ const SetItem = (props: any) => {
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{"created by abaaaaaaaaaaaaaaaaaaaaaaaaaaaa "}</span>
+                <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{description}</span>
             </CardFooter>
             <div className="w-ful h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
         </Card>

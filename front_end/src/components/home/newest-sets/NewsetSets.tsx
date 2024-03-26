@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import SetItem from "./SetItem"
 import {
@@ -11,8 +12,22 @@ import { Link } from "react-router-dom"
 import { routerPaths } from "@/routes/path"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useDispatch, useSelector } from 'react-redux';
+import { getNewestSetsAction } from "@/redux/newest-sets/slice"
 const NewsetSets = (props: any) => {
     const { className } = props
+    const dispatch = useDispatch();
+    const { data } = useSelector((state: any) => state.NewestSets)
+    useEffect(() => {
+        dispatch({
+            type: getNewestSetsAction.type,
+            payload: {
+                page_size: 6,
+                page_index: 1,
+                query: null
+            }
+        })
+    }, [])
     return (
         <>
             <Card className={cn("w-full h-full", className)}>
@@ -27,13 +42,9 @@ const NewsetSets = (props: any) => {
                 <CardContent>
                     <Carousel>
                         <CarouselContent>
-                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
-                            <CarouselItem className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem /></CarouselItem>
-
+                            {Array.isArray(data) && data.map((set, index) => {
+                                return <CarouselItem key={index} className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem data={set} /></CarouselItem>
+                            })}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />

@@ -4,15 +4,15 @@ import { HttpCode } from "@/enums/HttpCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { isFunction } from "@/utils/Utils";
 import {
-  getAllSetsAction,
-  getAllSetsSuccessAction
+  getNewestSetsAction,
+  getNewestSetsSuccessAction
 } from "./slice";
 import {
   GetSetsApi
 } from '@/api/SetsApi';
 
-function* watchGetPublicSets() {
-  yield takeLatest(getAllSetsAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+function* watchGetNewestSets() {
+  yield takeLatest(getNewestSetsAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { page_size, page_index, query } = payload
     try {
       const res = yield call(GetSetsApi, { page_size, page_index, query });
@@ -20,7 +20,7 @@ function* watchGetPublicSets() {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess();
           yield put(
-            getAllSetsSuccessAction({
+            getNewestSetsSuccessAction({
               data: res.data?.data?.sets
             })
           );
@@ -38,8 +38,8 @@ function* watchGetPublicSets() {
 
 
 
-export default function* publicSetsSaga() {
+export default function* newestSetsSaga() {
   yield all([
-    fork(watchGetPublicSets),
+    fork(watchGetNewestSets),
   ]);
 }
