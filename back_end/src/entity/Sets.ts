@@ -11,19 +11,19 @@ export class Sets extends BaseEntity {
     name: string;
 
     @Column({
-        nullable: false
+        nullable: true
     })
     description: string;
 
-    @Column({
-        nullable: false
-    })
-    isPublic: boolean;
+    // @Column({
+    //     nullable: true
+    // })
+    // isPublic: boolean;
 
-    @Column({
-        nullable: false
-    })
-    topic: string;
+    // @Column({
+    //     nullable: true
+    // })
+    // topic: string;
 
     @ManyToOne(() => User, user => user.sets, {
         onDelete: "CASCADE"
@@ -36,4 +36,9 @@ export class Sets extends BaseEntity {
     })
     @JoinColumn()
     cards: Cards[];
+
+    @Column({
+        nullable: true
+    })
+    image: string;
 }

@@ -18,6 +18,7 @@ class UserRepo implements UserRepoInterface {
                     'username',
                     'email',
                     'password',
+                    'role',
                 ]
             }
         )

@@ -15,8 +15,8 @@ export class UserSeeder implements Seeder {
             username: 'admin',
             email: 'admin@email.com',
             password: password,
-            createdAt: new Date(),
-            createdBy: 'Seeder',
+            created_at: new Date(),
+            created_by: 'Seeder',
             role: Constants.USER_ROLE.ADMIN
         }
 

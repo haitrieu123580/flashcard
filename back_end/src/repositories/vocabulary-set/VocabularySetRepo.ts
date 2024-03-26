@@ -17,14 +17,13 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         );
 
         if (owner) {
-            const { set_name, set_description, topic, is_public } = set;
+            const { set_name, set_description, set_image_url } = set;
             const newSet = new Sets();
             newSet.name = set_name;
             newSet.description = set_description;
-            newSet.topic = topic;
+            newSet.image = set_image_url;
             newSet.created_by = owner?.email;
             newSet.user = owner;
-            newSet.isPublic = is_public == "true";
 
             if (!newSet.cards) {
                 newSet.cards = [];
@@ -51,13 +50,17 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         return false;
     }
 
-    get_all_public_sets(): Promise<any> {
-        return this.setDataSource.find({
+    get_all_public_sets(data: any): Promise<any> {
+        const { take, skip, query } = data;
+        const sets_and_count = this.setDataSource.findAndCount({
             where: {
-                isPublic: true
+                name: query
             },
+            take: take,
+            skip: skip,
             relations: ["cards"]
         });
+        return sets_and_count
     }
 
     get_my_sets(userId: string): Promise<any> {
@@ -86,12 +89,10 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         if (updateSet) {
             updateSet.name = set.set_name;
             updateSet.description = set.set_description;
-            updateSet.topic = set.topic;
-            updateSet.isPublic = set.is_public == "true";
+            updateSet.image = set.set_image_url;
             await this.setDataSource.save(updateSet);
             return true;
         }
-        // throw new Error("Method not implemented.");
         return false;
     }
 }

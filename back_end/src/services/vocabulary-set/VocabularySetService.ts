@@ -1,4 +1,4 @@
-import e, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Service, Container } from 'typedi';
 import { SuccessResponse, FailureMsgResponse, SuccessMsgResponse, FailureResponse } from '@src/core/ApiResponse';
 import { IVocabularySetService } from './IVocabularySetService';
@@ -24,16 +24,27 @@ class VocabularySetService implements IVocabularySetService {
 
     get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
         try {
-            const sets = await this.setRepo.get_all_public_sets();
-            console.log("sets: ", sets)
+            const { page_size, page_index, query } = req.query;
+            const [sets, count] = await this.setRepo.get_all_public_sets(
+                {
+                    take: page_size || Constants.DEFAULT_PAGINATION.take,
+                    skip: Number(page_index) === 1 ? 0 : (Number(page_index) - 1) * Number(page_size) || Constants.DEFAULT_PAGINATION.skip,
+                    query: req.query.query || ""
+                }
+            );
             if (sets?.length) {
-                return new SuccessResponse('Get all public sets successfully', sets).send(res);
+                sets.forEach((set: any) => {
+                    return set.totalCards = set.cards.length;
+                })
+                return new SuccessResponse('Get all public sets successfully', {
+                    sets,
+                    count
+                }).send(res);
             }
             else {
                 return new FailureMsgResponse("Empty!").send(res);
             }
         } catch (error) {
-            console.log('error', error);
             return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
@@ -47,7 +58,6 @@ class VocabularySetService implements IVocabularySetService {
             }
             return new FailureMsgResponse("Empty!").send(res);
         } catch (error) {
-            console.log('error', error);
             return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
@@ -61,7 +71,6 @@ class VocabularySetService implements IVocabularySetService {
             }
             return new FailureMsgResponse("Set not founded!").send(res)
         } catch (error) {
-            console.log(error)
             return new FailureResponse('Internal Server Error ', error).send(res);
         }
     }
@@ -93,7 +102,6 @@ class VocabularySetService implements IVocabularySetService {
                 const define = formData[`card[${i}].define`];
                 files.forEach((file: any) => {
                     if (file.fieldname === `card[${i}].image`) {
-                        console.log(file)
                         image = file;
                     }
                 })
@@ -102,12 +110,13 @@ class VocabularySetService implements IVocabularySetService {
                 cards.push({ term, define, image_url: image_url?.Location || "" });
             }
 
-            const { set_name, set_description, topic, is_public } = formData;
-            const set = { set_name, set_description, topic, is_public };
+            const { set_name, set_description } = formData;
+            const set_image = files.find((file: any) => file.fieldname === 'set_image');
+            const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
+            const set = { set_name, set_description, set_image: set_image_url?.Location || "" };
             await this.setRepo.create_new_set_and_cards(userId, set, cards);
             return new SuccessMsgResponse('Create set successfully').send(res);
         } catch (error) {
-            console.log('error', error);
             return new FailureMsgResponse('Internal Server Error ').send(res);
         }
 
@@ -120,8 +129,10 @@ class VocabularySetService implements IVocabularySetService {
             const formData = req.body
             const files = req?.files
             let image;
-            const { set_name, set_description, topic, is_public } = formData;
-            const set = { set_name, set_description, topic, is_public };
+            const { set_name, set_description } = formData;
+            const set_image = files.find((file: any) => file.fieldname === 'set_image');
+            const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
+            const set = { set_name, set_description, set_image_url };
             for (let i = 0; formData[`card[${i}].term`]; i++) {
                 const term = formData[`card[${i}].term`];
                 const define = formData[`card[${i}].define`];
@@ -129,7 +140,6 @@ class VocabularySetService implements IVocabularySetService {
                 const cardId = formData[`card[${i}].id`];
                 files.forEach((file: any) => {
                     if (file.fieldname === `card[${i}].image`) {
-                        console.log(file)
                         image = file;
                     }
                 })

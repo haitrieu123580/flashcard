@@ -22,8 +22,16 @@ class AuthService implements AuthServiceInterface {
             const userData = await this.userRepo.getUserByUsername(req.body.username);
             if (userData) {
                 if (comparePassword(req.body.password, userData.password)) {
-                    const access_token = genAccessToken(userData.id, userData.username);
-                    const refresh_token = genRefreshToken(userData.id, userData.username);
+                    const access_token = genAccessToken({
+                        id: userData.id,
+                        username: userData.username,
+                        role: userData.role
+                    });
+                    const refresh_token = genRefreshToken({
+                        id: userData.id,
+                        username: userData.username,
+                        role: userData.role,
+                    });
                     const result = await this.userRepo.storeToken(userData.id, refresh_token);
                     return new SuccessResponse('Login Success', {
                         access_token, refresh_token, exprires_access_token: "1d"
@@ -71,9 +79,17 @@ class AuthService implements AuthServiceInterface {
             if (isExistingToken) {
                 const user = verifyToken(refresh_token);
 
-                const access_token = genAccessToken(user.id, user.username)
+                const access_token = genAccessToken({
+                    id: user.id,
+                    username: user.username,
+                    role: user.role
+                })
 
-                const new_refresh_token = genRefreshToken(user.id, user.username)
+                const new_refresh_token = genRefreshToken({
+                    id: user.id,
+                    username: user.username,
+                    role: user.role
+                })
                 return new SuccessResponse('Token Refreshed', {
                     access_token,
                     refresh_token: new_refresh_token,
