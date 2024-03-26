@@ -13,9 +13,9 @@ import {
 
 function* watchGetPublicSets() {
   yield takeLatest(getAllSetsAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
-    const { page_size, page_index, query } = payload
+    const { page_size, page_index, filter, name } = payload
     try {
-      const res = yield call(GetSetsApi, { page_size, page_index, query });
+      const res = yield call(GetSetsApi, { page_size, page_index, filter, name });
       if (res.status === HttpCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess();

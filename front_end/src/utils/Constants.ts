@@ -29,8 +29,8 @@ export default class Constants {
             label: "Latest"
         },
         {
-            key: "newest",
-            label: "Newest"
+            key: "oldest",
+            label: "Oldest"
         },
         {
             key: "desc",
@@ -38,7 +38,7 @@ export default class Constants {
         },
         {
             key: "asc",
-            label: "A-z"
+            label: "A-Z"
         },
     ]
 }

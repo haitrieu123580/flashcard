@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { FormInput } from '@/components/common/custom_input/CustomInput'
 import { Form } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import Constants from '@/utils/Constants'
 import { ChevronDown } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,12 +12,16 @@ import { routerPaths } from '@/routes/path'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
 // import { useParams } from 'react-router-dom'
 const PublicSets = () => {
-    const form = useForm();
+    const form = useForm({
+        defaultValues: {
+            sort_by: Constants.SORT_BY[0].key
+        }
+    });
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { data } = useSelector((state: any) => state.Sets)
     const [pageNumber, setPageNumber] = useState(1);
-    const [filter, setFilter] = useState("")
+    const [filter, setFilter] = useState(Constants.SORT_BY[0].key)
 
     const searchParams = new URLSearchParams(location.search);
     let searchFilter = searchParams.get('filter') || null;
@@ -25,31 +29,32 @@ const PublicSets = () => {
     const increasePageNumber = () => {
         setPageNumber(pageNumber + 1);
         getSets(pageNumber + 1, filter);
-        const queryParams = new URLSearchParams(filter).toString();
+        // const queryParams = new URLSearchParams(filter).toString();
 
     }
 
     const onSelectFilter = (filter: any) => {
         setFilter(filter);
-        getSets(pageNumber, filter);
-
+        getSets(1, filter);
+        setDisplayArraySets([]);
+        setPageNumber(1);
         // console.log(pageNumber, filter)
     }
     const gotoCard = () => {
         navigate(routerPaths.LEARN_FLASHCARD)
     }
-    const getSets = (pageNumber: number, query: string | null | undefined) => {
+    const getSets = (pageNumber: number, filter: string | null | undefined) => {
         dispatch({
             type: getAllSetsAction.type,
             payload: {
                 page_size: Constants.DEFAULT_PAGESIZE,
                 page_index: pageNumber,
-                query: query,
+                filter: filter,
                 onSuccess: () => {
                     const param: Record<string, string> = {
                         page_size: Constants.DEFAULT_PAGESIZE.toString(),
                         page_index: pageNumber.toString(),
-                        query: query || "",
+                        filter: filter || "",
                     }
                     const queryParams = new URLSearchParams(param).toString();
                     navigate(`${routerPaths.PUBLIC_SETS}?${queryParams}`);
@@ -62,7 +67,7 @@ const PublicSets = () => {
     useEffect(() => {
         getSets(
             pageNumber,
-            null
+            filter,
         )
     }, [])
 

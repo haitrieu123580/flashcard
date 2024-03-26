@@ -13,20 +13,24 @@ import { routerPaths } from "@/routes/path"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useDispatch, useSelector } from 'react-redux';
-import { getNewestSetsAction } from "@/redux/newest-sets/slice"
+import { getAllSetsAction } from '@/redux/public-sets/slice'
+import Constants from "@/utils/Constants"
 const NewsetSets = (props: any) => {
     const { className } = props
     const dispatch = useDispatch();
-    const { data } = useSelector((state: any) => state.NewestSets)
-    useEffect(() => {
+    const { data } = useSelector((state: any) => state.Sets)
+    const getSets = () => {
         dispatch({
-            type: getNewestSetsAction.type,
+            type: getAllSetsAction.type,
             payload: {
                 page_size: 6,
                 page_index: 1,
-                query: null
+                filter: Constants.SORT_BY[0].key,
             }
         })
+    }
+    useEffect(() => {
+        getSets()
     }, [])
     return (
         <>
