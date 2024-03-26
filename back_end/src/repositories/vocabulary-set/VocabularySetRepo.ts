@@ -51,16 +51,48 @@ export class VocabularySetRepo implements IVocabularySetRepo {
     }
 
     get_all_public_sets(data: any): Promise<any> {
-        const { take, skip, query } = data;
-        const sets_and_count = this.setDataSource.findAndCount({
-            where: {
-                name: query
+        const { take, skip, filter, name } = data;
+        if (name && filter) {
+
+            if (filter === "asc" || filter === "desc") {
+                return this.setDataSource.findAndCount({
+                    order: {
+                        name: filter === "asc" ? "ASC" : "DESC"
+                    },
+                    take: take,
+                    skip: skip,
+                    relations: ["cards"]
+                });
+            }
+            if (filter === "newest" || filter === "oldest") {
+                return this.setDataSource.findAndCount({
+                    order: {
+                        created_at: filter === "newest" ? "DESC" : "ASC"
+                    },
+                    take: take,
+                    skip: skip,
+                    relations: ["cards"]
+                });
+            }
+        }
+        else if (name) {
+            return this.setDataSource.findAndCount({
+                where: {
+                    name: name
+                },
+                take: take,
+                skip: skip,
+                relations: ["cards"]
+            });
+        }
+        return this.setDataSource.findAndCount({
+            order: {
+                created_at: "ASC"
             },
             take: take,
             skip: skip,
             relations: ["cards"]
         });
-        return sets_and_count
     }
 
     get_my_sets(userId: string): Promise<any> {
@@ -96,3 +128,4 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         return false;
     }
 }
+

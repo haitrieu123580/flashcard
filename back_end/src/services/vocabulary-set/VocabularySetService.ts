@@ -24,12 +24,13 @@ class VocabularySetService implements IVocabularySetService {
 
     get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
         try {
-            const { page_size, page_index, query } = req.query;
+            const { page_size, page_index, filter, name } = req.query;
             const [sets, count] = await this.setRepo.get_all_public_sets(
                 {
                     take: page_size || Constants.DEFAULT_PAGINATION.take,
                     skip: Number(page_index) === 1 ? 0 : (Number(page_index) - 1) * Number(page_size) || Constants.DEFAULT_PAGINATION.skip,
-                    query: req.query.query || ""
+                    query: filter || "",
+                    name: name || ""
                 }
             );
             if (sets?.length) {
@@ -113,7 +114,7 @@ class VocabularySetService implements IVocabularySetService {
             const { set_name, set_description } = formData;
             const set_image = files.find((file: any) => file.fieldname === 'set_image');
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
-            const set = { set_name, set_description, set_image: set_image_url?.Location || "" };
+            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "" };
             await this.setRepo.create_new_set_and_cards(userId, set, cards);
             return new SuccessMsgResponse('Create set successfully').send(res);
         } catch (error) {
