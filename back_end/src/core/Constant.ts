@@ -12,11 +12,6 @@ export class Constants {
         USER: 10,
     }
 
-    static USER_ROLE = {
-        ADMIN: 1,
-        USER: 10,
-    }
-
     static DEFAULT_PAGINATION = {
         take: 1,
         skip: 0,
