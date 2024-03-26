@@ -25,27 +25,38 @@ class VocabularySetService implements IVocabularySetService {
     get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
         try {
             const { page_size, page_index, filter, name } = req.query;
-            const [sets, count] = await this.setRepo.get_all_public_sets(
-                {
-                    take: page_size || Constants.DEFAULT_PAGINATION.take,
-                    skip: Number(page_index) === 1 ? 0 : (Number(page_index) - 1) * Number(page_size) || Constants.DEFAULT_PAGINATION.skip,
-                    query: filter || "",
-                    name: name || ""
-                }
-            );
+            let data = {}
+            const take = Number(page_size) || Constants.DEFAULT_PAGINATION.take;
+            let skip = 0;
+            if (Number(page_index) === 1) {
+                skip = 0;
+            } else {
+                skip = (Number(page_index) - 1) * Number(page_size) || Constants.DEFAULT_PAGINATION.skip;
+            }
+            if (filter === 'asc' || filter === 'desc') {
+                data = { take: take, skip: skip, filter, sortBy: 'setName' };
+            }
+            else if (filter === 'latest' || filter === 'oldest') {
+                data = { take: take, skip: skip, filter, name, sortBy: 'createdDate' };
+            }
+            else {
+                data = { take: take, skip: skip, filter, name, sortBy: 'createdDate' };
+            }
+            const [sets, count] = await this.setRepo.get_all_public_sets(data);
+
             if (sets?.length) {
                 sets.forEach((set: any) => {
                     return set.totalCards = set.cards.length;
-                })
+                });
                 return new SuccessResponse('Get all public sets successfully', {
                     sets,
                     count
                 }).send(res);
-            }
-            else {
+            } else {
                 return new FailureMsgResponse("Empty!").send(res);
             }
         } catch (error) {
+            console.log('error', error);
             return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
