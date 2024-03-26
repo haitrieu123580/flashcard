@@ -13,7 +13,7 @@ router.get("/public-sets", [isValidKey], vocabSetController.get_all_public_sets)
 
 router.get("/my-sets", [verifyToken, isValidKey], vocabSetController.get_my_sets);
 
-router.get("/:id", [isValidKey, isAdmin], vocabSetController.getSet);
+router.get("/:id", [isValidKey], vocabSetController.getSet);
 
 router.post("/", [isValidKey, isAdmin, UploadFile.any()], vocabSetController.createSet);
 

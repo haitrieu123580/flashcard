@@ -57,7 +57,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         if (sortBy === "setName") {
             order.name = filter === "asc" ? "ASC" : "DESC";
         } else if (sortBy === "createdDate") {
-            order.created_at = filter === "latest" ? "ASC" : "DESC";
+            order.created_at = filter === "latest" ? "DESC" : "ASC";
         }
 
         return this.setDataSource.findAndCount({
