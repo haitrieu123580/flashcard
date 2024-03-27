@@ -14,3 +14,8 @@ export const GetSetsApi = async (queryParams: any) => {
         });
     return response;
 }
+
+export const GetSetByIdApi = async (id: string) => {
+    const response = await AxiosConfig.get(`${BASE_URL}/${id}`);
+    return response;
+}

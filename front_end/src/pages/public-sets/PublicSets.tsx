@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { routerPaths } from '@/routes/path'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
+import { replacePathWithId } from '@/utils/Utils'
 // import { useParams } from 'react-router-dom'
 const PublicSets = () => {
     const form = useForm({
@@ -38,10 +39,9 @@ const PublicSets = () => {
         getSets(1, filter);
         setDisplayArraySets([]);
         setPageNumber(1);
-        // console.log(pageNumber, filter)
     }
-    const gotoCard = () => {
-        navigate(routerPaths.LEARN_FLASHCARD)
+    const gotoCard = (id: string = "") => {
+        navigate(replacePathWithId(routerPaths.LEARN_FLASHCARD, id))
     }
     const getSets = (pageNumber: number, filter: string | null | undefined) => {
         dispatch({
@@ -57,7 +57,7 @@ const PublicSets = () => {
                         filter: filter || "",
                     }
                     const queryParams = new URLSearchParams(param).toString();
-                    navigate(`${routerPaths.PUBLIC_SETS}?${queryParams}`);
+                    // navigate(`${routerPaths.PUBLIC_SETS}?${queryParams}`);
                 }
             }
         })

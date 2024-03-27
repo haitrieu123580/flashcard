@@ -78,3 +78,18 @@ export function objectToFormData(obj: object, formData = null, namespace = '') {
     return fd;
 }
 
+export const replacePathWithId = (path: string, id: string) => {
+    return path.replace(':id', id);
+}
+
+export const speek = (text: string) => {
+    const text_to_speech = new SpeechSynthesisUtterance();
+    text_to_speech.text = text;
+    text_to_speech.lang = 'en-US';
+    window.speechSynthesis.speak(text_to_speech)
+}
+
+export const convertDateToString = (text: string) => {
+    const date = new Date(text);
+    return date.toDateString();
+}

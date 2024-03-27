@@ -17,22 +17,52 @@ import {
 import { Button } from "@/components/ui/button"
 import { LoginForm } from "@/components/auth/login/LoginForm"
 import { RegisterForm } from "@/components/auth/register/RegisterForm"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom';
 import { routerPaths } from "@/routes/path"
 import { Search } from 'lucide-react';
 import { PlusCircle } from 'lucide-react';
 import { Folder } from "lucide-react"
 import { useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from 'react-redux';
 import UserPopover from "@/components/auth/user-popover/UserPopover"
+import { Send } from 'lucide-react';
+import Constants from "@/utils/Constants"
+import { getAllSetsAction } from "@/redux/public-sets/slice"
+import { toast } from "@/components/ui/use-toast";
+
 const MainHeader = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { loggedIn } = useSelector((state: any) => state.Auth)
     const [openDialogLogin, setOpenDialogLogin] = useState(false)
     const [openDialogRegister, setOpenDialogRegister] = useState(false)
+    const [showSubmit, setShowSubmit] = useState(false)
     const form = useForm()
     const onSubmit = (data: any) => {
-
+        dispatch({
+            type: getAllSetsAction.type,
+            payload: {
+                page_size: Constants.DEFAULT_PAGESIZE,
+                page_index: 1,
+                filter: Constants.SORT_BY[0].key,
+                name: data.search,
+                onSuccess: () => {
+                    navigate(`${routerPaths.PUBLIC_SETS}`)
+                },
+                onError: () => {
+                    navigate(`${routerPaths.PUBLIC_SETS}`)
+                    toast({
+                        title: 'No Set Found!',
+                        variant: 'destructive',
+                    })
+                }
+            }
+        })
     }
+    const onTextChanged = (value: any) => {
+        setShowSubmit(value.length > 0)
+    }
+
     return (
         <div className='hidden md:block md:w-full h-20'>
             <div className='w-full p-6 flex justify-between items-center'>
@@ -53,8 +83,14 @@ const MainHeader = () => {
                                 placeholder="Search"
                                 type="text"
                                 className="w-full"
-                                icon={<Search />}
+                                icon={
+                                    showSubmit ? <Send className="hover:cursor-pointer" /> : <Search />
+                                }
                                 alignIcon="left"
+                                onClickIcon={() => {
+                                    onSubmit(form.getValues())
+                                }}
+                                onChange={onTextChanged}
                             />
                         </form>
                     </Form>

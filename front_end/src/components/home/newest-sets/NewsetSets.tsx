@@ -15,9 +15,13 @@ import { cn } from "@/lib/utils"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSetsAction } from '@/redux/public-sets/slice'
 import Constants from "@/utils/Constants"
+import { useNavigate } from 'react-router-dom'
+import { replacePathWithId } from "@/utils/Utils"
+
 const NewsetSets = (props: any) => {
     const { className } = props
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { data } = useSelector((state: any) => state.Sets)
     const getSets = () => {
         dispatch({
@@ -32,6 +36,9 @@ const NewsetSets = (props: any) => {
     useEffect(() => {
         getSets()
     }, [])
+    const gotoCard = (id: string = "") => {
+        navigate(replacePathWithId(routerPaths.LEARN_FLASHCARD, id))
+    }
     return (
         <>
             <Card className={cn("w-full h-full", className)}>
@@ -47,7 +54,7 @@ const NewsetSets = (props: any) => {
                     <Carousel>
                         <CarouselContent>
                             {Array.isArray(data) && data.map((set, index) => {
-                                return <CarouselItem key={index} className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem data={set} /></CarouselItem>
+                                return <CarouselItem key={index} className="basis-1/1 sm:basis-1/2 md:basis-1/5"><SetItem data={set} onClick={gotoCard} /></CarouselItem>
                             })}
                         </CarouselContent>
                         <CarouselPrevious />

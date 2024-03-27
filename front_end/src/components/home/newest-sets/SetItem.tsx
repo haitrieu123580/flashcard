@@ -7,12 +7,16 @@ import {
 } from "@/components/ui/avatar"
 
 import { Badge } from "@/components/ui/badge"
+import { convertDateToString } from "@/utils/Utils"
 
 const SetItem = (props: any) => {
     const { onClick, data } = props;
-    const { name, description, totalCards, created_by, image } = data || {};
+    const { name, description, totalCards, created_by, created_at, image, id } = data || {};
     return (
-        <Card className="group overflow-hidden" onClick={onClick}>
+        <Card className="group overflow-hidden" onClick={(e) => {
+            e.preventDefault();
+            onClick(id)
+        }}>
             <CardHeader>
                 <CardTitle>
                     {name || ""}
@@ -32,7 +36,7 @@ const SetItem = (props: any) => {
                     </AspectRatio>
                     <div className="absolute hidden bottom-0 z-10 bg-gray-700 opacity-50 w-full h-full group-hover:block"></div>
                     <div className="hidden absolute p-2 text-left text-wrap bottom-1/2 translate-y-[50%] z-10 text-white break-words group-hover:block ">
-                        {created_by}
+                        {description}
                     </div>
                 </div>
             </CardContent>
@@ -41,7 +45,10 @@ const SetItem = (props: any) => {
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{description}</span>
+                <div className="flex flex-col">
+                    <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{created_by}</span>
+                    <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{convertDateToString(created_at)}</span>
+                </div>
             </CardFooter>
             <div className="w-ful h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
         </Card>
