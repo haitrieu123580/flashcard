@@ -2,7 +2,6 @@ import { IVocabularyCardRepo } from "./IVocabularyCardRepo";
 import { AppDataSource } from "@src/data-source";
 import { Sets } from "@src/entity/Sets";
 import { Cards } from "@src/entity/Cards";
-import { User } from "@src/entity/User";
 import { Service } from "typedi";
 
 @Service()
@@ -16,6 +15,7 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
         newCard.term = cards?.term;
         newCard.define = cards?.define;
         newCard.image = cards?.image;
+        newCard.example = cards?.example;
         const set = await this.setDataSource.findOne({
             where: { id: setID },
             relations: ["user"]
@@ -36,6 +36,7 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
             updateCard.define = cardData?.define ? cardData.define : updateCard.define;
             updateCard.image = cardData?.image ? cardData.image : updateCard.image;
             updateCard.updated_at = new Date();
+            updateCard.example = cardData?.example ? cardData.example : updateCard.example;
             const result = await this.cardDataSource.save(updateCard);
             if (result) {
                 return true;

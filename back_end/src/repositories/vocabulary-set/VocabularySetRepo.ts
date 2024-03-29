@@ -34,6 +34,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
                 card.term = cards[i].term;
                 card.define = cards[i].define;
                 card.image = cards[i].image_url;
+                card.example = cards[i].example;
                 card.created_by = owner?.email;
                 newSet.cards.push(card);
             }

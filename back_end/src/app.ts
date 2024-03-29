@@ -22,9 +22,18 @@ dotenv.config();
 const app: Application = express();
 
 // Database connection
-AppDataSource.initialize().then(async () => {
-    console.log("Database connection established successfully.");
-}).catch(error => console.log(error))
+const connectToDatabase = async () => {
+    try {
+        await AppDataSource.initialize();
+        console.log("Database connection established successfully.");
+    } catch (error) {
+        console.log(error);
+        console.log("Retrying connection in 5 seconds...");
+        setTimeout(connectToDatabase, 5000);
+    }
+};
+
+connectToDatabase();
 
 
 // Swagger

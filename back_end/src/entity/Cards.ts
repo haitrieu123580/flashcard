@@ -20,6 +20,12 @@ export class Cards extends BaseEntity {
     image: string;
 
     @Column({
+        nullable: true,
+        type: 'jsonb',
+    })
+    example: { sentence: string, translation: string }[];
+
+    @Column({
         nullable: true
     })
     pronounciation: string;

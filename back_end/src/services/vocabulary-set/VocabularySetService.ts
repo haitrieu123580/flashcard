@@ -46,7 +46,11 @@ class VocabularySetService implements IVocabularySetService {
 
             if (sets?.length) {
                 sets.forEach((set: any) => {
-                    return set.totalCards = set.cards.length;
+                    set.totalCards = set?.cards?.length;
+                    set.cards.forEach((card: any) => {
+                        return card.example = JSON.parse(card.example || "");
+                    });
+                    return set;
                 });
                 return new SuccessResponse('Get all public sets successfully', {
                     sets,
@@ -112,6 +116,7 @@ class VocabularySetService implements IVocabularySetService {
             for (let i = 0; formData[`card[${i}].term`]; i++) {
                 const term = formData[`card[${i}].term`];
                 const define = formData[`card[${i}].define`];
+                const example = formData[`card[${i}].example`];
                 files.forEach((file: any) => {
                     if (file.fieldname === `card[${i}].image`) {
                         image = file;
@@ -119,16 +124,20 @@ class VocabularySetService implements IVocabularySetService {
                 })
                 // ? if save to database not success, need to delete image from S3?
                 const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
-                cards.push({ term, define, image_url: image_url?.Location || "" });
+                cards.push({ term, define, image_url: image_url?.Location || "", example });
+                cards.push({ term, define, image_url: image_url || "", example });
+
             }
 
             const { set_name, set_description } = formData;
             const set_image = files.find((file: any) => file.fieldname === 'set_image');
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
             const set = { set_name, set_description, set_image_url: set_image_url?.Location || "" };
+
             await this.setRepo.create_new_set_and_cards(userId, set, cards);
             return new SuccessMsgResponse('Create set successfully').send(res);
         } catch (error) {
+            console.log('error', error);
             return new FailureMsgResponse('Internal Server Error ').send(res);
         }
 
@@ -150,6 +159,7 @@ class VocabularySetService implements IVocabularySetService {
                 const define = formData[`card[${i}].define`];
                 const cardFlag = formData[`card[${i}].flag`];
                 const cardId = formData[`card[${i}].id`];
+                const cardExample = formData[`card[${i}].example`];
                 files.forEach((file: any) => {
                     if (file.fieldname === `card[${i}].image`) {
                         image = file;
@@ -165,6 +175,7 @@ class VocabularySetService implements IVocabularySetService {
                                     define: define,
                                     image: image_url,
                                     setId: setId,
+                                    example: cardExample
                                 })
                             if (!new_card) {
                                 errorCardAction.push(`Create card ${i} failed`)
@@ -176,6 +187,7 @@ class VocabularySetService implements IVocabularySetService {
                                     term: term,
                                     define: define,
                                     image: image_url,
+                                    example: cardExample
                                 })
                                 if (!edit_card) {
                                     errorCardAction.push(`Edit card ${i} failed`)
