@@ -66,7 +66,8 @@ app.use('/api/user', userRouter)
 app.use('/passport', passportRouter)
 app.use('/api/vocabulary-set', vocabRouter)
 
-app.listen(process.env.PORT || 8000, () => {
+const port = process.env.PORT || 8000;
+app.listen(Number(port), "0.0.0.0", () => {
     console.log(`server is running on http://localhost:${process.env.PORT || 8000}`)
 })
 app.get('/', (req, res) => {
