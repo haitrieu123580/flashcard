@@ -2,6 +2,8 @@
 
 // import Constants from './Constants';
 
+import { routerPaths } from "@/routes/path";
+
 // import Validator from './Validator';
 
 // ? need this function?
@@ -93,3 +95,19 @@ export const convertDateToString = (text: string) => {
     const date = new Date(text);
     return date.toDateString();
 }
+
+export const SidebarNavItems = [
+    {
+        href: routerPaths.ADMIN_DASHBOARD,
+        title: 'Dashboard'
+    },
+    {
+        href: routerPaths.ADMIN_SETS,
+        title: 'Sets'
+    },
+    {
+        href: routerPaths.ADMIN_ACCOUNTS,
+        title: 'Users'
+    },
+
+]

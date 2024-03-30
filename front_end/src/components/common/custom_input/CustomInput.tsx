@@ -235,6 +235,24 @@ const renderInput = ({
                     ref={ref}
                 />
             );
+        // case Constants.INPUT_TYPE.FILE_UPLOAD:
+        //     return (
+        //         <FileDropzone
+        //             {...field}
+        //             type={type}
+        //             placeholder={placeholder}
+        //             className={classNameInput}
+        //             onChange={onChange}
+        //             onKeyUp={onKeyUp}
+        //             maxLength={maxLength}
+        //             disabled={disabled}
+        //             readOnly={readOnly}
+        //         // accept={accept || {}}
+        //         // multipleFile={multipleFile}
+        //         // size={size}
+        //         />
+        //     );
+
         default:
             return (
                 <Input

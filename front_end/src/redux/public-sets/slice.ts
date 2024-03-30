@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isLoading: false,
   data: [],
+  pagination: {
+
+  }
 }
 
 const publicSet = createSlice({
@@ -14,8 +17,9 @@ const publicSet = createSlice({
       // console.log('getAllSetsAction', action.payload)
     },
     getAllSetsSuccessAction: (state, { payload }) => {
-      state.isLoading = false,
-        state.data = payload?.data
+      state.isLoading = false;
+      state.data = payload?.data;
+      state.pagination = payload?.pagination;
     },
   },
 })

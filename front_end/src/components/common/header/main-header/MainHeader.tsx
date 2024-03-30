@@ -30,7 +30,8 @@ import Constants from "@/utils/Constants"
 import { getAllSetsAction } from "@/redux/public-sets/slice"
 import { toast } from "@/components/ui/use-toast";
 
-const MainHeader = () => {
+const MainHeader = (props: any) => {
+    const { isAdmin } = props
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loggedIn } = useSelector((state: any) => state.Auth)
@@ -95,50 +96,40 @@ const MainHeader = () => {
                         </form>
                     </Form>
                 </MaxWidthWrapper>
-                {/* <Form {...form}>
-                    <form className="!w-3/6 p-0" onSubmit={form.handleSubmit(onSubmit)}>
-                        <FormInput
-                            control={form.control}
-                            fieldName="search"
-                            // label="Search"
-                            placeholder="Search"
-                            type="text"
-                            className="w-full"
-                            icon={<Search />}
-                            alignIcon="left"
-                        />
-                    </form>
-                </Form> */}
                 <div className="w-1/6 flex justify-end gap-1">
-                    <Popover>
-                        <PopoverTrigger className="text-sm p-1">
-                            <PlusCircle />
-                        </PopoverTrigger>
-                        <PopoverContent className="w-fit">
-                            <div className="grid gap-4">
-                                <div className="grid gap-2">
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <span ><Folder /></span>
-                                        <Button
-                                            className="col-span-2 h-8 text-sm"
-                                            variant={"ghost"}
-                                        >
-                                            Vocabulary Sets
-                                        </Button>
+                    {isAdmin
+                        ? <>
+                            <Popover>
+                                <PopoverTrigger className="text-sm p-1">
+                                    <PlusCircle />
+                                </PopoverTrigger>
+                                <PopoverContent className="w-fit">
+                                    <div className="grid gap-4">
+                                        <div className="grid gap-2">
+                                            <div className="grid grid-cols-3 items-center gap-4">
+                                                <span ><Folder /></span>
+                                                <Button
+                                                    className="col-span-2 h-8 text-sm"
+                                                    variant={"ghost"}
+                                                >
+                                                    Vocabulary Sets
+                                                </Button>
+                                            </div>
+                                            <div className="grid grid-cols-3 items-center gap-4">
+                                                <span ><Folder /></span>
+                                                <Button
+                                                    variant={"ghost"}
+                                                    className="col-span-2 h-8 text-sm"
+                                                >
+                                                    Grammar Sets
+                                                </Button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <span ><Folder /></span>
-                                        <Button
-                                            variant={"ghost"}
-                                            className="col-span-2 h-8 text-sm"
-                                        >
-                                            Grammar Sets
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
+                                </PopoverContent>
+                            </Popover>
+                        </>
+                        : null}
                     {loggedIn
                         ? (
                             <>

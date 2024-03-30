@@ -5,7 +5,7 @@ const initialState = {
   token: localStorage.getItem("access_token") || "",
   refresh_token: localStorage.getItem("refresh_token") || "",
   loggedIn: localStorage.getItem("access_token") ? true : false,
-  profile: {}
+  profile: null
 }
 
 const authSlice = createSlice({
@@ -32,14 +32,18 @@ const authSlice = createSlice({
     },
 
     getProfileActionSuccess: (state, { payload }) => {
-      console.log("payload in slice: ", payload.data)
       state.isLoading = false;
       state.profile = payload.data;
     },
 
+    getProfileActionError: (state) => {
+      state.isLoading = false;
+      state.profile = null;
+    },
+
     getAccessTokenByRefreshTokenAction: (state, { payload }) => {
       state.isLoading = true;
-
+      state.profile = payload.data;
     },
 
     getAccessTokenByRefreshTokenActionSuccess: (state, { payload }) => {
@@ -67,6 +71,7 @@ export const {
   loginActionSuccess,
   getProfileAction,
   getProfileActionSuccess,
+  getProfileActionError,
   getAccessTokenByRefreshTokenAction,
   getAccessTokenByRefreshTokenActionSuccess,
   registerAction,

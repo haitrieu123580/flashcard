@@ -5,8 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '@/redux/auth/slice';
 import { useNavigate } from 'react-router-dom';
 import { routerPaths } from '@/routes/path';
-import { profile } from 'console';
-import { get } from 'http';
+
 
 type AuthLayoutProps = {
     children: ReactNode;

@@ -21,7 +21,10 @@ function* watchGetPublicSets() {
           isFunction(payload.onSuccess) && payload.onSuccess();
           yield put(
             getAllSetsSuccessAction({
-              data: res.data?.data?.sets
+              data: res.data?.data?.sets,
+              pagination: {
+                total: res.data?.data?.count
+              }
             })
           );
         }

@@ -41,4 +41,14 @@ export default class Constants {
             label: "A-Z"
         },
     ]
+
+    static ROLE = {
+        ADMIN: 1,
+        USER: 10,
+    }
+
+    static PAGINATION = {
+        LIMIT: 5,
+        SIBLING_COUNT: 8,
+    };
 }

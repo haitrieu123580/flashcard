@@ -61,7 +61,7 @@ const LearnFlashcard = () => {
                                     </div>
                                     <div className="col-span-1"></div>
                                     <div className="col-span-1 md:col-span-2">
-                                        <SentencesExampleBox />
+                                        <SentencesExampleBox example={card?.example} />
                                     </div>
                                 </CardContent>
                                 <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">

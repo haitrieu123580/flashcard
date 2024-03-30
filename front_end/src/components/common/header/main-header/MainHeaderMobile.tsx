@@ -25,7 +25,8 @@ import { Folder } from "lucide-react"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import UserPopover from "@/components/auth/user-popover/UserPopover"
-const MainHeaderMobile = () => {
+const MainHeaderMobile = (props: any) => {
+    const { isAdmin } = props
     const { loggedIn } = useSelector((state: any) => state.Auth)
     const [openDialogLogin, setOpenDialogLogin] = useState(false)
     const [openDialogRegister, setOpenDialogRegister] = useState(false)
@@ -44,35 +45,39 @@ const MainHeaderMobile = () => {
                         <Button variant={"ghost"}>Your library</Button>
                     </div>
                     <div className="col-span-1 flex justify-end">
-                        <Popover>
-                            <PopoverTrigger className="text-sm p-1">
-                                <PlusCircle />
-                            </PopoverTrigger>
-                            <PopoverContent className="w-fit">
-                                <div className="grid gap-4">
-                                    <div className="grid gap-2">
-                                        <div className="grid grid-cols-3 items-center gap-4">
-                                            <span ><Folder /></span>
-                                            <Button
-                                                className="col-span-2 h-8 text-sm"
-                                                variant={"ghost"}
-                                            >
-                                                Vocabulary Sets
-                                            </Button>
+                        {isAdmin && (
+                            <>
+                                <Popover>
+                                    <PopoverTrigger className="text-sm p-1">
+                                        <PlusCircle />
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-fit">
+                                        <div className="grid gap-4">
+                                            <div className="grid gap-2">
+                                                <div className="grid grid-cols-3 items-center gap-4">
+                                                    <span ><Folder /></span>
+                                                    <Button
+                                                        className="col-span-2 h-8 text-sm"
+                                                        variant={"ghost"}
+                                                    >
+                                                        Vocabulary Sets
+                                                    </Button>
+                                                </div>
+                                                <div className="grid grid-cols-3 items-center gap-4">
+                                                    <span ><Folder /></span>
+                                                    <Button
+                                                        variant={"ghost"}
+                                                        className="col-span-2 h-8 text-sm"
+                                                    >
+                                                        Grammar Sets
+                                                    </Button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="grid grid-cols-3 items-center gap-4">
-                                            <span ><Folder /></span>
-                                            <Button
-                                                variant={"ghost"}
-                                                className="col-span-2 h-8 text-sm"
-                                            >
-                                                Grammar Sets
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
+                                    </PopoverContent>
+                                </Popover>
+                            </>
+                        )}
                         {loggedIn
                             ? (
                                 <>

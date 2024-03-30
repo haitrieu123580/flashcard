@@ -5,6 +5,7 @@ import { HttpCode } from "@/enums/HttpCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginPayload } from "@/types/LoginPayload";
 import { GetProfilePayload } from "@/types/GetProfilePayload";
+import { isFunction } from '../../utils/Utils';
 import {
   LoginApi,
   GetProfileApi,
@@ -16,6 +17,7 @@ import {
   loginActionSuccess,
   getProfileAction,
   getProfileActionSuccess,
+  getProfileActionError,
   getAccessTokenByRefreshTokenAction,
   // getAccessTokenByRefreshTokenActionSuccess,
   registerAction,
@@ -50,7 +52,6 @@ function* watchLogin() {
 function* watchGetProfile() {
   yield takeEvery(getProfileAction.type, function* ({ payload }: PayloadAction<GetProfilePayload>): Generator<any, void, any> {
     const { onSuccess, onError, data } = payload;
-    console.log("get profile saga payload: ", payload);
     try {
       const res = yield call(GetProfileApi);
       if (res.status === HttpCode.OK) {
@@ -60,16 +61,16 @@ function* watchGetProfile() {
               data: res?.data?.data,
             })
           );
-          onSuccess && onSuccess(res?.data?.data);
+          // isFunction(payload.onSuccess) && payload.onSuccess(res?.data?.data);
         }
-        else {
-          onError && onError("not success");
-        }
-      }
-      if (res.status === HttpCode.BAD_REQUEST || res.status === HttpCode.UNAUTHORIZED) {
-        onError && onError("unauthorized");
+        yield put(
+          getProfileActionError()
+        );
 
       }
+      yield put(
+        getProfileActionError()
+      );
     } catch (error) {
       onError && onError(error);
     }
