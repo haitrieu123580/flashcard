@@ -52,16 +52,16 @@ class UserRepo implements UserRepoInterface {
             where: {
                 id: id
             },
-            select: [
-                "id",
-                "username",
-                "email",
-                "avatar",
-                "created_at",
-                "created_by",
-                "updated_at",
-                "updated_by",
-            ],
+            // select: [
+            //     "id",
+            //     "username",
+            //     "email",
+            //     "avatar",
+            //     "created_at",
+            //     "created_by",
+            //     "updated_at",
+            //     "updated_by",
+            // ],
         })
 
         return result;

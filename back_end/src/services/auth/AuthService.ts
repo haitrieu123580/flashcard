@@ -40,6 +40,7 @@ class AuthService implements AuthServiceInterface {
             }
             return new FailureMsgResponse('Invalid Credentials').send(res);
         } catch (error: any) {
+            console.log('Error: ', error)
             return new InternalErrorResponse('Internal Server Error').send(res);
         }
     };
