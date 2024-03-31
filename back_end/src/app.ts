@@ -1,5 +1,17 @@
 import 'reflect-metadata';
-import 'module-alias/register';
+// import 'module-alias/register';
+import moduleAlias from 'module-alias';
+moduleAlias.addAliases({
+    "@src": `${__dirname}/`,
+    "@routers": `${__dirname}/routers`,
+    "@controllers": `${__dirname}/controllers`,
+    "@services": `${__dirname}/services`,
+    "@repositories": `${__dirname}/repositories`,
+    "@middleware": `${__dirname}/middleware`,
+    "@entity": `${__dirname}/entity`,
+    "@dto": `${__dirname}/dto`,
+    "@helper": `${__dirname}/helper`,
+});
 import express, { Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';

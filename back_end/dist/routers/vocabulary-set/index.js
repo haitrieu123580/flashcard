@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const VerifyToken_1 = __importDefault(require("@middleware/VerifyToken"));
+const VerifyApiKey_1 = __importDefault(require("@middleware/VerifyApiKey"));
+const VocabSetController_1 = __importDefault(require("@controllers/vocabulary-set/VocabSetController"));
+const UploadFile_1 = require("@middleware/UploadFile");
+const isAdmin_1 = require("@middleware/isAdmin");
+const router = (0, express_1.Router)();
+const vocabSetController = new VocabSetController_1.default();
+router.get("/public-sets", [VerifyApiKey_1.default], vocabSetController.get_all_public_sets);
+router.get("/my-sets", [VerifyToken_1.default, VerifyApiKey_1.default], vocabSetController.get_my_sets);
+router.get("/:id", [VerifyApiKey_1.default], vocabSetController.getSet);
+router.post("/", [VerifyApiKey_1.default, isAdmin_1.isAdmin, UploadFile_1.UploadFile.any()], vocabSetController.createSet);
+router.put("/:id", [VerifyApiKey_1.default, isAdmin_1.isAdmin, UploadFile_1.UploadFile.any()], vocabSetController.updateSet);
+router.delete("/:id", [VerifyApiKey_1.default, isAdmin_1.isAdmin], vocabSetController.deleteSet);
+exports.default = router;

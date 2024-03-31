@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const AuthController_1 = __importDefault(require("@controllers/auth/AuthController"));
+const ValidRequest_1 = __importDefault(require("@middleware/ValidRequest"));
+const VerifyToken_1 = __importDefault(require("@middleware/VerifyToken"));
+const SignUpRequest_1 = __importDefault(require("@dto/auth/SignUpRequest"));
+const SignInRequest_1 = __importDefault(require("@dto/auth/SignInRequest"));
+const VerifyApiKey_1 = __importDefault(require("@middleware/VerifyApiKey"));
+const ForgotPasswordRequest_1 = __importDefault(require("@dto/auth/ForgotPasswordRequest"));
+const ResetPasswordRequest_1 = __importDefault(require("@dto/auth/ResetPasswordRequest"));
+const PasswordResetController_1 = require("@controllers/password-reset/PasswordResetController");
+const router = (0, express_1.Router)();
+const authController = new AuthController_1.default();
+const passwordResetController = new PasswordResetController_1.PasswordResetController();
+router.post('/sign-in', [VerifyApiKey_1.default, (0, ValidRequest_1.default)(SignInRequest_1.default)], authController.sign_in);
+router.post('/sign-up', [VerifyApiKey_1.default, (0, ValidRequest_1.default)(SignUpRequest_1.default)], authController.sign_up);
+router.get('/me', [VerifyApiKey_1.default, VerifyToken_1.default], authController.me);
+router.post('/get-token', authController.get_token);
+router.post('/forgot-password', [VerifyApiKey_1.default, (0, ValidRequest_1.default)(ForgotPasswordRequest_1.default)], passwordResetController.forgot_password);
+router.post('/reset-password', [VerifyApiKey_1.default, (0, ValidRequest_1.default)(ResetPasswordRequest_1.default)], passwordResetController.reset_password);
+exports.default = router;

@@ -1,1 +1,14 @@
-{}
+{
+    "ignore": [
+        ".git",
+        "node_modules",
+        "dist"
+    ],
+    "watch": [
+        "./src"
+    ],
+    "ext": "ts",
+    "events": {
+        "restart": "clear"
+    }
+}
