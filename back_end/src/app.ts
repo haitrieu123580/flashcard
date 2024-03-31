@@ -56,6 +56,19 @@ try {
 } catch (error) {
 
 }
+
+//cors
+console.log("CLIENT_URL", process.env.CLIENT_URL)
+app.use(cors(
+    {
+        origin: String(process.env.CLIENT_URL),
+        // credentials: true,
+    }
+));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // Passport
 app.use(session({
     secret: String(process.env.SESSION_KEY),
@@ -64,15 +77,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(cors(
-    {
-        origin: process.env.CLIENT_URL,
-        credentials: true,
-    }
-));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)
 app.use('/passport', passportRouter)
