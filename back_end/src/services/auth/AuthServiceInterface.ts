@@ -4,5 +4,6 @@ interface AuthServiceInterface {
     sign_up: (req: Request, res: Response) => Promise<any>;
     me: (req: Request, res: Response) => Promise<any>;
     get_access_token_by_refresh_token: (req: Request, res: Response) => Promise<any>;
+    sign_in_success_oauth: (req: Request, res: Response) => Promise<any>;
 }
 export = AuthServiceInterface;

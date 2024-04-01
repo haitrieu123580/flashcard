@@ -61,7 +61,7 @@ try {
 app.use(cors(
     {
         origin: String(process.env.CLIENT_URL),
-        // credentials: true,
+        credentials: true,
     }
 ));
 

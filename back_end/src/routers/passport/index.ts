@@ -1,25 +1,19 @@
 import { Request, Response, Router } from "express";
 import AuthController from "../../controllers/auth/AuthController";
-import isValidRequest from "../../middleware/ValidRequest";
-import verifyToken from "../../middleware/VerifyToken";
-import SignUpRequest from "../../dto/auth/SignUpRequest";
-// import SignInRequest from "../../requests/auth/SignInRequest";
-import SignInRequest from "../../dto/auth/SignInRequest";
-import isValidKey from "../../middleware/VerifyApiKey";
 import passport from "passport";
 import dotenv from 'dotenv';
 dotenv.config();
 const router = Router();
+const authController = new AuthController();
 
 router.get("/login/success", (req: Request, res: Response) => {
     if (req.user) {
-        res.status(200).json({
-            success: true,
-            message: "successfull",
-            user: req.user,
-            //   cookies: req.cookies
-        });
-
+        // console.log("user Login", req.user)
+        return authController.sign_in_success_oauth(req, res)
+        // return res.status(200).json({ message: "user Login", user: req.user })
+    } else {
+        console.log("Not Authorized")
+        return res.status(400).json({ message: "Not Authorized" })
     }
 });
 

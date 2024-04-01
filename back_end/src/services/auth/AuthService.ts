@@ -120,6 +120,32 @@ class AuthService implements AuthServiceInterface {
             return new InternalErrorResponse('Internal Server Error').send(res);
         }
     }
+    public sign_in_success_oauth = async (req: Request, res: Response): Promise<any> => {
+        try {
+            if (req?.user) {
+                const { displayName, email } = req?.user as { displayName: string, email: string };
+                const userData = await this.userRepo.getUserByUsername(displayName);
+                if (userData) {
+                    const access_token = genAccessToken({
+                        id: userData.id,
+                        username: userData.username,
+                        role: userData.role
+                    });
+                    const refresh_token = genRefreshToken({
+                        id: userData.id,
+                        username: userData.username,
+                        role: userData.role,
+                    });
+                    await this.userRepo.storeToken(userData.id, refresh_token);
+                    return new SuccessResponse('Login Success', {
+                        access_token, refresh_token, exprires_access_token: "1d"
+                    }).send(res);
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 export default AuthService;

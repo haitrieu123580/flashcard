@@ -20,5 +20,8 @@ class AuthController {
     get_token = async (req: Request, res: Response) => {
         await this.authService.get_access_token_by_refresh_token(req, res);
     }
+    sign_in_success_oauth = async (req: Request, res: Response) => {
+        await this.authService.sign_in_success_oauth(req, res);
+    }
 }
 export default AuthController;
