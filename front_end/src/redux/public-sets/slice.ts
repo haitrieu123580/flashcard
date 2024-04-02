@@ -14,7 +14,6 @@ const publicSet = createSlice({
   reducers: {
     getAllSetsAction: (state, action) => {
       state.isLoading = true
-      // console.log('getAllSetsAction', action.payload)
     },
     getAllSetsSuccessAction: (state, { payload }) => {
       state.isLoading = false;

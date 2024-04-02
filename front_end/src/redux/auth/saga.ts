@@ -80,7 +80,6 @@ function* watchGetProfile() {
 function* watchRegister() {
   yield takeLatest(registerAction.type, function* ({ payload }: any): Generator<any, void, any> {
     const { onSuccess, onError, data } = payload;
-    console.log("data: ", data)
     try {
       const res = yield call(SignupApi, data);
       if (res.status === HttpCode.OK) {
@@ -100,7 +99,6 @@ function* watchRegister() {
         onError && onError(res?.data?.message);
       }
     } catch (error) {
-      console.log("error: ", error)
       onError && onError();
     }
   });
@@ -116,9 +114,7 @@ function* watchGetNewAccessToken() {
         return;
       }
       const res = yield call(GetNewAccessTokenApi, refresh_token);
-      console.log("res: ", res)
     } catch (error) {
-      console.log(error)
       onError && onError();
     }
   });

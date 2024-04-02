@@ -2,7 +2,6 @@ import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 import { Separator } from '../ui/separator';
 const SentencesExampleBox = (props: any) => {
     const { example } = props;
-    console.log('example', typeof JSON.parse(example), example)
     return (
         <Card className="w-full h-full p-2 ">
             <CardTitle className='font-semibold text-lg'> Example Sentences</CardTitle>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useMemo } from 'react'
 import { FormInput } from '@/components/common/custom_input/CustomInput'
 import { Button } from '@/components/ui/button'
 import { useFieldArray, useForm } from 'react-hook-form'
@@ -10,39 +10,84 @@ import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Card } from '@/components/ui/card'
 import { PlusCircle, Trash2 } from 'lucide-react'
+import { useSelector, useDispatch } from 'react-redux'
+
 const SetForm = (props: any) => {
-    const formSchema = z.object({
-        username: z.string().min(2, {
-            message: "",
-        }),
-        password: z.string().min(6, {
-            message: ""
-        }),
-        card: z.array(z.object({}))
-    })
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const { isEdit, defaultValues } = props;
+    // const { data } = useSelector((state: any) => state.Set);
+    // const formSchema = z.object({
+    //     set_name: z.string().min(2, {
+    //         message: "",
+    //     }),
+    //     set_description: z.string().min(6, {
+    //         message: ""
+    //     }),
+    //     set_image: z.string().url() || z.string().optional(),
+    //     cards: z.array(
+    //         z.object({
+    //             term: z.string(),
+    //             define: z.string(),
+    //             image: z.string().url().optional()
+    //         })
+    //     )
+    // })
+    // const form = useForm<z.infer<typeof formSchema>>({
+    //     resolver: zodResolver(formSchema),
+    //     defaultValues: useMemo(() => {
+    //         return {
+    //             set_name: data?.name || "",
+    //             set_description: data?.description || "",
+    //             set_image: data?.image || "",
+    //             cards: data?.cards || [{ term: '', define: '', image: '' }]
+    //         }
+    //     }, [data]),
+    // })
+    const form = useForm({
         defaultValues: {
-            username: "",
-            password: "",
-            card: [{ term: '', define: '', image: '' }]
+            set_name: defaultValues?.name || "",
+            set_description: defaultValues?.description || "",
+            set_image: {
+                image: null,
+                path: defaultValues?.image || "",
+            },
+            cards: defaultValues?.cards || [{
+                term: '',
+                define: '',
+                image: {
+                    image: null,
+                    path: ''
+                }
+            }]
         },
     })
 
-    const [cardCount, setCardCount] = useState(1); // Số lượng card hiện tại
-
-    function addCard() {
-        setCardCount(cardCount + 1); // Tăng số lượng card khi click vào PlusCircle
-    }
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
-
+    const onSubmit = (values: any) => {
+        console.log("values", values);
     }
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-        control: form.control, // control props comes from useForm (optional: if you are using FormContext)
-        name: "card", // unique name for your Field Array
+        control: form.control,
+        name: "cards",
     });
-
+    useMemo(() => {
+        if (defaultValues?.id && defaultValues?.cards) {
+            form.reset({
+                set_name: defaultValues.name,
+                set_description: defaultValues.description,
+                set_image: {
+                    image: null,
+                    path: defaultValues.image || "",
+                },
+                cards: defaultValues.cards.map((card: any) => ({
+                    term: card.term,
+                    define: card.define,
+                    image: {
+                        image: null,
+                        path: card.image || ""
+                    }
+                }))
+            });
+        }
+    }, [defaultValues]);
     return (
         <ScrollArea className="h-[600px] w-full">
             <Form {...form}>
@@ -67,7 +112,6 @@ const SetForm = (props: any) => {
                         control={form.control}
                         fieldName="set_image"
                         label="Image"
-                        // placeholder="Image"
                         type={Constants.INPUT_TYPE.FILE_UPLOAD}
                         classNameInput='h-fit'
                     />
@@ -92,7 +136,7 @@ const SetForm = (props: any) => {
                                         <div className='flex justify-between gap-1'>
                                             <FormInput
                                                 control={form.control}
-                                                fieldName={`card[${index}].term`}
+                                                fieldName={`cards[${index}].term`}
                                                 label="Term"
                                                 placeholder="Term"
                                                 type={Constants.INPUT_TYPE.TEXT}
@@ -100,7 +144,7 @@ const SetForm = (props: any) => {
                                             />
                                             <FormInput
                                                 control={form.control}
-                                                fieldName={`card[${index}].define`}
+                                                fieldName={`cards[${index}].define`}
                                                 label="Define"
                                                 placeholder="Define"
                                                 type={Constants.INPUT_TYPE.TEXT}
@@ -109,9 +153,8 @@ const SetForm = (props: any) => {
                                         </div>
                                         <FormInput
                                             control={form.control}
-                                            fieldName={`card[${index}].image`}
+                                            fieldName={`cards[${index}].image`}
                                             label="Image"
-                                            // placeholder="Image"
                                             type={Constants.INPUT_TYPE.FILE_UPLOAD}
                                             classNameInput='h-fit'
                                         />

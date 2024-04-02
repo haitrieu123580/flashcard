@@ -14,13 +14,11 @@ import {
 function* watchGetSetById() {
   yield takeLatest(getSetByIdAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { id } = payload
-    // console.log(object)
     try {
       const res = yield call(GetSetByIdApi, id);
-      console.log('res', res)
       if (res.status === HttpCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
-          isFunction(payload.onSuccess) && payload.onSuccess();
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
             getSetByIdSuccessAction
               ({

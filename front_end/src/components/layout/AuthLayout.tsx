@@ -21,7 +21,6 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         dispatch(getProfileAction({
             onSuccess: () => { return; },
             onError: (message: any) => {
-                console.log("onError is calling: ", message)
                 navigate(routerPaths.LOGIN);
             }
         }));

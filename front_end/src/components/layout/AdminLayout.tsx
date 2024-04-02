@@ -37,9 +37,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     }
     useEffect(() => {
         if (profile) {
-            console.log('PROFILE', profile)
             if (profile?.role !== Constants.ROLE.ADMIN) {
-                console.log('NAVIGATE')
                 navigate(routerPaths.HOME)
             }
         }

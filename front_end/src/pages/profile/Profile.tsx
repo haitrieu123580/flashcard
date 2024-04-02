@@ -33,19 +33,16 @@ const Profile = () => {
       onSuccess: () => {
       },
       onError: (message: any) => {
-        console.log("onError is calling: ", message)
         // navigate(routerPaths.LOGIN);
       }
     }));
   }
   useEffect(() => {
     console.log("profile.jsx: ", profile)
-    // if (profile.username) {
-    // }
+
     if (profile?.username) {
       form.setValue('username', profile?.username);
       form.setValue('email', profile?.email);
-      // getProfile();
     }
   }, [profile])
   const formSchema = z.object({
@@ -66,7 +63,6 @@ const Profile = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log(values);
   }
   return (
     <div>
