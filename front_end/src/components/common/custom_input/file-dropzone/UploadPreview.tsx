@@ -22,13 +22,13 @@ const UploadPreview: FC<UploadPreviewProps> = ({
             {show && (
                 <>
                     <div
-                        className="w-full flex flex-col  bg-[#F9FAFD] py-[23px] px-3 opacity-100"
+                        className="w-full flex flex-col py-[23px] px-3 opacity-100"
                     >
                         <div className='w-full h-16 flex justify-end gap-6'>
                             <Button
                                 type="button"
                                 variant="link"
-                                className="p-0 h-4 text-[#2F327D] hover:text-[#2F327D]"
+                                className="p-0 h-4 "
                                 onClick={(e: MouseEvent) => {
                                     e.preventDefault();
                                     onUpdate();
@@ -39,7 +39,7 @@ const UploadPreview: FC<UploadPreviewProps> = ({
                             <Button
                                 type="button"
                                 variant="link"
-                                className="p-0 h-4 text-[#2F327D] hover:text-[#2F327D]"
+                                className="p-0 h-4"
                                 onClick={(e: MouseEvent) => {
                                     e.preventDefault();
                                     onDelete();
@@ -50,15 +50,16 @@ const UploadPreview: FC<UploadPreviewProps> = ({
                         </div>
                         <div className='w-full '>
                             <AspectRatio
-                                ratio={16 / 9}
-                                className="h-auto w-auto object-cover transition-all aspect-square "
+                                ratio={4 / 3}
+                                className="h-auto w-auto"
                             >
-                                <img src={path} alt="set" />
+                                <img src={path} alt="set" className='max-w-full max-h-full w-full h-full object-contain' />
                             </AspectRatio>
                         </div>
                     </div>
                 </>
-            )}
+            )
+            }
         </>
     );
 };

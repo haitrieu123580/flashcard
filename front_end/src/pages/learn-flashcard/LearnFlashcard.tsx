@@ -8,7 +8,7 @@ import NewsetSets from "@/components/home/newest-sets/NewsetSets";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSetByIdAction } from "@/redux/get-set/slice";
+import { getSetByIdAction } from "@/redux/set/slice";
 import { speek } from "@/utils/Utils";
 const LearnFlashcard = () => {
     const { id } = useParams();

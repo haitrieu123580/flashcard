@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
 import SetForm from '@/components/admin/sets/SetForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
-import { getSetByIdAction } from "@/redux/get-set/slice";
+import { getSetByIdAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -98,7 +98,7 @@ const SetsList = () => {
                 setOpen={setOpen}
                 isShowTrigger={false}
                 TriggerComponent={null}
-                children={<SetForm isEdit={false} defaultValues={defaultValues} />}
+                children={<SetForm defaultValues={defaultValues} />}
                 title={isEdit ? "Edit Set" : "Create Set"}
             />
             <CustomPagination
