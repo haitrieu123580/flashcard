@@ -72,9 +72,13 @@ const MainHeader = (props: any) => {
                     <Button variant={"link"}>
                         <Link to={routerPaths.HOME}>Home</Link>
                     </Button>
-                    <Button variant={"link"} className="w-fit">Your library</Button>
+                    {/* <Button variant={"link"} className="w-fit">Your library</Button> */}
                 </div>
-                <MaxWidthWrapper >
+                {/* <MaxWidthWrapper >
+                   
+                </MaxWidthWrapper> */}
+                <div className="w-3/6">
+
                     <Form {...form}>
                         <form className="" onSubmit={form.handleSubmit(onSubmit)}>
                             <FormInput
@@ -95,7 +99,7 @@ const MainHeader = (props: any) => {
                             />
                         </form>
                     </Form>
-                </MaxWidthWrapper>
+                </div>
                 <div className="w-1/6 flex justify-end gap-1">
                     {isAdmin
                         ? <>

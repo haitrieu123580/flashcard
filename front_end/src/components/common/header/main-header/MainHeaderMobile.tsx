@@ -42,7 +42,7 @@ const MainHeaderMobile = (props: any) => {
                         <Button variant={"ghost"}>
                             <Link to={routerPaths.HOME}><Logo /></Link>
                         </Button>
-                        <Button variant={"ghost"}>Your library</Button>
+                        {/* <Button variant={"ghost"}>Your library</Button> */}
                     </div>
                     <div className="col-span-1 flex justify-end">
                         {isAdmin && (

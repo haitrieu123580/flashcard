@@ -54,31 +54,33 @@ export const getLoggedInUserInfoFromToken = () => {
     return null;
 };
 
-export function objectToFormData(obj: object, formData = null, namespace = '') {
+export function objectToFormData(obj: any, formData: FormData | null = null, namespace = ''): FormData {
     const fd = formData || new FormData();
 
-    // for (let property in obj) {
-    //     //eslint-disable-next-line
-    //     if (!obj.hasOwnProperty(property)) {
-    //         continue;
-    //     }
+    for (const property in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, property)) {
+            const formKey = namespace ? `${namespace}.${property}` : property;
 
-    //     const formKey = namespace ? `${namespace}[${property}]` : property;
-
-    //     if (obj[property] instanceof Date) {
-    //         fd.append(formKey, obj[property].toISOString());
-    //     } else if (
-    //         typeof obj[property] === 'object' &&
-    //         !(obj[property] instanceof File)
-    //     ) {
-    //         objectToFormData(obj[property], fd, formKey);
-    //     } else {
-    //         fd.append(formKey, obj[property]);
-    //     }
-    // }
+            if (obj[property] instanceof Date) {
+                fd.append(formKey, obj[property].toISOString());
+            } else if (Array.isArray(obj[property])) {
+                obj[property].forEach((item: any, index: number) => {
+                    const itemNamespace = `${formKey}[${index}]`;
+                    objectToFormData(item, fd, itemNamespace);
+                });
+            } else if (typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
+                objectToFormData(obj[property], fd, formKey);
+            } else {
+                fd.append(formKey, obj[property]);
+            }
+        }
+    }
 
     return fd;
 }
+
+
+
 
 export const replacePathWithId = (path: string, id: string) => {
     return path.replace(':id', id);

@@ -247,6 +247,7 @@ const renderInput = ({
                     maxLength={maxLength}
                     disabled={disabled}
                     readOnly={readOnly}
+                    onClickIcon={onClickIcon}
                 // accept={accept || {}}
                 // multipleFile={multipleFile}
                 // size={size}

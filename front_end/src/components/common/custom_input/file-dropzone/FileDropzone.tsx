@@ -36,7 +36,6 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
     accept,
     name,
 }) => {
-    const dispatch = useDispatch();
     const { setValue, watch } = useFormContext();
     const [show, setShow] = useState(false);
     const [fileInfo, setFileInfo] = useState<FileInfo>({
@@ -80,12 +79,9 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
             if (acceptedFiles.length) {
                 if (!multipleFile) {
                     const reader = new FileReader();
-                    let url = reader.readAsDataURL(acceptedFiles[0]);
                     setValue(`${name}.image`, acceptedFiles[0]);
                     setValue(`${name}.path`, URL.createObjectURL(acceptedFiles[0]));
-
                     setFileInfo({
-
                         path: URL.createObjectURL(acceptedFiles[0])
                     });
                     setShow(true);
@@ -103,7 +99,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
         <>
             <div
                 {...getRootProps({
-                    className: `relative overflow-hidden flex flex-col items-center justify-center w-full border-[1px] border-gray-300 border-dashed rounded-lg bg-gray-50 `,
+                    className: `relative overflow-hidden flex flex-col items-center justify-center w-full border-[1px] border-dashed rounded-lg `,
                 })}
             >
                 <div
@@ -122,15 +118,15 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
                             e.preventDefault();
                             onClick();
                         }}
-                        className="w-[30%] shadow-none border-[1px] rounded-sm min-w-fit p-[10px] text-primary border-input hover:bg-primary hover:text-white"
+                        className="w-[30%] shadow-none border-[1px] rounded-sm min-w-fit p-[10px] text-primary border-input "
                     >
-                        {`Browse`}
+                        {`Select image`}
                     </Button>
                     <Input
                         {...field}
                         {...getInputProps()}
                         type={type}
-                        className={classNameInput}
+                        className={cn(" border-none ", classNameInput)}
                         onKeyUp={onKeyUp}
                         maxLength={maxLength}
                         ref={fileRef}

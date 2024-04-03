@@ -9,4 +9,5 @@ export const routerPaths = {
     ADMIN_DASHBOARD: '/admin/dashboard',
     ADMIN_SETS: '/admin/sets',
     ADMIN_ACCOUNTS: '/admin/account',
+    ADMIN_SETS_EDIT: '/admin/sets/edit/:id',
 }

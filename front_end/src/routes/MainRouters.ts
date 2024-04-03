@@ -14,6 +14,7 @@ const Profile = lazy(() => import('@/pages/profile/Profile'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const SetsList = lazy(() => import('@/pages/admin/sets/SetsList'))
 const AccountListsContainer = lazy(() => import('@/pages/admin/account/AccountsListContainer'))
+const EditSetContainer = lazy(() => import('@/pages/admin/sets/EditSetContainer'))
 
 const publicRoutes = [
     {
@@ -64,6 +65,11 @@ const privateRouters = [
     {
         path: routerPaths.ADMIN_ACCOUNTS,
         component: AccountListsContainer,
+        layout: AdminLayout
+    },
+    {
+        path: routerPaths.ADMIN_SETS_EDIT,
+        component: EditSetContainer,
         layout: AdminLayout
     },
 ]

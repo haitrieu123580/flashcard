@@ -7,11 +7,13 @@ import {
     CardDescription,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { convertDateToString, isFunction } from "@/utils/Utils"
+import { convertDateToString, isFunction, replacePathWithId } from "@/utils/Utils"
 import { Trash2 } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import DeletePopup from "@/components/common/popup/DeletePopup";
+import { Link } from "react-router-dom";
+import { routerPaths } from "@/routes/path";
 
 const SetItem = (props: any) => {
     const { data, onEdit, onDelete } = props
@@ -21,23 +23,17 @@ const SetItem = (props: any) => {
             <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                     <span>{data?.name}</span>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 items-center">
                         <Button
-                            onClick={() => {
-                                isFunction(onEdit) && onEdit(data?.id)
-                            }}
                             variant={"secondary"}
                         >
-                            <Pencil />
+                            <Link
+                                to={replacePathWithId(routerPaths.ADMIN_SETS_EDIT, data?.id)}
+                            >
+                                <Pencil />
+                            </Link>
+
                         </Button>
-                        {/* <Button
-                            onClick={() => {
-                                isFunction(onDelete) && onDelete(data?.id)
-                            }}
-                            variant={"destructive"}
-                        >
-                            <Trash2 />
-                        </Button> */}
                         <DeletePopup
                             onConfirmDelete={() => {
                                 isFunction(onDelete) && onDelete(data?.id)
@@ -58,7 +54,7 @@ const SetItem = (props: any) => {
                 <p><b>Created at: </b>{convertDateToString(data?.created_at)}</p>
                 {data?.updated_at && <p><b>Updated at: </b>{convertDateToString(data?.updated_at)}</p>}
             </CardFooter>
-        </Card>
+        </Card >
     )
 }
 

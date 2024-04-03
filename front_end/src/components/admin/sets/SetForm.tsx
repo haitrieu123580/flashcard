@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { FormInput } from '@/components/common/custom_input/CustomInput'
 import { Button } from '@/components/ui/button'
 import { useFieldArray, useForm } from 'react-hook-form'
@@ -9,39 +9,15 @@ import Constants from '@/utils/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Card } from '@/components/ui/card'
-import { PlusCircle, Trash2 } from 'lucide-react'
+import { PlusCircle, Trash2, PencilIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
-
+import { isFunction, objectToFormData } from '@/utils/Utils'
+import { createSetAction } from '@/redux/set/slice'
+import DeletePopup from "@/components/common/popup/DeletePopup";
 const SetForm = (props: any) => {
     const { isEdit, defaultValues } = props;
-    // const { data } = useSelector((state: any) => state.Set);
-    // const formSchema = z.object({
-    //     set_name: z.string().min(2, {
-    //         message: "",
-    //     }),
-    //     set_description: z.string().min(6, {
-    //         message: ""
-    //     }),
-    //     set_image: z.string().url() || z.string().optional(),
-    //     cards: z.array(
-    //         z.object({
-    //             term: z.string(),
-    //             define: z.string(),
-    //             image: z.string().url().optional()
-    //         })
-    //     )
-    // })
-    // const form = useForm<z.infer<typeof formSchema>>({
-    //     resolver: zodResolver(formSchema),
-    //     defaultValues: useMemo(() => {
-    //         return {
-    //             set_name: data?.name || "",
-    //             set_description: data?.description || "",
-    //             set_image: data?.image || "",
-    //             cards: data?.cards || [{ term: '', define: '', image: '' }]
-    //         }
-    //     }, [data]),
-    // })
+    const [defaultFormData, setDefaultFormData] = useState({} as any)
+    const dispatch = useDispatch();
     const form = useForm({
         defaultValues: {
             set_name: defaultValues?.name || "",
@@ -51,6 +27,7 @@ const SetForm = (props: any) => {
                 path: defaultValues?.image || "",
             },
             cards: defaultValues?.cards || [{
+                card_id: '',
                 term: '',
                 define: '',
                 image: {
@@ -60,14 +37,36 @@ const SetForm = (props: any) => {
             }]
         },
     })
-
-    const onSubmit = (values: any) => {
-        console.log("values", values);
-    }
-    const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "cards",
     });
+
+    const onSubmit = (values: any) => {
+        if (isEdit) {
+            alert("Edit")
+        }
+        else {
+            const submitValues = {
+                set_name: values.set_name,
+                set_description: values.set_description,
+                set_image: values.set_image.image,
+                card: values.cards.map((card: any) => ({
+                    term: card.term,
+                    define: card.define,
+                    image: card.image.image
+                }))
+            }
+            const formData = objectToFormData(submitValues);
+            dispatch({
+                type: createSetAction.type,
+                payload: {
+                    data: formData
+                }
+            })
+        }
+        // console.log("values", values);
+    }
     useMemo(() => {
         if (defaultValues?.id && defaultValues?.cards) {
             form.reset({
@@ -78,6 +77,7 @@ const SetForm = (props: any) => {
                     path: defaultValues.image || "",
                 },
                 cards: defaultValues.cards.map((card: any) => ({
+                    card_id: card.id,
                     term: card.term,
                     define: card.define,
                     image: {
@@ -86,8 +86,26 @@ const SetForm = (props: any) => {
                     }
                 }))
             });
+            setDefaultFormData(objectToFormData(defaultValues))
         }
     }, [defaultValues]);
+
+    const onDeleteCard = (id: string) => {
+        if (isEdit) {
+            //call api to delete card
+        }
+    }
+    const onAddNewCard = () => {
+        if (isEdit) {
+            //call api to add new card
+        }
+        append({ term: '', define: '', image: { image: null, path: "" } })
+    }
+    const onEditCard = (index: number) => {
+        if (isEdit) {
+            //call api to edit card
+        }
+    }
     return (
         <ScrollArea className="h-[600px] w-full">
             <Form {...form}>
@@ -120,16 +138,21 @@ const SetForm = (props: any) => {
                     <div className='flex flex-col'>
                         <ScrollArea className="h-96 w-full p-4 rounded-md border">
                             {fields.map((field, index) => {
+                                console.log("field", field)
                                 return (
                                     <Card className='p-2 my-4' key={field.id}>
                                         <div>
                                             <div className='flex justify-between items-center'>
                                                 <b>{index + 1}</b>
-                                                <Button
-                                                    onClick={() => {
-                                                        remove(index)
-                                                    }}
-                                                    variant={"ghost"} ><Trash2 className='w-[20px] h-[20px]' /></Button>
+                                                <div className='flex justify-center items-center'>
+                                                    <Button
+                                                        onClick={() => {
+                                                            remove(index)
+                                                        }}
+                                                        variant={"destructive"} >
+                                                        <Trash2 width={20} />
+                                                    </Button>
+                                                </div>
                                             </div>
                                             <Separator />
                                         </div>
@@ -161,42 +184,11 @@ const SetForm = (props: any) => {
                                     </Card>
                                 )
                             })}
-                            {/* <Card className='p-2'>
-                                <div>
-                                    <b>1</b>
-                                    <Separator />
-                                </div>
-                                <div className='flex justify-between gap-1'>
-                                    <FormInput
-                                        control={form.control}
-                                        fieldName="card[0].term"
-                                        label="Term"
-                                        placeholder="Term"
-                                        type={Constants.INPUT_TYPE.TEXT}
-                                        className='w-1/2'
-                                    />
-                                    <FormInput
-                                        control={form.control}
-                                        fieldName="card[0].define"
-                                        label="Define"
-                                        placeholder="Define"
-                                        type={Constants.INPUT_TYPE.TEXT}
-                                        className='w-1/2'
-                                    />
-                                </div>
-                                <FormInput
-                                    control={form.control}
-                                    fieldName="card[0].image"
-                                    label="Image"
-                                    // placeholder="Image"
-                                    type={Constants.INPUT_TYPE.FILE_UPLOAD}
-                                    classNameInput='h-fit'
-                                />
-                            </Card> */}
+
                             < div className='flex justify-center' >
                                 <Button
                                     onClick={() => {
-                                        append({ term: '', define: '', image: '' })
+                                        onAddNewCard()
                                     }}
                                     type='button'
                                     variant={"ghost"}><PlusCircle /></Button>
