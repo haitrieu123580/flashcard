@@ -34,7 +34,7 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
         if (updateCard) {
             updateCard.term = cardData?.term ? cardData.term : updateCard.term;
             updateCard.define = cardData?.define ? cardData.define : updateCard.define;
-            updateCard.image = cardData?.image ? cardData.image : updateCard.image;
+            updateCard.image = cardData?.image;
             updateCard.updated_at = new Date();
             updateCard.example = cardData?.example ? cardData.example : updateCard.example;
             const result = await this.cardDataSource.save(updateCard);
@@ -52,5 +52,21 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
             return true;
         }
         return false;
+    }
+
+    async isExistCard(id: string): Promise<boolean> {
+        const card = await this.cardDataSource.findOneBy({
+            id: id
+        })
+        if (card) {
+            return true;
+        }
+        return false;
+    }
+
+    async getCardById(id: string): Promise<Cards | null> {
+        return this.cardDataSource.findOneBy({
+            id: id
+        })
     }
 }

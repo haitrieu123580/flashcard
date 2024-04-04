@@ -15,7 +15,6 @@ moduleAlias.addAliases({
 import express, { Application } from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
-import cookieSession from 'cookie-session';
 import './services/oauth/Passport';
 import swaggerUI from 'swagger-ui-express';
 import YAML from 'yaml';
@@ -28,6 +27,7 @@ import authRoutes from '@routers/auth/index';
 import userRouter from '@routers/user/index';
 import passportRouter from '@routers/passport/index';
 import vocabRouter from '@routers/vocabulary-set/index';
+import cardRouter from '@routers/card/index';
 
 dotenv.config();
 
@@ -80,6 +80,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRouter)
 app.use('/passport', passportRouter)
 app.use('/api/vocabulary-set', vocabRouter)
+app.use('/api/card', cardRouter)
 
 const port = process.env.PORT || 8000;
 app.listen(Number(port), "0.0.0.0", () => {

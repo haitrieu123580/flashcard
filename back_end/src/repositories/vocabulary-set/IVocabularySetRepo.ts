@@ -10,4 +10,9 @@ export interface IVocabularySetRepo {
     get_set_by_id(setId: string): Promise<any>;
 
     edit_set_by_id(setId: string, set: any): Promise<any>;
+
+    deleteSetById(setId: string): Promise<any>;
+
+    isExistSet(setId: string): Promise<boolean>;
+
 }

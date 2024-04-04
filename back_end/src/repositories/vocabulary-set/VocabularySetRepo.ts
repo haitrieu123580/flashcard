@@ -8,7 +8,6 @@ import { User } from "@src/entity/User";
 @Service()
 export class VocabularySetRepo implements IVocabularySetRepo {
     private setDataSource = AppDataSource.getRepository(Sets)
-    private cardDataSource = AppDataSource.getRepository(Cards)
     private userDataSource = AppDataSource.getRepository(User)
 
     create_new_set_and_cards = async (userId: string, set: any, cards: any): Promise<any> => {
@@ -98,10 +97,22 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         if (updateSet) {
             updateSet.name = set.set_name;
             updateSet.description = set.set_description;
-            updateSet.image = set.set_image_url;
+            updateSet.image = set.set_image_url || updateSet.image;
             await this.setDataSource.save(updateSet);
             return true;
         }
         return false;
+    }
+
+    deleteSetById(setId: string): Promise<any> {
+        return this.setDataSource.delete({
+            id: setId
+        })
+    }
+
+    isExistSet(setId: string): Promise<boolean> {
+        return this.setDataSource.findOne({ where: { id: setId } }).then(set => {
+            return set ? true : false;
+        });
     }
 }
