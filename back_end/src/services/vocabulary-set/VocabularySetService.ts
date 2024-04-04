@@ -6,20 +6,16 @@ import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetR
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { S3Service } from '@services/s3/S3Service';
 import { Constants } from '@src/core/Constant';
-import { IVocabularyCardRepo } from '@repositories/vocabulary-card/IVocabularyCardRepo';
-import { VocabularyCardRepo } from '@repositories/vocabulary-card/VocabularyCardRepo';
 
 @Service()
 class VocabularySetService implements IVocabularySetService {
 
     private setRepo: IVocabularySetRepo;
-    private cardRepo: IVocabularyCardRepo;
     private s3Service: S3Service;
 
     constructor() {
         this.setRepo = Container.get(VocabularySetRepo);
         this.s3Service = Container.get(S3Service);
-        this.cardRepo = Container.get(VocabularyCardRepo);
     }
 
     get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
@@ -47,9 +43,14 @@ class VocabularySetService implements IVocabularySetService {
             if (sets?.length) {
                 sets.forEach((set: any) => {
                     set.totalCards = set?.cards?.length;
-                    set.cards.forEach((card: any) => {
-                        return card.example = JSON.parse(card.example || "");
-                    });
+                    try {
+                        set.cards.forEach((card: any) => {
+                            return card.example = card.example ? JSON.parse(card.example || "") : "";
+                        });
+                    } catch (error) {
+
+                    }
+
                     return set;
                 });
                 return new SuccessResponse('Get all public sets successfully', {
@@ -92,7 +93,20 @@ class VocabularySetService implements IVocabularySetService {
     }
 
     deleteSet = async (req: Request, res: Response): Promise<any> => {
-        return res.json({ message: 'Delete set' });
+        try {
+            const id = req.params.id;
+            const isExist = await this.setRepo.isExistSet(id);
+            if (isExist) {
+                const result = await this.setRepo.deleteSetById(id);
+                if (result) {
+                    return new SuccessMsgResponse('Delete set successfully').send(res);
+                }
+                return new FailureMsgResponse('Delete set failed').send(res);
+            }
+            return new FailureMsgResponse('Set not founded!').send(res);
+        } catch (error) {
+
+        }
     }
 
     create_update_Set_and_Cards = async (req: any, res: Response): Promise<any> => {
@@ -112,8 +126,8 @@ class VocabularySetService implements IVocabularySetService {
             const formData = req.body;
             const userId = req.user.id;
             const files = req.files;
-            let image = null;
             for (let i = 0; formData[`card[${i}].term`]; i++) {
+                let image = null;
                 const term = formData[`card[${i}].term`];
                 const define = formData[`card[${i}].define`];
                 const example = formData[`card[${i}].example`];
@@ -125,7 +139,6 @@ class VocabularySetService implements IVocabularySetService {
                 // ? if save to database not success, need to delete image from S3?
                 const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
                 cards.push({ term, define, image_url: image_url?.Location || "", example });
-                cards.push({ term, define, image_url: image_url || "", example });
 
             }
 
@@ -144,81 +157,26 @@ class VocabularySetService implements IVocabularySetService {
     }
 
     edit_set_and_cards = async (req: any, res: Response) => {
-        const errorCardAction = []
         try {
             const setId = req?.params?.id;
             const formData = req.body
             const files = req?.files
-            let image;
+            const isDeleteImage = formData.is_delete_image === "true";
             const { set_name, set_description } = formData;
             const set_image = files.find((file: any) => file.fieldname === 'set_image');
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
-            const set = { set_name, set_description, set_image_url };
-            for (let i = 0; formData[`card[${i}].term`]; i++) {
-                const term = formData[`card[${i}].term`];
-                const define = formData[`card[${i}].define`];
-                const cardFlag = formData[`card[${i}].flag`];
-                const cardId = formData[`card[${i}].id`];
-                const cardExample = formData[`card[${i}].example`];
-                files.forEach((file: any) => {
-                    if (file.fieldname === `card[${i}].image`) {
-                        image = file;
-                    }
-                })
-                try {
-                    const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
-                    switch (Number(cardFlag)) {
-                        case Constants.CARD_FLAG.CREATE_MODE:
-                            const new_card = await this.cardRepo.create_card(setId,
-                                {
-                                    term: term,
-                                    define: define,
-                                    image: image_url,
-                                    setId: setId,
-                                    example: cardExample
-                                })
-                            if (!new_card) {
-                                errorCardAction.push(`Create card ${i} failed`)
-                            }
-                            break;
-                        case Constants.CARD_FLAG.EDIT_MODE:
-                            if (cardId) {
-                                const edit_card = await this.cardRepo.edit_card(cardId, {
-                                    term: term,
-                                    define: define,
-                                    image: image_url,
-                                    example: cardExample
-                                })
-                                if (!edit_card) {
-                                    errorCardAction.push(`Edit card ${i} failed`)
-                                }
-                            }
-                            else {
-                                errorCardAction.push(`Edit card ${i} because card id is required`)
-                            }
-                            break;
-                        case Constants.CARD_FLAG.DELETE_MODE:
-                            if (cardId) {
-                                const delete_card = await this.cardRepo.delete_card(cardId)
-                                if (!delete_card) {
-                                    errorCardAction.push(`Delete card ${i} failed`)
-                                }
-                            }
-                            else {
-                                errorCardAction.push(`Delete card ${i} because card id is required`)
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                } catch (error) {
-                    errorCardAction.push(`Card ${i} failed because ${error}`)
-                }
-            }
+            const updateSet = await this.setRepo.get_set_by_id(setId);
+            const set = {
+                set_name,
+                set_description,
+                set_image_url: isDeleteImage
+                    ? null
+                    : set_image_url ? set_image_url.Location : updateSet.image
+            };
             await this.setRepo.edit_set_by_id(setId, set);
-            return new SuccessResponse('Edit set successfully', errorCardAction).send(res);
+            return new SuccessMsgResponse('Edit set successfully').send(res);
         } catch (error) {
-            return new FailureResponse('Internal Server Error ', errorCardAction).send(res);
+            return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
 }
