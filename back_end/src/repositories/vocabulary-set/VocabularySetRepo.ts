@@ -97,7 +97,8 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         if (updateSet) {
             updateSet.name = set.set_name;
             updateSet.description = set.set_description;
-            updateSet.image = set.set_image_url || updateSet.image;
+            updateSet.image = set.set_image_url;
+            updateSet.updated_at = new Date();
             await this.setDataSource.save(updateSet);
             return true;
         }
