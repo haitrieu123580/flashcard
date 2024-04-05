@@ -8,19 +8,20 @@ import { useForm } from "react-hook-form"
 import { Form } from "@/components/ui/form"
 import Constants from "@/utils/Constants"
 import EditPopup from '@/components/common/popup/EditPopup'
-import { useSelector, useDispatch } from 'react-redux';
-import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card/slice"
-import { objectToFormData } from "@/utils/Utils"
-import { toast } from "@/components/ui/use-toast"
-import CommonPopup from "@/components/common/popup/CommonPopup"
-import { useState } from "react"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { useDispatch } from 'react-redux';
+import { isFunction } from "@/utils/Utils"
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 
 const CardForm = (props: any) => {
-    const { index, card, isEdit = true, setId } = props
-    const dispatch = useDispatch();
+    const { index,
+        card,
+        isEdit = true,
+        setId,
+        onDeleteCard,
+        onEditCard,
+        onCreateCard,
+    } = props
     const formSchema = z.object({
         term: z.string().min(1, {
             message: "Required",
@@ -28,11 +29,14 @@ const CardForm = (props: any) => {
         define: z.string().min(1, {
             message: "Required",
         }),
-        image: z.object({
-            image: z.any(),
-            path: z.string().optional()
-        })
-    })
+        image: z.union([
+            z.object({
+                image: z.any().optional(),
+                path: z.string().optional()
+            }),
+            z.string().optional()
+        ]).optional()
+    });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -44,69 +48,13 @@ const CardForm = (props: any) => {
             },
         },
     });
-    const [openDialogEdit, setOpenDialogEdit] = useState(false)
-    const onEditCard = (values: any, id: string, setId: string) => {
-        const submitValues = {
-            ...values,
-            setId: setId,
-            image: values.image.image ? values.image.image : null // image not change
-        }
-        const formData = objectToFormData(submitValues);
-        dispatch({
-            type: editCardAction.type,
-            payload: {
-                id: id,
-                data: formData,
-                onSuccess: () => {
-                    //? should do this?
-                    window.location.reload();
-                },
-                onError: (message: string) => {
-                    setOpenDialogEdit(false)
-                    toast({
-                        title: 'Edit failed',
-                        description: message ? message : "Please try again!",
-                        variant: 'destructive',
-                    })
-                }
-            }
-        })
 
-    }
-    const onDeleteCard = (id: string) => {
-
-    }
-    const onCreateCard = (values: any, setId: string) => {
-        const submitValues = {
-            ...values,
-            setId: setId,
-            image: values.image.image ? values.image.image : null // don't change image
-        }
-        const formData = objectToFormData(submitValues);
-        dispatch({
-            type: createCardAction.type,
-            payload: {
-                data: formData,
-                onSuccess: () => {
-                    //? should do this?
-                    window.location.reload();
-                },
-                onError: (message: string) => {
-                    toast({
-                        title: 'Create failed',
-                        description: message ? message : "Please try again!",
-                        variant: 'destructive',
-                    })
-                }
-            }
-        })
-    }
     const onSubmit = (values: any) => {
         if (isEdit && card?.id && setId) {
-            onEditCard(values, card?.id, setId)
+            isFunction(onEditCard) && onEditCard(values, card?.id, setId)
         }
         else {
-            onCreateCard(values, setId)
+            isFunction(onCreateCard) && onCreateCard(values)
         }
     }
     return (
@@ -120,31 +68,19 @@ const CardForm = (props: any) => {
                                     ? <>
                                         <b>{index + 1}</b>
                                         <div className='flex justify-center items-center mb-2'>
-                                            <CommonPopup
-                                                isShowTrigger={true}
-                                                TriggerComponent={<Button type='submit' variant={'ghost'}><PencilIcon width={20} /></Button>}
-                                                title="Edit card"
-                                                description="Are you sure you want to save?"
-                                                onConfirm={() => {
-                                                    onSubmit(form.getValues())
+                                            <EditPopup
+                                                onConfirmEdit={() => {
+                                                    form.handleSubmit(onSubmit)()
                                                 }}
-                                                open={openDialogEdit}
-                                                setOpen={setOpenDialogEdit}
-                                                children={
-
-                                                    <EditPopup
-                                                        onConfirmEdit={() => {
-                                                            onSubmit(form.getValues())
-                                                        }}
-                                                        onCancel={() => {
-                                                            setOpenDialogEdit(false)
-                                                        }}
-                                                    />
+                                                TriggerComponent={
+                                                    <Button type='button' variant={'ghost'}>
+                                                        <PencilIcon width={20} />
+                                                    </Button>
                                                 }
                                             />
                                             <DeletePopup
                                                 onConfirmDelete={() => {
-                                                    onDeleteCard(card?.id)
+                                                    isFunction(onDeleteCard) && onDeleteCard(card?.id)
                                                 }}
                                                 TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
                                             />

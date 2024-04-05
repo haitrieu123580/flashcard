@@ -48,6 +48,7 @@ const DeletePopup = (props: any) => {
                         <Button
                             onClick={() => {
                                 isFunction(onConfirmDelete) && onConfirmDelete()
+                                setOpen(false)
                             }}
                             variant={"destructive"}
                         >

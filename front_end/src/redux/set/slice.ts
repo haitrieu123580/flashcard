@@ -30,7 +30,14 @@ const Set = createSlice({
 
     editSetSuccessAction: (state, { payload }) => {
       state.isLoading = false
-    }
+    },
+
+    deleteSetAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+
+    deleteSetSuccessAction: (state, { payload }) => {
+    },
   },
 })
 
@@ -41,6 +48,8 @@ export const {
   createSetSuccessAction,
   editSetAction,
   editSetSuccessAction,
+  deleteSetAction,
+  deleteSetSuccessAction,
 } = Set.actions
 
 export default Set.reducer

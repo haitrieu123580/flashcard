@@ -27,25 +27,25 @@ const UploadPreview: FC<UploadPreviewProps> = ({
                         <div className='w-full h-16 flex justify-end gap-6'>
                             <Button
                                 type="button"
-                                variant="link"
-                                className="p-0 h-4 "
+                                variant="secondary"
+                                // className="p-0 h-4 "
                                 onClick={(e: MouseEvent) => {
                                     e.preventDefault();
                                     onUpdate();
                                 }}
                             >
-                                <PencilIcon />
+                                Change
                             </Button>
                             <Button
                                 type="button"
-                                variant="link"
-                                className="p-0 h-4"
+                                variant="default"
+                                // className="p-0 h-4"
                                 onClick={(e: MouseEvent) => {
                                     e.preventDefault();
                                     onDelete();
                                 }}
                             >
-                                <Trash2 />
+                                Delete
                             </Button>
                         </div>
                         <div className='w-full '>
