@@ -6,9 +6,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
 import SetForm from '@/components/admin/sets/SetForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
-import { getSetByIdAction } from "@/redux/set/slice";
+import { getSetByIdAction, deleteSetAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { toast } from '@/components/ui/use-toast';
+import { isFunction, objectToFormData } from '@/utils/Utils'
+import { createSetAction } from '@/redux/set/slice'
 
 const SetsList = () => {
     const { data, pagination } = useSelector((state: any) => state.Sets)
@@ -44,11 +47,41 @@ const SetsList = () => {
             Constants.SORT_BY[0].key,
         )
     }
-    const onCreate = () => {
-        setOpen(true)
-        setIsEdit(false)
-        setDefaultValues({})
+    const onCreate = (values: any) => {
+        const submitValues = {
+            set_name: values.set_name,
+            set_description: values.set_description,
+            set_image: values.set_image.image,
+            card: values.cards.map((card: any) => ({
+                term: card.term,
+                define: card.define,
+                image: card.image.image
+            }))
+        }
+        const formData = objectToFormData(submitValues);
+        dispatch({
+            type: createSetAction.type,
+            payload: {
+                data: formData,
+                onSuccess: () => {
+                    setOpen(false)
+                    getSets(1, Constants.SORT_BY[0].key)
+                    toast({
+                        title: 'Create set success',
+                        variant: 'default',
+                    })
+                },
+                onError: (message: string) => {
+                    toast({
+                        title: 'Create failed',
+                        description: message ? message : "Please try again!",
+                        variant: 'destructive',
+                    })
+                }
+            }
+        })
     }
+
     const onEdit = (id: string) => {
         try {
             setOpen(true)
@@ -57,6 +90,28 @@ const SetsList = () => {
         } catch (error) {
 
         }
+    }
+    const onDelete = (id: string) => {
+        dispatch({
+            type: deleteSetAction.type,
+            payload: {
+                id: id,
+                onSuccess: () => {
+                    getSets(1, Constants.SORT_BY[0].key)
+                    toast({
+                        title: 'Delete set success',
+                        variant: 'default',
+                    })
+                },
+                onError: (message: string) => {
+                    toast({
+                        title: 'Delete failed',
+                        description: message ? message : "Please try again!",
+                        variant: 'destructive',
+                    })
+                }
+            }
+        })
     }
     const GetSetById = (id: string) => {
         dispatch({
@@ -70,14 +125,16 @@ const SetsList = () => {
             }
         })
     }
-    const onDelte = (id: string) => {
-    }
+
     return (
         <div>
             <div className='flex justify-end mt-6'>
                 <Button variant={"ghost"}
                     onClick={() => {
-                        onCreate();
+                        // onCreate();
+                        setOpen(true)
+                        setIsEdit(false)
+                        setDefaultValues({})
                     }}
                 >
                     <PlusCircle size={20} />
@@ -88,7 +145,7 @@ const SetsList = () => {
                     <div key={index} className='row-span-1 md:col-span-2'>
                         <SetItem
                             onEdit={onEdit}
-                            onDelete={onDelte}
+                            onDelete={onDelete}
                             data={set}
                         />
                     </div>)
@@ -98,8 +155,8 @@ const SetsList = () => {
                 setOpen={setOpen}
                 isShowTrigger={false}
                 TriggerComponent={null}
-                children={<SetForm defaultValues={defaultValues} />}
-                title={isEdit ? "Edit Set" : "Create Set"}
+                children={<SetForm defaultValues={defaultValues} onCreate={onCreate} />}
+                title={"Create Set"}
             />
             <CustomPagination
                 total={pagination?.total || 0}

@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
 
 const SetItem = (props: any) => {
-    const { data, onEdit, onDelete } = props
+    const { data, onEdit, onDelete, onCreate } = props
 
     return (
         <Card className="my-6">

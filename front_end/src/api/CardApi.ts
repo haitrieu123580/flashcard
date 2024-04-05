@@ -1,5 +1,5 @@
 import { AxiosConfig } from "./AxiosConfig";
-const BASE_URL = import.meta.env.VITE_API_URL + "/api/vocabulary-card";
+const BASE_URL = import.meta.env.VITE_API_URL + "/api/card";
 
 export const createCardApi = async (data: any) => {
     const response = await AxiosConfig.post(`${BASE_URL}`, data);
@@ -10,7 +10,7 @@ export const editCardApi = async ({ id, data }: { id: string, data: any }) => {
     return response;
 }
 
-export const deleteCardApi = async (data: any) => {
-    const response = await AxiosConfig.post(`${BASE_URL}`, data);
+export const deleteCardApi = async (id: string) => {
+    const response = await AxiosConfig.delete(`${BASE_URL}/${id}`);
     return response;
 }

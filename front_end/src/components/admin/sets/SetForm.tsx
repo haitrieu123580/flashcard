@@ -9,16 +9,42 @@ import Constants from '@/utils/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Card } from '@/components/ui/card'
-import { PlusCircle, Trash2, PencilIcon } from 'lucide-react'
-import { useSelector, useDispatch } from 'react-redux'
-import { isFunction, objectToFormData } from '@/utils/Utils'
-import { createSetAction } from '@/redux/set/slice'
-import DeletePopup from "@/components/common/popup/DeletePopup";
+import { PlusCircle, Trash2 } from 'lucide-react'
+import { isFunction } from '@/utils/Utils'
+
 const SetForm = (props: any) => {
-    const { isEdit, defaultValues } = props;
-    const [defaultFormData, setDefaultFormData] = useState({} as any)
-    const dispatch = useDispatch();
-    const form = useForm({
+    const { isEdit, defaultValues, onCreate } = props;
+    const formSetCardSchema = z.object({
+        set_name: z.string().min(1, {
+            message: "Required",
+        }),
+        set_description: z.string().optional(),
+        set_image: z.union([
+            z.object({
+                image: z.any().optional(),
+                path: z.string().optional()
+            }),
+            z.string().optional()
+        ]).optional(),
+        cards: z.array(z.object({
+            term: z.string().min(1, {
+                message: "Required",
+            }),
+            define: z.string().min(1, {
+                message: "Required",
+            }),
+            image: z.union([
+                z.object({
+                    image: z.any().optional(),
+                    path: z.string().optional()
+                }),
+                z.string().optional()
+            ]).optional()
+        })).nonempty()
+
+    });
+    const form = useForm<z.infer<typeof formSetCardSchema>>({
+        resolver: zodResolver(formSetCardSchema),
         defaultValues: {
             set_name: defaultValues?.name || "",
             set_description: defaultValues?.description || "",
@@ -27,7 +53,6 @@ const SetForm = (props: any) => {
                 path: defaultValues?.image || "",
             },
             cards: defaultValues?.cards || [{
-                card_id: '',
                 term: '',
                 define: '',
                 image: {
@@ -43,29 +68,7 @@ const SetForm = (props: any) => {
     });
 
     const onSubmit = (values: any) => {
-        if (isEdit) {
-            alert("Edit")
-        }
-        else {
-            const submitValues = {
-                set_name: values.set_name,
-                set_description: values.set_description,
-                set_image: values.set_image.image,
-                card: values.cards.map((card: any) => ({
-                    term: card.term,
-                    define: card.define,
-                    image: card.image.image
-                }))
-            }
-            const formData = objectToFormData(submitValues);
-            dispatch({
-                type: createSetAction.type,
-                payload: {
-                    data: formData
-                }
-            })
-        }
-        // console.log("values", values);
+        isFunction(onCreate) && onCreate(values)
     }
     useMemo(() => {
         if (defaultValues?.id && defaultValues?.cards) {
@@ -77,7 +80,6 @@ const SetForm = (props: any) => {
                     path: defaultValues.image || "",
                 },
                 cards: defaultValues.cards.map((card: any) => ({
-                    card_id: card.id,
                     term: card.term,
                     define: card.define,
                     image: {
@@ -86,26 +88,9 @@ const SetForm = (props: any) => {
                     }
                 }))
             });
-            setDefaultFormData(objectToFormData(defaultValues))
         }
     }, [defaultValues]);
 
-    const onDeleteCard = (id: string) => {
-        if (isEdit) {
-            //call api to delete card
-        }
-    }
-    const onAddNewCard = () => {
-        if (isEdit) {
-            //call api to add new card
-        }
-        append({ term: '', define: '', image: { image: null, path: "" } })
-    }
-    const onEditCard = (index: number) => {
-        if (isEdit) {
-            //call api to edit card
-        }
-    }
     return (
         <ScrollArea className="h-[600px] w-full">
             <Form {...form}>
@@ -124,7 +109,6 @@ const SetForm = (props: any) => {
                         label="Description"
                         placeholder="Description"
                         type={Constants.INPUT_TYPE.TEXT}
-                        required={true}
                     />
                     <FormInput
                         control={form.control}
@@ -136,9 +120,8 @@ const SetForm = (props: any) => {
                     <Separator />
                     <b>Cards</b>
                     <div className='flex flex-col'>
-                        <ScrollArea className="h-96 w-full p-4 rounded-md border">
+                        <ScrollArea className="h-96 w-full p-4 ">
                             {fields.map((field, index) => {
-                                console.log("field", field)
                                 return (
                                     <Card className='p-2 my-4' key={field.id}>
                                         <div>
@@ -164,6 +147,7 @@ const SetForm = (props: any) => {
                                                 placeholder="Term"
                                                 type={Constants.INPUT_TYPE.TEXT}
                                                 className='w-1/2'
+                                                required={true}
                                             />
                                             <FormInput
                                                 control={form.control}
@@ -172,6 +156,7 @@ const SetForm = (props: any) => {
                                                 placeholder="Define"
                                                 type={Constants.INPUT_TYPE.TEXT}
                                                 className='w-1/2'
+                                                required={true}
                                             />
                                         </div>
                                         <FormInput
@@ -188,7 +173,7 @@ const SetForm = (props: any) => {
                             < div className='flex justify-center' >
                                 <Button
                                     onClick={() => {
-                                        onAddNewCard()
+                                        append({ term: '', define: '', image: { image: null, path: "" } })
                                     }}
                                     type='button'
                                     variant={"ghost"}><PlusCircle /></Button>

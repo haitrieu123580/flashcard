@@ -10,12 +10,15 @@ import {
   createSetSuccessAction,
   editSetAction,
   editSetSuccessAction,
+  deleteSetAction,
+  deleteSetSuccessAction,
 
 } from "./slice";
 import {
   GetSetByIdApi,
   CreateSetApi,
   EditSetApi,
+  DeleteSetApi,
 } from '@/api/SetsApi';
 
 function* watchGetSetById() {
@@ -96,11 +99,39 @@ function* watchEditSet() {
   });
 }
 
+function* watchDeleteSet() {
+  yield takeLatest(deleteSetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { id, onError, onSuccess } = payload
+    try {
+      const res = yield call(DeleteSetApi, id);
+      if (res.status === HttpCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(onSuccess) && onSuccess(res.data?.data);
+          yield put(
+            deleteSetSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+          isFunction(payload.onError) && payload.onError(res.data.message);
+        }
+      }
+      else {
+        isFunction(payload.onError) && payload.onError(res.data.message);
+      }
+    } catch (error) {
+      isFunction(onError) && onError("Internal server error");
+    }
+  });
+}
 
 export default function* SetSaga() {
   yield all([
     fork(watchGetSetById),
     fork(watchCreateSet),
     fork(watchEditSet),
+    fork(watchDeleteSet),
   ]);
 }
