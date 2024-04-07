@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 import ApiCode from "@/enums/ApiCode";
-import { HttpCode } from "@/enums/HttpCode";
+import { ErrorCode } from "@/enums/ErrorCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { isFunction } from "@/utils/Utils";
 import {
@@ -22,7 +22,7 @@ function* watchEditCard() {
     const { data, id, onError, onSuccess } = payload
     try {
       const res = yield call(editCardApi, { id, data });
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
@@ -50,7 +50,7 @@ function* watchCreateCard() {
     const { data, onError, onSuccess } = payload
     try {
       const res = yield call(createCardApi, data);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
@@ -78,7 +78,7 @@ function* watchDeleteCard() {
     const { id, onError, onSuccess } = payload
     try {
       const res = yield call(deleteCardApi, id);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(onSuccess) && onSuccess(res.data?.data);
           yield put(

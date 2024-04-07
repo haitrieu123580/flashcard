@@ -33,7 +33,6 @@ const CustomPagination = (props: any) => {
         setCurrentPage(parseInt(e, 10));
         onChange(parseInt(e, 10));
     };
-
     useEffect(() => {
         if (page) {
             setCurrentPage(parseInt(page, 10));

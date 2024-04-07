@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 // import actions from "./action";
 import ApiCode from "@/enums/ApiCode";
-import { HttpCode } from "@/enums/HttpCode";
+import { ErrorCode } from "@/enums/ErrorCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginPayload } from "@/types/LoginPayload";
 import { GetProfilePayload } from "@/types/GetProfilePayload";
@@ -29,7 +29,7 @@ function* watchLogin() {
     const { onSuccess, onError, data } = payload;
     try {
       const res = yield call(LoginApi, data);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res?.data?.statusCode == ApiCode.SUCCESS) {
           yield put(
             loginActionSuccess({
@@ -39,7 +39,7 @@ function* watchLogin() {
           onSuccess && onSuccess();
         }
       }
-      if (res.status === HttpCode.BAD_REQUEST) {
+      if (res.status === ErrorCode.BAD_REQUEST) {
         onError && onError();
       }
     } catch (error) {
@@ -54,7 +54,7 @@ function* watchGetProfile() {
     const { onSuccess, onError, data } = payload;
     try {
       const res = yield call(GetProfileApi);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res?.data?.statusCode == ApiCode.SUCCESS) {
           yield put(
             getProfileActionSuccess({
@@ -82,7 +82,7 @@ function* watchRegister() {
     const { onSuccess, onError, data } = payload;
     try {
       const res = yield call(SignupApi, data);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res?.data?.statusCode == ApiCode.SUCCESS) {
           yield put(
             registerActionSuccess({
@@ -95,7 +95,7 @@ function* watchRegister() {
           onError && onError(res?.data?.message);
         }
       }
-      if (res.status === HttpCode.BAD_REQUEST) {
+      if (res.status === ErrorCode.BAD_REQUEST) {
         onError && onError(res?.data?.message);
       }
     } catch (error) {

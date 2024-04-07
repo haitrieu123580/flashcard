@@ -27,7 +27,7 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
     if (error.status === ErrorCode.UNAUTHORIZED) {
-        // localStorage.removeItem('access_token')
+        localStorage.removeItem('access_token')
     }
     return Promise.reject(error)
 }
