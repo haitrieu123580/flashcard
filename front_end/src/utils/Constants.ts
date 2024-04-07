@@ -21,7 +21,7 @@ export default class Constants {
         RE_CAPTCHA: 're_captcha',
     };
 
-    static DEFAULT_PAGESIZE = 9;
+    static DEFAULT_PAGESIZE = 6;
 
     static SORT_BY = [
         {
@@ -48,7 +48,7 @@ export default class Constants {
     }
 
     static PAGINATION = {
-        LIMIT: 5,
+        LIMIT: 6,
         SIBLING_COUNT: 8,
     };
 }

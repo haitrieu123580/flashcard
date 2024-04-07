@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 import ApiCode from "@/enums/ApiCode";
-import { HttpCode } from "@/enums/HttpCode";
+import { ErrorCode } from "@/enums/ErrorCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { isFunction } from "@/utils/Utils";
 import {
@@ -26,7 +26,7 @@ function* watchGetSetById() {
     const { id } = payload
     try {
       const res = yield call(GetSetByIdApi, id);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
@@ -52,7 +52,7 @@ function* watchCreateSet() {
     const { data } = payload
     try {
       const res = yield call(CreateSetApi, data);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
@@ -78,7 +78,7 @@ function* watchEditSet() {
     const { data, id } = payload
     try {
       const res = yield call(EditSetApi, { id, data });
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
@@ -104,7 +104,7 @@ function* watchDeleteSet() {
     const { id, onError, onSuccess } = payload
     try {
       const res = yield call(DeleteSetApi, id);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(onSuccess) && onSuccess(res.data?.data);
           yield put(

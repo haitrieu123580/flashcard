@@ -20,12 +20,18 @@ const publicSet = createSlice({
       state.data = payload?.data;
       state.pagination = payload?.pagination;
     },
+    getAllSetsFailedAction: (state) => {
+      state.isLoading = true;
+      state.data = [];
+      state.pagination = {};
+    },
   },
 })
 
 export const {
   getAllSetsAction,
   getAllSetsSuccessAction,
+  getAllSetsFailedAction
 } = publicSet.actions
 
 export default publicSet.reducer

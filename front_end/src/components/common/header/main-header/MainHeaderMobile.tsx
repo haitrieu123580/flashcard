@@ -25,14 +25,35 @@ import { Folder } from "lucide-react"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import UserPopover from "@/components/auth/user-popover/UserPopover"
+import Constants from "@/utils/Constants"
+import { useNavigate } from "react-router-dom"
+import { Send } from 'lucide-react';
+
 const MainHeaderMobile = (props: any) => {
     const { isAdmin } = props
     const { loggedIn } = useSelector((state: any) => state.Auth)
+    const navigate = useNavigate();
     const [openDialogLogin, setOpenDialogLogin] = useState(false)
     const [openDialogRegister, setOpenDialogRegister] = useState(false)
+    const [showSubmit, setShowSubmit] = useState(false)
     const form = useForm()
-    const onSubmit = (data: any) => {
+    const onTextChanged = (value: any) => {
+        setShowSubmit(value.length > 0)
+    }
 
+    const onSubmit = (data: any) => {
+        const param: Record<string, string> = {
+            page_index: "1",
+            filter: Constants.SORT_BY[0].key,
+            name: data.search,
+        }
+        const queryParams = new URLSearchParams(param).toString();
+        if (isAdmin) {
+            navigate(`${routerPaths.ADMIN_SETS}?${queryParams}`);
+        }
+        else {
+            navigate(`${routerPaths.PUBLIC_SETS}?${queryParams}`);
+        }
     }
     return (
         <>
@@ -118,8 +139,14 @@ const MainHeaderMobile = (props: any) => {
                                 placeholder="Search"
                                 type="text"
                                 className="w-full"
-                                icon={<Search />}
-                            />
+                                onChange={onTextChanged}
+                                icon={
+                                    showSubmit ? <Send className="hover:cursor-pointer" /> : <Search />
+                                }
+                                alignIcon="left"
+                                onClickIcon={() => {
+                                    onSubmit(form.getValues())
+                                }} />
                         </form>
                     </Form>
                 </MaxWidthWrapper>

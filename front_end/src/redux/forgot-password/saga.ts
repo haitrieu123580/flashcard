@@ -1,6 +1,6 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 import ApiCode from "@/enums/ApiCode";
-import { HttpCode } from "@/enums/HttpCode";
+import { ErrorCode } from "@/enums/ErrorCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
   ForgotPasswordApi,
@@ -18,7 +18,7 @@ function* watchForgotPassword() {
   yield takeLatest(forgotPasswordAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     try {
       const res = yield call(ForgotPasswordApi, payload.data);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess();
           yield put(
@@ -42,7 +42,7 @@ function* watchResetPassword() {
   yield takeLatest(resetPasswordAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     try {
       const res = yield call(ResetPasswordApi, payload.data);
-      if (res.status === HttpCode.OK) {
+      if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess();
           yield put(

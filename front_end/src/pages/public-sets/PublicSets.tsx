@@ -1,17 +1,18 @@
 import SetItem from '@/components/home/newest-sets/SetItem'
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/ui/button'
 import { FormInput } from '@/components/common/custom_input/CustomInput'
 import { Form } from '@/components/ui/form'
-import { set, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import Constants from '@/utils/Constants'
-import { ChevronDown } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, useSearchParams, useParams } from 'react-router-dom'
 import { routerPaths } from '@/routes/path'
-import { getAllSetsAction } from '@/redux/public-sets/slice'
 import { replacePathWithId } from '@/utils/Utils'
-// import { useParams } from 'react-router-dom'
+import { getAllSetsAction } from '@/redux/public-sets/slice'
+import CustomPagination from '@/components/common/custom-pagination/CustomPagination'
+import { toast } from '@/components/ui/use-toast'
+import { Skeleton } from "@/components/ui/skeleton"
+
 const PublicSets = () => {
     const form = useForm({
         defaultValues: {
@@ -20,62 +21,66 @@ const PublicSets = () => {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { data } = useSelector((state: any) => state.Sets)
+    const { data, pagination, isLoading } = useSelector((state: any) => state.Sets)
     const [pageNumber, setPageNumber] = useState(1);
     const [filter, setFilter] = useState(Constants.SORT_BY[0].key)
-
-    const searchParams = new URLSearchParams(location.search);
-    let searchFilter = searchParams.get('filter') || null;
-
-    const increasePageNumber = () => {
-        setPageNumber(pageNumber + 1);
-        getSets(pageNumber + 1, filter);
-        // const queryParams = new URLSearchParams(filter).toString();
-
-    }
+    let [searchParams, setSearchParams] = useSearchParams();
 
     const onSelectFilter = (filter: any) => {
         setFilter(filter);
-        getSets(1, filter);
-        setDisplayArraySets([]);
-        setPageNumber(1);
+        const param: Record<string, string> = {
+            page_index: pageNumber.toString(),
+            filter: filter || "",
+            name: searchParams.get("name") || ""
+        }
+        setSearchParams(param)
+    }
+    const onChangePageNumber = (pageNumber: number) => {
+        setPageNumber(pageNumber)
+        const param: Record<string, string> = {
+            page_index: pageNumber.toString(),
+            filter: filter || "",
+            name: searchParams.get("name") || ""
+        }
+        setSearchParams(param)
     }
     const gotoCard = (id: string = "") => {
         navigate(replacePathWithId(routerPaths.LEARN_FLASHCARD, id))
     }
-    const getSets = (pageNumber: number, filter: string | null | undefined) => {
+    const getSets = ({
+        pageNumber,
+        filter,
+        name,
+    }: { pageNumber: number, filter: string, name: string }) => {
         dispatch({
             type: getAllSetsAction.type,
             payload: {
                 page_size: Constants.DEFAULT_PAGESIZE,
                 page_index: pageNumber,
                 filter: filter,
+                name: name || null,
                 onSuccess: () => {
-                    const param: Record<string, string> = {
-                        page_size: Constants.DEFAULT_PAGESIZE.toString(),
-                        page_index: pageNumber.toString(),
-                        filter: filter || "",
-                    }
-                    const queryParams = new URLSearchParams(param).toString();
-                    // navigate(`${routerPaths.PUBLIC_SETS}?${queryParams}`);
+                },
+                onError: (message: string) => {
+                    toast({
+                        title: "Error",
+                        description: message,
+                        variant: "destructive"
+                    })
                 }
             }
         })
     }
-    const [dispalyArraySets, setDisplayArraySets] = useState<any[]>([]);
 
     useEffect(() => {
-        getSets(
-            pageNumber,
-            filter,
-        )
-    }, [])
+        getSets({
+            pageNumber: searchParams.get("page_index") ? parseInt(searchParams.get("page_index")!) : 1,
+            filter: searchParams.get("filter") || "",
+            name: searchParams.get("name") || ""
+        })
+    }, [searchParams]);
 
-    useEffect(() => {
-        if (data) {
-            setDisplayArraySets([...dispalyArraySets, ...data])
-        }
-    }, [data])
+
     return (
         <div>
             <div className='flex justify-end'>
@@ -93,12 +98,21 @@ const PublicSets = () => {
                 </Form>
             </div>
             <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
-                {Array.isArray(dispalyArraySets) && dispalyArraySets.map((set, index) => {
-                    return <div key={index} className='row-span-1 md:col-span-2'><SetItem data={set} onClick={gotoCard} /></div>
+                {Array.isArray(data) && data.map((set, index) => {
+                    return <div key={index} className='row-span-1 md:col-span-2'>
+                        <SetItem data={set} onClick={gotoCard} />
+                    </div>
                 })}
             </div>
             <div className='mt-10 flex justify-center'>
-                <Button variant={'ghost'} onClick={(e) => { e.preventDefault(); increasePageNumber(); }}><ChevronDown /></Button>
+                <CustomPagination
+                    total={pagination?.total || 0}
+                    itemCount={1}
+                    siblingCount={1}
+                    limit={Constants.PAGINATION.LIMIT}
+                    onChange={(e: any) => { onChangePageNumber(e) }}
+                    page={pageNumber}
+                />
             </div>
         </div>
     )
