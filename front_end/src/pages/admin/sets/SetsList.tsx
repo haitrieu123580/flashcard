@@ -77,7 +77,8 @@ const SetsList = () => {
             card: values.cards.map((card: any) => ({
                 term: card.term,
                 define: card.define,
-                image: card.image.image
+                image: card.image.image,
+                example: JSON.stringify(values.cards[0].example)
             }))
         }
         const formData = objectToFormData(submitValues);

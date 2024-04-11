@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User } from "lucide-react"
 import { z } from "zod"
@@ -7,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { getProfileAction } from "@/redux/auth/slice"
+import { FormInput } from "@/components/common/custom_input/CustomInput"
 import {
   Card,
   CardContent,
@@ -15,41 +17,55 @@ import {
 } from "@/components/ui/card"
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form"
-import { useEffect } from "react"
-// import { ProfileResponse } from "@/types/ProfileTypes"
+import Constants from "@/utils/Constants"
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { profile } = useSelector((state: any) => state.Auth);
-  const getProfile = () => {
-    dispatch(getProfileAction({
-      type: "getProfile",
-      onSuccess: () => {
-      },
-      onError: (message: any) => {
-        // navigate(routerPaths.LOGIN);
-      }
-    }));
-  }
-  useEffect(() => {
-    console.log("profile.jsx: ", profile)
 
-    if (profile?.username) {
-      form.setValue('username', profile?.username);
-      form.setValue('email', profile?.email);
+  const getProfile = () => {
+    dispatch({
+      type: getProfileAction.type,
+      payload: {
+        onSuccess: () => {
+
+        },
+        onError: () => {
+        }
+      }
+    })
+  }
+  // useEffect(() => {
+  //   if (profile?.username) {
+  //     form.setValue('username', profile?.username);
+  //     form.setValue('email', profile?.email);
+  //   }
+  // }, [profile])
+  useEffect(() => {
+    if (!profile?.username) {
+      getProfile();
     }
   }, [profile])
+  useMemo(() => {
+    // console.log("profile", profile)
+    if (profile) {
+      form.reset({
+        username: profile?.username,
+        email: profile?.email,
+
+      });
+    }
+  }, [profile])
+
   const formSchema = z.object({
     username: z.string().min(2, {
       message: t("login.invalidUsername"),
     }),
-    email: z.string().min(6, {
+    email: z.string().email({
+      message: 'invalidEmail',
+    }),
+    password: z.string().min(6, {
       message: t("login.invalidPassword")
     }),
   })
@@ -59,10 +75,12 @@ const Profile = () => {
     defaultValues: {
       username: "",
       email: "",
+      password: "",
     },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
   }
   return (
     <div>
@@ -77,38 +95,36 @@ const Profile = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-8 sm:w-full lg:w-2/4  m-auto ">
-              <FormField
+              <FormInput
                 control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="float-start mb-6">{t("login.username")}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={""} {...field} className="dark:border-rose-200" />
-                    </FormControl>
-                    <FormMessage className="text-start text-xs dark:text-rose-600" />
-                  </FormItem>
-                )}
+                fieldName="email"
+                label="Email"
+                placeholder="Email"
+                type={Constants.INPUT_TYPE.EMAIL}
+                required={true}
               />
-              <FormField
+              <FormInput
                 control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="float-start mb-6">{t("login.email")}</FormLabel>
-                    <FormControl >
-                      <Input placeholder={""} {...field} className="dark:border-rose-200" />
-                    </FormControl>
-                    <FormMessage className="text-start text-xs dark:text-rose-600" />
-                  </FormItem>
-                )}
+                fieldName="username"
+                label="Username"
+                placeholder="Username"
+                type={Constants.INPUT_TYPE.TEXT}
+                required={true}
               />
+              <FormInput
+                control={form.control}
+                fieldName="password"
+                label="Password"
+                placeholder="Password"
+                required={true}
+                type={Constants.INPUT_TYPE.PASSWORD}
+              />
+              <div>
+
+              </div>
             </form>
           </Form>
         </CardContent>
-        {/* <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter> */}
       </Card>
 
     </div>
