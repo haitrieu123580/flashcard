@@ -64,8 +64,8 @@ const EditSetContainer = () => {
             ...values,
             setId: setId,
             image: values.image.image ? values.image.image : null, // image not change
-            is_delete_image: (!values.image.image && !values.image.path) ? "true" : "false"
-
+            is_delete_image: (!values.image.image && !values.image.path) ? "true" : "false",
+            example: values?.example ? JSON.stringify(values?.example) : null
         }
         const formData = objectToFormData(submitValues);
         dispatch({
@@ -119,7 +119,8 @@ const EditSetContainer = () => {
         const submitValues = {
             ...values,
             setId: data?.id,
-            image: values.image.image ? values.image.image : null
+            image: values.image.image ? values.image.image : null,
+            example: values?.example ? JSON.stringify(values?.example) : null
         }
         const formData = objectToFormData(submitValues);
         dispatch({
@@ -244,7 +245,31 @@ const EditSetContainer = () => {
                     />
                     <Separator />
                 </form>
-                <b className='my-6 block'>Cards</b>
+                <div className='my-6 flex justify-between items-center '>
+                    <b>Cards</b>
+                    <CommonPopup
+                        open={showCardFormPopup}
+                        setOpen={setShowCardFormPopup}
+                        isShowTrigger={true}
+                        TriggerComponent={
+                            <Button
+                                type='button'
+                                className='w-fit h-fit p-0'
+                                variant={"ghost"}><PlusCircle />
+                            </Button>
+                        }
+                        title="Add new card"
+                        children={
+                            <ScrollArea>
+                                <CardForm
+                                    isEdit={false}
+                                    setId={data?.id}
+                                    onCreateCard={onCreateCard}
+                                />
+                            </ScrollArea>
+                        }
+                    />
+                </div>
                 <div className='flex flex-col'>
                     <div className="w-full flex flex-col gap-6">
                         {data?.cards && Array.isArray(data?.cards) &&
@@ -260,27 +285,7 @@ const EditSetContainer = () => {
                             })}
                     </div>
                     <div className='flex justify-center my-2'>
-                        <CommonPopup
-                            open={showCardFormPopup}
-                            setOpen={setShowCardFormPopup}
-                            isShowTrigger={true}
-                            TriggerComponent={
-                                <Button
-                                    type='button'
-                                    variant={"ghost"}><PlusCircle />
-                                </Button>
-                            }
-                            title="Add new card"
-                            children={
-                                <ScrollArea>
-                                    <CardForm
-                                        isEdit={false}
-                                        setId={data?.id}
-                                        onCreateCard={onCreateCard}
-                                    />
-                                </ScrollArea>
-                            }
-                        />
+
                     </div>
 
                 </div>

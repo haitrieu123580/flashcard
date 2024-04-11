@@ -17,9 +17,9 @@ const FlipCard = (props: any) => {
                 </div>
                 : <div className="[transform:rotateY(180deg)] w-full h-full flex justify-center items-center overflow-hidden" >
                     <div className='flex flex-col max-h-full max-w-full gap-4 items-center'>
-                        <span>{define}</span>
+                        <span onCopy={() => { return false }} onSelect={() => { return false }}>{define}</span>
                         {card?.image && <>
-                            <img src={card?.image} alt="card" className='object-contain max-w-full max-h-full w-3/4 h-3/4' />
+                            <img src={card?.image} alt="card" className='object-contain max-w-full max-h-full w-3/4 h-3/4 rounded-sm' />
                         </>}
                     </div>
                 </div>}

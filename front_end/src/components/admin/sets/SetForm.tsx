@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Card } from '@/components/ui/card'
 import { PlusCircle, Trash2 } from 'lucide-react'
 import { isFunction } from '@/utils/Utils'
+import NestedCardFieldArray from '../cards/NestedCardFieldArray'
 
 const SetForm = (props: any) => {
     const { isEdit, defaultValues, onCreate } = props;
@@ -39,7 +40,11 @@ const SetForm = (props: any) => {
                     path: z.string().optional()
                 }),
                 z.string().optional()
-            ]).optional()
+            ]).optional(),
+            example: z.array(z.object({
+                sentence: z.string().optional(),
+                translation: z.string().optional()
+            })).optional()
         })).nonempty()
 
     });
@@ -58,7 +63,10 @@ const SetForm = (props: any) => {
                 image: {
                     image: null,
                     path: ''
-                }
+                },
+                example: defaultValues?.cards?.example
+                    ? JSON.parse(defaultValues?.cards?.example)
+                    : [{ sentence: '', translation: '' }]
             }]
         },
     })
@@ -85,7 +93,8 @@ const SetForm = (props: any) => {
                     image: {
                         image: null,
                         path: card.image || ""
-                    }
+                    },
+                    example: card.example ? JSON.parse(card.example) : [{ sentence: '', translation: '' }]
                 }))
             });
         }
@@ -120,22 +129,20 @@ const SetForm = (props: any) => {
                     <Separator />
                     <b>Cards</b>
                     <div className='flex flex-col'>
-                        <ScrollArea className="h-96 w-full p-4 ">
+                        <ScrollArea className="h-96 w-full ">
                             {fields.map((field, index) => {
                                 return (
                                     <Card className='p-2 my-4' key={field.id}>
                                         <div>
-                                            <div className='flex justify-between items-center'>
+                                            <div className='flex justify-between items-center my-2'>
                                                 <b>{index + 1}</b>
-                                                <div className='flex justify-center items-center'>
-                                                    <Button
-                                                        onClick={() => {
-                                                            remove(index)
-                                                        }}
-                                                        variant={"destructive"} >
-                                                        <Trash2 width={20} />
-                                                    </Button>
-                                                </div>
+                                                <Button
+                                                    onClick={() => {
+                                                        remove(index)
+                                                    }}
+                                                    variant={"destructive"} >
+                                                    <Trash2 width={20} height={20} />
+                                                </Button>
                                             </div>
                                             <Separator />
                                         </div>
@@ -166,6 +173,32 @@ const SetForm = (props: any) => {
                                             type={Constants.INPUT_TYPE.FILE_UPLOAD}
                                             classNameInput='h-fit'
                                         />
+                                        <div className='my-4'>
+                                            <b>Examples</b>
+                                        </div>
+                                        <NestedCardFieldArray
+                                            nestIndex={index}
+                                            control={form.control}
+                                            // register={form.register}
+                                            fieldName={"cards"}
+                                            nestedFieldName={"example"}
+                                        />
+                                        {/* <button
+                                            onClick={() => {
+                                                form.setValue("cards", [
+                                                    ...(form.getValues().cards || []),
+                                                    {
+                                                        term: '',
+                                                        define: '',
+                                                        image: { image: null, path: "" },
+                                                        example: [{ sentence: '', translation: '' }]
+                                                    }
+                                                ]);
+                                            }}
+                                        >
+                                            Append Nested
+                                        </button> */}
+
                                     </Card>
                                 )
                             })}
@@ -173,7 +206,12 @@ const SetForm = (props: any) => {
                             < div className='flex justify-center' >
                                 <Button
                                     onClick={() => {
-                                        append({ term: '', define: '', image: { image: null, path: "" } })
+                                        append({
+                                            term: '',
+                                            define: '',
+                                            image: { image: null, path: "" },
+                                            example: [{ sentence: '', translation: '' }]
+                                        })
                                     }}
                                     type='button'
                                     variant={"ghost"}><PlusCircle /></Button>

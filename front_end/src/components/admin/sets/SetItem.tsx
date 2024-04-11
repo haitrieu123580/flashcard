@@ -20,7 +20,7 @@ const SetItem = (props: any) => {
 
     return (
         <Card className="my-6">
-            <CardHeader>
+            <CardHeader className={""}>
                 <CardTitle className="flex justify-between items-center">
                     <span>{data?.name}</span>
                     <div className="flex gap-2 items-center">
@@ -46,13 +46,24 @@ const SetItem = (props: any) => {
                     <Badge variant="default">{`${data?.totalCards} cards`}</Badge>
                 </CardDescription>
             </CardHeader>
-            <CardContent className="overflow-hidden">
-                <CardDescription className="w-1/2">{data?.description}</CardDescription>
-                <img className="max-w-full w-1/2 m-auto" src={data?.image} alt="set" />
+            <CardContent className="overflow-hidden grid grid-cols-12 gap-6">
+                <div className="col-span-8 grid grid-rows-2">
+                    <CardDescription className="row-span-1">{data?.description}</CardDescription>
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-end">
+                        <p><b>Created at: </b>{convertDateToString(data?.created_at)}</p>
+                        {data?.updated_at && <p><b>Updated at: </b>{convertDateToString(data?.updated_at)}</p>}
+                    </div>
+                </div>
+                <div className="col-span-4">
+                    {data?.image &&
+                        <>
+                            <img className="max-w-full m-auto w-52 h-52 object-cover rounded-lg" src={data?.image} alt="set" />
+                        </>
+                    }
+                </div>
             </CardContent>
             <CardFooter className="flex gap-6">
-                <p><b>Created at: </b>{convertDateToString(data?.created_at)}</p>
-                {data?.updated_at && <p><b>Updated at: </b>{convertDateToString(data?.updated_at)}</p>}
+
             </CardFooter>
         </Card >
     )

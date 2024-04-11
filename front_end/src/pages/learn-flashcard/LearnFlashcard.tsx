@@ -89,7 +89,7 @@ const LearnFlashcard = () => {
                             </div>
                         </div>
                         <div className="col-span-1">
-                            Do not have any cards
+                            Set is empty !!!
                         </div>
                     </CardContent>
                     <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">

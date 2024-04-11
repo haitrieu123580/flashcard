@@ -50,7 +50,7 @@ function* watchLogin() {
 }
 
 function* watchGetProfile() {
-  yield takeEvery(getProfileAction.type, function* ({ payload }: PayloadAction<GetProfilePayload>): Generator<any, void, any> {
+  yield takeEvery(getProfileAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { onSuccess, onError, data } = payload;
     try {
       const res = yield call(GetProfileApi);
@@ -61,7 +61,7 @@ function* watchGetProfile() {
               data: res?.data?.data,
             })
           );
-          // isFunction(payload.onSuccess) && payload.onSuccess(res?.data?.data);
+          isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
         }
         yield put(
           getProfileActionError()

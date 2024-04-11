@@ -1,14 +1,13 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import DeletePopup from "@/components/common/popup/DeletePopup"
-import { Trash2, PencilIcon } from "lucide-react"
+import { Trash2, PencilIcon, PlusCircleIcon } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { FormInput } from "@/components/common/custom_input/CustomInput"
-import { useForm } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
 import { Form } from "@/components/ui/form"
 import Constants from "@/utils/Constants"
 import EditPopup from '@/components/common/popup/EditPopup'
-import { useDispatch } from 'react-redux';
 import { isFunction } from "@/utils/Utils"
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -35,7 +34,11 @@ const CardForm = (props: any) => {
                 path: z.string().optional()
             }),
             z.string().optional()
-        ]).optional()
+        ]).optional(),
+        example: z.array(z.object({
+            sentence: z.string().optional(),
+            translation: z.string().optional()
+        }))
     });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -46,9 +49,13 @@ const CardForm = (props: any) => {
                 image: null,
                 path: card?.image || "",
             },
+            example: card?.example ? JSON.parse(card?.example) : [{ sentence: '', translation: '' }]
         },
     });
-
+    const fields = useFieldArray({
+        control: form.control,
+        name: "example",
+    });
     const onSubmit = (values: any) => {
         if (isEdit && card?.id && setId) {
             isFunction(onEditCard) && onEditCard(values, card?.id, setId)
@@ -126,6 +133,47 @@ const CardForm = (props: any) => {
                             type={Constants.INPUT_TYPE.FILE_UPLOAD}
                             classNameInput='h-fit'
                         />
+                        <div className='my-6 flex gap-4 items-end'>
+                            <b>Examples</b>
+                            <Button type="button"
+                                variant={'ghost'}
+                                className={`p-0 w-fit h-fit`}
+                                onClick={() => {
+                                    fields.append({ sentence: '', translation: '' })
+                                }}
+                            >
+                                <PlusCircleIcon width={18} height={18} />
+                            </Button>
+                        </div>
+
+                        {fields.fields.map((field, index) => {
+                            return (
+                                <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
+                                    <FormInput
+                                        control={form.control}
+                                        fieldName={`example.${index}.sentence`}
+                                        label="Sentence"
+                                        placeholder="Sentence"
+                                        type={Constants.INPUT_TYPE.TEXT}
+                                        className='w-1/2'
+                                    />
+                                    <FormInput
+                                        control={form.control}
+                                        fieldName={`example.${index}.translation`}
+                                        label="Translation"
+                                        placeholder="Translation"
+                                        type={Constants.INPUT_TYPE.TEXT}
+                                        className='w-1/2'
+                                    />
+                                    <Button
+                                        variant={'ghost'}
+                                        onClick={() => fields.remove(index)}
+                                    >
+                                        <Trash2 />
+                                    </Button>
+                                </div>
+                            )
+                        })}
                     </Card>
                 </form>
             </Form>

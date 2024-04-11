@@ -22,7 +22,6 @@ const SetItem = (props: any) => {
                     {name || ""}
                 </CardTitle>
                 <CardDescription className="flex gap-1 flex-wrap">
-                    {/* <Badge variant="default">Topic</Badge> */}
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
                 </CardDescription>
             </CardHeader>
@@ -32,10 +31,15 @@ const SetItem = (props: any) => {
                         ratio={1 / 1}
                         className="h-auto w-auto object-cover transition-all hover:scale-105 aspect-square "
                     >
-                        <img src={image} alt="set" />
+                        {
+                            !image
+                                ? <div className="absolute w-full h-full bg-gray-800 flex justify-center items-center text-white text-2xl"></div>
+                                : <img src={image} alt="set" className="w-full h-full object-cover" />
+                        }
+
                     </AspectRatio>
                     <div className="absolute hidden bottom-0 z-10 bg-gray-700 opacity-50 w-full h-full group-hover:block"></div>
-                    <div className="hidden absolute p-2 text-left text-wrap bottom-1/2 translate-y-[50%] z-10 text-white break-words group-hover:block ">
+                    <div className="hidden absolute p-2 text-left text-wrap bottom-1/2 translate-y-[50%] z-10 text-white break-words group-hover:block text-sm md:text-base">
                         {description}
                     </div>
                 </div>
@@ -43,11 +47,11 @@ const SetItem = (props: any) => {
             <CardFooter className="flex items-center gap-2">
                 <Avatar>
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>User</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                    <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{created_by}</span>
-                    <span className="text-sm  text-ellipsis overflow-hidden whitespace-nowrap block">{convertDateToString(created_at)}</span>
+                    <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block">{created_by}</span>
+                    <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block">{convertDateToString(created_at)}</span>
                 </div>
             </CardFooter>
             <div className="w-ful h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
