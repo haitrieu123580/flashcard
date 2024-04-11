@@ -285,7 +285,6 @@ const EditSetContainer = () => {
                             })}
                     </div>
                     <div className='flex justify-center my-2'>
-
                     </div>
 
                 </div>
