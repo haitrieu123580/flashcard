@@ -6,8 +6,9 @@ import MainHeaderMobile from '../common/header/main-header/MainHeaderMobile';
 import MaxWidthWrapper from '../common/MaxWidthWrapper';
 import Footer from '../common/footer/Footer';
 import { Separator } from '../ui/separator';
+import { Outlet } from 'react-router-dom';
 type MainLayoutProps = {
-    children: ReactNode;
+    children?: ReactNode;
 };
 
 const MainLayout = ({ children }: MainLayoutProps) => {
@@ -20,7 +21,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
                 <Separator />
             </div>
             <MaxWidthWrapper>
-                <div className='mt-10'>{children}</div>
+                <div className='mt-10'>
+                    <Outlet />
+                </div>
                 <div className='fixed bottom-10 right-10'><ModeToggle /></div>
             </MaxWidthWrapper>
             <Footer />

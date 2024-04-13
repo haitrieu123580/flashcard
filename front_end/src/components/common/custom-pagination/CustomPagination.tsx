@@ -10,7 +10,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
-import Constants from '@/utils/Constants';
+import Constants from '@/lib/Constants';
 import { cn } from '@/lib/utils';
 
 const CustomPagination = (props: any) => {

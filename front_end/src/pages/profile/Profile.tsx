@@ -18,7 +18,7 @@ import {
 import {
   Form,
 } from "@/components/ui/form"
-import Constants from "@/utils/Constants"
+import Constants from "@/lib/Constants"
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,16 +47,6 @@ const Profile = () => {
       getProfile();
     }
   }, [profile])
-  useMemo(() => {
-    // console.log("profile", profile)
-    if (profile) {
-      form.reset({
-        username: profile?.username,
-        email: profile?.email,
-
-      });
-    }
-  }, [profile])
 
   const formSchema = z.object({
     username: z.string().min(2, {
@@ -82,6 +72,16 @@ const Profile = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
+  useMemo(() => {
+    // console.log("profile", profile)
+    if (profile) {
+      form.reset({
+        username: profile?.username,
+        email: profile?.email,
+
+      });
+    }
+  }, [profile])
   return (
     <div>
       <Card>

@@ -1,7 +1,7 @@
 import { _testAction } from "@/redux/test/slice";
 import NewsetSets from "@/components/home/newest-sets/NewsetSets";
 import Banner from "@/components/home/banner/Banner";
-import { homePageData } from "@/utils/Data";
+import { homePageData } from "@/lib/Data";
 const Home = () => {
     return (
         <div>

@@ -1,4 +1,4 @@
-import { ErrorCode } from '@/enums/ErrorCode'
+import { ErrorCode } from '@/lib/enums/ErrorCode'
 import axios, {
     AxiosError,
     AxiosInstance,

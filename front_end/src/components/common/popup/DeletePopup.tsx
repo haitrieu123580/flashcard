@@ -12,7 +12,7 @@ import {
     CardTitle,
     CardDescription,
 } from "@/components/ui/card"
-import { isFunction } from "@/utils/Utils";
+import { isFunction } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 const DeletePopup = (props: any) => {

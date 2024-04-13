@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import Constants from '@/utils/Constants';
+import Constants from '@/lib/Constants';
 
 const range = (start: number, end: number) => {
     let length = end - start + 1;

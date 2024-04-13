@@ -1,11 +1,11 @@
 import { all, call, fork, put, takeEvery, takeLatest } from "@redux-saga/core/effects";
 // import actions from "./action";
-import ApiCode from "@/enums/ApiCode";
-import { ErrorCode } from "@/enums/ErrorCode";
+import ApiCode from "@/lib/enums/ApiCode";
+import { ErrorCode } from "@/lib/enums/ErrorCode";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginPayload } from "@/types/LoginPayload";
 import { GetProfilePayload } from "@/types/GetProfilePayload";
-import { isFunction } from '../../utils/Utils';
+import { isFunction } from "@/lib/utils";
 import {
   LoginApi,
   GetProfileApi,
@@ -63,14 +63,14 @@ function* watchGetProfile() {
           );
           isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
         }
-        yield put(
-          getProfileActionError()
-        );
+        // yield put(
+        //   getProfileActionError()
+        // );
 
       }
-      yield put(
-        getProfileActionError()
-      );
+      // yield put(
+      //   getProfileActionError()
+      // );
     } catch (error) {
       onError && onError(error);
     }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import SetItem from '@/components/admin/sets/SetItem'
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination'
-import Constants from '@/utils/Constants'
+import Constants from '@/lib/Constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
 import SetForm from '@/components/admin/sets/SetForm'
@@ -10,7 +10,7 @@ import { getSetByIdAction, deleteSetAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast';
-import { isFunction, objectToFormData } from '@/utils/Utils'
+import { isFunction, objectToFormData } from '@/lib/utils'
 import { createSetAction } from '@/redux/set/slice'
 import { routerPaths } from '@/routes/path'
 import { useNavigate, useSearchParams } from 'react-router-dom'

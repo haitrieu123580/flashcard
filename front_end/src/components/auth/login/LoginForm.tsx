@@ -11,7 +11,7 @@ import {
 import { FormInput } from "@/components/common/custom_input/CustomInput"
 import { useForm } from "react-hook-form"
 import { Form } from "@/components/ui/form"
-import Constants from "@/utils/Constants"
+import Constants from "@/lib/Constants"
 // import { Link } from "react-router-dom"
 import { Separator } from '@/components/ui/separator';
 import GoogleIcon from "@/components/common/icons/GoogleIcon"

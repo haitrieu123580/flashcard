@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/avatar"
 
 import { Badge } from "@/components/ui/badge"
-import { convertDateToString } from "@/utils/Utils"
+import { convertDateToString } from "@/lib/utils"
 
 const SetItem = (props: any) => {
     const { onClick, data } = props;

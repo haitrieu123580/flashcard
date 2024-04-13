@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSetByIdAction } from "@/redux/set/slice";
-import { speek } from "@/utils/Utils";
+import { speek } from "@/lib/utils";
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
