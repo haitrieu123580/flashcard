@@ -1,7 +1,6 @@
 import './i18n';
 import 'react-toastify/dist/ReactToastify.css';
 import { ThemeProvider } from "@/components/themes/ThemeProvider";
-import { ToastContainer } from 'react-toastify';
 import { Toaster } from "@/components/ui/toaster"
 import CustomRouterProvider from "@/routes/CustomRouterProvider";
 import { Provider } from 'react-redux';
@@ -16,19 +15,6 @@ function App() {
       <ErrorBoundary fallbackRender={ErrorFallbackRenderer}>
         <ThemeProvider>
           <div className='App'>
-            {/* <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={true}
-              newestOnTop={true}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-              limit={1}
-            /> */}
             <Toaster />
             <CustomRouterProvider />
           </div>

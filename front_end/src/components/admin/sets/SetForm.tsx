@@ -5,12 +5,12 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Form } from '@/components/ui/form'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import Constants from '@/utils/Constants'
+import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Card } from '@/components/ui/card'
 import { PlusCircle, Trash2 } from 'lucide-react'
-import { isFunction } from '@/utils/Utils'
+import { isFunction } from '@/lib/utils'
 import NestedCardFieldArray from '../cards/NestedCardFieldArray'
 
 const SetForm = (props: any) => {

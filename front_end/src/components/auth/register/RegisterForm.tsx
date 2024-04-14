@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { FormInput } from "@/components/common/custom_input/CustomInput"
 import { useForm } from "react-hook-form"
 import { Form } from "@/components/ui/form"
-import Constants from "@/utils/Constants"
+import Constants from "@/lib/Constants"
 import { Separator } from '@/components/ui/separator';
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"

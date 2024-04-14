@@ -3,12 +3,11 @@ import MainLayout from '@/components/layout/MainLayout'
 import AuthLayout from '@/components/layout/AuthLayout';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { routerPaths } from './path';
-const Login = lazy(() => import('@/pages/login/Login'))
 const Home = lazy(() => import('@/pages/home/Home'))
 const ForgotPassword = lazy(() => import('@/pages/forgot-password/ForgotPasswordPage'))
 const PublicSets = lazy(() => import('@/pages/public-sets/PublicSets'))
 const LearnFlashcard = lazy(() => import('@/pages/learn-flashcard/LearnFlashcard'))
-
+const UnAuthorized = lazy(() => import('@/components/common/UnAuthorized'))
 const Profile = lazy(() => import('@/pages/profile/Profile'))
 
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
@@ -22,11 +21,6 @@ const publicRoutes = [
         component: Home,
         layout: MainLayout,
     },
-    // {
-    //     path: routerPaths.LOGIN,
-    //     component: Login,
-    //     layout: MainLayout,
-    // },
     {
         path: routerPaths.FORGOT_PASSWORD,
         component: ForgotPassword,
@@ -41,6 +35,10 @@ const publicRoutes = [
         path: routerPaths.LEARN_FLASHCARD,
         component: LearnFlashcard,
         layout: MainLayout,
+    },
+    {
+        path: routerPaths.UNAUTHORIZED,
+        component: UnAuthorized,
     },
 ]
 const protectedRoutes = [

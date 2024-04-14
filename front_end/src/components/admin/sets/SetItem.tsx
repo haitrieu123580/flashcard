@@ -7,7 +7,7 @@ import {
     CardDescription,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { convertDateToString, isFunction, replacePathWithId } from "@/utils/Utils"
+import { convertDateToString, isFunction, replacePathWithId } from "@/lib/utils"
 import { Trash2 } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { Button } from "@/components/ui/button";

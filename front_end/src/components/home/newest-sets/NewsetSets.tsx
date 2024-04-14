@@ -14,9 +14,9 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSetsAction } from '@/redux/public-sets/slice'
-import Constants from "@/utils/Constants"
+import Constants from "@/lib/Constants"
 import { useNavigate } from 'react-router-dom'
-import { replacePathWithId } from "@/utils/Utils"
+import { replacePathWithId } from "@/lib/utils"
 
 const NewsetSets = (props: any) => {
     const { className } = props

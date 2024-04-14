@@ -26,7 +26,7 @@ import { useState } from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import UserPopover from "@/components/auth/user-popover/UserPopover"
 import { Send } from 'lucide-react';
-import Constants from "@/utils/Constants"
+import Constants from "@/lib/Constants"
 
 const MainHeader = (props: any) => {
     const { isAdmin } = props

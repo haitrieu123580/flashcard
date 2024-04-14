@@ -7,15 +7,14 @@ import MaxWidthWrapper from '../common/MaxWidthWrapper';
 import Footer from '../common/footer/Footer';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfileAction } from '@/redux/auth/slice';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { routerPaths } from '@/routes/path';
-import Constants from '@/utils/Constants';
+import Constants from '@/lib/Constants';
 // import { SidebarNav } from '../common/sidbar-nav/SidebarNav';
 import { Card } from "@/components/ui/card"
 import { Separator } from '../ui/separator';
-
 type AuthLayoutProps = {
-    children: ReactNode;
+    children?: ReactNode;
 };
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
@@ -26,25 +25,16 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         dispatch({
             type: getProfileAction.type,
             payload: {
-                onSuccess: () => {
-
+                onSuccess: (data: any) => {
                 },
                 onError: () => {
-                    navigate(routerPaths.HOME)
                 }
             }
         })
     }
     useEffect(() => {
-        if (profile) {
-            if (profile?.role !== Constants.ROLE.ADMIN || profile?.role !== Constants.ROLE.USER) {
-                navigate(routerPaths.HOME)
-            }
-        }
-        else {
-            getProfile();
-        }
-    }, [profile])
+        getProfile();
+    }, [])
 
     return (
         <div>
@@ -55,7 +45,12 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </div>
             <MaxWidthWrapper>
                 <div className='mt-2 md:mt-10 min-h-96'>
-                    {children}
+                    {/* {children} */}
+                    {
+                        // profile
+                        // &&
+                        <Outlet />
+                    }
                 </div>
                 <div className='fixed bottom-10 right-10'><ModeToggle /></div>
             </MaxWidthWrapper>

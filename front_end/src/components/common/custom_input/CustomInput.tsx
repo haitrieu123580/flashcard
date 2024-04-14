@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import Constants from '@/utils/Constants';
+import Constants from '@/lib/Constants';
 import { FormInputProps } from '@/types/FormInputProps';
-import { isFunction } from '@/utils/Utils';
+import { isFunction } from '@/lib/utils';
 import {
     FormControl,
     FormDescription,

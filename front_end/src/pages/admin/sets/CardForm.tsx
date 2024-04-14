@@ -6,9 +6,9 @@ import { Separator } from "@/components/ui/separator"
 import { FormInput } from "@/components/common/custom_input/CustomInput"
 import { useForm, useFieldArray } from "react-hook-form"
 import { Form } from "@/components/ui/form"
-import Constants from "@/utils/Constants"
+import Constants from "@/lib/Constants"
 import EditPopup from '@/components/common/popup/EditPopup'
-import { isFunction } from "@/utils/Utils"
+import { isFunction } from "@/lib/utils"
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 
