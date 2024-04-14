@@ -23,7 +23,7 @@ export class Cards extends BaseEntity {
         nullable: true,
         type: 'jsonb',
     })
-    example: { sentence: string, translation: string }[];
+    example: string | { sentence: string, translation: string }[];
 
     @Column({
         nullable: true

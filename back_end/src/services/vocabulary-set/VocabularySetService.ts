@@ -137,6 +137,7 @@ class VocabularySetService implements IVocabularySetService {
                     }
                 })
                 // ? if save to database not success, need to delete image from S3?
+                console.log("imageBuffer", image, "typeof", typeof image)
                 const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
                 cards.push({ term, define, image_url: image_url?.Location || "", example });
 
