@@ -30,11 +30,6 @@ const EditPopup = (props: any) => {
                             Are you sure you want to save all changes?
                         </CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <CardDescription>
-                            This action cannot be undone.
-                        </CardDescription>
-                    </CardContent>
                     <CardFooter className="flex justify-center gap-6">
                         <Button
                             onClick={() => {
