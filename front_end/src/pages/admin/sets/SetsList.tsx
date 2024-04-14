@@ -10,11 +10,10 @@ import { getSetByIdAction, deleteSetAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast';
-import { isFunction, objectToFormData } from '@/lib/utils'
+import { objectToFormData } from '@/lib/utils'
 import { createSetAction } from '@/redux/set/slice'
-import { routerPaths } from '@/routes/path'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-// const searchParams = new URLSearchParams(location.search);
+import { CardTitle } from '@/components/ui/card'
 const SetsList = () => {
     const { data, pagination } = useSelector((state: any) => state.Sets)
     const dispatch = useDispatch();
@@ -65,8 +64,6 @@ const SetsList = () => {
             page_index: pageNumber.toString(),
             name: searchParams.get("name") || ""
         }
-        // const queryParams = new URLSearchParams(param).toString();
-        // navigate(`${routerPaths.ADMIN_SETS}?${queryParams}`);
         setSearchParams(param)
     }
     const onCreate = (values: any) => {
@@ -88,7 +85,6 @@ const SetsList = () => {
                 data: formData,
                 onSuccess: () => {
                     setOpen(false)
-                    // getSets(1, Constants.SORT_BY[0].key)
                     getSets({
                         pageNumber: searchParams.get("page_index") ? parseInt(searchParams.get("page_index")!) : 1,
                         filter: searchParams.get("filter") || "",
@@ -161,7 +157,8 @@ const SetsList = () => {
 
     return (
         <div>
-            <div className='flex justify-end mt-6'>
+            <div className='flex justify-between mt-6'>
+                <CardTitle >Sets List</CardTitle>
                 <Button variant={"ghost"}
                     onClick={() => {
                         // onCreate();
@@ -173,30 +170,6 @@ const SetsList = () => {
                     <PlusCircle size={20} />
                 </Button>
             </div>
-            {/* {Array.isArray(data) && data.map((set, index) => {
-                return (
-                    <div key={index} className='row-span-1 md:col-span-2'>
-                        <SetItem
-                            onEdit={onEdit}
-                            onDelete={onDelete}
-                            data={set}
-                        />
-                    </div>)
-            })} */}
-            {/* <div className='flex justify-end'>
-                <Form {...form}>
-                    <form className='mb-10 w-fit'>
-                        <FormInput
-                            control={form.control}
-                            fieldName="sort_by"
-                            type={Constants.INPUT_TYPE.SELECT}
-                            options={Constants.SORT_BY}
-                            placeholder="Sort by"
-                            onChangeSelect={onSelectFilter}
-                        />
-                    </form>
-                </Form>
-            </div> */}
             {Array.isArray(data) && data.map((set, index) => {
                 return <div key={index} className='row-span-1 md:col-span-2'>
                     <SetItem
@@ -214,14 +187,6 @@ const SetsList = () => {
                 children={<SetForm defaultValues={defaultValues} onCreate={onCreate} />}
                 title={"Create Set"}
             />
-            {/* <CustomPagination
-                total={pagination?.total || 0}
-                itemCount={1}
-                siblingCount={1}
-                limit={Constants.PAGINATION.LIMIT}
-                onChange={(e: any) => { onChangePageNumber(e) }}
-                // page={1}
-            /> */}
             <CustomPagination
                 total={pagination?.total || 0}
                 itemCount={1}
