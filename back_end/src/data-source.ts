@@ -4,10 +4,10 @@ import { User } from "./entity/User"
 import { Sets } from "./entity/Sets"
 import { PasswordResetOtps } from "./entity/PasswordResetOtps"
 import { Cards } from "./entity/Cards"
-import { Library } from "./entity/Library"
 import * as dotenv from 'dotenv';
 import { MainSeeder } from "./seeder/Seeder"
 import { SeederOptions } from "typeorm-extension"
+import { Questions } from "./entity/Questions"
 dotenv.config();
 const options: DataSourceOptions & SeederOptions = {
     type: "postgres",
@@ -16,7 +16,7 @@ const options: DataSourceOptions & SeederOptions = {
     username: String(process.env.DB_USERNAME),
     password: String(process.env.DB_PASSWORD),
     database: String(process.env.DB_DATABASE),
-    entities: [User, Sets, PasswordResetOtps, Cards, Library],
+    entities: [User, Sets, PasswordResetOtps, Cards, Questions],
     migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
     synchronize: true,
     logging: false,
