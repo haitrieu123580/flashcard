@@ -67,7 +67,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             order: order,
             take: take,
             skip: skip,
-            relations: ["cards"]
+            relations: ["cards", "questions"]
         });
     }
 

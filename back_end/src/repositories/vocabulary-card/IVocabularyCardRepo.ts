@@ -1,7 +1,7 @@
 
 export interface IVocabularyCardRepo {
 
-    create_card(set: any, cards: any): Promise<boolean>;
+    create_card(setID: any, cards: any): Promise<boolean>;
 
     edit_card(cardId: string, cardData: any): Promise<boolean>;
 
