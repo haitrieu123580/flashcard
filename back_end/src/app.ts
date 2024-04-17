@@ -28,6 +28,8 @@ import userRouter from '@routers/user/index';
 import passportRouter from '@routers/passport/index';
 import vocabRouter from '@routers/vocabulary-set/index';
 import cardRouter from '@routers/card/index';
+import questionRouter from '@routers/questions/index';
+import multipleChoice from '@routers/multiple-choice-test/index'
 
 dotenv.config();
 
@@ -81,6 +83,8 @@ app.use('/api/user', userRouter)
 app.use('/passport', passportRouter)
 app.use('/api/vocabulary-set', vocabRouter)
 app.use('/api/card', cardRouter)
+app.use('/api/question', questionRouter)
+app.use('/api/multiple-choice-test', multipleChoice)
 
 const port = process.env.PORT || 8000;
 app.listen(Number(port), "0.0.0.0", () => {

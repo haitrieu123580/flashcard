@@ -2,6 +2,7 @@ import { Entity, Column, Generated, ManyToOne, OneToMany, JoinColumn } from "typ
 import { BaseEntity } from "./BaseEntity"
 import { User } from "./User"
 import { Cards } from "./Cards"
+import { Questions } from "./Questions"
 @Entity()
 export class Sets extends BaseEntity {
 
@@ -14,16 +15,6 @@ export class Sets extends BaseEntity {
         nullable: true
     })
     description: string;
-
-    // @Column({
-    //     nullable: true
-    // })
-    // isPublic: boolean;
-
-    // @Column({
-    //     nullable: true
-    // })
-    // topic: string;
 
     @ManyToOne(() => User, user => user.sets, {
         onDelete: "CASCADE"
@@ -41,4 +32,11 @@ export class Sets extends BaseEntity {
         nullable: true
     })
     image: string;
+
+
+    @OneToMany(() => Questions, questions => questions.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    questions: Questions[];
 }

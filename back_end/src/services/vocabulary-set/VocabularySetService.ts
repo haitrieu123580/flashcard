@@ -43,6 +43,7 @@ class VocabularySetService implements IVocabularySetService {
             if (sets?.length) {
                 sets.forEach((set: any) => {
                     set.totalCards = set?.cards?.length;
+                    set.totalQuestions = set?.questions?.length;
                     try {
                         set.cards.forEach((card: any) => {
                             return card.example = card.example ? JSON.parse(card.example || "") : "";
@@ -55,7 +56,7 @@ class VocabularySetService implements IVocabularySetService {
                 });
                 return new SuccessResponse('Get all public sets successfully', {
                     sets,
-                    count
+                    count,
                 }).send(res);
             } else {
                 return new FailureMsgResponse("Empty!").send(res);
