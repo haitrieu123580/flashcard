@@ -8,14 +8,14 @@ import Constants from '@/lib/Constants';
 import AdminLayout from '@/components/layout/AdminLayout';
 import PageNotFound from '@/components/common/PageNotFound';
 import MainLayout from '@/components/layout/MainLayout';
+
 const CustomRouterProvider = () => {
-    console.log("CustomRouterProvider")
     return (
         <Router>
             <Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                     <Route
-                        path=''
+                        path='/'
                         element={
                             <MainLayout />
                         }
@@ -35,34 +35,21 @@ const CustomRouterProvider = () => {
                             })}
                         </>
                     </Route>
-                    <Route
-                        path=''
-                        element={
-                            <AuthLayout />
-                        }
-                    >
-                        <>
-                            {protectedRoutes.map((route: any, index: number) => {
-                                const Page = route.component;
-                                return (
-                                    <Route
-                                        key={index}
-                                        path={route.path}
-                                        element={
-                                            <>
-                                                {console.log("route")}
-                                                <RequireAuth allowedRoles={[Constants.ROLE.USER, Constants.ROLE.ADMIN]}>
-                                                    <Page />
-                                                </RequireAuth>
-                                            </>
-                                        }
-                                    />
-                                );
-                            })}
-                        </>
+                    <Route path="/user" element={<AuthLayout />}>
+                        {protectedRoutes.map((route, index) => (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                element={
+                                    <RequireAuth allowedRoles={[Constants.ROLE.USER, Constants.ROLE.ADMIN]}>
+                                        <route.component />
+                                    </RequireAuth>
+                                }
+                            />
+                        ))}
                     </Route>
                     <Route
-                        path=''
+                        path='/admin'
                         element={
                             <AdminLayout />
                         }

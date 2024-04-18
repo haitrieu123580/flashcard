@@ -14,6 +14,8 @@ const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const SetsList = lazy(() => import('@/pages/admin/sets/SetsList'))
 const AccountListsContainer = lazy(() => import('@/pages/admin/account/AccountsListContainer'))
 const EditSetContainer = lazy(() => import('@/pages/admin/sets/EditSetContainer'))
+const MultipleChoiceTestPage = lazy(() => import('@/pages/test/test-page/MultipleChoiceTestPage'))
+const MultipleChoiceResultPage = lazy(() => import('@/pages/test/result-page/MultipleChoiceResultPage'))
 
 const publicRoutes = [
     {
@@ -39,6 +41,16 @@ const publicRoutes = [
     {
         path: routerPaths.UNAUTHORIZED,
         component: UnAuthorized,
+    },
+    {
+        path: routerPaths.TEST_MULTIPLE_CHOICE,
+        component: MultipleChoiceTestPage,
+        layout: MainLayout,
+    },
+    {
+        path: routerPaths.TEST_MULTIPLE_CHOICE_RESULT,
+        component: MultipleChoiceResultPage,
+        layout: MainLayout,
     },
 ]
 const protectedRoutes = [

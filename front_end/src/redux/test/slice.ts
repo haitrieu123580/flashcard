@@ -1,25 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  isTest: false,
+  isLoading: false,
   message: "",
+  examData: [],
 }
 
 const testSlice = createSlice({
   name: 'test',
   initialState,
   reducers: {
-    _testAction: (state) => {
-      state.isTest = false
+    getTestBySetIdAction: (state, { payload }) => {
+      state.isLoading = true;
     },
-    _testActionSuccess: (state, { payload }) => {
-      state.isTest = true;
-      state.message = String(payload.message);
-    }
+    getTestBySetIdActionSuccess: (state, { payload }) => {
+      state.isLoading = false;
+      state.examData = payload.data;
+    },
+
+    submitAnswersAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    submitAnswersActionSuccess: (state, { payload }) => {
+      console.log("payload", payload.data)
+      state.isLoading = false;
+      state.examData = payload.data;
+    },
   },
 
 })
 
-export const { _testAction, _testActionSuccess } = testSlice.actions
+export const {
+  getTestBySetIdAction,
+  getTestBySetIdActionSuccess,
+  submitAnswersAction,
+  submitAnswersActionSuccess,
+} = testSlice.actions
 
 export default testSlice.reducer

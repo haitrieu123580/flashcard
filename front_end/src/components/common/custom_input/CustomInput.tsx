@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Constants from '@/lib/Constants';
 import { FormInputProps } from '@/types/FormInputProps';
-import { isFunction } from '@/lib/utils';
+import { isFunction, cn } from '@/lib/utils';
 import {
     FormControl,
     FormDescription,
@@ -20,9 +20,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-// import Validator from '@/utils/Validator';
-// import { Editor } from '../Editor';
 import { FileDropzone } from './file-dropzone/FileDropzone';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
     (
         {
@@ -141,6 +141,7 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
 FormInput.displayName = 'FormInput';
 
 const renderInput = ({
+    value,
     type,
     placeholder,
     classNameInput,
@@ -248,10 +249,43 @@ const renderInput = ({
                     disabled={disabled}
                     readOnly={readOnly}
                     onClickIcon={onClickIcon}
-                // accept={accept || {}}
-                // multipleFile={multipleFile}
-                // size={size}
                 />
+            );
+        case Constants.INPUT_TYPE.RADIO:
+            return (
+                <RadioGroup
+                    {...field}
+                    value={field.value?.toString()}
+                    onValueChange={(e) => {
+                        field.onChange(e);
+                        onChangeSelect(e);
+                    }}
+                    disabled={disabled}
+                    className={cn('grid grid-cols-2 gap-2', classNameInput)}
+                >
+                    {options?.map((x: any, index: number) => {
+                        const id = React.useId();
+                        const formItemId = `${id}-form-item`;
+
+                        return (
+                            <div key={index}
+                                className={cn(`flex items-center w-full border rounded-sm p-4 gap-2 
+                                ${field.value?.toString() === x.key ? 'border-blue-300' : ''}
+                                `, classNameContent)}
+
+                            >
+                                <RadioGroupItem
+                                    value={x.key?.toString()}
+                                    id={formItemId}
+                                />
+                                <FormLabel
+                                    className={cn("w-full flex items-center justify-start",
+                                        classNameContent)}
+                                    htmlFor={formItemId}>{x.label}</FormLabel>
+                            </div>
+                        );
+                    })}
+                </RadioGroup>
             );
 
         default:
@@ -272,6 +306,7 @@ const renderInput = ({
                     classNameIcon={classNameIcon}
                     autoFocus={autoFocus}
                     ref={ref}
+                    value={value}
                 />
             );
     }
