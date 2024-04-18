@@ -51,7 +51,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <Separator />
             </div>
             <MaxWidthWrapper>
-                <div className='mt-2 md:mt-10 grid grid-rows-1 md:grid-cols-12 gap-10 min-h-40'>
+                <div className='mt-2 md:mt-10 grid grid-rows-1 md:grid-cols-12 gap-10 min-h-[70vh]'>
                     <div className='row-span-1 md:col-span-2'>
                         <SidebarNav items={SidebarNavItems} className='md:fixed ' />
                     </div>

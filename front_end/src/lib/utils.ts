@@ -118,5 +118,8 @@ export const SidebarNavItems = [
     href: routerPaths.ADMIN_ACCOUNTS,
     title: 'Users'
   },
-
+  {
+    href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
+    title: 'Tests'
+  },
 ]

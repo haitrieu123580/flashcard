@@ -10,10 +10,13 @@ const MultipleChoiceTestResultPage = () => {
     const { examData } = useSelector((state: any) => state.Test);
     return (
         <div>
-            <div>
-                <h1>Multiple Choice Test Result Page</h1>
-                <span>{examData?.total_correct}/{examData?.total_questions}</span>
-            </div>
+            <CardTitle className="flex justify-between">
+                {examData?.setName}
+                <CardDescription className="text-lg font-bold text-green-300">
+                    {examData?.total_correct}/{examData?.total_questions}
+                </CardDescription>
+            </CardTitle>
+
             {
                 Array.isArray(examData?.result)
                 && examData?.result?.map((question: any, index: number) => {
@@ -33,14 +36,19 @@ const MultipleChoiceTestResultPage = () => {
                                         return (
                                             <div className={
                                                 cn(`col-span-1 rounded-sm border p-4 
-                                               ${question.user_answer === answer ? "bg-rose-200" : ""} 
-                                              `, (String(question.correct_answer).toLowerCase() === String(answer).toLowerCase()) ? "bg-green-200" : "")
+                                               ${question.user_answer === answer ? "bg-rose-200 dark:text-black" : ""} 
+                                              `, (String(question.correct_answer).toLowerCase() === String(answer).toLowerCase()) ? "bg-green-200 dark:text-black" : "")
                                             }>
                                                 {answer}
                                             </div>
                                         )
                                     })
                                 }
+                                <div className={
+                                    cn(`col-span-2  p-4`)
+                                }>
+                                    <span>Correct answers is: </span> <span className="text-green-500">{question?.correct_answer}</span>
+                                </div>
                             </CardContent>
                         </Card>
                     )

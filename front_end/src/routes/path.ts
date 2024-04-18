@@ -12,6 +12,9 @@ export const routerPaths = {
     ADMIN_ACCOUNTS: '/admin/account',
     ADMIN_SETS_EDIT: '/admin/sets/edit/:id',
 
+    ADMIN_SETS_MULTIPLE_CHOICE_TEST: '/admin/sets/multiple-choice-test',
+    ADMIN_SETS_MULTIPLE_CHOICE_EDIT: '/admin/sets/multiple-choice-test/edit/:id',
+
     TEST_MULTIPLE_CHOICE: '/multiple-choice/:id',
     TEST_MULTIPLE_CHOICE_RESULT: '/multiple-choice-result',
 

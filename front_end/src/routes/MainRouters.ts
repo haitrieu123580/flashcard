@@ -14,6 +14,9 @@ const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const SetsList = lazy(() => import('@/pages/admin/sets/SetsList'))
 const AccountListsContainer = lazy(() => import('@/pages/admin/account/AccountsListContainer'))
 const EditSetContainer = lazy(() => import('@/pages/admin/sets/EditSetContainer'))
+const TestListPage = lazy(() => import('@/pages/admin/tests/tests-list/TestListPage'))
+const QuestionListEditPage = lazy(() => import('@/pages/admin/tests/edit-questions-list/QuestionsListEditPage'))
+
 const MultipleChoiceTestPage = lazy(() => import('@/pages/test/test-page/MultipleChoiceTestPage'))
 const MultipleChoiceResultPage = lazy(() => import('@/pages/test/result-page/MultipleChoiceResultPage'))
 
@@ -80,6 +83,16 @@ const privateRouters = [
     {
         path: routerPaths.ADMIN_SETS_EDIT,
         component: EditSetContainer,
+        layout: AdminLayout
+    },
+    {
+        path: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
+        component: TestListPage,
+        layout: AdminLayout
+    },
+    {
+        path: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_EDIT,
+        component: QuestionListEditPage,
         layout: AdminLayout
     },
 ]

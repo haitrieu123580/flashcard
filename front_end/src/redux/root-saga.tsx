@@ -5,6 +5,7 @@ import PasswordResetSaga from '@/redux/forgot-password/saga';
 import PublicSetsSaga from '@/redux/public-sets/saga';
 import SetSaga from '@/redux/set/saga';
 import CardSaga from '@/redux/card/saga';
+import QuestionSaga from '@/redux/question/saga';
 
 export default function* rootSaga() {
     yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
         PublicSetsSaga(),
         SetSaga(),
         CardSaga(),
+        QuestionSaga(),
     ])
 }

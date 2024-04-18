@@ -3,6 +3,7 @@ import { Service } from "typedi";
 import { AppDataSource } from "@src/data-source";
 import { Questions } from "@src/entity/Questions";
 import { Sets } from "@src/entity/Sets";
+import { Equal } from "typeorm";
 @Service()
 export class QuestionRepo implements IQuestionRepo {
     private questionsDataSource = AppDataSource.getRepository(Questions);
@@ -14,13 +15,17 @@ export class QuestionRepo implements IQuestionRepo {
                 id: setId
             }
         })
-        if (!set) return new Error("Set not found");
+
+        if (!set) return false;
 
         const result = await this.questionsDataSource.findAndCount({
+            relations: ['set'],
             where: {
-                set: set
+                set: {
+                    id: setId
+                }
+                // set: set
             },
-            // relations: ['set']
         })
         return result;
     }
@@ -74,6 +79,10 @@ export class QuestionRepo implements IQuestionRepo {
 
     async DeleteQuestion(id: string): Promise<any> {
         const result = await this.questionsDataSource.delete({ id: id })
+        if (result) {
+            return true;
+        }
+        return false;
     };
 
     async isExistQuestion(id: string): Promise<boolean> {

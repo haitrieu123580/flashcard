@@ -5,19 +5,25 @@ import { isAdmin } from '@middleware/isAdmin';
 import { QuestionController } from '@controllers/questions/QuestionController';
 import { CreateQuestionRequest } from '@dto/questions/CreateQuestionRequest';
 import isValidRequest from '@middleware/ValidRequest';
+import { checkValidQuestionBodyRequest } from '@src/middleware/ValidQuestionBodyRequest';
 const controller = new QuestionController();
 const router = Router();
 
-// router.get('/get-set-questions', [isValidKey], (req: Request, res: Response) => { });
+router.get('/get-set-questions', [isValidKey], (req: Request, res: Response) => { });
 
 //get all question in a set
 router.get('/list/:setId', [isValidKey], controller.getQuestionList);
 
 router.get('/:id', [isValidKey], controller.getQuestion);
 
-router.post('/', [isValidKey, isAdmin, isValidRequest(CreateQuestionRequest)], controller.createQuestion);
+router.post('/', [
+    isValidKey,
+    isAdmin,
+    isValidRequest(CreateQuestionRequest),
+    checkValidQuestionBodyRequest
+], controller.createQuestion);
 
-router.put('/:id', [isValidKey], controller.updateQuestion);
+router.put('/:id', [isValidKey, checkValidQuestionBodyRequest], controller.updateQuestion);
 
 router.delete('/:id', [isValidKey], controller.deleteQuestion);
 

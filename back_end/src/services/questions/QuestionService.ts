@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { IQuestionService } from "./IQuestionService";
 import {
     SuccessMsgResponse,
@@ -10,7 +11,6 @@ import { IQuestionRepo } from "@repositories/question/IQuestionRepo";
 import { QuestionRepo } from "@repositories/question/QuestionRepo";
 import { IVocabularySetRepo } from "@repositories/vocabulary-set/IVocabularySetRepo";
 import { VocabularySetRepo } from "@src/repositories/vocabulary-set/VocabularySetRepo";
-import { Request, Response } from "express";
 
 @Service()
 export class QuestionService implements IQuestionService {
@@ -21,9 +21,9 @@ export class QuestionService implements IQuestionService {
         this.questionRepo = Container.get(QuestionRepo);
         this.setRepo = Container.get(VocabularySetRepo);
     }
-    async GetQuestionList(req: any, res: any): Promise<any> {
+    async GetQuestionList(req: Request, res: any): Promise<any> {
         try {
-            const setId = req.params.set_id;
+            const setId = req.params.setId;
             const isExistSet = await this.setRepo.isExistSet(setId);
             if (!isExistSet) {
                 return new FailureMsgResponse("Set not found").send(res);
@@ -66,9 +66,9 @@ export class QuestionService implements IQuestionService {
                 return new FailureMsgResponse("Set not found").send(res);
             }
             const questionData = {
-                question: req.body.question,
-                answers: req.body.answers,
-                correct_answer: req.body.correct_answer,
+                question: req.body?.question,
+                answers: req.body?.answers,
+                correct_answer: req.body?.correct_answer,
                 set_id: setId
             }
             const isCreated = await this.questionRepo.CreateQuestion(questionData);

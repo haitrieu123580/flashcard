@@ -54,7 +54,10 @@ const MultipleChoiceTestPage = () => {
         dispatch({
             type: submitAnswersAction.type,
             payload: {
-                data: { answers },
+                data: {
+                    answers: answers,
+                    set_id: id
+                },
                 onSuccess: (data: any) => {
                     navigate(routerPaths.TEST_MULTIPLE_CHOICE_RESULT)
                 },
@@ -67,54 +70,54 @@ const MultipleChoiceTestPage = () => {
     return (
         <div>
             <div>
-                <h1>Multiple Choice Test Page</h1>
+                <CardTitle>{examData?.setName}</CardTitle>
             </div>
             {
-                !examData?.result
-                &&
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)}>
-                        {
+                examData?.data ?
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(handleSubmit)}>
+                            {
 
-                            Array.isArray(examData)
-                            && examData?.map((question: any) => {
-                                return (
+                                Array.isArray(examData?.data)
+                                && examData?.data?.map((question: any) => {
+                                    return (
 
-                                    <Card className="my-4 p-2">
-                                        <CardTitle className="mb-2">Question:
-                                            <span>
-                                                {question.question}
-                                            </span>
-                                        </CardTitle>
-                                        <CardContent className="">
-                                            {
-                                                <FormInput
-                                                    control={form.control}
-                                                    fieldName={question.id}
-                                                    type={Constants.INPUT_TYPE.RADIO}
-                                                    options={question.answers.map((answer: any, index: number) => {
-                                                        return {
-                                                            key: answer,
-                                                            label: answer,
-                                                        }
-                                                    })}
-                                                />
-                                            }
-                                        </CardContent>
-                                    </Card>
+                                        <Card className="my-4 p-2">
+                                            <CardTitle className="mb-2">Question:
+                                                <span>
+                                                    {question.question}
+                                                </span>
+                                            </CardTitle>
+                                            <CardContent className="">
+                                                {
+                                                    <FormInput
+                                                        control={form.control}
+                                                        fieldName={question.id}
+                                                        type={Constants.INPUT_TYPE.RADIO}
+                                                        options={question.answers.map((answer: any, index: number) => {
+                                                            return {
+                                                                key: answer,
+                                                                label: answer,
+                                                            }
+                                                        })}
+                                                    />
+                                                }
+                                            </CardContent>
+                                        </Card>
 
-                                )
-                            })
-                        }
-                        <div className="flex justify-end">
-                            <Button
-                                type="submit"
-                            >
-                                Submit
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
+                                    )
+                                })
+                            }
+                            <div className="flex justify-end">
+                                <Button
+                                    type="submit"
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+                        </form>
+                    </Form>
+                    : <div>This set does not have test</div>
             }
         </div >
     )

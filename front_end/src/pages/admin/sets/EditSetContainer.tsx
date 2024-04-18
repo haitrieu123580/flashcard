@@ -42,11 +42,6 @@ const EditSetContainer = () => {
         ]).optional(),
         is_delete_image: z.string().optional()
     });
-    useEffect(() => {
-        if (id) {
-            getSetById(id);
-        }
-    }, [id])
 
     const getSetById = (id: string) => {
         scrollTo(0, 0);
@@ -58,6 +53,12 @@ const EditSetContainer = () => {
             }
         })
     }
+
+    useEffect(() => {
+        if (id) {
+            getSetById(id);
+        }
+    }, [id])
 
     const onEditCard = (values: any, id: string, setId: string) => {
         const submitValues = {
@@ -287,7 +288,6 @@ const EditSetContainer = () => {
                             }
                         />
                     </div>
-
                 </div>
             </Form >
         </div >
