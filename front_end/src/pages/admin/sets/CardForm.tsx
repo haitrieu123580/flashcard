@@ -179,9 +179,9 @@ const CardForm = (props: any) => {
                             </Button>
                         }
 
-                    </Card>
-                </form>
-            </Form>
+                    </Card >
+                </form >
+            </Form >
         </>
     )
 }

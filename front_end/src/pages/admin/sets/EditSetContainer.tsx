@@ -248,7 +248,6 @@ const EditSetContainer = () => {
                 </form>
                 <div className='my-6 flex justify-between items-center '>
                     <b>Cards</b>
-
                 </div>
                 <div className='flex flex-col'>
                     <div className="w-full flex flex-col gap-6">
