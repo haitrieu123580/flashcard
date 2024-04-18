@@ -31,4 +31,5 @@ export interface FormInputProps {
     classNameContent?: string;
     labelCheckbox?: string;
     required?: boolean;
+    size?: number
 }

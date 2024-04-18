@@ -1,15 +1,16 @@
 import FlipCard from "@/components/flash-card/FlipCard"
 import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 import { Volume1 } from 'lucide-react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import SentencesExampleBox from "@/components/flash-card/SentencesExampleBox";
 import NewsetSets from "@/components/home/newest-sets/NewsetSets";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSetByIdAction } from "@/redux/set/slice";
-import { speek } from "@/lib/utils";
+import { replacePathWithId, speek } from "@/lib/utils";
+import { routerPaths } from "@/routes/path";
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -45,7 +46,10 @@ const LearnFlashcard = () => {
     return (
         <div>
             <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
-                <CardTitle>{data?.name}</CardTitle>
+                <CardTitle className="flex gap-2 items-end">
+                    <span>{data?.name}</span>
+                    <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
+                </CardTitle>
                 {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
                     return (<>
                         {currentCard === index

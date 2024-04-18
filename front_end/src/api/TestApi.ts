@@ -1,21 +1,12 @@
-import axios from "axios";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const config = {
-    headers: {
-        'Content-Type': 'application/json',
-    },
-};
-export const TestAPI = async (data: any) => {
-    // const response = await axios.post(`${BASE_URL}/authenticate`, JSON.stringify(data), config);
-    // if (response.status === 200) {
-    //     return {
-    //         Data: response?.data
-    //     }
-    // }
-    // else {
-    //     return {
-    //         Message: "Error"
-    //     }
-    // }
-    return { message: "Hello World" };
+import { AxiosConfig } from "./AxiosConfig";
+const BASE_URL = import.meta.env.VITE_API_URL + "/api/multiple-choice-test";
+
+export const getMultipleChoiceTestBySetIdApi = async (setId: string) => {
+    const response = await AxiosConfig.get(`${BASE_URL}/${setId}`);
+    return response;
+}
+
+export const submitMultipleChoiceTestApi = async (data: any) => {
+    const response = await AxiosConfig.post(`${BASE_URL}/submit`, data);
+    return response;
 }

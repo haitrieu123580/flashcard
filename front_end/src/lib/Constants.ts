@@ -16,7 +16,7 @@ export default class Constants {
         MONTH_RANGE_PICKER: 'month_range_picker',
         EDITOR: 'editor',
         FILE_UPLOAD: 'file',
-        RADIO: 'rdo',
+        RADIO: 'radio',
         INPUT_CHECK: 'input_check',
         RE_CAPTCHA: 're_captcha',
     };
