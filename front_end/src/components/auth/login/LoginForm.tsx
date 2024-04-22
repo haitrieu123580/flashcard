@@ -18,14 +18,15 @@ import GoogleIcon from "@/components/common/icons/GoogleIcon"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { routerPaths } from '@/routes/path';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "@/components/ui/use-toast";
 import { loginAction } from "@/redux/auth/slice";
 import { useNavigate } from 'react-router-dom';
-
+import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner"
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 export function LoginForm(props: any) {
+    const { isLoading } = useSelector((state: any) => state.Auth);
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -57,11 +58,11 @@ export function LoginForm(props: any) {
                     variant: 'default',
                 })
             },
-            onError: () => {
+            onError: (message: string) => {
                 setOpen(true);
                 toast({
                     title: 'Login failed',
-                    description: 'Please login again!',
+                    description: message ? message : 'Please login again!',
                     variant: 'destructive',
                 })
             }
@@ -75,75 +76,81 @@ export function LoginForm(props: any) {
         window.open(`${BACKEND_URL}/passport/google`, "_self");
     }
     return (
-        <Card className="">
+        <>
+            {isLoading
+                ? <div className="flex justify-center items-center"> <LoadingSpinner /></div>
+                : (
+                    <Card className="">
 
-            <CardHeader>
-                <CardTitle>Login</CardTitle>
-                <CardDescription>
-                    Login to your account
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="space-y-1">
-                            <FormInput
-                                control={form.control}
-                                fieldName="username"
-                                label="Username"
-                                placeholder="Username"
-                                type={Constants.INPUT_TYPE.TEXT}
-                                required={true}
-                            />
-                        </div>
-                        <div className="space-y-1">
-                            <FormInput
-                                control={form.control}
-                                fieldName="password"
-                                label="Password"
-                                placeholder="Password"
-                                required={true}
-                                type={Constants.INPUT_TYPE.PASSWORD}
-                            />
-                            <Button variant={"link"}
-                                type="button"
-                                onClick={gotoForgotPassword}
-                            >
-                                Forgot password?
-                            </Button>
-                            {/* <Link to={routerPaths.FORGOT_PASSWORD} className="text-[12px] text-slate-800 font-bold space-y-1">Forgot password?</Link> */}
-                        </div>
-                        <div className="space-y-1">
-                            <Button
-                                type="submit"
-                                variant="outline"
-                                className="m-auto w-full"
-                            >
-                                Login
-                            </Button>
-                        </div>
+                        <CardHeader>
+                            <CardTitle>Login</CardTitle>
+                            <CardDescription>
+                                Login to your account
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)}>
+                                    <div className="space-y-1">
+                                        <FormInput
+                                            control={form.control}
+                                            fieldName="username"
+                                            label="Username"
+                                            placeholder="Username"
+                                            type={Constants.INPUT_TYPE.TEXT}
+                                            required={true}
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <FormInput
+                                            control={form.control}
+                                            fieldName="password"
+                                            label="Password"
+                                            placeholder="Password"
+                                            required={true}
+                                            type={Constants.INPUT_TYPE.PASSWORD}
+                                        />
+                                        <Button variant={"link"}
+                                            type="button"
+                                            onClick={gotoForgotPassword}
+                                        >
+                                            Forgot password?
+                                        </Button>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Button
+                                            type="submit"
+                                            variant="default"
+                                            className="m-auto w-full"
+                                        >
+                                            Login
+                                        </Button>
+                                    </div>
 
-                    </form>
-                </Form>
-            </CardContent>
+                                </form>
+                            </Form>
+                        </CardContent>
 
-            <CardFooter className="flex flex-col w-full">
-                <div className="flex justify-between items-center w-full">
-                    <Separator className="w-1/3" />
-                    <span>or</span>
-                    <Separator className="w-1/3" />
-                </div>
-                <div>
-                    <Button
-                        type="button"
-                        variant={"outline"}
-                        onClick={() => { googleAuth() }}
-                        className="m-auto w-full dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
-                        <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
-                    </Button>
-                </div>
-            </CardFooter>
+                        <CardFooter className="flex flex-col w-full">
+                            <div className="flex justify-between items-center w-full">
+                                <Separator className="w-1/3" />
+                                <span>or</span>
+                                <Separator className="w-1/3" />
+                            </div>
+                            <div>
+                                <Button
+                                    type="button"
+                                    variant={"outline"}
+                                    onClick={() => { googleAuth() }}
+                                    className="m-auto w-full dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
+                                    <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
+                                </Button>
+                            </div>
+                        </CardFooter>
 
-        </Card >
+                    </Card >
+                )}
+        </>
+
     )
 }

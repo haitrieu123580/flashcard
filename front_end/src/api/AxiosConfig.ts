@@ -44,6 +44,7 @@ const axiosInstance = axios.create({
     headers: {
         Accept: 'application/json',
         'x-api-key': import.meta.env.VITE_API_KEY,
+        "Access-Control-Allow-Credentials": true,
         // 'x-request-id': v4(),
     },
 })

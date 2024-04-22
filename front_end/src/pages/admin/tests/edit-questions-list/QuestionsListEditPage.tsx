@@ -70,7 +70,6 @@ const QuestionsListEditPage = () => {
 
     }
     const onDeleteQuestion = (questionId: string, setId: string) => {
-        console.log("delete question", questionId)
         dispatch({
             type: deleteQuestionAction.type,
             payload: {

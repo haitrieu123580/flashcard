@@ -21,7 +21,10 @@ import { routerPaths } from "@/routes/path";
 const UserPopover = () => {
     const dispatch = useDispatch();
     const logout = () => {
-        dispatch(logoutAction());
+        dispatch({
+            type: logoutAction.type
+        });
+
     }
     return (
         <Popover>

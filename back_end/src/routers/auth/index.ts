@@ -16,6 +16,8 @@ router.post('/sign-in', [isValidKey, isValidRequest(SignInRequest)], authControl
 
 router.post('/sign-up', [isValidKey, isValidRequest(SignUpRequest)], authController.sign_up);
 
+router.get('/logout', [isValidKey, verifyToken], authController.logout);
+
 router.get('/me', [isValidKey, verifyToken], authController.me);
 
 router.post('/get-token', authController.get_token);

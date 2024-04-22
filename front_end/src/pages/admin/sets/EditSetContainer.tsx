@@ -20,19 +20,18 @@ import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card
 import EditPopup from '@/components/common/popup/EditPopup'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
+import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
 
 const EditSetContainer = () => {
     const { id } = useParams();
-    const { data } = useSelector((state: any) => state.Set);
+    const { data, isLoading } = useSelector((state: any) => state.Set);
     const [showCardFormPopup, setShowCardFormPopup] = useState(false)
     const dispatch = useDispatch();
     const formSetSchema = z.object({
         set_name: z.string().min(1, {
             message: "Required",
         }),
-        set_description: z.string().min(1, {
-            message: "Required",
-        }),
+        set_description: z.string().optional(),
         set_image: z.union([
             z.object({
                 image: z.any().optional(),
@@ -206,6 +205,13 @@ const EditSetContainer = () => {
 
     return (
         <div className=" w-full">
+            <CommonPopup
+                open={isLoading}
+                setOpen={() => { }}
+                isShowTrigger={false}
+                children={<LoadingSpinner />}
+                className={"w-fit h-fit"}
+            />
             <Form {...form}>
                 <form className='flex flex-col gap-6'>
                     <div className='flex justify-between items-center my-2'>
@@ -235,7 +241,6 @@ const EditSetContainer = () => {
                         label="Description"
                         placeholder="Description"
                         type={Constants.INPUT_TYPE.TEXT}
-                        required={true}
                     />
                     <FormInput
                         control={form.control}

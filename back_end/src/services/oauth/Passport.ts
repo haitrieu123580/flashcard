@@ -28,20 +28,6 @@ passport.use(
                     username: profile.displayName,
                     avatar: profile.photos[0].value
                 })
-                // const userData = await userRepo.getUserByUsername(profile.displayName);
-                // const access_token = genAccessToken({
-                //     id: userData?.id,
-                //     username: userData?.username,
-                //     role: userData?.role
-                // });
-                // const refresh_token = genRefreshToken({
-                //     id: userData?.id,
-                //     username: userData?.username,
-                //     role: userData?.role,
-                // });
-                // return new SuccessResponse('Login Success', {
-                //     access_token, refresh_token, exprires_access_token: "1d"
-                // }).send(res);
             } catch (error) {
                 console.log(error)
             }

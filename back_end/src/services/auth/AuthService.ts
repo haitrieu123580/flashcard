@@ -6,8 +6,13 @@ import UserRepoInterface from "@repositories/user/UserRepoInterface";
 import UserRepo from "@repositories/user/UseRepo";
 import { comparePassword } from "@helper/HashingPassword";
 import { genAccessToken, genRefreshToken, verifyToken } from "@helper/JwtHelper";
-import { SuccessResponse, FailureMsgResponse, InternalErrorResponse } from "@src/core/ApiResponse";
-import { UserProfile } from "@dto/auth/UserProfile";
+import {
+    SuccessResponse,
+    SuccessMsgResponse,
+    FailureResponse,
+    FailureMsgResponse,
+    InternalErrorResponse
+} from "@src/core/ApiResponse";
 
 dotenv.config();
 @Service()
@@ -37,8 +42,11 @@ class AuthService implements AuthServiceInterface {
                         access_token, refresh_token, exprires_access_token: "1d"
                     }).send(res);
                 }
+                else {
+                    return new FailureMsgResponse('Password is incorrect').send(res);
+                }
             }
-            return new FailureMsgResponse('Invalid Credentials').send(res);
+            return new FailureMsgResponse('Username not found').send(res);
         } catch (error: any) {
             console.log('Error: ', error)
             return new InternalErrorResponse('Internal Server Error').send(res);
@@ -51,15 +59,17 @@ class AuthService implements AuthServiceInterface {
             if (isExistedEmail) {
                 return new FailureMsgResponse('Email Existed!').send(res);
             }
+            const isExistedUsername = await this.userRepo.getUserByUsername(req.body.username);
+            if (isExistedUsername) {
+                return new FailureMsgResponse('Username Existed!').send(res);
+            }
+            const newUser = await this.userRepo.createUser(req.body)
+            if (!newUser) {
+                return new FailureMsgResponse('Create User Failed').send(res);
+            }
             else {
-                const newUser = await this.userRepo.createUser(req.body)
-                if (!newUser) {
-                    return new FailureMsgResponse('Create User Failed').send(res);
-                }
-                else {
-                    const userProfile = await this.userRepo.me(newUser.id);
-                    return new SuccessResponse('User Created', userProfile).send(res);
-                }
+                const userProfile = await this.userRepo.me(newUser.id);
+                return new SuccessResponse('User Created', userProfile).send(res);
             }
         } catch (error) {
             console.log(error)
@@ -107,11 +117,10 @@ class AuthService implements AuthServiceInterface {
     }
 
 
-    public me = async (data: any, res: Response): Promise<any> => {
+    public me = async (req: any, res: Response): Promise<any> => {
         try {
-            const id = data.user.id;
+            const id = req.user.id;
             const user = await this.userRepo.me(String(id))
-            const userProfile = new UserProfile(user);
             if (user) {
                 return new SuccessResponse('User Profile', user).send(res);
             }
@@ -144,6 +153,31 @@ class AuthService implements AuthServiceInterface {
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    logout = async (req: any, res: Response): Promise<any> => {
+        try {
+            const id = req.user.id;
+            const user = await this.userRepo.me(String(id))
+            if (user) {
+                const result = await this.userRepo.storeToken(user.id, '');
+                if (result) {
+                    req.logOut((err: any) => {
+                        if (err) {
+                            console.log("err", err)
+                        }
+                    });
+                    return new SuccessMsgResponse('Logout Success').send(res);
+                }
+                else {
+                    return new FailureMsgResponse('Logout Failed').send(res);
+                }
+            }
+            return new FailureMsgResponse('User not found').send(res);
+        } catch (error) {
+            console.log(error)
+            return new InternalErrorResponse('Internal Server Error').send(res);
         }
     }
 }

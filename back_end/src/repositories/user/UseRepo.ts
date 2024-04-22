@@ -52,31 +52,13 @@ class UserRepo implements UserRepoInterface {
             where: {
                 id: id
             },
-            // select: [
-            //     "id",
-            //     "username",
-            //     "email",
-            //     "avatar",
-            //     "created_at",
-            //     "created_by",
-            //     "updated_at",
-            //     "updated_by",
-            // ],
         })
 
         return result;
     }
 
-    updateAvatar = async (userId: string, imagePath: string): Promise<boolean> => {
-        const user = await this.userDataSource.findOneBy({ id: userId });
-        if (user) {
-            user.avatar = imagePath;
-            await this.userDataSource.save(user)
-            return true;
-        }
-        else {
-            return false;
-        }
+    updateUser = async (userId: string, userData: any): Promise<boolean> => {
+        return false;
     }
 
     isExistedToken = async (token: string): Promise<boolean> => {
@@ -95,6 +77,7 @@ class UserRepo implements UserRepoInterface {
         })
         if (user) {
             user.token = token;
+            user.updated_at = new Date();
             await this.userDataSource.save(user);
             return true
         }

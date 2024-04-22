@@ -19,9 +19,11 @@ import {
   Form,
 } from "@/components/ui/form"
 import Constants from "@/lib/Constants"
+
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const { profile } = useSelector((state: any) => state.Auth);
 
   const getProfile = () => {
@@ -36,12 +38,6 @@ const Profile = () => {
       }
     })
   }
-  // useEffect(() => {
-  //   if (profile?.username) {
-  //     form.setValue('username', profile?.username);
-  //     form.setValue('email', profile?.email);
-  //   }
-  // }, [profile])
   useEffect(() => {
     if (!profile?.username) {
       getProfile();
@@ -70,10 +66,8 @@ const Profile = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
   }
   useMemo(() => {
-    // console.log("profile", profile)
     if (profile) {
       form.reset({
         username: profile?.username,

@@ -12,7 +12,7 @@ import { getAllSetsAction } from '@/redux/public-sets/slice'
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination'
 import { toast } from '@/components/ui/use-toast'
 import { Skeleton } from "@/components/ui/skeleton"
-
+import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner"
 const PublicSets = () => {
     const form = useForm({
         defaultValues: {
@@ -25,6 +25,7 @@ const PublicSets = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [filter, setFilter] = useState(Constants.SORT_BY[0].key)
     let [searchParams, setSearchParams] = useSearchParams();
+    const [errorMessage, setErrorMessage] = useState("")
 
     const onSelectFilter = (filter: any) => {
         setFilter(filter);
@@ -62,6 +63,7 @@ const PublicSets = () => {
                 onSuccess: () => {
                 },
                 onError: (message: string) => {
+                    setErrorMessage(message)
                     toast({
                         title: "Error",
                         description: message,
@@ -97,13 +99,24 @@ const PublicSets = () => {
                     </form>
                 </Form>
             </div>
-            <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
-                {Array.isArray(data) && data.map((set, index) => {
-                    return <div key={index} className='row-span-1 md:col-span-2'>
-                        <SetItem data={set} onClick={gotoCard} />
-                    </div>
-                })}
-            </div>
+
+            {isLoading
+                ? <div className='w-full h-full flex justify-center items-center'><LoadingSpinner /></div>
+                :
+                <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
+                    {Array.isArray(data) && data.map((set, index) => {
+                        return <div key={index} className='row-span-1 md:col-span-2'>
+                            <SetItem data={set} onClick={gotoCard} />
+                        </div>
+                    })}
+                </div>
+            }
+            {
+                errorMessage && <div className='row-span-1 md:col-span-6'>
+                    <div className='text-center text-red-500'>{errorMessage}</div>
+                </div>
+            }
+
             <div className='mt-10 flex justify-center'>
                 <CustomPagination
                     total={pagination?.total || 0}

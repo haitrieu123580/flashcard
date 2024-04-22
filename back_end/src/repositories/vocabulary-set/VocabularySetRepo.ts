@@ -4,6 +4,8 @@ import { Service } from "typedi";
 import { Sets } from "@src/entity/Sets";
 import { Cards } from "@src/entity/Cards";
 import { User } from "@src/entity/User";
+import { ILike } from "typeorm"
+import { isWhiteSpaceLike } from "typescript";
 
 @Service()
 export class VocabularySetRepo implements IVocabularySetRepo {
@@ -53,16 +55,33 @@ export class VocabularySetRepo implements IVocabularySetRepo {
     get_all_public_sets(data: any): Promise<any> {
         const { take, skip, filter, name, sortBy } = data;
         let order: any = {};
-
+        // if (name) {
+        //     return this.setDataSource.createQueryBuilder("sets")
+        //         .where("LOWER(sets.name) ILIKE :name", { name: name.toLowerCase() })
+        //         .orderBy(sortBy === "setName" ? "sets.name" : "sets.created_at", filter === "asc" ? "ASC" : "DESC")
+        //         .take(take)
+        //         .skip(skip)
+        //         .leftJoinAndSelect("sets.cards", "card")
+        //         .leftJoinAndSelect("sets.questions", "question")
+        //         .getManyAndCount();
+        // }
         if (sortBy === "setName") {
             order.name = filter === "asc" ? "ASC" : "DESC";
         } else if (sortBy === "createdDate") {
             order.created_at = filter === "latest" ? "DESC" : "ASC";
         }
 
+
+        // return this.setDataSource.createQueryBuilder("sets")
+        //     .orderBy(sortBy === "setName" ? "sets.name" : "sets.created_at", filter === "asc" ? "ASC" : "DESC")
+        //     .take(take)
+        //     .skip(skip)
+        //     .leftJoinAndSelect("sets.cards", "card")
+        //     .leftJoinAndSelect("sets.questions", "question")
+        //     .getManyAndCount();
         return this.setDataSource.findAndCount({
             where: {
-                name: name
+                name: name ? ILike(name) : undefined
             },
             order: order,
             take: take,
@@ -70,7 +89,6 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             relations: ["cards", "questions"]
         });
     }
-
     get_my_sets(userId: string): Promise<any> {
 
         return this.setDataSource.find(

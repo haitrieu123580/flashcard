@@ -14,8 +14,9 @@ import { objectToFormData } from '@/lib/utils'
 import { createSetAction } from '@/redux/set/slice'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CardTitle } from '@/components/ui/card'
+import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
 const SetsList = () => {
-    const { data, pagination } = useSelector((state: any) => state.Sets)
+    const { data, pagination, isLoading } = useSelector((state: any) => state.Sets)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false)
@@ -170,31 +171,40 @@ const SetsList = () => {
                     <PlusCircle size={20} />
                 </Button>
             </div>
-            {Array.isArray(data) && data.map((set, index) => {
-                return <div key={index} className='row-span-1 md:col-span-2'>
-                    <SetItem
-                        onEdit={onEdit}
-                        onDelete={onDelete}
-                        data={set}
-                    />
+            {
+                isLoading ? <div className='w-full h-full flex justify-center items-center'>
+                    <LoadingSpinner />
                 </div>
-            })}
-            <CommonPopup
-                open={open}
-                setOpen={setOpen}
-                isShowTrigger={false}
-                TriggerComponent={null}
-                children={<SetForm defaultValues={defaultValues} onCreate={onCreate} />}
-                title={"Create Set"}
-            />
-            <CustomPagination
-                total={pagination?.total || 0}
-                itemCount={1}
-                siblingCount={1}
-                limit={Constants.PAGINATION.LIMIT}
-                onChange={(e: any) => { onChangePageNumber(e) }}
-                page={pageNumber}
-            />
+                    :
+                    <>
+                        {Array.isArray(data) && data.map((set, index) => {
+                            return <div key={index} className='row-span-1 md:col-span-2'>
+                                <SetItem
+                                    onEdit={onEdit}
+                                    onDelete={onDelete}
+                                    data={set}
+                                />
+                            </div>
+                        })}
+                        <CommonPopup
+                            open={open}
+                            setOpen={setOpen}
+                            isShowTrigger={false}
+                            TriggerComponent={null}
+                            children={<SetForm defaultValues={defaultValues} onCreate={onCreate} />}
+                            title={"Create Set"}
+                        />
+                        <CustomPagination
+                            total={pagination?.total || 0}
+                            itemCount={1}
+                            siblingCount={1}
+                            limit={Constants.PAGINATION.LIMIT}
+                            onChange={(e: any) => { onChangePageNumber(e) }}
+                            page={pageNumber}
+                        />
+                    </>
+            }
+
         </div>
     )
 }

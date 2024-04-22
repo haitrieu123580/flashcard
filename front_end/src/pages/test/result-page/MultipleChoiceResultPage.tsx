@@ -21,8 +21,8 @@ const MultipleChoiceTestResultPage = () => {
                 Array.isArray(examData?.result)
                 && examData?.result?.map((question: any, index: number) => {
                     return (
-                        <Card className="my-4 p-2" key={index}>
-                            <CardTitle className="mb-2 flex justify-between items-end">
+                        <Card className="my-4 p-2 " key={index}>
+                            <CardTitle className="my-6 px-6 flex justify-between items-end">
                                 <span>
                                     Question: {question.question}
                                 </span>

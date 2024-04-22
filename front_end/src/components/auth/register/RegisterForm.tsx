@@ -26,7 +26,6 @@ const BACKEND_URL = import.meta.env.VITE_API_URL;
 export function RegisterForm(props: any) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { setOpen } = props;
     const formSchema = z.object({
         username: z.string().min(2, {
@@ -117,7 +116,7 @@ export function RegisterForm(props: any) {
                         <div className="space-y-1 mt-4">
                             <Button
                                 type="submit"
-                                variant="outline"
+                                variant="default"
                                 className="m-auto w-full"
                             >
                                 Sign up

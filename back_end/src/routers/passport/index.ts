@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import AuthController from "../../controllers/auth/AuthController";
 import passport from "passport";
 import dotenv from 'dotenv';
+import verifyToken from "@middleware/VerifyToken";
 dotenv.config();
 const router = Router();
 const authController = new AuthController();
@@ -12,7 +13,6 @@ router.get("/login/success", (req: Request, res: Response) => {
         return authController.sign_in_success_oauth(req, res)
         // return res.status(200).json({ message: "user Login", user: req.user })
     } else {
-        console.log("Not Authorized")
         return res.status(400).json({ message: "Not Authorized" })
     }
 });
@@ -22,11 +22,6 @@ router.get("/login/failed", (req: Request, res: Response) => {
         success: false,
         message: "failure",
     });
-});
-
-router.get("/logout", (req: Request, res: Response) => {
-    // req.logout();
-    res.redirect(String(process.env.CLIENT_URL));
 });
 
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

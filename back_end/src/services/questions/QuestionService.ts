@@ -84,7 +84,6 @@ export class QuestionService implements IQuestionService {
     async UpdateQuestion(req: Request, res: Response): Promise<any> {
         try {
             const questionId = req.params.id;
-            console.log("questionId", questionId);
             const isExistQuestion = await this.questionRepo.isExistQuestion(questionId);
             if (!isExistQuestion) {
                 return new FailureMsgResponse("Question not found").send(res);

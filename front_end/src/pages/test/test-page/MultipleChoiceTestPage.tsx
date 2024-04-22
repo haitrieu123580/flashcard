@@ -19,10 +19,10 @@ import {
     submitAnswersAction
 } from "@/redux/test/slice";
 import { routerPaths } from "@/routes/path";
-
+import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner";
 const MultipleChoiceTestPage = () => {
     const { id } = useParams();
-    const { examData } = useSelector((state: any) => state.Test);
+    const { examData, isLoading } = useSelector((state: any) => state.Test);
     const [result, setResult] = useState<any>()
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -69,55 +69,60 @@ const MultipleChoiceTestPage = () => {
     }
     return (
         <div>
-            <div>
-                <CardTitle>{examData?.setName}</CardTitle>
-            </div>
             {
-                examData?.data ?
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleSubmit)}>
-                            {
+                isLoading
+                    ? <div className="w-full h-full flex justify-center items-center"> <LoadingSpinner /></div>
+                    : <>
+                        <div>
+                            <CardTitle>{examData?.setName}</CardTitle>
+                        </div>
+                        {
+                            examData?.data ?
+                                <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(handleSubmit)}>
+                                        {
 
-                                Array.isArray(examData?.data)
-                                && examData?.data?.map((question: any) => {
-                                    return (
+                                            Array.isArray(examData?.data)
+                                            && examData?.data?.map((question: any) => {
+                                                return (
 
-                                        <Card className="my-4 p-2">
-                                            <CardTitle className="mb-2">Question:
-                                                <span>
-                                                    {question.question}
-                                                </span>
-                                            </CardTitle>
-                                            <CardContent className="">
-                                                {
-                                                    <FormInput
-                                                        control={form.control}
-                                                        fieldName={question.id}
-                                                        type={Constants.INPUT_TYPE.RADIO}
-                                                        options={question.answers.map((answer: any, index: number) => {
-                                                            return {
-                                                                key: answer,
-                                                                label: answer,
+                                                    <Card className="my-4 p-2">
+
+                                                        <CardContent className="">
+                                                            <CardTitle className="flex items-end gap-2 my-6">
+                                                                Question:  {question.question}
+                                                            </CardTitle>
+                                                            {
+                                                                <FormInput
+                                                                    control={form.control}
+                                                                    fieldName={question.id}
+                                                                    type={Constants.INPUT_TYPE.RADIO}
+                                                                    options={question.answers.map((answer: any, index: number) => {
+                                                                        return {
+                                                                            key: answer,
+                                                                            label: answer,
+                                                                        }
+                                                                    })}
+                                                                />
                                                             }
-                                                        })}
-                                                    />
-                                                }
-                                            </CardContent>
-                                        </Card>
+                                                        </CardContent>
+                                                    </Card>
 
-                                    )
-                                })
-                            }
-                            <div className="flex justify-end">
-                                <Button
-                                    type="submit"
-                                >
-                                    Submit
-                                </Button>
-                            </div>
-                        </form>
-                    </Form>
-                    : <div>This set does not have test</div>
+                                                )
+                                            })
+                                        }
+                                        <div className="flex justify-end">
+                                            <Button
+                                                type="submit"
+                                            >
+                                                Submit
+                                            </Button>
+                                        </div>
+                                    </form>
+                                </Form>
+                                : <div>There are not any questions in this set.</div>
+                        }
+                    </>
             }
         </div >
     )

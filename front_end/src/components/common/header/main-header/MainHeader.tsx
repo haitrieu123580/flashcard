@@ -22,12 +22,12 @@ import { routerPaths } from "@/routes/path"
 import { Search } from 'lucide-react';
 import { PlusCircle } from 'lucide-react';
 import { Folder } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import UserPopover from "@/components/auth/user-popover/UserPopover"
 import { Send } from 'lucide-react';
 import Constants from "@/lib/Constants"
-
+import { logoutAction } from "@/redux/auth/slice"
 const MainHeader = (props: any) => {
     const { isAdmin } = props
     const dispatch = useDispatch();

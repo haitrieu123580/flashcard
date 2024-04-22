@@ -27,6 +27,11 @@ const authSlice = createSlice({
       state.loggedIn = true;
     },
 
+    loginActionError: (state) => {
+      state.isLoading = false;
+      state.loggedIn = false;
+    },
+
     getProfileAction: (state, { payload }) => {
       state.isLoading = true;
     },
@@ -57,11 +62,27 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
 
-    logoutAction: (state) => {
+    registerActionError: (state) => {
+      state.isLoading = false;
+    },
+
+    loginSuccessWithOauthAction: (state) => {
+
+    },
+
+    logoutAction: (state, { payload }) => {
+      state.loggedIn = true;
+      // localStorage.removeItem("access_token");
+      // localStorage.removeItem("refresh_token");
+    },
+    logoutSuccessAction: (state) => {
       state.loggedIn = false;
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
-    }
+    },
+    logoutErrorsAction: (state) => {
+      state.loggedIn = false;
+    },
   },
 
 })
@@ -69,6 +90,7 @@ const authSlice = createSlice({
 export const {
   loginAction,
   loginActionSuccess,
+  loginActionError,
   getProfileAction,
   getProfileActionSuccess,
   getProfileActionError,
@@ -76,7 +98,11 @@ export const {
   getAccessTokenByRefreshTokenActionSuccess,
   registerAction,
   registerActionSuccess,
+  registerActionError,
+  loginSuccessWithOauthAction,
   logoutAction,
+  logoutSuccessAction,
+  logoutErrorsAction,
 } = authSlice.actions
 
 export default authSlice.reducer

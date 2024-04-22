@@ -11,7 +11,7 @@ class UserService implements UserServiceInterface {
     }
     public upload_avatar = async (user: any, imagePath: string): Promise<any> => {
         try {
-            const result = this.userRepo.updateAvatar(String(user.id), imagePath)
+            const result = this.userRepo.updateUser(String(user.id), imagePath)
             return result;
         } catch (error) {
             console.log(error)

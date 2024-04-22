@@ -6,14 +6,16 @@ interface UserRepoInterface {
 
     isExistedEmail: (email: string) => Promise<boolean>;
 
+    //todo : delete this function
     isExistedToken: (token: string) => Promise<boolean>;
 
     createUser: (data: any) => Promise<User | null>;
 
     me: (id: string) => Promise<User | null>;
 
-    updateAvatar: (userId: string, imagePath: string) => Promise<boolean | null>;
+    updateUser: (userId: string, userData: any) => Promise<boolean | null>;
 
+    //todo : delete this function
     storeToken: (id: string, token: string) => Promise<boolean>;
 
     updateUserPassword: (id: string, password: string) => Promise<boolean>;

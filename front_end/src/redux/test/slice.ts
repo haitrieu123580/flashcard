@@ -17,12 +17,14 @@ const testSlice = createSlice({
       state.isLoading = false;
       state.examData = payload.data;
     },
+    getTestBySetIdErrorAction: (state) => {
+      state.isLoading = false;
+    },
 
     submitAnswersAction: (state, { payload }) => {
       state.isLoading = true;
     },
     submitAnswersActionSuccess: (state, { payload }) => {
-      console.log("payload", payload.data)
       state.isLoading = false;
       state.examData = payload.data;
     },
@@ -35,6 +37,7 @@ export const {
   getTestBySetIdActionSuccess,
   submitAnswersAction,
   submitAnswersActionSuccess,
+  getTestBySetIdErrorAction,
 } = testSlice.actions
 
 export default testSlice.reducer

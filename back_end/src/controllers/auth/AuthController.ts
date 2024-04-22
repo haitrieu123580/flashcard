@@ -23,5 +23,8 @@ class AuthController {
     sign_in_success_oauth = async (req: Request, res: Response) => {
         await this.authService.sign_in_success_oauth(req, res);
     }
+    logout = async (req: Request, res: Response) => {
+        await this.authService.logout(req, res);
+    }
 }
 export default AuthController;

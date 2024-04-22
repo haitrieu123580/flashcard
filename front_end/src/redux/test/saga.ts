@@ -9,6 +9,7 @@ import {
   getTestBySetIdActionSuccess,
   submitAnswersAction,
   submitAnswersActionSuccess,
+  getTestBySetIdErrorAction
 } from "./slice";
 
 import {
@@ -20,7 +21,6 @@ function* watchGetTestBySetId() {
     const { id, onSuccess, onError } = payload;
     try {
       const res = yield call(getMultipleChoiceTestBySetIdApi, id);
-      // console.log("response", res)
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
@@ -33,6 +33,7 @@ function* watchGetTestBySetId() {
         }
         else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
           isFunction(payload.onError) && payload.onError(res.data.message);
+          yield put(getTestBySetIdErrorAction())
         }
       }
     } catch (error) {
@@ -45,7 +46,6 @@ function* watchSubmitMultipleChoiceTest() {
     const { data, onSuccess, onError } = payload;
     try {
       const res = yield call(submitMultipleChoiceTestApi, data);
-      // console.log("response", res)
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);

@@ -12,9 +12,12 @@ import { Card } from '@/components/ui/card'
 import { PlusCircle, Trash2 } from 'lucide-react'
 import { isFunction } from '@/lib/utils'
 import NestedCardFieldArray from '../cards/NestedCardFieldArray'
-
+import { useSelector } from 'react-redux'
+import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
 const SetForm = (props: any) => {
     const { isEdit, defaultValues, onCreate } = props;
+    const { isLoading } = useSelector((state: any) => state.Sets)
+
     const formSetCardSchema = z.object({
         set_name: z.string().min(1, {
             message: "Required",
@@ -173,9 +176,6 @@ const SetForm = (props: any) => {
                                             type={Constants.INPUT_TYPE.FILE_UPLOAD}
                                             classNameInput='h-fit'
                                         />
-                                        <div className='my-4'>
-                                            <b>Examples</b>
-                                        </div>
                                         <NestedCardFieldArray
                                             nestIndex={index}
                                             control={form.control}
@@ -183,22 +183,6 @@ const SetForm = (props: any) => {
                                             fieldName={"cards"}
                                             nestedFieldName={"example"}
                                         />
-                                        {/* <button
-                                            onClick={() => {
-                                                form.setValue("cards", [
-                                                    ...(form.getValues().cards || []),
-                                                    {
-                                                        term: '',
-                                                        define: '',
-                                                        image: { image: null, path: "" },
-                                                        example: [{ sentence: '', translation: '' }]
-                                                    }
-                                                ]);
-                                            }}
-                                        >
-                                            Append Nested
-                                        </button> */}
-
                                     </Card>
                                 )
                             })}

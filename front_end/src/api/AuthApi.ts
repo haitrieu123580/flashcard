@@ -1,6 +1,6 @@
 import { AxiosConfig } from "./AxiosConfig";
 const BASE_URL = import.meta.env.VITE_API_URL + "/api/auth";
-
+import { Axios } from "axios";
 export const LoginApi = async (data: any) => {
     const response = await AxiosConfig.post(`${BASE_URL}/sign-in`, data);
     return response;
@@ -30,5 +30,21 @@ export const ForgotPasswordApi = async (data: any) => {
 
 export const ResetPasswordApi = async (data: any) => {
     const response = await AxiosConfig.post(`${BASE_URL}/reset-password`, data);
+    return response;
+}
+
+export const logoutApi = async () => {
+    const response = await AxiosConfig.get(`${BASE_URL}/logout`);
+    return response;
+}
+
+export const LoginWithOauthApi = async () => {
+    const response = await AxiosConfig.get(`${import.meta.env.VITE_API_URL}/passport/login/success`, {
+        withCredentials: true,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    });
     return response;
 }
