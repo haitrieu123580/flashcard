@@ -23,35 +23,6 @@ export const convertDate = (date: string) => {
   return date ? date?.split('-').reverse()?.join('/') : '';
 };
 
-export const convertRegexToOptions = (_string = '') => {
-  _string = _string?.replace('[', '');
-  _string = _string?.replace(']', '');
-
-  let array = [];
-  if (_string?.indexOf('|') != -1) {
-    array = _string?.split('|');
-  } else {
-    array = _string?.split('｜');
-  }
-  array = array?.map((x) => {
-    let index = x.indexOf(':');
-    if (index != -1) {
-      return {
-        label: x?.split(':')[1],
-        key: x?.split(':')[0],
-        value: x?.split(':')[0],
-      };
-    } else {
-      return {
-        label: x?.split('：')[1],
-        key: x?.split('：')[0],
-        value: x?.split('：')[0],
-      };
-    }
-  });
-  return array;
-};
-
 export const getLoggedInUserInfoFromToken = () => {
   // const token = getCookie('accessToken') && getCookie('accessToken') || '';
   // if (!token) {
@@ -86,9 +57,6 @@ export function objectToFormData(obj: any, formData: FormData | null = null, nam
   return fd;
 }
 
-
-
-
 export const replacePathWithId = (path: string, id: string) => {
   return path.replace(':id', id);
 }
@@ -105,21 +73,10 @@ export const convertDateToString = (text: string) => {
   return date.toDateString();
 }
 
-export const SidebarNavItems = [
-  {
-    href: routerPaths.ADMIN_DASHBOARD,
-    title: 'Dashboard'
-  },
-  {
-    href: routerPaths.ADMIN_SETS,
-    title: 'Sets'
-  },
-  {
-    href: routerPaths.ADMIN_ACCOUNTS,
-    title: 'Users'
-  },
-  {
-    href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
-    title: 'Tests'
-  },
-]
+
+
+export const shuffleArray = (array: any[]) => {
+  const newArray = [...array]; // Create a shallow copy of the original array
+  console.log("newArray", newArray.sort(() => Math.random() - 1))
+  return newArray.sort(() => Math.random() - 1); // Corrected sorting logic
+}

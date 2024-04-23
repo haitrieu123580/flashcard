@@ -37,7 +37,7 @@ const TestCard = (props: any) => {
                     </div>
                 </CardTitle>
                 <CardDescription>
-                    <Badge variant="default">{`${data?.totalQuestions} question`}</Badge>
+                    <Badge variant="default">{`${data?.totalQuestions} questions`}</Badge>
                 </CardDescription>
             </CardHeader>
             <CardContent className="overflow-hidden grid grid-cols-12 gap-6">

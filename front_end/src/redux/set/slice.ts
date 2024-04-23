@@ -37,6 +37,7 @@ const Set = createSlice({
     },
 
     deleteSetSuccessAction: (state, { payload }) => {
+      state.isLoading = false;
     },
   },
 })

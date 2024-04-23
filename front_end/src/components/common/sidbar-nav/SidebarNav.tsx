@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import Constants from "@/lib/Constants"
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
     items: {
         href: string
@@ -35,6 +36,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
                 >
                     <Link
                         to={item.href}
+                        className="w-full h-full text-left"
                     // href={item.href}
 
                     >

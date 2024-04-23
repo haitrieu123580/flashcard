@@ -1,3 +1,4 @@
+import { routerPaths } from "@/routes/path";
 
 export default class Constants {
     static ACCESS_TOKEN = 'access_token';
@@ -51,4 +52,23 @@ export default class Constants {
         LIMIT: 6,
         SIBLING_COUNT: 8,
     };
+
+    static SidebarNavItems = [
+        {
+            href: routerPaths.ADMIN_DASHBOARD,
+            title: 'Dashboard'
+        },
+        {
+            href: routerPaths.ADMIN_SETS,
+            title: 'Sets'
+        },
+        {
+            href: routerPaths.ADMIN_ACCOUNTS,
+            title: 'Users'
+        },
+        {
+            href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
+            title: 'Tests'
+        },
+    ]
 }

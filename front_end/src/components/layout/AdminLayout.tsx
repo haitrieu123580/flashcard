@@ -13,7 +13,6 @@ import { routerPaths } from '@/routes/path';
 import Constants from '@/lib/Constants';
 import { SidebarNav } from '../common/sidbar-nav/SidebarNav';
 import { Card } from "@/components/ui/card"
-import { SidebarNavItems } from "@/lib/utils"
 import { Outlet } from 'react-router-dom';
 type AdminLayoutProps = {
     children?: ReactNode;
@@ -53,7 +52,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             <MaxWidthWrapper>
                 <div className='mt-2 md:mt-10 grid grid-rows-1 md:grid-cols-12 gap-10 min-h-[70vh]'>
                     <div className='row-span-1 md:col-span-2'>
-                        <SidebarNav items={SidebarNavItems} className='md:fixed ' />
+                        <SidebarNav items={Constants.SidebarNavItems} className='md:fixed ' />
                     </div>
                     <Card className='row-span-1 px-3 md:col-span-10 md:ml-6 md:px-6'>
                         {/* {children} */}

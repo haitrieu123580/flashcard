@@ -7,19 +7,19 @@ import {
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils";
 const MultipleChoiceTestResultPage = () => {
-    const { examData } = useSelector((state: any) => state.Test);
+    const { result } = useSelector((state: any) => state.Test);
     return (
         <div>
             <CardTitle className="flex justify-between">
-                {examData?.setName}
+                {result?.setName}
                 <CardDescription className="text-lg font-bold text-green-300">
-                    {examData?.total_correct}/{examData?.total_questions}
+                    {result?.total_correct}/{result?.total_questions}
                 </CardDescription>
             </CardTitle>
 
             {
-                Array.isArray(examData?.result)
-                && examData?.result?.map((question: any, index: number) => {
+                Array.isArray(result?.result)
+                && result?.result?.map((question: any, index: number) => {
                     return (
                         <Card className="my-4 p-2 " key={index}>
                             <CardTitle className="my-6 px-6 flex justify-between items-end">

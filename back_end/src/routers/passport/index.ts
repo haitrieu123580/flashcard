@@ -23,7 +23,13 @@ router.get("/login/failed", (req: Request, res: Response) => {
         message: "failure",
     });
 });
-
+router.get("/logout", (req: Request, res: Response) => {
+    req.logOut((err: any) => {
+        if (err) {
+            console.log("err", err)
+        }
+    });
+});
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get(

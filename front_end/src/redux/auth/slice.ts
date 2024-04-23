@@ -42,8 +42,8 @@ const authSlice = createSlice({
     },
 
     getProfileActionError: (state) => {
-      // state.isLoading = false;
-      // state.profile = null;
+      state.isLoading = false;
+      state.profile = null;
     },
 
     getAccessTokenByRefreshTokenAction: (state, { payload }) => {

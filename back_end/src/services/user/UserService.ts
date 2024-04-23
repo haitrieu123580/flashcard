@@ -18,5 +18,20 @@ class UserService implements UserServiceInterface {
         }
     }
 
+    editProfile = async (userId: string, data: any): Promise<any> => {
+        throw new Error("Method not implemented.");
+    }
+
+    changePassword = async (userId: string, data: any): Promise<any> => {
+        throw new Error("Method not implemented.");
+    }
+
+    getMultipleChoiceResult = async (userId: string): Promise<any> => {
+        throw new Error("Method not implemented.");
+    }
+
+    getMultipleChoiceTestDetails = async (userId: string, recordId: string): Promise<any> => {
+        throw new Error("Method not implemented.");
+    }
 }
 export default UserService;

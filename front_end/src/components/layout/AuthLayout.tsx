@@ -47,8 +47,8 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                 <div className='mt-2 md:mt-10 min-h-96'>
                     {/* {children} */}
                     {
-                        // profile
-                        // &&
+                        profile
+                        &&
                         <Outlet />
                     }
                 </div>

@@ -11,28 +11,38 @@ import {
 import { Button } from "@/components/ui/button"
 import { LogOut } from 'lucide-react';
 import { CircleUserRound } from 'lucide-react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     logoutAction
 } from "@/redux/auth/slice"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const UserPopover = () => {
+    const { profile } = useSelector((state: any) => state.Auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const logout = () => {
         dispatch({
-            type: logoutAction.type
+            type: logoutAction.type,
+            payload: {
+                onSuccess: () => {
+                    navigate(routerPaths.HOME)
+                    window.location.reload()
+                }
+            }
         });
-
+        window.open(`${BACKEND_URL}/passport/logout`, "_self");
     }
     return (
         <Popover>
-            <PopoverTrigger className="text-sm p-1">
+            <PopoverTrigger className="text-sm p-1 flex items-center gap-2">
                 <Avatar>
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
+                {profile?.username}
             </PopoverTrigger>
             <PopoverContent className="w-fit">
                 <div className="grid gap-4">

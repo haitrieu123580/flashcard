@@ -24,6 +24,7 @@ const LearnFlashcard = () => {
     }, [id])
 
     const getSetById = (id: string) => {
+        setCurrentCard(0);
         scrollTo(0, 0);
         dispatch({
             type: getSetByIdAction.type,

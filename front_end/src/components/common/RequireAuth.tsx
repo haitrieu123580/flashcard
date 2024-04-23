@@ -13,8 +13,8 @@ const RequireAuth = ({ allowedRoles, children }: { allowedRoles: any, children?:
             {allowedRoles.includes(profile?.role)
                 // ? <Outlet />
                 ? children
-                // : <Navigate to={routerPaths.UNAUTHORIZED} state={{ from: location }} replace />
-                : null
+                : <Navigate to={routerPaths.UNAUTHORIZED} state={{ from: location }} replace />
+                // : null
             }
             {/* <Outlet /> */}
         </>

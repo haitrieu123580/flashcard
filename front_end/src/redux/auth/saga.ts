@@ -79,14 +79,18 @@ function* watchGetProfile() {
           );
           isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
         }
-        // yield put(
-        //   getProfileActionError()
-        // );
+        else {
+          yield put(
+            getProfileActionError()
+          );
+        }
 
       }
-      // yield put(
-      //   getProfileActionError()
-      // );
+      else {
+        yield put(
+          getProfileActionError()
+        );
+      }
     } catch (error) {
       onError && onError(error);
     }
@@ -176,7 +180,7 @@ function* watchgetAccessTokenWithOauth() {
 }
 function* watchLogout() {
   yield takeEvery(logoutAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
-    // const { onSuccess, onError } = payload;
+    const { onSuccess, onError } = payload;
     try {
       const res = yield call(logoutApi);
       console.log(res);
@@ -185,18 +189,23 @@ function* watchLogout() {
           yield put(
             logoutSuccessAction()
           );
-          // isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
+          isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
         }
+        else {
+          isFunction(onError) && payload.onError(res?.data?.message);
+          yield put(
+            logoutErrorsAction()
+          );
+        }
+      }
+      else {
+        isFunction(onError) && payload.onError();
         yield put(
           logoutErrorsAction()
         );
-
       }
-      yield put(
-        logoutErrorsAction()
-      );
     } catch (error) {
-      // onError && onError(error);
+      isFunction(onError) && payload.onError();
     }
   });
 }
