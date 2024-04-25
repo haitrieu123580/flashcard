@@ -54,7 +54,7 @@ const LearnFlashcard = () => {
                     </div>
                     : <>
                         <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
-                            <CardTitle className="flex gap-2 items-end">
+                            <CardTitle className="flex gap-2 items-end my-2">
                                 <span>{data?.name}</span>
                                 <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
                             </CardTitle>
@@ -64,11 +64,7 @@ const LearnFlashcard = () => {
                                         && <>
                                             <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
                                                 <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
-                                                    <div className="flex justify-end hover:cursor-pointer" onClick={() => {
-                                                        speek(card?.term)
-                                                    }}>
-                                                        <Volume1 />
-                                                    </div>
+
                                                     <FlipCard key={index} term={card?.term} define={card?.define} card={card} />
                                                 </div>
                                                 <div className="col-span-1"></div>
