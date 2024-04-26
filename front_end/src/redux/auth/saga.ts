@@ -206,6 +206,10 @@ function* watchLogout() {
       }
     } catch (error) {
       isFunction(onError) && payload.onError();
+      // ! not allow to logout
+      yield put(
+        logoutErrorsAction()
+      );
     }
   });
 }
