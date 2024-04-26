@@ -39,7 +39,6 @@ class VocabularySetService implements IVocabularySetService {
                 data = { take: take, skip: skip, filter, name, sortBy: 'createdDate' };
             }
             const [sets, count] = await this.setRepo.get_all_public_sets(data);
-
             if (sets?.length) {
                 sets.forEach((set: any) => {
                     set.totalCards = set?.cards?.length;

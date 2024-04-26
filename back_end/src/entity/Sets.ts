@@ -1,4 +1,4 @@
-import { Entity, Column, Generated, ManyToOne, OneToMany, JoinColumn } from "typeorm"
+import { Entity, Column, Generated, ManyToOne, OneToMany, JoinColumn, ManyToMany, JoinTable } from "typeorm"
 import { BaseEntity } from "./BaseEntity"
 import { User } from "./User"
 import { Cards } from "./Cards"
@@ -22,10 +22,17 @@ export class Sets extends BaseEntity {
     @JoinColumn()
     user: User;
 
-    @OneToMany(() => Cards, card => card.set, {
-        onDelete: "SET NULL"
+    @Column({
+        nullable: true,
+        default: false,
     })
-    @JoinColumn()
+    is_public: boolean;
+
+    // todo: change set -> sets
+    @ManyToMany(() => Cards, {
+        onDelete: "CASCADE"
+    })
+    @JoinTable()
     cards: Cards[];
 
     @Column({

@@ -55,33 +55,16 @@ export class VocabularySetRepo implements IVocabularySetRepo {
     get_all_public_sets(data: any): Promise<any> {
         const { take, skip, filter, name, sortBy } = data;
         let order: any = {};
-        // if (name) {
-        //     return this.setDataSource.createQueryBuilder("sets")
-        //         .where("LOWER(sets.name) ILIKE :name", { name: name.toLowerCase() })
-        //         .orderBy(sortBy === "setName" ? "sets.name" : "sets.created_at", filter === "asc" ? "ASC" : "DESC")
-        //         .take(take)
-        //         .skip(skip)
-        //         .leftJoinAndSelect("sets.cards", "card")
-        //         .leftJoinAndSelect("sets.questions", "question")
-        //         .getManyAndCount();
-        // }
         if (sortBy === "setName") {
             order.name = filter === "asc" ? "ASC" : "DESC";
         } else if (sortBy === "createdDate") {
             order.created_at = filter === "latest" ? "DESC" : "ASC";
         }
 
-
-        // return this.setDataSource.createQueryBuilder("sets")
-        //     .orderBy(sortBy === "setName" ? "sets.name" : "sets.created_at", filter === "asc" ? "ASC" : "DESC")
-        //     .take(take)
-        //     .skip(skip)
-        //     .leftJoinAndSelect("sets.cards", "card")
-        //     .leftJoinAndSelect("sets.questions", "question")
-        //     .getManyAndCount();
         return this.setDataSource.findAndCount({
             where: {
-                name: name ? ILike(name) : undefined
+                name: name ? ILike(name) : undefined,
+                is_public: true
             },
             order: order,
             take: take,

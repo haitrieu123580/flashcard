@@ -21,7 +21,8 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
             relations: ["user"]
         })
         if (!set) { return false }
-        newCard.set = set
+        // !warning: set is not defined
+        // newCard.set = set
         newCard.created_by = set.user.email;
         await this.cardDataSource.save(newCard);
         return true

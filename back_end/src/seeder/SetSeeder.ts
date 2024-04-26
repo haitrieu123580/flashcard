@@ -35,9 +35,9 @@ export class SetSeeder implements Seeder {
                 });
                 newSet.image = image_url?.Location || "";
             }
-
-            newSet.created_by = set.created_by
-            newSet.created_at = new Date()
+            newSet.is_public = set.is_public;
+            newSet.created_by = set.created_by;
+            newSet.created_at = new Date();
 
             if (!newSet.cards) {
                 newSet.cards = [];
