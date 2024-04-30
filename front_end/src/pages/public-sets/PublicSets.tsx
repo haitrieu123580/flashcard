@@ -12,7 +12,7 @@ import { getAllSetsAction } from '@/redux/public-sets/slice'
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination'
 import { toast } from '@/components/ui/use-toast'
 import { Skeleton } from "@/components/ui/skeleton"
-import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner"
+import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
 const PublicSets = () => {
     const form = useForm({
         defaultValues: {

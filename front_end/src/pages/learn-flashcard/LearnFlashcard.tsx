@@ -11,12 +11,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSetByIdAction } from "@/redux/set/slice";
 import { replacePathWithId, speek } from "@/lib/utils";
 import { routerPaths } from "@/routes/path";
-import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner";
+import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
+import {
+    getUserSetsListAction,
+    addCardToMySetAction,
+} from '@/redux/user-sets/slice';
+
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [currentCard, setCurrentCard] = useState(0);
     const { data, isLoading } = useSelector((state: any) => state.Set);
+    const { mySets } = useSelector((state: any) => state.UserSets)
+
     useEffect(() => {
         if (id) {
             getSetById(id);
@@ -37,6 +44,16 @@ const LearnFlashcard = () => {
             }
         })
     }
+    const getUserSetsList = () => {
+        dispatch({
+            type: getUserSetsListAction.type,
+        })
+    }
+    useEffect(() => {
+        if (mySets.length === 0) {
+            getUserSetsList()
+        }
+    }, [mySets])
 
     const showCard = (index: number) => {
         if (index >= data?.cards?.length || index < 0) {

@@ -13,7 +13,7 @@ import { PlusCircle, Trash2 } from 'lucide-react'
 import { isFunction } from '@/lib/utils'
 import NestedCardFieldArray from '../cards/NestedCardFieldArray'
 import { useSelector } from 'react-redux'
-import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
+import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
 const SetForm = (props: any) => {
     const { isEdit, defaultValues, onCreate } = props;
     const { isLoading } = useSelector((state: any) => state.Sets)

@@ -1,40 +1,47 @@
-import React from 'react'
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import React, { useEffect } from 'react'
+import { Card, CardTitle } from '@/components/ui/card';
 import { Star, Volume1 } from 'lucide-react';
-import { speek } from '@/lib/utils';
+import { cn, speek } from '@/lib/utils';
+import { Button } from '../ui/button';
+import UserSetPopover from './user-set-popover/UsetSetPopover';
+
 const FlipCard = (props: any) => {
-    const { term, define, card } = props
+    const { card } = props
     const [isFlipped, setIsFlipped] = React.useState(false)
-    const [isStarred, setIsStarred] = React.useState(false)
     const flipCard = () => {
         setIsFlipped(!isFlipped)
     }
+
     return (
         <Card className='flex flex-col items-end p-2'>
-            <CardTitle className='flex justify-end items-end gap-4'>
-                <div className="flex justify-end hover:cursor-pointer" onClick={() => {
-                    speek(card?.term)
-                }}>
-                    <Volume1 />
-                </div>
-                <Star
+            <CardTitle className='flex justify-end items-end gap-2'>
+                <Button
+                    variant={'ghost'}
+                    className='w-fit h-fit rounded-full p-0'
                     onClick={() => {
-                        setIsStarred(!isStarred)
-                    }}
-                    className={`${isStarred ? "fill-yellow-400" : ""} cursor-pointer`}
+                        speek(card?.term)
+                    }}>
+                    <Volume1 />
+                </Button>
+                <UserSetPopover
+                    cardId={card?.id}
                 />
             </CardTitle>
             <div className={`min-h-80 hover:cursor-pointer p-0 [transform:rotateY(0deg)] [transform-style:preserve-3d] ease-in-out transition-all ${isFlipped ? '[transform:rotateY(180deg)]' : ""} flex justify-center items-center w-full h-full`} onClick={flipCard} >
                 {!isFlipped
-                    ? <div className="w-full h-full flex justify-center items-center overflow-auto">
-                        <span>{term}</span>
+                    ? <div className="w-full h-full flex justify-center items-center overflow-auto text-lg">
+                        <span>{card?.term}</span>
                     </div>
                     : <div className="[transform:rotateY(180deg)] w-full h-full flex justify-center items-center overflow-hidden" >
-                        <div className='flex flex-col max-h-full max-w-full gap-4 items-center'>
-                            <span onCopy={() => { return false }} onSelect={() => { return false }}>{define}</span>
-                            {card?.image && <>
-                                <img src={card?.image} alt="card" className='object-contain max-w-full max-h-full w-3/4 h-3/4 rounded-sm' />
-                            </>}
+                        <div className='grid grid-cols-2 gap-2 px-4'>
+                            <div
+                                className={cn('col-span-1 text-center m-auto text-lg',
+                                    !card?.image ? "col-span-2" : ""
+                                )}
+                                onCopy={() => { return false }} onSelect={() => { return false }}>{card?.define}</div>
+                            {card?.image && <div className='col-span-1'>
+                                <img src={card?.image} alt="card" className='object-contain max-w-full max-h-full w-full h-full rounded-sm' />
+                            </div>}
                         </div>
                     </div>}
             </div>

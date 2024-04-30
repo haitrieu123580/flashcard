@@ -11,8 +11,6 @@ const vocabSetController = new VocabularySetController();
 
 router.get("/public-sets", [isValidKey], vocabSetController.get_all_public_sets);
 
-//router.get("/my-sets", [verifyToken, isValidKey], vocabSetController.get_my_sets);
-
 router.get("/:id", [isValidKey], vocabSetController.getSet);
 
 router.post("/", [isValidKey, verifyToken, isAdmin, UploadFile.any()], vocabSetController.createSet);
@@ -21,5 +19,6 @@ router.put("/:id", [isValidKey, verifyToken, isAdmin, UploadFile.any()], vocabSe
 
 router.delete("/:id", [isValidKey, verifyToken, isAdmin], vocabSetController.deleteSet);
 
+// router.post("/add-card", [isValidKey, verifyToken], vocabSetController.addCardToSet);
 
 export default router;

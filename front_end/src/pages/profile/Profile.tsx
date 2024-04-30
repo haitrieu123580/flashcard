@@ -81,7 +81,7 @@ const Profile = () => {
       <Card>
         <CardHeader>
           <Avatar className="w-36 h-36 aspect-square m-auto mb-3">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={profile?.avatar || ""} className="w-full h-full object-cover" />
             <AvatarFallback> <User className="w-28 h-28" /></AvatarFallback>
           </Avatar>
         </CardHeader>

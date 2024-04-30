@@ -6,16 +6,19 @@ import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetR
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { S3Service } from '@services/s3/S3Service';
 import { Constants } from '@src/core/Constant';
-
+import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
+import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
 @Service()
 class VocabularySetService implements IVocabularySetService {
 
     private setRepo: IVocabularySetRepo;
     private s3Service: S3Service;
+    private cardRepo: IVocabularyCardRepo;
 
     constructor() {
         this.setRepo = Container.get(VocabularySetRepo);
         this.s3Service = Container.get(S3Service);
+        this.cardRepo = Container.get(VocabularyCardRepo);
     }
 
     get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
@@ -66,19 +69,6 @@ class VocabularySetService implements IVocabularySetService {
         }
     }
 
-    get_my_sets = async (req: any, res: Response): Promise<any> => {
-        try {
-            const userId = req.user.id;
-            const sets = await this.setRepo.get_my_sets(userId);
-            if (sets?.length) {
-                return new SuccessResponse('Get my sets successfully', sets).send(res);
-            }
-            return new FailureMsgResponse("Empty!").send(res);
-        } catch (error) {
-            return new FailureMsgResponse('Internal Server Error ').send(res);
-        }
-    }
-
     getSet = async (req: Request, res: Response): Promise<any> => {
         try {
             const setId = req.params.id;
@@ -122,6 +112,7 @@ class VocabularySetService implements IVocabularySetService {
 
     create_Set = async (req: any, res: Response) => {
         try {
+            const { id, role } = req.user;
             const cards = [];
             const formData = req.body;
             const userId = req.user.id;
@@ -145,7 +136,7 @@ class VocabularySetService implements IVocabularySetService {
             const { set_name, set_description } = formData;
             const set_image = files.find((file: any) => file.fieldname === 'set_image');
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
-            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "" };
+            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "", isPublic: role === Constants.USER_ROLE.ADMIN };
 
             await this.setRepo.create_new_set_and_cards(userId, set, cards);
             return new SuccessMsgResponse('Create set successfully').send(res);

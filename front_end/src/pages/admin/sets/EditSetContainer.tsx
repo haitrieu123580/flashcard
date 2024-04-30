@@ -20,7 +20,7 @@ import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card
 import EditPopup from '@/components/common/popup/EditPopup'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
-import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
+import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
 
 const EditSetContainer = () => {
     const { id } = useParams();

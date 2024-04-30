@@ -3,10 +3,14 @@ import { Request, Response, NextFunction } from "express";
 const isValidRequest = (targetRequest: any) => {
     return async (request: Request, response: Response, next: NextFunction) => {
         try {
-            if (validateRequest(request.body, targetRequest) && validateNotNull(request.body)) {
-                next();
-            } else {
+            if (!validateRequest(request.body, targetRequest)) {
                 response.status(400).json({ error: 'Invalid request format' });
+            }
+            if (!validateNotNull(request.body)) {
+                response.status(400).json({ error: 'Fields not null' });
+            }
+            else {
+                next();
             }
         } catch (error) {
             console.error(error);

@@ -24,18 +24,20 @@ class AuthService implements AuthServiceInterface {
 
     public sign_in = async (req: Request, res: Response): Promise<any> => {
         try {
-            const userData = await this.userRepo.getUserByUsername(req.body.username);
+            const userData = await this.userRepo.getAllUserInfoBy("username", req.body.username);
             if (userData) {
                 if (comparePassword(req.body.password, userData.password)) {
                     const access_token = genAccessToken({
                         id: userData.id,
                         username: userData.username,
-                        role: userData.role
+                        role: userData.role,
+                        email: userData.email,
                     });
                     const refresh_token = genRefreshToken({
                         id: userData.id,
                         username: userData.username,
                         role: userData.role,
+                        email: userData.email,
                     });
                     const result = await this.userRepo.storeToken(userData.id, refresh_token);
                     return new SuccessResponse('Login Success', {
@@ -55,11 +57,11 @@ class AuthService implements AuthServiceInterface {
 
     public sign_up = async (req: Request, res: Response): Promise<any> => {
         try {
-            const isExistedEmail = await this.userRepo.isExistedEmail(req.body.email)
+            const isExistedEmail = await this.userRepo.getUserBy("email", req.body.email);
             if (isExistedEmail) {
                 return new FailureMsgResponse('Email Existed!').send(res);
             }
-            const isExistedUsername = await this.userRepo.getUserByUsername(req.body.username);
+            const isExistedUsername = await this.userRepo.getUserBy("username", req.body.username);
             if (isExistedUsername) {
                 return new FailureMsgResponse('Username Existed!').send(res);
             }
@@ -85,7 +87,7 @@ class AuthService implements AuthServiceInterface {
             }
 
             // Check validity with an existing token
-            const isExistingToken = await this.userRepo.isExistedToken(String(refresh_token));
+            const isExistingToken = await this.userRepo.getUserBy("token", String(refresh_token));
 
             if (isExistingToken) {
                 const user = verifyToken(refresh_token);
@@ -133,7 +135,7 @@ class AuthService implements AuthServiceInterface {
         try {
             if (req?.user) {
                 const { displayName, email } = req?.user as { displayName: string, email: string };
-                const userData = await this.userRepo.getUserByUsername(displayName);
+                const userData = await this.userRepo.getAllUserInfoBy("username", displayName);
                 if (userData) {
                     const access_token = genAccessToken({
                         id: userData.id,

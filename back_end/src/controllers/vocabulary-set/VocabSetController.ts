@@ -13,10 +13,6 @@ class VocabularySetController {
         return this.service.get_all_public_sets(req, res);
     }
 
-    get_my_sets = async (req: Request, res: Response): Promise<any> => {
-        return this.service.get_my_sets(req, res);
-    }
-
     getSet = async (req: Request, res: Response): Promise<any> => {
         return this.service.getSet(req, res);
     }
@@ -33,5 +29,9 @@ class VocabularySetController {
     deleteSet = async (req: Request, res: Response): Promise<any> => {
         return this.service.deleteSet(req, res);
     }
+
+    // addCardToSet = async (req: Request, res: Response): Promise<any> => {
+    //     return this.service.addCardToSet(req, res)
+    // }
 }
 export default VocabularySetController;

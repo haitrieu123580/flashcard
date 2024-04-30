@@ -30,7 +30,7 @@ export class PasswordResetService implements IPasswordResetService {
             if (!isValidEmail(email)) {
                 return new FailureMsgResponse('Invalid Email').send(res);
             }
-            const isExistedEmail = await this.userRepo.isExistedEmail(email);
+            const isExistedEmail = await this.userRepo.getUserBy("email", email);
             if (isExistedEmail) {
                 const passwordResetOtp = await this.passwordResetOtpRepo.createOTP(email);
                 const otp = passwordResetOtp?.otp;
@@ -50,19 +50,19 @@ export class PasswordResetService implements IPasswordResetService {
             if (!isValidEmail(email)) {
                 return new FailureMsgResponse('Invalid Email').send(res);
             }
-            const isExistedEmail = await this.userRepo.isExistedEmail(email);
-            if (isExistedEmail) {
+            const userData = await this.userRepo.getUserBy("email", email);
+            if (userData) {
                 const passwordResetOtp = await this.passwordResetOtpRepo.getPasswordResetOtp(email);
                 const now_time = new Date().getTime();
                 const time = passwordResetOtp?.updated_at?.getTime() || passwordResetOtp?.created_at?.getTime() || 0;
                 if (passwordResetOtp?.otp === otp) {
                     if ((time + Constants.PASSWORD_RESET_OTP_EXPIRE) >= now_time) {
-                        const userData = await this.userRepo.getUserByEmail(email);
-                        if (userData) {
-                            await this.userRepo.updateUserPassword(userData?.id, hasingPassword(password).password);
-                            return new SuccessMsgResponse('OTP is valid').send(res);
-                        }
-                        return new InternalErrorResponse('Email not found').send(res);
+                        // const userData = await this.userRepo.getUserBy("email", email);
+                        await this.userRepo.updateUserPassword(userData?.id, hasingPassword(password).password);
+                        return new SuccessMsgResponse('OTP is valid').send(res);
+                        // if (userData) {
+                        // }
+                        // return new InternalErrorResponse('Email not found').send(res);
                     }
                     return new FailureResponse('OTP is expired', { expired: (time + Constants.PASSWORD_RESET_OTP_EXPIRE) - now_time }).send(res);
 

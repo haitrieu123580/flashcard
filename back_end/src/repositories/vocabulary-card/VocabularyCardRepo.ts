@@ -66,8 +66,9 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
     }
 
     async getCardById(id: string): Promise<Cards | null> {
-        return this.cardDataSource.findOneBy({
+        const card = await this.cardDataSource.findOneBy({
             id: id
         })
+        return card
     }
 }

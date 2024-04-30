@@ -7,36 +7,6 @@ import { hasingPassword, comparePassword } from "@helper/HashingPassword";
 class UserRepo implements UserRepoInterface {
     private userDataSource = AppDataSource.getRepository(User)
 
-    getUserByUsername = async (username: string): Promise<any> => {
-        const result = await this.userDataSource.findOne(
-            {
-                where: {
-                    username: username
-                },
-                select: [
-                    'id',
-                    'username',
-                    'email',
-                    'password',
-                    'role',
-                ]
-            }
-        )
-        return result;
-    };
-
-    isExistedEmail = async (email: string): Promise<boolean> => {
-        const user = await this.userDataSource.find({
-            where: {
-                email: email
-            }
-        })
-        if (user.length) {
-            return true;
-        }
-        return false;
-    }
-
     createUser = async (data: any): Promise<User | null> => {
         const user = new User();
         user.email = data.email;
@@ -53,20 +23,21 @@ class UserRepo implements UserRepoInterface {
                 id: id
             },
         })
-
         return result;
     }
 
-    updateUser = async (userId: string, userData: any): Promise<boolean> => {
-        return false;
-    }
-
-    isExistedToken = async (token: string): Promise<boolean> => {
-        const user = await this.userDataSource.findOneBy({
-            token: token
+    updateUserProfile = async (userId: string, userData: any): Promise<any> => {
+        const updatedUser = await this.userDataSource.findOne({
+            where: {
+                id: userId
+            }
         })
-        if (user) {
-            return true;
+        if (updatedUser) {
+            updatedUser.username = userData?.username;
+            updatedUser.avatar = userData?.avatar;
+            updatedUser.updated_at = new Date();
+            const result = await this.userDataSource.save(updatedUser);
+            return result;
         }
         return false;
     }
@@ -78,29 +49,58 @@ class UserRepo implements UserRepoInterface {
         if (user) {
             user.token = token;
             user.updated_at = new Date();
-            await this.userDataSource.save(user);
-            return true
+            const result = await this.userDataSource.save(user);
+            if (result) return true
+            return false;
         }
         return false;
     }
 
-    updateUserPassword = async (id: string, password: string): Promise<boolean> => {
-        const user = await this.userDataSource.findOneBy({
-            id: id
+    updateUserPassword = async (userId: string, newPassword: string): Promise<boolean> => {
+        const updatedUser = await this.userDataSource.findOne({
+            where: {
+                id: userId
+            }
         })
-        if (user) {
-            user.password = password;
-            await this.userDataSource.save(user);
-            return true;
+        if (updatedUser) {
+            updatedUser.password = newPassword;
+            updatedUser.updated_at = new Date();
+            const result = await this.userDataSource.save(updatedUser);
+            if (result) return true
+            return false;
         }
         return false;
     }
 
-    getUserByEmail = async (email: string): Promise<User | null> => {
+    getAllUserInfoBy = async (searchBy: string, searchValue: any): Promise<User | null> => {
         const result = await this.userDataSource.findOne(
             {
                 where: {
-                    email: email
+                    [searchBy]: searchValue
+                },
+                select: [
+                    'id',
+                    'username',
+                    'email',
+                    "password",
+                    'role',
+                    'avatar',
+                    'created_at',
+                    'updated_at'
+                ]
+            }
+        )
+        return result;
+    }
+
+    getUserBy = async (searchBy: string, searchValue: any): Promise<User | null> => {
+        const result = await this.userDataSource.findOne(
+            {
+                where: {
+                    [searchBy]: searchValue
+                },
+                relations: {
+                    sets: true
                 }
             }
         )

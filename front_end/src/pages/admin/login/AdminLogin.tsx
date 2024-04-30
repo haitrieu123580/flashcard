@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,12 +26,18 @@ import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
-export function LoginForm(props: any) {
-    const { isLoading } = useSelector((state: any) => state.Auth);
+const AdminLogin = () => {
+    const { isLoading, loggedIn } = useSelector((state: any) => state.Auth);
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { setOpen } = props;
+    useEffect(() => {
+        // ! check if user is logged in
+        console.log("profile", loggedIn)
+        if (loggedIn) {
+            navigate(routerPaths.ADMIN_DASHBOARD);
+        }
+    }, [loggedIn])
     const formSchema = z.object({
         username: z.string().min(2, {
             message: t("login.invalidUsername"),
@@ -50,8 +57,7 @@ export function LoginForm(props: any) {
         dispatch(loginAction({
             data: values,
             onSuccess: () => {
-                setOpen(false);
-                navigate(routerPaths.HOME);
+                navigate(routerPaths.ADMIN_DASHBOARD);
                 toast({
                     title: 'Login success',
                     description: 'Welcome back!',
@@ -59,7 +65,6 @@ export function LoginForm(props: any) {
                 })
             },
             onError: (message: string) => {
-                setOpen(true);
                 toast({
                     title: 'Login failed',
                     description: message ? message : 'Please login again!',
@@ -69,7 +74,6 @@ export function LoginForm(props: any) {
         }));
     }
     const gotoForgotPassword = () => {
-        setOpen(false);
         navigate(routerPaths.FORGOT_PASSWORD);
     }
     const googleAuth = () => {
@@ -80,12 +84,11 @@ export function LoginForm(props: any) {
             {isLoading
                 ? <div className="flex justify-center items-center"> <LoadingSpinner /></div>
                 : (
-                    <Card className="">
-
+                    <Card className="w-1/2 m-auto">
                         <CardHeader>
                             <CardTitle>Login</CardTitle>
                             <CardDescription>
-                                Login to your account
+                                Login to admin site
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-3">
@@ -131,7 +134,7 @@ export function LoginForm(props: any) {
                             </Form>
                         </CardContent>
 
-                        <CardFooter className="flex flex-col w-full">
+                        {/* <CardFooter className="flex flex-col w-full">
                             <div className="flex justify-between items-center w-full">
                                 <Separator className="w-1/3" />
                                 <span>or</span>
@@ -146,11 +149,12 @@ export function LoginForm(props: any) {
                                     <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
                                 </Button>
                             </div>
-                        </CardFooter>
+                        </CardFooter> */}
 
                     </Card >
                 )}
         </>
-
     )
 }
+
+export default AdminLogin

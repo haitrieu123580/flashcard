@@ -8,7 +8,7 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { convertDateToString } from "@/lib/utils"
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 const SetItem = (props: any) => {
     const { onClick, data } = props;
     const { name, description, totalCards, created_by, created_at, image, id } = data || {};
@@ -18,9 +18,18 @@ const SetItem = (props: any) => {
             onClick(id)
         }}>
             <CardHeader>
-                <CardTitle>
-                    {name || ""}
-                </CardTitle>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <CardTitle className="truncate">
+                                {name || ""}
+                            </CardTitle>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {name || ""}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 <CardDescription className="flex gap-1 flex-wrap">
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
                 </CardDescription>

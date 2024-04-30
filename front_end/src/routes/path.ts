@@ -7,6 +7,8 @@ export const routerPaths = {
     LEARN_FLASHCARD: '/learn-flashcard/:id',
     UNAUTHORIZED: '/unauthorized',
 
+    ADMIN: "/admin",
+    ADMIN_LOGIN: "/admin/login",
     ADMIN_DASHBOARD: '/admin/dashboard',
     ADMIN_SETS: '/admin/sets',
     ADMIN_ACCOUNTS: '/admin/account',

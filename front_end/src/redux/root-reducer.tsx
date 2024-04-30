@@ -6,7 +6,7 @@ import PublicSetsReducer from "@/redux/public-sets/slice";
 import SetReducer from "@/redux/set/slice";
 import CardReducer from "@/redux/card/slice";
 import QuestionReducer from "@/redux/question/slice";
-
+import UserSetsReducer from "@/redux/user-sets/slice";
 const rootReducer = {
     Test: TestReducer,
     Auth: AuthReducer,
@@ -15,6 +15,7 @@ const rootReducer = {
     Set: SetReducer,
     Card: CardReducer,
     Question: QuestionReducer,
+    UserSets: UserSetsReducer,
 };
 
 export default rootReducer;

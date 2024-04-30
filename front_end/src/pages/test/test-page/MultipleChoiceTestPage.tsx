@@ -19,7 +19,7 @@ import {
     submitAnswersAction
 } from "@/redux/test/slice";
 import { routerPaths } from "@/routes/path";
-import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner";
+import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
 import { shuffleArray } from "@/lib/utils";
 
 const MultipleChoiceTestPage = () => {

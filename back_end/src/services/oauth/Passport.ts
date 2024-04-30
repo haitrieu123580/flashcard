@@ -1,11 +1,8 @@
 import passport from 'passport';
-// var GoogleStrategy = require('passport-google-oauth20');
 import dotenv from 'dotenv';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import UserRepoInterface from "../../repositories/user/UserRepoInterface";
 import UserRepo from "../../repositories/user/UseRepo";
-import { genAccessToken, genRefreshToken } from "@helper/JwtHelper";
-import { SuccessResponse } from "@src/core/ApiResponse";
 
 dotenv.config();
 
@@ -19,7 +16,7 @@ passport.use(
         },
         async function (_accessToken: string, _refreshToken: string, profile: any, done: any) {
             try {
-                const isExist = await userRepo.isExistedEmail(profile.emails[0].value);
+                const isExist = await userRepo.getUserBy("email", profile.emails[0].value);
                 if (isExist) {
                     return done(null, profile);
                 }
