@@ -13,4 +13,6 @@ export interface IVocabularySetRepo {
 
     isExistSet(setId: string): Promise<boolean>;
 
+    createSet(set: any): Promise<any>;
+
 }

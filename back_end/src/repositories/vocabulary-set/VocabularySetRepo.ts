@@ -117,4 +117,9 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             return set ? true : false;
         });
     }
+
+    createSet = async (set: any): Promise<any> => {
+        const result = await this.setDataSource.save(set);
+        return result;
+    }
 }

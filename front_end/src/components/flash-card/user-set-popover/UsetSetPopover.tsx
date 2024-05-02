@@ -47,6 +47,7 @@ const UserSetPopover = (props: any) => {
                     setId: setId
                 },
                 onSuccess: () => {
+                    setIsStarred(true)
                     // getUserSetsList()
                 },
                 onError: (error: string) => {
@@ -91,24 +92,35 @@ const UserSetPopover = (props: any) => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
-                    <div className="grid w-32">
+                    <div className="grid w-fit">
                         {Array.isArray(mySets)
                             && mySets.map((set: any, index: number) => {
                                 return (
-                                    <div key={index}>
-                                        <Button
+                                    <div key={index} className='w-fit'>
+                                        {/* <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger className='p-0 w-fit'>
 
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p> {set.name}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider> */}
+                                        <Button
                                             variant={"ghost"}
-                                            className="w-full h-full overflow-hidden flex flex-col"
+                                            className="w-fit h-full overflow-hidden flex flex-col"
                                             onClick={() => {
                                                 starClick(set.id)
                                             }}
                                         >
                                             <p
-                                                className='hover:cursor-pointer w-full h-fit text-center truncate '>
+                                                className='hover:cursor-pointer w-full h-fit text-center truncate'>
                                                 {set.name}
                                             </p>
                                         </Button>
+
+
                                         <Separator />
                                     </div>
 

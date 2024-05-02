@@ -16,7 +16,6 @@ import { IVocabularyCardRepo } from "@src/repositories/vocabulary-card/IVocabula
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { Request, Response } from "express";
-
 @Service()
 export class UserSetsService implements IUserSetsService {
     private userSetsRepo: IUserSetsRepo;
@@ -41,11 +40,27 @@ export class UserSetsService implements IUserSetsService {
             return new SuccessResponse("User sets list", sets).send(res)
 
         } catch (error) {
-
+            console.log("error", error)
+            return new FailureResponse('Internal Server Error ', error).send(res);
         }
     }
-    getUserSetById(req: any, res: any): Promise<void> {
-        throw new Error("Method not implemented.");
+    getUserSetById = async (req: any, res: any): Promise<any> => {
+        try {
+            const { id } = req.user;
+            const { setId } = req.params;
+            const set = await this.setRepo.get_set_by_id(setId);
+            const user = await this.userRepo.getUserBy("id", id);
+            if (!set) {
+                return new FailureMsgResponse("Set not found").send(res)
+            }
+            if (set?.user?.id == user?.id) {
+                return new SuccessResponse("Get set successfully", set).send(res)
+            }
+            return new FailureMsgResponse("Set not belong to user").send(res)
+        } catch (error) {
+            console.log("error", error)
+            return new FailureResponse('Internal Server Error ', error).send(res);
+        }
     }
     addCardToUserSet = async (req: any, res: any): Promise<any> => {
         try {
@@ -76,13 +91,47 @@ export class UserSetsService implements IUserSetsService {
         }
     }
 
-    createSetByUser = async (req: any, res: Response) => {
+    // createSetByUser = async (req: any, res: Response) => {
+    //     try {
+    //         const { id } = req.user;
+    //         const { set_name, set_description } = req.body;
+
+    //     } catch (error) {
+
+    //     }
+    // }
+
+    quickCreateSet = async (req: any, res: any): Promise<any> => {
         try {
             const { id } = req.user;
-            const { set_name, set_description } = req.body;
+            const {
+                setName,
+                cardId
+            } = req.body;
+            const user = await this.userRepo.getUserBy("id", id);
+            if (!user) {
+                return new FailureMsgResponse("User not found.").send(res)
+            }
+            const card = await this.cardRepo.getCardById(cardId);
+            if (!card) {
+                return new FailureMsgResponse("Card not found.").send(res)
+            }
+            const set = {
+                name: setName,
+                is_public: false,
+                created_by: user.email,
+                user: user,
+                cards: [card]
+            }
+            const result = await this.setRepo.createSet(set)
+            if (result) {
+                return new SuccessResponse("Create set successfully", result).send(res)
+            }
+            return new FailureMsgResponse("Create set failed").send(res)
 
         } catch (error) {
-
+            console.log("error", error)
+            return new FailureResponse('Internal Server Error ', error).send(res);
         }
     }
 }

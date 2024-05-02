@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isLoading: false,
   mySets: [],
+  set: [],
 }
 
 const UserSets = createSlice({
@@ -30,6 +31,18 @@ const UserSets = createSlice({
     addCardToMySetFailureAction: (state) => {
       state.isLoading = true
     },
+
+    getUserSetByIdAction: (state) => {
+      state.isLoading = true
+    },
+    getUserSetByIdSuccessAction: (state, { payload }) => {
+      state.isLoading = false
+      state.set = payload.data
+    },
+    getUserSetByIdFailureAction: (state) => {
+      state.isLoading = false
+    },
+
   }
 })
 
@@ -40,6 +53,10 @@ export const {
   addCardToMySetAction,
   addCardToMySetSuccessAction,
   addCardToMySetFailureAction,
+  getUserSetByIdAction,
+  getUserSetByIdSuccessAction,
+  getUserSetByIdFailureAction,
+
 } = UserSets.actions
 
 export default UserSets.reducer

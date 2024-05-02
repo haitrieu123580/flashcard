@@ -10,11 +10,14 @@ import {
   addCardToMySetAction,
   addCardToMySetSuccessAction,
   addCardToMySetFailureAction,
+  getUserSetByIdAction,
+  getUserSetByIdSuccessAction,
+  getUserSetByIdFailureAction,
 } from "./slice";
 import {
   GetUSerSetsListApi,
   AddCardToSetApi,
-  CreateSetApi,
+  GetUserSetByIdApi,
   EditSetApi,
   DeleteSetApi,
 } from '@/api/UserSetsApi';
@@ -73,9 +76,36 @@ function* watchAddCardToMySet() {
     }
   });
 }
+
+function* watchGetUserSetById() {
+  yield takeLatest(getUserSetByIdAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { id } = payload
+    try {
+      const res = yield call(GetUserSetByIdApi, id);
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          yield put(
+            getUserSetByIdSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+          isFunction(payload.onError) && payload.onError(res.data.message);
+        }
+      }
+
+    } catch (error) {
+
+    }
+  });
+}
 export default function* UserSetsSaga() {
   yield all([
     fork(watchUserSetsList),
     fork(watchAddCardToMySet),
+    fork(watchGetUserSetById),
   ]);
 }

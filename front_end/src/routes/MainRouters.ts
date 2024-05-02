@@ -21,6 +21,8 @@ const AdminLogin = lazy(() => import('@/pages/admin/login/AdminLogin'))
 const MultipleChoiceTestPage = lazy(() => import('@/pages/test/test-page/MultipleChoiceTestPage'))
 const MultipleChoiceResultPage = lazy(() => import('@/pages/test/result-page/MultipleChoiceResultPage'))
 
+const MySetsList = lazy(() => import('@/pages/user/my-sets/MySetsList'))
+const LearnMySet = lazy(() => import('@/pages/user/learn-myset/LearnMySet'))
 const publicRoutes = [
     {
         path: routerPaths.HOME,
@@ -73,6 +75,16 @@ const protectedRoutes = [
         component: Profile,
         layout: AuthLayout
     },
+    {
+        path: routerPaths.USER_SETS,
+        component: MySetsList,
+        layout: AuthLayout
+    },
+    {
+        path: routerPaths.LEARN_MY_SET,
+        component: LearnMySet,
+        layout: AuthLayout
+    }
 ]
 
 const privateRouters = [

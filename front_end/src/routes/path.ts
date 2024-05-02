@@ -20,4 +20,6 @@ export const routerPaths = {
     TEST_MULTIPLE_CHOICE: '/multiple-choice/:id',
     TEST_MULTIPLE_CHOICE_RESULT: '/multiple-choice-result',
 
+    USER_SETS: '/user/user-sets',
+    LEARN_MY_SET: '/user/learn-myset/:id',
 }

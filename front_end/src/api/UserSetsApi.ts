@@ -11,8 +11,8 @@ export const AddCardToSetApi = async (data: any) => {
     return response;
 }
 
-export const CreateSetApi = async (data: any) => {
-    const response = await AxiosConfig.post(`${BASE_URL}`, data);
+export const GetUserSetByIdApi = async (id: string) => {
+    const response = await AxiosConfig.get(`${BASE_URL}/${id}`);
     return response;
 }
 

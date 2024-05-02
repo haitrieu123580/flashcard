@@ -8,21 +8,20 @@ import NewsetSets from "@/components/home/newest-sets/NewsetSets";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSetByIdAction } from "@/redux/set/slice";
 import { replacePathWithId, speek } from "@/lib/utils";
 import { routerPaths } from "@/routes/path";
-import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
 import {
     getUserSetsListAction,
     addCardToMySetAction,
+    getUserSetByIdAction,
 } from '@/redux/user-sets/slice';
 import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [currentCard, setCurrentCard] = useState(0);
-    const { data, isLoading } = useSelector((state: any) => state.Set);
-    const { mySets } = useSelector((state: any) => state.UserSets)
+    // const { data, isLoading } = useSelector((state: any) => state.Set);
+    const { mySets, set, isLoading } = useSelector((state: any) => state.UserSets)
 
     useEffect(() => {
         if (id) {
@@ -34,7 +33,7 @@ const LearnFlashcard = () => {
         setCurrentCard(0);
         scrollTo(0, 0);
         dispatch({
-            type: getSetByIdAction.type,
+            type: getUserSetByIdAction.type,
             payload: {
                 id: id,
                 // onSuccess: () => {
@@ -56,7 +55,7 @@ const LearnFlashcard = () => {
     }, [mySets])
 
     const showCard = (index: number) => {
-        if (index >= data?.cards?.length || index < 0) {
+        if (index >= set?.cards?.length || index < 0) {
             return;
         }
         setCurrentCard(index);
@@ -69,10 +68,10 @@ const LearnFlashcard = () => {
             />
             <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
                 <CardTitle className="flex gap-2 items-end my-2">
-                    <span>{data?.name}</span>
+                    <span>{set?.name}</span>
                     <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
                 </CardTitle>
-                {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
+                {Array.isArray(set?.cards) && set?.cards?.length ? set?.cards.map((card: any, index: number) => {
                     return (<>
                         {currentCard === index
                             && <>
@@ -93,7 +92,7 @@ const LearnFlashcard = () => {
                                             showCard(index - 1)
 
                                         }}><ChevronLeft /></Button>
-                                        <span>{`${currentCard + 1}/${data?.cards?.length}`}</span>
+                                        <span>{`${currentCard + 1}/${set?.cards?.length}`}</span>
                                         <Button variant={"ghost"} onClick={(e) => {
                                             e.preventDefault();
                                             showCard(index + 1)

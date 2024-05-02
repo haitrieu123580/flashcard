@@ -13,7 +13,7 @@ const SetItem = (props: any) => {
     const { onClick, data } = props;
     const { name, description, totalCards, created_by, created_at, image, id } = data || {};
     return (
-        <Card className="group overflow-hidden" onClick={(e) => {
+        <Card className="group overflow-hidden " onClick={(e) => {
             e.preventDefault();
             onClick(id)
         }}>
@@ -21,7 +21,7 @@ const SetItem = (props: any) => {
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger>
-                            <CardTitle className="truncate">
+                            <CardTitle className="truncate text-left">
                                 {name || ""}
                             </CardTitle>
                         </TooltipTrigger>

@@ -73,6 +73,9 @@ class VocabularySetService implements IVocabularySetService {
         try {
             const setId = req.params.id;
             const set = await this.setRepo.get_set_by_id(setId);
+            if (set?.is_public === false) {
+                return new FailureMsgResponse('Set not found!').send(res);
+            }
             if (set) {
                 return new SuccessResponse('Get set successfully', set).send(res);
             }
@@ -110,6 +113,7 @@ class VocabularySetService implements IVocabularySetService {
         }
     }
 
+    //admin create set
     create_Set = async (req: any, res: Response) => {
         try {
             const { id, role } = req.user;
