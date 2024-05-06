@@ -13,12 +13,15 @@ import {
   getUserSetByIdAction,
   getUserSetByIdSuccessAction,
   getUserSetByIdFailureAction,
+  createUserSetAction,
+  createUserSetSuccessAction,
+
 } from "./slice";
 import {
   GetUSerSetsListApi,
   AddCardToSetApi,
   GetUserSetByIdApi,
-  EditSetApi,
+  CreateUserSetApi,
   DeleteSetApi,
 } from '@/api/UserSetsApi';
 
@@ -26,7 +29,8 @@ function* watchUserSetsList() {
   yield takeLatest(getUserSetsListAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     try {
       const res = yield call(GetUSerSetsListApi);
-      //console.log("res: ", res?.data.data);
+
+      console.log("res: ", res?.data.data);
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           // isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
@@ -102,10 +106,38 @@ function* watchGetUserSetById() {
     }
   });
 }
+
+function* watchCreateUserSet() {
+  yield takeLatest(createUserSetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { data } = payload
+    try {
+      const res = yield call(CreateUserSetApi, data);
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          yield put(
+            createUserSetSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+          isFunction(payload.onError) && payload.onError(res.data.message);
+        }
+      }
+
+    } catch (error) {
+
+    }
+  });
+}
+
 export default function* UserSetsSaga() {
   yield all([
     fork(watchUserSetsList),
     fork(watchAddCardToMySet),
     fork(watchGetUserSetById),
+    fork(watchCreateUserSet),
   ]);
 }

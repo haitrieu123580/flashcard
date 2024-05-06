@@ -16,8 +16,8 @@ export const GetUserSetByIdApi = async (id: string) => {
     return response;
 }
 
-export const EditSetApi = async ({ id, data }: { id: string, data: any }) => {
-    const response = await AxiosConfig.put(`${BASE_URL}/${id}`, data);
+export const CreateUserSetApi = async (data: any) => {
+    const response = await AxiosConfig.post(`${BASE_URL}/create-set`, data);
     return response;
 }
 

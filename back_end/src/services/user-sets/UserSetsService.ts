@@ -36,8 +36,28 @@ export class UserSetsService implements IUserSetsService {
             if (!user) {
                 return new FailureMsgResponse("User not found.").send(res)
             }
-            const sets = await this.userSetsRepo.getUserSetsList(id);
-            return new SuccessResponse("User sets list", sets).send(res)
+            const [sets, count] = await this.userSetsRepo.getUserSetsList(id);
+            if (sets?.length) {
+                sets.forEach((set: any) => {
+                    set.totalCards = set?.cards?.length;
+                    set.totalQuestions = set?.questions?.length;
+                    try {
+                        set.cards.forEach((card: any) => {
+                            return card.example = card.example ? JSON.parse(card.example || "") : "";
+                        });
+                    } catch (error) {
+
+                    }
+
+                    return set;
+                });
+                return new SuccessResponse('Get all user sets successfully', {
+                    sets,
+                    count,
+                }).send(res);
+            } else {
+                return new FailureMsgResponse("Empty!").send(res);
+            }
 
         } catch (error) {
             console.log("error", error)
@@ -90,16 +110,6 @@ export class UserSetsService implements IUserSetsService {
             return new FailureResponse('Internal Server Error ', error).send(res);
         }
     }
-
-    // createSetByUser = async (req: any, res: Response) => {
-    //     try {
-    //         const { id } = req.user;
-    //         const { set_name, set_description } = req.body;
-
-    //     } catch (error) {
-
-    //     }
-    // }
 
     quickCreateSet = async (req: any, res: any): Promise<any> => {
         try {

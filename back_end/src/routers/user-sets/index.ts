@@ -19,8 +19,7 @@ router.post("/add-card", [isValidKey, verifyToken], controller.addCardToUserSet)
 router.post("/quick-create-set", [isValidKey, verifyToken, isValidRequest(QuickCreateSetRequest)], controller.quickCreateSet)
 
 //todo: create set by user
-router.post("/create-set", [isValidKey, verifyToken, UploadFile.any()], setController.createSet
-)
+router.post("/create-set", [isValidKey, verifyToken, UploadFile.any()], setController.createSet)
 
 //todo: add new card into set
 router.post("/add-new-card", [isValidKey, verifyToken], controller.addCardToUserSet)

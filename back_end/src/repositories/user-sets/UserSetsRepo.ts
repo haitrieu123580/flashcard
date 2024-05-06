@@ -9,21 +9,23 @@ export class UserSetsRepo implements IUserSetsRepo {
     private userDataSource = AppDataSource.getRepository(User)
     private setDataSource = AppDataSource.getRepository(Sets)
     async getUserSetsList(userId: string): Promise<any> {
-        const user = await this.userDataSource.findOne({
+        return await this.setDataSource.findAndCount({
             where: {
-                id: userId
+                user: {
+                    id: userId
+                }
             },
             relations: [
-                "sets",
-                "sets.cards"
+                "user",
+                "cards"
             ]
-        });
-        return user?.sets;
+        })
     }
     addCardToSet = async (setId: string, cardId: string): Promise<any> => {
         const set = await this.setDataSource.findOne({
             where: {
-                id: setId
+                id: setId,
+
             },
             relations: ["cards"]
         });

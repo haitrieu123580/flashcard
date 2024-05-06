@@ -9,8 +9,15 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { convertDateToString } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+import { Pen, PencilIcon, Trash2Icon } from "lucide-react"
 const SetItem = (props: any) => {
-    const { onClick, data } = props;
+    const { onClick, data,
+        showEditBtn = false,
+        showDeleteBtn = false,
+        onEditBtn,
+        onDeleteBtn,
+    } = props;
     const { name, description, totalCards, created_by, created_at, image, id } = data || {};
     return (
         <Card className="group overflow-hidden " onClick={(e) => {
@@ -18,18 +25,47 @@ const SetItem = (props: any) => {
             onClick(id)
         }}>
             <CardHeader>
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <CardTitle className="truncate text-left">
-                                {name || ""}
-                            </CardTitle>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            {name || ""}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+
+                <div className="grid grid-cols-3 gap-2">
+                    <div className="col-span-2">
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger className="max-w-full text-left">
+                                    <CardTitle className="">
+                                        {name || ""}
+                                    </CardTitle>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    {name || ""}
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
+                    <div className="col-span-1 flex justify-end">
+                        {showEditBtn
+                            && <Button
+                                variant={"ghost"}
+                                className={'w-fit h-fit '}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onEditBtn(id)
+                                }}
+                            >
+                                <PencilIcon width={18} height={18} />
+                            </Button>}
+                        {showDeleteBtn
+                            && <Button
+                                variant={"destructive"}
+                                className={'w-fit h-fit '}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDeleteBtn(id)
+                                }}
+                            >
+                                <Trash2Icon width={18} height={18} />
+                            </Button>}
+                    </div>
+                </div>
                 <CardDescription className="flex gap-1 flex-wrap">
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
                 </CardDescription>
@@ -42,7 +78,7 @@ const SetItem = (props: any) => {
                     >
                         {
                             !image
-                                ? <div className="absolute w-full h-full bg-gray-800 flex justify-center items-center text-white text-2xl"></div>
+                                ? <div className="absolute w-full h-full bg-slate-300 flex justify-center items-center text-white text-2xl"></div>
                                 : <img src={image} alt="set" className="w-full h-full object-cover" />
                         }
 

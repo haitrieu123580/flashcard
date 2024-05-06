@@ -23,6 +23,9 @@ const MultipleChoiceResultPage = lazy(() => import('@/pages/test/result-page/Mul
 
 const MySetsList = lazy(() => import('@/pages/user/my-sets/MySetsList'))
 const LearnMySet = lazy(() => import('@/pages/user/learn-myset/LearnMySet'))
+const CreateMySet = lazy(() => import('@/pages/user/create-set/CreateMySet'))
+const EditMySet = lazy(() => import('@/pages/user/edit-set/EditMySet'))
+
 const publicRoutes = [
     {
         path: routerPaths.HOME,
@@ -83,6 +86,16 @@ const protectedRoutes = [
     {
         path: routerPaths.LEARN_MY_SET,
         component: LearnMySet,
+        layout: AuthLayout
+    },
+    {
+        path: routerPaths.CREATE_MY_SET,
+        component: CreateMySet,
+        layout: AuthLayout
+    },
+    {
+        path: routerPaths.EDIT_MY_SET,
+        component: EditMySet,
         layout: AuthLayout
     }
 ]

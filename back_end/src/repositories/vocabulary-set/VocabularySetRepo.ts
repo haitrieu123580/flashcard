@@ -18,14 +18,14 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         );
 
         if (owner) {
-            const { set_name, set_description, set_image_url, isPublic } = set;
+            const { set_name, set_description, set_image_url, is_public } = set;
             const newSet = new Sets();
             newSet.name = set_name;
             newSet.description = set_description;
             newSet.image = set_image_url;
             newSet.created_by = owner?.email;
             newSet.user = owner;
-            newSet.is_public = isPublic
+            newSet.is_public = is_public
             if (!newSet.cards) {
                 newSet.cards = [];
             }

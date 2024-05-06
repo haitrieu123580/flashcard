@@ -14,6 +14,7 @@ const UserSets = createSlice({
       state.isLoading = true
     },
     getUserSetsListSuccessAction: (state, { payload }) => {
+      console.log("payload: ", payload.data)
       state.isLoading = false
       state.mySets = payload.data
     },
@@ -42,7 +43,12 @@ const UserSets = createSlice({
     getUserSetByIdFailureAction: (state) => {
       state.isLoading = false
     },
-
+    createUserSetAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    createUserSetSuccessAction: (state, { payload }) => {
+      state.isLoading = false
+    },
   }
 })
 
@@ -56,6 +62,8 @@ export const {
   getUserSetByIdAction,
   getUserSetByIdSuccessAction,
   getUserSetByIdFailureAction,
+  createUserSetAction,
+  createUserSetSuccessAction,
 
 } = UserSets.actions
 

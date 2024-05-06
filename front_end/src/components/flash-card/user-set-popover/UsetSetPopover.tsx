@@ -37,7 +37,6 @@ const UserSetPopover = (props: any) => {
     const dispatch = useDispatch();
     const [isStarred, setIsStarred] = useState(false)
     const [openCreateSet, setOpenCreateSet] = useState(false)
-
     const starClick = (setId: string) => {
         dispatch({
             type: addCardToMySetAction.type,
@@ -57,8 +56,8 @@ const UserSetPopover = (props: any) => {
         })
     }
     useEffect(() => {
-        if (cardId && Array.isArray(mySets)) {
-            const isCardStarred = mySets.some((set) =>
+        if (cardId && Array.isArray(mySets?.sets)) {
+            const isCardStarred = mySets?.sets.some((set: any) =>
                 set.cards.some((card: any) => card.id === cardId)
             );
             setIsStarred(isCardStarred);
@@ -93,23 +92,13 @@ const UserSetPopover = (props: any) => {
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
                     <div className="grid w-fit">
-                        {Array.isArray(mySets)
-                            && mySets.map((set: any, index: number) => {
+                        {Array.isArray(mySets?.sets)
+                            && mySets?.sets?.map((set: any, index: number) => {
                                 return (
-                                    <div key={index} className='w-fit'>
-                                        {/* <TooltipProvider>
-                                            <Tooltip>
-                                                <TooltipTrigger className='p-0 w-fit'>
-
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p> {set.name}</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider> */}
+                                    <div key={index} className='w-full'>
                                         <Button
                                             variant={"ghost"}
-                                            className="w-fit h-full overflow-hidden flex flex-col"
+                                            className="w-full h-full overflow-hidden flex flex-col"
                                             onClick={() => {
                                                 starClick(set.id)
                                             }}

@@ -17,6 +17,7 @@ const CardForm = (props: any) => {
         card,
         isEdit = true,
         setId,
+        showEditButton = true,
         onDeleteCard,
         onEditCard,
         onCreateCard,
@@ -75,16 +76,19 @@ const CardForm = (props: any) => {
                                     ? <>
                                         <b>{index + 1}</b>
                                         <div className='flex justify-center items-center mb-2'>
-                                            <EditPopup
-                                                onConfirmEdit={() => {
-                                                    form.handleSubmit(onSubmit)()
-                                                }}
-                                                TriggerComponent={
-                                                    <Button type='button' variant={'ghost'}>
-                                                        <CheckIcon width={20} />
-                                                    </Button>
-                                                }
-                                            />
+                                            {showEditButton &&
+                                                <EditPopup
+                                                    onConfirmEdit={() => {
+                                                        form.handleSubmit(onSubmit)()
+                                                    }}
+                                                    TriggerComponent={
+                                                        <Button type='button' variant={'ghost'}>
+                                                            <CheckIcon width={20} />
+                                                        </Button>
+                                                    }
+                                                />
+                                            }
+
                                             <DeletePopup
                                                 onConfirmDelete={() => {
                                                     isFunction(onDeleteCard) && onDeleteCard(card?.id)
@@ -98,7 +102,7 @@ const CardForm = (props: any) => {
                                     </>}
 
                             </div>
-                            <Separator />
+                            {/* <Separator /> */}
                         </div>
                         <div className='flex justify-between gap-1'>
                             <FormInput

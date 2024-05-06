@@ -140,7 +140,7 @@ class VocabularySetService implements IVocabularySetService {
             const { set_name, set_description } = formData;
             const set_image = files.find((file: any) => file.fieldname === 'set_image');
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
-            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "", isPublic: role === Constants.USER_ROLE.ADMIN };
+            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "", is_public: role === Constants.USER_ROLE.ADMIN };
 
             await this.setRepo.create_new_set_and_cards(userId, set, cards);
             return new SuccessMsgResponse('Create set successfully').send(res);

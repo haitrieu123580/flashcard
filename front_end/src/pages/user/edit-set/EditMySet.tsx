@@ -11,9 +11,11 @@ import { PlusCircle, PencilIcon, CheckIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils'
 import { editSetAction } from '@/redux/set/slice'
-import { getSetByIdAction } from "@/redux/set/slice";
+import {
+    getUserSetByIdAction,
+} from '@/redux/user-sets/slice';
 import { useParams } from "react-router-dom";
-import CardForm from '../../../components/admin/cards/CardForm'
+import CardForm from '@/components/user-sets/card-form/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
 import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card/slice"
@@ -22,9 +24,9 @@ import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
 
-const EditSetContainer = () => {
+const EditMySet = () => {
     const { id } = useParams();
-    const { data, isLoading } = useSelector((state: any) => state.Set);
+    const { mySets, set, isLoading } = useSelector((state: any) => state.UserSets)
     const [showCardFormPopup, setShowCardFormPopup] = useState(false)
     const dispatch = useDispatch();
     const formSetSchema = z.object({
@@ -45,10 +47,13 @@ const EditSetContainer = () => {
     const getSetById = (id: string) => {
         scrollTo(0, 0);
         dispatch({
-            type: getSetByIdAction.type,
+            type: getUserSetByIdAction.type,
             payload: {
                 id: id,
-
+                // onSuccess: () => {
+                // },
+                // onError: (error: string) => {
+                // }
             }
         })
     }
@@ -78,7 +83,7 @@ const EditSetContainer = () => {
                         title: 'Edit card success',
                         variant: 'default',
                     })
-                    getSetById(data?.id);
+                    getSetById(set?.id);
                 },
                 onError: (message: string) => {
                     toast({
@@ -102,7 +107,7 @@ const EditSetContainer = () => {
                         title: 'Delete success',
                         variant: 'default',
                     })
-                    getSetById(data?.id);
+                    getSetById(set?.id);
                 },
                 onError: (message: string) => {
                     toast({
@@ -118,7 +123,7 @@ const EditSetContainer = () => {
     const onCreateCard = (values: any) => {
         const submitValues = {
             ...values,
-            setId: data?.id,
+            setId: set?.id,
             image: values.image.image ? values.image.image : null,
             example: values?.example ? JSON.stringify(values?.example) : null
         }
@@ -134,7 +139,7 @@ const EditSetContainer = () => {
                         title: 'Create card success',
                         variant: 'default',
                     })
-                    getSetById(data?.id);
+                    getSetById(set?.id);
                 },
                 onError: (message: string) => {
                     toast({
@@ -149,11 +154,11 @@ const EditSetContainer = () => {
     const form = useForm<z.infer<typeof formSetSchema>>({
         resolver: zodResolver(formSetSchema),
         defaultValues: {
-            set_name: data?.name || "",
-            set_description: data?.description || "",
+            set_name: set?.name || "",
+            set_description: set?.description || "",
             set_image: {
                 image: null,
-                path: data?.image || "",
+                path: set?.image || "",
             },
 
         },
@@ -170,14 +175,14 @@ const EditSetContainer = () => {
         dispatch({
             type: editSetAction.type,
             payload: {
-                id: data?.id,
+                id: set?.id,
                 data: formData,
                 onSuccess: () => {
                     toast({
                         title: 'Edit success',
                         variant: 'default',
                     })
-                    getSetById(data?.id);
+                    getSetById(set?.id);
                 },
                 onError: (message: string) => {
                     toast({
@@ -190,28 +195,22 @@ const EditSetContainer = () => {
         })
     }
     useMemo(() => {
-        if (data?.id && data?.cards) {
+        if (set?.id && set?.cards) {
             form.reset({
-                set_name: data.name,
-                set_description: data.description,
+                set_name: set.name,
+                set_description: set.description,
                 set_image: {
                     image: null,
-                    path: data.image || "",
+                    path: set.image || "",
                 },
 
             });
         }
-    }, [data]);
+    }, [set]);
 
     return (
         <div className=" w-full">
-            <CommonPopup
-                open={isLoading}
-                setOpen={() => { }}
-                isShowTrigger={false}
-                children={<LoadingSpinner />}
-                className={"w-fit h-fit"}
-            />
+
             <Form {...form}>
                 <form className='flex flex-col gap-6'>
                     <div className='flex justify-between items-center my-2'>
@@ -256,15 +255,18 @@ const EditSetContainer = () => {
                 </div>
                 <div className='flex flex-col'>
                     <div className="w-full flex flex-col gap-6">
-                        {data?.cards && Array.isArray(data?.cards) &&
-                            data?.cards.map((card: any, index: number) => {
+                        {set?.cards && Array.isArray(set?.cards) &&
+                            set?.cards.map((card: any, index: number) => {
                                 return <CardForm
                                     key={index}
                                     index={index}
                                     card={card}
-                                    setId={data?.id}
+                                    setId={set?.id}
                                     onDeleteCard={onDeleteCard}
                                     onEditCard={onEditCard}
+                                    showEditButton={
+                                        card?.created_by === set?.created_by
+                                    }
                                 />
                             })}
                     </div>
@@ -285,8 +287,9 @@ const EditSetContainer = () => {
                                 <ScrollArea>
                                     <CardForm
                                         isEdit={false}
-                                        setId={data?.id}
+                                        setId={set?.id}
                                         onCreateCard={onCreateCard}
+
                                     />
                                 </ScrollArea>
                             }
@@ -298,4 +301,4 @@ const EditSetContainer = () => {
     )
 }
 
-export default EditSetContainer
+export default EditMySet

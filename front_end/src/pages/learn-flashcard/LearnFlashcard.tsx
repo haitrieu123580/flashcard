@@ -50,7 +50,7 @@ const LearnFlashcard = () => {
         })
     }
     useEffect(() => {
-        if (mySets.length === 0) {
+        if (!mySets?.sets) {
             getUserSetsList()
         }
     }, [mySets])
@@ -73,36 +73,37 @@ const LearnFlashcard = () => {
                     <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
                 </CardTitle>
                 {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
-                    return (<>
-                        {currentCard === index
-                            && <>
-                                <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
-                                    <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
+                    return (
+                        <div key={index}>
+                            {currentCard === index
+                                && <>
+                                    <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
+                                        <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
 
-                                        <FlipCard key={index} term={card?.term} define={card?.define} card={card} />
-                                    </div>
-                                    <div className="col-span-1"></div>
-                                    <div className="col-span-1 md:col-span-2">
-                                        <SentencesExampleBox example={card?.example} />
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
-                                    <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
-                                        <Button variant={"ghost"} onClick={(e) => {
-                                            e.preventDefault();
-                                            showCard(index - 1)
+                                            <FlipCard key={index} term={card?.term} define={card?.define} card={card} />
+                                        </div>
+                                        <div className="col-span-1"></div>
+                                        <div className="col-span-1 md:col-span-2">
+                                            <SentencesExampleBox example={card?.example} />
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
+                                        <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
+                                            <Button variant={"ghost"} onClick={(e) => {
+                                                e.preventDefault();
+                                                showCard(index - 1)
 
-                                        }}><ChevronLeft /></Button>
-                                        <span>{`${currentCard + 1}/${data?.cards?.length}`}</span>
-                                        <Button variant={"ghost"} onClick={(e) => {
-                                            e.preventDefault();
-                                            showCard(index + 1)
-                                        }}><ChevronRight /></Button>
-                                    </div>
-                                    <div className="col-span-3"></div>
-                                </CardFooter>
-                            </>}
-                    </>)
+                                            }}><ChevronLeft /></Button>
+                                            <span>{`${currentCard + 1}/${data?.cards?.length}`}</span>
+                                            <Button variant={"ghost"} onClick={(e) => {
+                                                e.preventDefault();
+                                                showCard(index + 1)
+                                            }}><ChevronRight /></Button>
+                                        </div>
+                                        <div className="col-span-3"></div>
+                                    </CardFooter>
+                                </>}
+                        </div>)
 
                 }) : <>
                     <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
