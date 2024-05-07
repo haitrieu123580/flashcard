@@ -11,6 +11,12 @@ import EditPopup from '@/components/common/popup/EditPopup'
 import { isFunction } from "@/lib/utils"
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 
 const CardForm = (props: any) => {
     const { index,
@@ -70,7 +76,117 @@ const CardForm = (props: any) => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <Card className='p-2'>
-                        <div>
+                        <Accordion type="single" collapsible>
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger>
+                                    <div className="w-full">
+                                        <div className=' w-full flex justify-between items-center'>
+                                            {isEdit
+                                                ? <>
+                                                    <b>{index + 1}</b>
+                                                    <div className='flex justify-center items-center mb-2'>
+                                                        {showEditButton &&
+                                                            <EditPopup
+                                                                onConfirmEdit={() => {
+                                                                    form.handleSubmit(onSubmit)()
+                                                                }}
+                                                                TriggerComponent={
+                                                                    <Button type='button' variant={'ghost'}>
+                                                                        <CheckIcon width={20} />
+                                                                    </Button>
+                                                                }
+                                                            />
+                                                        }
+
+                                                        <DeletePopup
+                                                            onConfirmDelete={() => {
+                                                                isFunction(onDeleteCard) && onDeleteCard(card?.id)
+                                                            }}
+                                                            TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
+                                                        />
+                                                    </div>
+                                                </>
+                                                : <>
+
+                                                </>}
+
+                                        </div>
+                                    </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="border-none">
+                                    <div className='flex justify-between gap-1'>
+                                        <FormInput
+                                            control={form.control}
+                                            fieldName={`term`}
+                                            label="Term"
+                                            placeholder="Term"
+                                            type={Constants.INPUT_TYPE.TEXT}
+                                            className='w-1/2'
+                                            required={true}
+                                        />
+                                        <FormInput
+                                            control={form.control}
+                                            fieldName={`define`}
+                                            label="Define"
+                                            placeholder="Define"
+                                            type={Constants.INPUT_TYPE.TEXT}
+                                            className='w-1/2'
+                                            required={true}
+                                        />
+                                    </div>
+                                    <FormInput
+                                        control={form.control}
+                                        fieldName={`image`}
+                                        label="Image"
+                                        type={Constants.INPUT_TYPE.FILE_UPLOAD}
+                                        classNameInput='h-fit'
+                                    />
+                                    <div className='my-6 flex gap-4 items-end'>
+                                        <b>Examples</b>
+                                        <Button type="button"
+                                            variant={'ghost'}
+                                            className={`p-0 w-fit h-fit`}
+                                            onClick={() => {
+                                                fields.append({ sentence: '', translation: '' })
+                                            }}
+                                        >
+                                            <PlusCircleIcon width={18} height={18} />
+                                        </Button>
+                                    </div>
+
+                                    {fields.fields.map((field, index) => {
+                                        return (
+                                            <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
+                                                <FormInput
+                                                    control={form.control}
+                                                    fieldName={`example.${index}.sentence`}
+                                                    label="Sentence"
+                                                    placeholder="Sentence"
+                                                    type={Constants.INPUT_TYPE.TEXT}
+                                                    className='w-1/2'
+                                                />
+                                                <FormInput
+                                                    control={form.control}
+                                                    fieldName={`example.${index}.translation`}
+                                                    label="Translation"
+                                                    placeholder="Translation"
+                                                    type={Constants.INPUT_TYPE.TEXT}
+                                                    className='w-1/2'
+                                                />
+                                                <Button
+                                                    variant={'ghost'}
+                                                    onClick={() => fields.remove(index)}
+                                                >
+                                                    <Trash2 />
+                                                </Button>
+                                            </div>
+                                        )
+                                    })}
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+
+                        {/* <div>
                             <div className='flex justify-between items-center'>
                                 {isEdit
                                     ? <>
@@ -102,7 +218,6 @@ const CardForm = (props: any) => {
                                     </>}
 
                             </div>
-                            {/* <Separator /> */}
                         </div>
                         <div className='flex justify-between gap-1'>
                             <FormInput
@@ -171,7 +286,7 @@ const CardForm = (props: any) => {
                                     </Button>
                                 </div>
                             )
-                        })}
+                        })} */}
                         {
                             !isEdit &&
                             <Button

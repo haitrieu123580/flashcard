@@ -12,7 +12,7 @@ export interface IUserSetsService {
 
     quickCreateSet: (req: Request, res: Response) => Promise<any>
 
-    // updateUserSet: (req: Request, res: Response) => Promise<void>
+    updateUserSet: (req: Request, res: Response) => Promise<any>
 
     // deleteUserSet: (req: Request, res: Response) => Promise<void>
 

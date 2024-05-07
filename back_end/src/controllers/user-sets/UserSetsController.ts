@@ -1,6 +1,7 @@
 import { Container } from "typedi";
 import { IUserSetsService } from "@src/services/user-sets/IUserSetsService";
 import { UserSetsService } from "@src/services/user-sets/UserSetsService";
+import { Request, Response } from "express";
 export class UserSetsController {
     private userSetsService: IUserSetsService = Container.get(UserSetsService);
     getUserSetsList = async (req: any, res: any) => {
@@ -18,5 +19,9 @@ export class UserSetsController {
 
     quickCreateSet = async (req: any, res: any) => {
         await this.userSetsService.quickCreateSet(req, res);
+    }
+
+    updateSet = async (req: Request, res: Response) => {
+        await this.userSetsService.updateUserSet(req, res);
     }
 }

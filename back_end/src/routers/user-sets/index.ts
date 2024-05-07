@@ -22,6 +22,8 @@ router.post("/quick-create-set", [isValidKey, verifyToken, isValidRequest(QuickC
 router.post("/create-set", [isValidKey, verifyToken, UploadFile.any()], setController.createSet)
 
 //todo: add new card into set
-router.post("/add-new-card", [isValidKey, verifyToken], controller.addCardToUserSet)
+router.post("/add-new-card", [isValidKey, verifyToken, UploadFile.any()], controller.addCardToUserSet)
+
+router.put("/edit-set/:setId", [isValidKey, verifyToken], controller.updateSet)
 
 export = router

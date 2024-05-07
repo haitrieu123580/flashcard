@@ -16,13 +16,14 @@ import { IVocabularyCardRepo } from "@src/repositories/vocabulary-card/IVocabula
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { Request, Response } from "express";
+import { S3Service } from "../s3/S3Service";
 @Service()
 export class UserSetsService implements IUserSetsService {
     private userSetsRepo: IUserSetsRepo;
     private userRepo: UserRepoInterface;
     private setRepo: IVocabularySetRepo;
     private cardRepo: IVocabularyCardRepo;
-
+    private s3Service: S3Service;
     constructor() {
         this.userSetsRepo = Container.get(UserSetsRepo);
         this.userRepo = Container.get(UserRepo);
@@ -142,6 +143,44 @@ export class UserSetsService implements IUserSetsService {
         } catch (error) {
             console.log("error", error)
             return new FailureResponse('Internal Server Error ', error).send(res);
+        }
+    }
+    updateUserSet = async (req: any, res: any): Promise<any> => {
+        try {
+            const setId = req.params.setId;
+            const { id } = req.user;
+            const formData = req?.body
+            const files = req?.files
+            const isDeleteImage = formData.is_delete_image === "true";
+            const { set_name, set_description } = formData;
+            const set_image = files?.find((file: any) => file.fieldname === 'set_image');
+            const updatedSet = await this.setRepo.get_set_by_id(setId);
+            const user = await this.userRepo.getUserBy("id", id);
+            if (updatedSet?.user?.id !== user?.id) {
+                return new FailureMsgResponse('Set not belong to user').send(res);
+            }
+            if (updatedSet?.user?.id !== user?.id) {
+                return new FailureMsgResponse('Set not belong to user').send(res);
+            }
+            const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
+            const updateSet = await this.setRepo.get_set_by_id(setId);
+            const set = {
+                set_name: req.body.set_name,
+                set_description: req.body.set_description,
+                updated_by: user?.email,
+                set_image_url: isDeleteImage
+                    ? null
+                    : set_image_url ? set_image_url.Location : updateSet.image
+            };
+            console.log("set", set)
+            const result = await this.setRepo.edit_set_by_id(setId, set);
+            if (result) {
+                return new SuccessMsgResponse('Edit set successfully').send(res);
+            }
+            return new FailureMsgResponse('Edit set failed').send(res);
+        } catch (error) {
+            console.log("error", error)
+            return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
 }
