@@ -29,10 +29,15 @@ export class Sets extends BaseEntity {
     is_public: boolean;
 
     // todo: change set -> sets
-    @ManyToMany(() => Cards, {
-        onDelete: "CASCADE"
+    // @ManyToMany(() => Cards, {
+    //     onDelete: "CASCADE"
+    // })
+    // @JoinTable()
+    // cards: Cards[];
+    @OneToMany(() => Cards, cards => cards.set, {
+        onDelete: "SET NULL"
     })
-    @JoinTable()
+    @JoinColumn()
     cards: Cards[];
 
     @Column({

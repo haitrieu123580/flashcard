@@ -37,9 +37,9 @@ export class Cards extends BaseEntity {
     })
     pronounciation: string;
 
-    // @ManyToMany(() => Sets, set => set.cards, {
-    //     onDelete: "CASCADE"
-    // })
-    // @JoinTable()
-    // set: Sets;
+    @ManyToOne(() => Sets, set => set.cards, {
+        onDelete: "CASCADE"
+    })
+    @JoinTable()
+    set: Sets;
 }

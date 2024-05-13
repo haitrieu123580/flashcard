@@ -95,7 +95,8 @@ export class UserSetsService implements IUserSetsService {
             if (set && set?.user?.id === id) {
                 const card = await this.cardRepo.getCardById(cardId);
                 if (card) {
-                    const result = await this.userSetsRepo.addCardToSet(set.id, card.id);
+                    const result = await this.userSetsRepo.addCardToSet(set, card);
+                    console.log("result", result)
                     if (result) {
                         return new SuccessMsgResponse('Add card to set successfully').send(res);
                     }

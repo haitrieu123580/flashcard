@@ -8,6 +8,8 @@ import { S3Service } from '@services/s3/S3Service';
 import { Constants } from '@src/core/Constant';
 import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
 import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
+import { GetAllPublicSetRequest } from "@src/dto/set/GetAllPublicSetRequest";
+import { SetsListResponse, SetsServiceResponse } from '@src/dto/set/SetsListResponse';
 @Service()
 class VocabularySetService implements IVocabularySetService {
 
@@ -21,9 +23,9 @@ class VocabularySetService implements IVocabularySetService {
         this.cardRepo = Container.get(VocabularyCardRepo);
     }
 
-    get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
+    get_all_public_sets = async (query: GetAllPublicSetRequest): Promise<SetsListResponse | null> => {
         try {
-            const { page_size, page_index, filter, name } = req.query;
+            const { page_size, page_index, filter, name } = query;
             let data = {}
             const take = Number(page_size) || Constants.DEFAULT_PAGINATION.take;
             let skip = 0;
@@ -56,16 +58,22 @@ class VocabularySetService implements IVocabularySetService {
 
                     return set;
                 });
-                return new SuccessResponse('Get all public sets successfully', {
-                    sets,
+                return {
+                    sets: sets,
                     count,
-                }).send(res);
+                };
+                // return new SuccessResponse('Get all public sets successfully', {
+                //     sets,
+                //     count,
+                // }).send(res);
             } else {
-                return new FailureMsgResponse("Empty!").send(res);
+                return null;
+                // return new FailureMsgResponse("Empty!").send(res);
             }
         } catch (error) {
             console.log('error', error);
-            return new FailureMsgResponse('Internal Server Error ').send(res);
+            return null;
+            // return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
 
