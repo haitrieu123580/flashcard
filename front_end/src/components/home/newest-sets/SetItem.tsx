@@ -7,10 +7,12 @@ import {
 } from "@/components/ui/avatar"
 
 import { Badge } from "@/components/ui/badge"
-import { convertDateToString } from "@/lib/utils"
+import { convertDateToString, isFunction } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Pen, PencilIcon, Trash2Icon } from "lucide-react"
+import DeletePopup from "@/components/common/popup/DeletePopup";
+
 const SetItem = (props: any) => {
     const { onClick, data,
         showEditBtn = false,
@@ -20,10 +22,7 @@ const SetItem = (props: any) => {
     } = props;
     const { name, description, totalCards, created_by, created_at, image, id } = data || {};
     return (
-        <Card className="group overflow-hidden " onClick={(e) => {
-            e.preventDefault();
-            onClick(id)
-        }}>
+        <Card className="group overflow-hidden " >
             <CardHeader>
 
                 <div className="grid grid-cols-3 gap-2">
@@ -54,23 +53,40 @@ const SetItem = (props: any) => {
                                 <PencilIcon width={18} height={18} />
                             </Button>}
                         {showDeleteBtn
-                            && <Button
-                                variant={"destructive"}
-                                className={'w-fit h-fit '}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onDeleteBtn(id)
+                            &&
+                            // <Button
+                            //     variant={"destructive"}
+                            //     className={'w-fit h-fit '}
+                            //     onClick={(e) => {
+                            //         e.stopPropagation();
+                            //         onDeleteBtn(id)
+                            //     }}
+                            // >
+                            //     <Trash2Icon width={18} height={18} />
+                            // </Button>
+                            <DeletePopup
+                                onConfirmDelete={() => {
+                                    isFunction(onDeleteBtn) && onDeleteBtn(id)
                                 }}
-                            >
-                                <Trash2Icon width={18} height={18} />
-                            </Button>}
+                                TriggerComponent={
+                                    <Button variant={'destructive'}
+                                        className={'w-fit h-fit '}
+                                        type="button"
+                                    >
+                                        <Trash2Icon width={18} height={18} />
+                                    </Button>}
+                            />
+                        }
                     </div>
                 </div>
                 <CardDescription className="flex gap-1 flex-wrap">
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
                 </CardDescription>
             </CardHeader>
-            <CardContent className="">
+            <CardContent className="" onClick={(e) => {
+                e.preventDefault();
+                onClick(id)
+            }}>
                 <div className="overflow-hidden rounded-md relative group hover:cursor-pointer">
                     <AspectRatio
                         ratio={1 / 1}

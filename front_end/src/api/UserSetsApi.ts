@@ -21,7 +21,12 @@ export const CreateUserSetApi = async (data: any) => {
     return response;
 }
 
-export const DeleteSetApi = async (id: string) => {
+export const EditUserSetApi = async ({ id, data }: { id: string, data: any }) => {
+    const response = await AxiosConfig.put(`${BASE_URL}/${id}`, data);
+    return response;
+}
+
+export const DeleteUserSetApi = async (id: string) => {
     const response = await AxiosConfig.delete(`${BASE_URL}/${id}`);
     return response;
 }

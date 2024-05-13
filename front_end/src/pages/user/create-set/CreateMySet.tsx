@@ -3,9 +3,15 @@ import SetForm from '@/components/user-sets/set-form/SetForm'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
-import { createUserSetAction } from '@/redux/user-sets/slice';
+import {
+    createUserSetAction,
+    getUserSetsListAction,
+} from '@/redux/user-sets/slice';
+import { useNavigate } from 'react-router-dom';
+import { routerPaths } from '@/routes/path';
 const CreateMySet = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const onCreate = (values: any) => {
         const submitValues = {
             set_name: values.set_name,
@@ -24,12 +30,7 @@ const CreateMySet = () => {
             payload: {
                 data: formData,
                 onSuccess: () => {
-                    // setOpen(false)
-                    // getSets({
-                    //     pageNumber: searchParams.get("page_index") ? parseInt(searchParams.get("page_index")!) : 1,
-                    //     filter: searchParams.get("filter") || "",
-                    //     name: searchParams.get("name") || ""
-                    // })
+                    navigate(routerPaths.USER_SETS)
                     toast({
                         title: 'Create set success',
                         variant: 'default',

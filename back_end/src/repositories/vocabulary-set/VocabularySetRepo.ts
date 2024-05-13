@@ -89,11 +89,8 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             updateSet.image = set.set_image_url;
             updateSet.updated_at = new Date();
             updateSet.updated_by = set?.updated_by;
-            const result = await this.setDataSource.save(updateSet);
-            if (result) {
-                return true;
-            }
-            return false;
+            return await this.setDataSource.save(updateSet);
+
         }
         return false;
     }

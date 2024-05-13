@@ -49,6 +49,21 @@ const UserSets = createSlice({
     createUserSetSuccessAction: (state, { payload }) => {
       state.isLoading = false
     },
+    editUserSetAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+
+    editUserSetSuccessAction: (state, { payload }) => {
+      state.isLoading = false
+    },
+
+    deleteUserSetAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+
+    deleteUserSetSuccessAction: (state, { payload }) => {
+      state.isLoading = false;
+    },
   }
 })
 
@@ -64,7 +79,10 @@ export const {
   getUserSetByIdFailureAction,
   createUserSetAction,
   createUserSetSuccessAction,
-
+  editUserSetAction,
+  editUserSetSuccessAction,
+  deleteUserSetAction,
+  deleteUserSetSuccessAction,
 } = UserSets.actions
 
 export default UserSets.reducer

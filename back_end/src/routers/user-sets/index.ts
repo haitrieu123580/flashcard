@@ -20,9 +20,9 @@ router.post("/create-set", [isValidKey, verifyToken, UploadFile.any()], setContr
 
 router.post("/add-card", [isValidKey, verifyToken, UploadFile.any()], controller.addCardToUserSet)
 
-router.put("/edit-set/:setId", [isValidKey, verifyToken], controller.updateSet)
+router.put("/:setId", [isValidKey, verifyToken, UploadFile.any()], controller.updateSet)
 
-router.delete("/delete-set/:setId", [isValidKey, verifyToken], controller.deleteMySet)
+router.delete("/:setId", [isValidKey, verifyToken], controller.deleteMySet)
 
 
 export = router

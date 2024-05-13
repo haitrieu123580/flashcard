@@ -98,7 +98,6 @@ export class UserSetsService implements IUserSetsService {
                 const card = await this.cardRepo.getCardById(cardId);
                 if (card) {
                     const result = await this.userSetsRepo.addCardToSet(set, card);
-                    console.log("result", result)
                     if (result) {
                         return new SuccessMsgResponse('Add card to set successfully').send(res);
                     }
@@ -168,8 +167,8 @@ export class UserSetsService implements IUserSetsService {
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
             const updateSet = await this.setRepo.get_set_by_id(setId);
             const set = {
-                set_name: req.body.set_name,
-                set_description: req.body.set_description,
+                set_name,
+                set_description,
                 updated_by: user?.email,
                 set_image_url: isDeleteImage
                     ? null
@@ -196,7 +195,6 @@ export class UserSetsService implements IUserSetsService {
                 return new FailureMsgResponse('Set not belong to user').send(res);
             }
             const result = await this.setRepo.deleteSetById(setId);
-            console.log("result", result)
             if (result) {
                 return new SuccessMsgResponse('Delete set successfully').send(res);
             }

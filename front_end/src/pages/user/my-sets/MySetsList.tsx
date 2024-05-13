@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserSetsListAction } from '@/redux/user-sets/slice';
 import SetItem from '@/components/home/newest-sets/SetItem'
 import { useEffect, useState } from 'react'
-import { FormInput } from '@/components/common/custom_input/CustomInput'
-import { Form } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
+// import { FormInput } from '@/components/common/custom_input/CustomInput'
+// import { Form } from '@/components/ui/form'
+// import { useForm } from 'react-hook-form'
 import Constants from '@/lib/Constants'
 import { useNavigate, useLocation, useSearchParams, useParams } from 'react-router-dom'
 import { routerPaths } from '@/routes/path'
@@ -15,7 +14,12 @@ import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingS
 import { PlusCircleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup';
+// import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup';
+import {
+    getUserSetsListAction,
+    deleteUserSetAction
+} from '@/redux/user-sets/slice';
+
 const MySetsList = () => {
     const { mySets, isLoading, pagination } = useSelector((state: any) => state.UserSets);
     const dispatch = useDispatch();
@@ -56,6 +60,29 @@ const MySetsList = () => {
     const gotoCard = (id: string = "") => {
         navigate(replacePathWithId(routerPaths.LEARN_MY_SET, id))
     }
+
+    const onDelete = (id: string) => {
+        dispatch({
+            type: deleteUserSetAction.type,
+            payload: {
+                id: id,
+                onSuccess: () => {
+                    getUserSetsList()
+                    toast({
+                        title: 'Delete set success',
+                        variant: 'default',
+                    })
+                },
+                onError: (message: string) => {
+                    toast({
+                        title: 'Delete failed',
+                        description: message ? message : "Please try again!",
+                        variant: 'destructive',
+                    })
+                }
+            }
+        })
+    }
     return (
         <div>
             <div className='flex justify-end my-4'>
@@ -93,7 +120,9 @@ const MySetsList = () => {
                                     onEditBtn={(id: string) => {
                                         navigate(replacePathWithId(routerPaths.EDIT_MY_SET, id))
                                     }}
-                                    onDeleteBtn={(id: string) => { }}
+                                    onDeleteBtn={(id: string) => {
+                                        onDelete(id)
+                                    }}
 
                                 />
                             </div>

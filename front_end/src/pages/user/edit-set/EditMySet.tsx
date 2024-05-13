@@ -10,7 +10,7 @@ import { CardTitle } from '@/components/ui/card'
 import { PlusCircle, PencilIcon, CheckIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils'
-import { editSetAction } from '@/redux/set/slice'
+import { editUserSetAction } from '@/redux/user-sets/slice'
 import {
     getUserSetByIdAction,
 } from '@/redux/user-sets/slice';
@@ -18,7 +18,11 @@ import { useParams } from "react-router-dom";
 import CardForm from '@/components/user-sets/card-form/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
-import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card/slice"
+import {
+    editUserCardAction,
+    createUserCardAction,
+    deleteUserCardAction,
+} from '@/redux/user-cards/slice'
 import EditPopup from '@/components/common/popup/EditPopup'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -74,7 +78,7 @@ const EditMySet = () => {
         }
         const formData = objectToFormData(submitValues);
         dispatch({
-            type: editCardAction.type,
+            type: editUserCardAction.type,
             payload: {
                 id: id,
                 data: formData,
@@ -98,7 +102,7 @@ const EditMySet = () => {
     }
     const onDeleteCard = (id: string) => {
         dispatch({
-            type: deleteCardAction.type,
+            type: deleteUserCardAction.type,
             payload: {
                 id: id,
                 onSuccess: () => {
@@ -129,7 +133,7 @@ const EditMySet = () => {
         }
         const formData = objectToFormData(submitValues);
         dispatch({
-            type: createCardAction.type,
+            type: createUserCardAction.type,
             payload: {
                 data: formData,
                 onSuccess: () => {
@@ -173,7 +177,7 @@ const EditMySet = () => {
         }
         const formData = objectToFormData(submitValues);
         dispatch({
-            type: editSetAction.type,
+            type: editUserSetAction.type,
             payload: {
                 id: set?.id,
                 data: formData,

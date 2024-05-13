@@ -22,7 +22,7 @@ export class UserSetsController {
     }
 
     updateSet = async (req: Request, res: Response) => {
-        await this.userSetsService.updateUserSet(req, res);
+        return this.userSetsService.updateUserSet(req, res);
     }
 
     removeCardFromMySet = async (req: Request, res: Response) => {

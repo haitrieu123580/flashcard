@@ -15,14 +15,18 @@ import {
   getUserSetByIdFailureAction,
   createUserSetAction,
   createUserSetSuccessAction,
-
+  editUserSetAction,
+  editUserSetSuccessAction,
+  deleteUserSetAction,
+  deleteUserSetSuccessAction,
 } from "./slice";
 import {
   GetUSerSetsListApi,
   AddCardToSetApi,
   GetUserSetByIdApi,
   CreateUserSetApi,
-  DeleteSetApi,
+  DeleteUserSetApi,
+  EditUserSetApi,
 } from '@/api/UserSetsApi';
 
 function* watchUserSetsList() {
@@ -132,12 +136,66 @@ function* watchCreateUserSet() {
     }
   });
 }
+function* watchEditSet() {
+  yield takeLatest(editUserSetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { data, id } = payload
+    try {
+      const res = yield call(EditUserSetApi, { id, data });
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          yield put(
+            editUserSetSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+          isFunction(payload.onError) && payload.onError(res.data.message);
+        }
+      }
 
+    } catch (error) {
+
+    }
+  });
+}
+
+function* watchDeleteSet() {
+  yield takeLatest(deleteUserSetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { id, onError, onSuccess } = payload
+    try {
+      const res = yield call(DeleteUserSetApi, id);
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(onSuccess) && onSuccess(res.data?.data);
+          yield put(
+            deleteUserSetSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+          isFunction(payload.onError) && payload.onError(res.data.message);
+        }
+      }
+      else {
+        isFunction(payload.onError) && payload.onError(res.data.message);
+      }
+    } catch (error) {
+      isFunction(onError) && onError("Internal server error");
+    }
+  });
+}
 export default function* UserSetsSaga() {
   yield all([
     fork(watchUserSetsList),
     fork(watchAddCardToMySet),
     fork(watchGetUserSetById),
     fork(watchCreateUserSet),
+    fork(watchEditSet),
+    fork(watchDeleteSet),
   ]);
 }
