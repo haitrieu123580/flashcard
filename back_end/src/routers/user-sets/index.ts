@@ -14,16 +14,15 @@ router.get("/my-sets", [isValidKey, verifyToken], controller.getUserSetsList)
 
 router.get("/:setId", [isValidKey, verifyToken], controller.getUserSetById)
 
-router.post("/add-card", [isValidKey, verifyToken], controller.addCardToUserSet)
-
 router.post("/quick-create-set", [isValidKey, verifyToken, isValidRequest(QuickCreateSetRequest)], controller.quickCreateSet)
 
-//todo: create set by user
 router.post("/create-set", [isValidKey, verifyToken, UploadFile.any()], setController.createSet)
 
-//todo: add new card into set
-router.post("/add-new-card", [isValidKey, verifyToken, UploadFile.any()], controller.addCardToUserSet)
+router.post("/add-card", [isValidKey, verifyToken, UploadFile.any()], controller.addCardToUserSet)
 
 router.put("/edit-set/:setId", [isValidKey, verifyToken], controller.updateSet)
+
+router.delete("/delete-set/:setId", [isValidKey, verifyToken], controller.deleteMySet)
+
 
 export = router

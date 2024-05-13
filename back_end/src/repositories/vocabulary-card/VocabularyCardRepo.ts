@@ -9,23 +9,20 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
     private setDataSource = AppDataSource.getRepository(Sets);
     private cardDataSource = AppDataSource.getRepository(Cards);
 
-    async create_card(setID: any, cards: any): Promise<boolean> {
-        // return "create card successfully!";
+    async create_card(setID: any, card: any): Promise<any> {
         const newCard = new Cards();
-        newCard.term = cards?.term;
-        newCard.define = cards?.define;
-        newCard.image = cards?.image;
-        newCard.example = cards?.example;
+        newCard.term = card?.term;
+        newCard.define = card?.define;
+        newCard.image = card?.image;
+        newCard.example = card?.example;
         const set = await this.setDataSource.findOne({
             where: { id: setID },
             relations: ["user"]
         })
         if (!set) { return false }
-        // !warning: set is not defined
-        // newCard.set = set
+        newCard.set = set;
         newCard.created_by = set.user.email;
-        await this.cardDataSource.save(newCard);
-        return true
+        return await this.cardDataSource.save(newCard);
     }
 
     async edit_card(cardId: string, cardData: any): Promise<boolean> {
@@ -66,8 +63,11 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
     }
 
     async getCardById(id: string): Promise<Cards | null> {
-        const card = await this.cardDataSource.findOneBy({
-            id: id
+        const card = await this.cardDataSource.findOne({
+            where: {
+                id: id
+            },
+            relations: ["set"]
         })
         return card
     }

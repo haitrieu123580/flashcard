@@ -24,4 +24,11 @@ export class UserSetsController {
     updateSet = async (req: Request, res: Response) => {
         await this.userSetsService.updateUserSet(req, res);
     }
+
+    removeCardFromMySet = async (req: Request, res: Response) => {
+    }
+
+    deleteMySet = async (req: Request, res: Response) => {
+        await this.userSetsService.deleteUserSet(req, res);
+    }
 }

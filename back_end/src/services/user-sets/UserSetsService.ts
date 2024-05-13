@@ -17,6 +17,8 @@ import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetR
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { Request, Response } from "express";
 import { S3Service } from "../s3/S3Service";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
 @Service()
 export class UserSetsService implements IUserSetsService {
     private userSetsRepo: IUserSetsRepo;
@@ -173,7 +175,6 @@ export class UserSetsService implements IUserSetsService {
                     ? null
                     : set_image_url ? set_image_url.Location : updateSet.image
             };
-            console.log("set", set)
             const result = await this.setRepo.edit_set_by_id(setId, set);
             if (result) {
                 return new SuccessMsgResponse('Edit set successfully').send(res);
@@ -182,6 +183,27 @@ export class UserSetsService implements IUserSetsService {
         } catch (error) {
             console.log("error", error)
             return new FailureMsgResponse('Internal Server Error ').send(res);
+        }
+    }
+
+    deleteUserSet = async (req: any, res: any): Promise<any> => {
+        try {
+            const setId = req.params.setId;
+            const { id } = req.user;
+            const set = await this.setRepo.get_set_by_id(setId);
+            const user = await this.userRepo.getUserBy("id", id);
+            if (set?.user?.id !== user?.id) {
+                return new FailureMsgResponse('Set not belong to user').send(res);
+            }
+            const result = await this.setRepo.deleteSetById(setId);
+            console.log("result", result)
+            if (result) {
+                return new SuccessMsgResponse('Delete set successfully').send(res);
+            }
+            return new FailureMsgResponse('Delete set failed').send(res);
+
+        } catch (error) {
+
         }
     }
 }

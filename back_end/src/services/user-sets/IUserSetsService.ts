@@ -14,9 +14,6 @@ export interface IUserSetsService {
 
     updateUserSet: (req: Request, res: Response) => Promise<any>
 
-    // deleteUserSet: (req: Request, res: Response) => Promise<void>
+    deleteUserSet: (req: Request, res: Response) => Promise<any>
 
-    // createCardByUser: (req: Request, res: Response) => Promise<void>
-
-    // publicSetRequest: (req: Request, res: Response) => Promise<void>
 }

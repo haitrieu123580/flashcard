@@ -31,6 +31,7 @@ import cardRouter from '@routers/card/index';
 import questionRouter from '@routers/questions/index';
 import multipleChoice from '@routers/multiple-choice-test/index'
 import userSetsRouter from '@routers/user-sets/index';
+import userCardsRouter from '@routers/user-cards/index';
 dotenv.config();
 
 const app: Application = express();
@@ -86,6 +87,7 @@ app.use('/api/card', cardRouter)
 app.use('/api/question', questionRouter)
 app.use('/api/multiple-choice-test', multipleChoice)
 app.use('/api/user-sets', userSetsRouter)
+app.use('/api/user-cards', userCardsRouter)
 
 const port = process.env.PORT || 8000;
 app.listen(Number(port), "0.0.0.0", () => {

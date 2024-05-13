@@ -72,25 +72,13 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             relations: ["cards", "questions"]
         });
     }
-    get_my_sets(userId: string): Promise<any> {
-
-        return this.setDataSource.find(
-            {
-                relations: ["cards"],
-                where: {
-                    user: {
-                        id: userId
-                    }
-                }
-            });
-    }
 
     get_set_by_id(setId: string): Promise<any> {
         return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user"] });
     }
 
     edit_set_by_id = async (setId: string, set: any): Promise<any> => {
-        const updateSet = await this.setDataSource.findOne({
+        const updateSet = await this.setDataSource.findOneOrFail({
             where: {
                 id: setId
             }
