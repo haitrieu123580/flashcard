@@ -14,7 +14,7 @@ import { objectToFormData } from '@/lib/utils'
 import { createSetAction } from '@/redux/set/slice'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CardTitle } from '@/components/ui/card'
-import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
+import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
 const TestListPage = () => {
     const { data, pagination, isLoading } = useSelector((state: any) => state.Sets)
     const dispatch = useDispatch();

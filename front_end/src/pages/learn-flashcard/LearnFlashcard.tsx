@@ -11,12 +11,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSetByIdAction } from "@/redux/set/slice";
 import { replacePathWithId, speek } from "@/lib/utils";
 import { routerPaths } from "@/routes/path";
-import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner";
+import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
+import {
+    getUserSetsListAction,
+    addCardToMySetAction,
+} from '@/redux/user-sets/slice';
+import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [currentCard, setCurrentCard] = useState(0);
     const { data, isLoading } = useSelector((state: any) => state.Set);
+    const { mySets } = useSelector((state: any) => state.UserSets)
+
     useEffect(() => {
         if (id) {
             getSetById(id);
@@ -37,6 +44,16 @@ const LearnFlashcard = () => {
             }
         })
     }
+    const getUserSetsList = () => {
+        dispatch({
+            type: getUserSetsListAction.type,
+        })
+    }
+    useEffect(() => {
+        if (!mySets?.sets) {
+            getUserSetsList()
+        }
+    }, [mySets])
 
     const showCard = (index: number) => {
         if (index >= data?.cards?.length || index < 0) {
@@ -47,66 +64,62 @@ const LearnFlashcard = () => {
 
     return (
         <div>
-            {
-                isLoading
-                    ? <div className="w-full h-full flex justify-center items-center">
-                        <LoadingSpinner />
-                    </div>
-                    : <>
-                        <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
-                            <CardTitle className="flex gap-2 items-end my-2">
-                                <span>{data?.name}</span>
-                                <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
-                            </CardTitle>
-                            {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
-                                return (<>
-                                    {currentCard === index
-                                        && <>
-                                            <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
-                                                <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
+            <LoadingPopup
+                open={isLoading}
+            />
+            <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
+                <CardTitle className="flex gap-2 items-end my-2">
+                    <span>{data?.name}</span>
+                    <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
+                </CardTitle>
+                {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
+                    return (
+                        <div key={index}>
+                            {currentCard === index
+                                && <>
+                                    <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
+                                        <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
 
-                                                    <FlipCard key={index} term={card?.term} define={card?.define} card={card} />
-                                                </div>
-                                                <div className="col-span-1"></div>
-                                                <div className="col-span-1 md:col-span-2">
-                                                    <SentencesExampleBox example={card?.example} />
-                                                </div>
-                                            </CardContent>
-                                            <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
-                                                <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
-                                                    <Button variant={"ghost"} onClick={(e) => {
-                                                        e.preventDefault();
-                                                        showCard(index - 1)
-
-                                                    }}><ChevronLeft /></Button>
-                                                    <span>{`${currentCard + 1}/${data?.cards?.length}`}</span>
-                                                    <Button variant={"ghost"} onClick={(e) => {
-                                                        e.preventDefault();
-                                                        showCard(index + 1)
-                                                    }}><ChevronRight /></Button>
-                                                </div>
-                                                <div className="col-span-3"></div>
-                                            </CardFooter>
-                                        </>}
-                                </>)
-
-                            }) : <>
-                                <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
-                                    <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
-                                        <div className="flex justify-end hover:cursor-pointer">
+                                            <FlipCard key={index} term={card?.term} define={card?.define} card={card} />
                                         </div>
-                                    </div>
-                                    <div className="col-span-1">
-                                        Set is empty !!!
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
+                                        <div className="col-span-1"></div>
+                                        <div className="col-span-1 md:col-span-2">
+                                            <SentencesExampleBox example={card?.example} />
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
+                                        <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
+                                            <Button variant={"ghost"} onClick={(e) => {
+                                                e.preventDefault();
+                                                showCard(index - 1)
 
-                                </CardFooter>
-                            </>}
-                        </Card>
-                    </>
-            }
+                                            }}><ChevronLeft /></Button>
+                                            <span>{`${currentCard + 1}/${data?.cards?.length}`}</span>
+                                            <Button variant={"ghost"} onClick={(e) => {
+                                                e.preventDefault();
+                                                showCard(index + 1)
+                                            }}><ChevronRight /></Button>
+                                        </div>
+                                        <div className="col-span-3"></div>
+                                    </CardFooter>
+                                </>}
+                        </div>)
+
+                }) : <>
+                    <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
+                        <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
+                            <div className="flex justify-end hover:cursor-pointer">
+                            </div>
+                        </div>
+                        <div className="col-span-1">
+                            Set is empty !!!
+                        </div>
+                    </CardContent>
+                    <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
+
+                    </CardFooter>
+                </>}
+            </Card>
             <div className="mt-10">
                 <NewsetSets />
             </div>

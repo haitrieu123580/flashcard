@@ -1,4 +1,11 @@
-import { Entity, Column, ManyToOne, JoinColumn } from "typeorm"
+import {
+    Entity,
+    Column,
+    ManyToOne,
+    JoinColumn,
+    ManyToMany,
+    JoinTable,
+} from "typeorm"
 import { BaseEntity } from "./BaseEntity"
 import { Sets } from "./Sets"
 @Entity()
@@ -33,6 +40,6 @@ export class Cards extends BaseEntity {
     @ManyToOne(() => Sets, set => set.cards, {
         onDelete: "CASCADE"
     })
-    @JoinColumn()
+    @JoinTable()
     set: Sets;
 }

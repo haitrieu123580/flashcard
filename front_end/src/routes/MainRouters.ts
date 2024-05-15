@@ -16,9 +16,15 @@ const AccountListsContainer = lazy(() => import('@/pages/admin/account/AccountsL
 const EditSetContainer = lazy(() => import('@/pages/admin/sets/EditSetContainer'))
 const TestListPage = lazy(() => import('@/pages/admin/tests/tests-list/TestListPage'))
 const QuestionListEditPage = lazy(() => import('@/pages/admin/tests/edit-questions-list/QuestionsListEditPage'))
+const AdminLogin = lazy(() => import('@/pages/admin/login/AdminLogin'))
 
 const MultipleChoiceTestPage = lazy(() => import('@/pages/test/test-page/MultipleChoiceTestPage'))
 const MultipleChoiceResultPage = lazy(() => import('@/pages/test/result-page/MultipleChoiceResultPage'))
+
+const MySetsList = lazy(() => import('@/pages/user/my-sets/MySetsList'))
+const LearnMySet = lazy(() => import('@/pages/user/learn-myset/LearnMySet'))
+const CreateMySet = lazy(() => import('@/pages/user/create-set/CreateMySet'))
+const EditMySet = lazy(() => import('@/pages/user/edit-set/EditMySet'))
 
 const publicRoutes = [
     {
@@ -55,6 +61,16 @@ const publicRoutes = [
         component: MultipleChoiceResultPage,
         layout: MainLayout,
     },
+    {
+        path: routerPaths.ADMIN_LOGIN,
+        component: AdminLogin,
+        layout: MainLayout,
+    },
+    {
+        path: routerPaths.ADMIN,
+        component: AdminLogin,
+        layout: MainLayout,
+    }
 ]
 const protectedRoutes = [
     {
@@ -62,6 +78,26 @@ const protectedRoutes = [
         component: Profile,
         layout: AuthLayout
     },
+    {
+        path: routerPaths.USER_SETS,
+        component: MySetsList,
+        layout: AuthLayout
+    },
+    {
+        path: routerPaths.LEARN_MY_SET,
+        component: LearnMySet,
+        layout: AuthLayout
+    },
+    {
+        path: routerPaths.CREATE_MY_SET,
+        component: CreateMySet,
+        layout: AuthLayout
+    },
+    {
+        path: routerPaths.EDIT_MY_SET,
+        component: EditMySet,
+        layout: AuthLayout
+    }
 ]
 
 const privateRouters = [

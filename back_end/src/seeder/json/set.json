@@ -4,6 +4,7 @@
         "description": "A set of vocabulary related to animals.",
         "image": "./src/seeder/image/dog.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Dog",
@@ -198,6 +199,7 @@
         "description": "A set of vocabulary related to music.",
         "image": "./src/seeder/image/music.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Guitar",
@@ -296,6 +298,7 @@
         "description": "A set of vocabulary related to furniture.",
         "image": "./src/seeder/image/furnitures.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Chair",
@@ -394,6 +397,7 @@
         "description": "A set of vocabulary related to films.",
         "image": "./src/seeder/image/film.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Movie",
@@ -492,6 +496,7 @@
         "description": "A set of vocabulary related to books.",
         "image": "./src/seeder/image/book.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Book",
@@ -590,6 +595,7 @@
         "description": "A set of vocabulary related to school.",
         "image": "./src/seeder/image/school.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Classroom",
@@ -688,6 +694,7 @@
         "description": "A set of vocabulary related to the environment.",
         "image": "./src/seeder/image/environment.jpg",
         "created_by": "Seeder",
+        "is_public": true,
         "cards": [
             {
                 "term": "Environment",

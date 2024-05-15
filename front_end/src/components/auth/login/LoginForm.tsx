@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "@/components/ui/use-toast";
 import { loginAction } from "@/redux/auth/slice";
 import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from "@/components/common/loading-spinner/LoadingSpinner"
+import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 export function LoginForm(props: any) {
@@ -137,7 +137,7 @@ export function LoginForm(props: any) {
                                 <span>or</span>
                                 <Separator className="w-1/3" />
                             </div>
-                            <div>
+                            <div className="w-full">
                                 <Button
                                     type="button"
                                     variant={"outline"}

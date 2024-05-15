@@ -1,14 +1,8 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 
-interface UserServiceInterface {
-    upload_avatar: (user: any, imagePath: string) => Promise<any>;
+export interface UserServiceInterface {
 
-    editProfile: (userId: string, data: any) => Promise<any>;
+    editProfile: (req: any, res: Response) => Promise<any>;
 
-    changePassword: (userId: string, data: any) => Promise<any>;
-
-    getMultipleChoiceResult: (userId: string) => Promise<any>;
-
-    getMultipleChoiceTestDetails: (userId: string, recordId: string) => Promise<any>;
+    changePassword: (userId: any, data: any) => Promise<any>;
 }
-export = UserServiceInterface;

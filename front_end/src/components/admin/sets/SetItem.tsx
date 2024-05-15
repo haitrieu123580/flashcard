@@ -50,8 +50,14 @@ const SetItem = (props: any) => {
                 <div className="col-span-8 grid grid-rows-2">
                     <CardDescription className="row-span-1">{data?.description}</CardDescription>
                     <div className="flex flex-col md:flex-row md:justify-between md:items-end">
-                        <p><b>Created at: </b>{convertDateToString(data?.created_at)}</p>
-                        {data?.updated_at && <p><b>Updated at: </b>{convertDateToString(data?.updated_at)}</p>}
+                        <div>
+                            <p><b>Created at: </b>{convertDateToString(data?.created_at)}</p>
+                            <p><b>Created by: </b>{data?.created_by}</p>
+                        </div>
+                        <div >
+                            {data?.updated_at && <p><b>Updated at: </b>{convertDateToString(data?.updated_at)}</p>}
+                            {data?.updated_by && <p><b>Updated by: </b>{convertDateToString(data?.updated_by)}</p>}
+                        </div>
                     </div>
                 </div>
                 <div className="col-span-4">

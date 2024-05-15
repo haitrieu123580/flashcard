@@ -61,10 +61,6 @@ const NestedCardFieldArray = (
                     </div>
                 );
             })}
-
-
-
-            <hr />
         </div>
     );
 };

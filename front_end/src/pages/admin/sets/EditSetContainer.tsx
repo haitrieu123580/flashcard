@@ -13,14 +13,14 @@ import { objectToFormData } from '@/lib/utils'
 import { editSetAction } from '@/redux/set/slice'
 import { getSetByIdAction } from "@/redux/set/slice";
 import { useParams } from "react-router-dom";
-import CardForm from './CardForm'
+import CardForm from '../../../components/admin/cards/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
 import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card/slice"
 import EditPopup from '@/components/common/popup/EditPopup'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
-import LoadingSpinner from '@/components/common/loading-spinner/LoadingSpinner'
+import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
 
 const EditSetContainer = () => {
     const { id } = useParams();

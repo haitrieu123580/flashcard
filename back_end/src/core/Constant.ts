@@ -9,6 +9,7 @@ export class Constants {
 
     static USER_ROLE = {
         ADMIN: 1,
+        TEACHER: 2,
         USER: 10,
     }
 

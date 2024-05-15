@@ -32,7 +32,7 @@ const MainHeader = (props: any) => {
     const { isAdmin } = props
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loggedIn } = useSelector((state: any) => state.Auth)
+    const { loggedIn, profile } = useSelector((state: any) => state.Auth)
     const [openDialogLogin, setOpenDialogLogin] = useState(false)
     const [openDialogRegister, setOpenDialogRegister] = useState(false)
     const [showSubmit, setShowSubmit] = useState(false)
@@ -64,7 +64,21 @@ const MainHeader = (props: any) => {
                     <Button variant={"link"}>
                         <Link to={routerPaths.HOME}>Home</Link>
                     </Button>
-                    {/* <Button variant={"link"} className="w-fit">Your library</Button> */}
+                    {
+                        loggedIn ?
+                            (profile?.role === Constants.ROLE.ADMIN) ? <>
+                                <Button variant={"link"} className="w-fit">
+                                    <Link to={routerPaths.ADMIN}>Admin site</Link>
+                                </Button>
+                            </>
+                                : <>
+                                    <Button variant={"link"} className="w-fit">
+                                        <Link to={routerPaths.USER_SETS}>My sets</Link>
+                                    </Button>
+
+                                </>
+                            : null
+                    }
                 </div>
                 {/* <MaxWidthWrapper >
                    

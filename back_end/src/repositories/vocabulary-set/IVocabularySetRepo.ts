@@ -5,8 +5,6 @@ export interface IVocabularySetRepo {
 
     get_all_public_sets(data: any): Promise<any>;
 
-    get_my_sets(userId: string): Promise<any>;
-
     get_set_by_id(setId: string): Promise<any>;
 
     edit_set_by_id(setId: string, set: any): Promise<any>;
@@ -14,5 +12,7 @@ export interface IVocabularySetRepo {
     deleteSetById(setId: string): Promise<any>;
 
     isExistSet(setId: string): Promise<boolean>;
+
+    createSet(set: any): Promise<any>;
 
 }

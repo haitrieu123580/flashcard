@@ -7,6 +7,8 @@ export const routerPaths = {
     LEARN_FLASHCARD: '/learn-flashcard/:id',
     UNAUTHORIZED: '/unauthorized',
 
+    ADMIN: "/admin",
+    ADMIN_LOGIN: "/admin/login",
     ADMIN_DASHBOARD: '/admin/dashboard',
     ADMIN_SETS: '/admin/sets',
     ADMIN_ACCOUNTS: '/admin/account',
@@ -18,4 +20,8 @@ export const routerPaths = {
     TEST_MULTIPLE_CHOICE: '/multiple-choice/:id',
     TEST_MULTIPLE_CHOICE_RESULT: '/multiple-choice-result',
 
+    USER_SETS: '/user/my-sets',
+    LEARN_MY_SET: '/user/learn-myset/:id',
+    CREATE_MY_SET: '/user/create-myset',
+    EDIT_MY_SET: '/user/edit-myset/:id',
 }

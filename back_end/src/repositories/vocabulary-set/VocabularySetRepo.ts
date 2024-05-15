@@ -18,14 +18,14 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         );
 
         if (owner) {
-            const { set_name, set_description, set_image_url } = set;
+            const { set_name, set_description, set_image_url, is_public } = set;
             const newSet = new Sets();
             newSet.name = set_name;
             newSet.description = set_description;
             newSet.image = set_image_url;
             newSet.created_by = owner?.email;
             newSet.user = owner;
-
+            newSet.is_public = is_public
             if (!newSet.cards) {
                 newSet.cards = [];
             }
@@ -55,33 +55,16 @@ export class VocabularySetRepo implements IVocabularySetRepo {
     get_all_public_sets(data: any): Promise<any> {
         const { take, skip, filter, name, sortBy } = data;
         let order: any = {};
-        // if (name) {
-        //     return this.setDataSource.createQueryBuilder("sets")
-        //         .where("LOWER(sets.name) ILIKE :name", { name: name.toLowerCase() })
-        //         .orderBy(sortBy === "setName" ? "sets.name" : "sets.created_at", filter === "asc" ? "ASC" : "DESC")
-        //         .take(take)
-        //         .skip(skip)
-        //         .leftJoinAndSelect("sets.cards", "card")
-        //         .leftJoinAndSelect("sets.questions", "question")
-        //         .getManyAndCount();
-        // }
         if (sortBy === "setName") {
             order.name = filter === "asc" ? "ASC" : "DESC";
         } else if (sortBy === "createdDate") {
             order.created_at = filter === "latest" ? "DESC" : "ASC";
         }
 
-
-        // return this.setDataSource.createQueryBuilder("sets")
-        //     .orderBy(sortBy === "setName" ? "sets.name" : "sets.created_at", filter === "asc" ? "ASC" : "DESC")
-        //     .take(take)
-        //     .skip(skip)
-        //     .leftJoinAndSelect("sets.cards", "card")
-        //     .leftJoinAndSelect("sets.questions", "question")
-        //     .getManyAndCount();
         return this.setDataSource.findAndCount({
             where: {
-                name: name ? ILike(name) : undefined
+                name: name ? ILike(name) : undefined,
+                is_public: true
             },
             order: order,
             take: take,
@@ -89,25 +72,13 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             relations: ["cards", "questions"]
         });
     }
-    get_my_sets(userId: string): Promise<any> {
-
-        return this.setDataSource.find(
-            {
-                relations: ["cards"],
-                where: {
-                    user: {
-                        id: userId
-                    }
-                }
-            });
-    }
 
     get_set_by_id(setId: string): Promise<any> {
         return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user"] });
     }
 
     edit_set_by_id = async (setId: string, set: any): Promise<any> => {
-        const updateSet = await this.setDataSource.findOne({
+        const updateSet = await this.setDataSource.findOneOrFail({
             where: {
                 id: setId
             }
@@ -117,8 +88,9 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             updateSet.description = set.set_description;
             updateSet.image = set.set_image_url;
             updateSet.updated_at = new Date();
-            await this.setDataSource.save(updateSet);
-            return true;
+            updateSet.updated_by = set?.updated_by;
+            return await this.setDataSource.save(updateSet);
+
         }
         return false;
     }
@@ -133,5 +105,10 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         return this.setDataSource.findOne({ where: { id: setId } }).then(set => {
             return set ? true : false;
         });
+    }
+
+    createSet = async (set: any): Promise<any> => {
+        const result = await this.setDataSource.save(set);
+        return result;
     }
 }

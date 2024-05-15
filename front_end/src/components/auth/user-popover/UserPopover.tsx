@@ -17,6 +17,8 @@ import {
 } from "@/redux/auth/slice"
 import { Link, useNavigate } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
+import { User } from "lucide-react"
+
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const UserPopover = () => {
@@ -39,8 +41,8 @@ const UserPopover = () => {
         <Popover>
             <PopoverTrigger className="text-sm p-1 flex items-center gap-2">
                 <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage src={profile?.avatar || ""} />
+                    <AvatarFallback> <User className="w-28 h-28" /></AvatarFallback>
                 </Avatar>
                 {profile?.username}
             </PopoverTrigger>

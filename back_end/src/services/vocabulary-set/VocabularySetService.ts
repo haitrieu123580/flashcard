@@ -6,21 +6,26 @@ import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetR
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { S3Service } from '@services/s3/S3Service';
 import { Constants } from '@src/core/Constant';
-
+import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
+import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
+import { GetAllPublicSetRequest } from "@src/dto/set/GetAllPublicSetRequest";
+import { SetsListResponse, SetsServiceResponse } from '@src/dto/set/SetsListResponse';
 @Service()
 class VocabularySetService implements IVocabularySetService {
 
     private setRepo: IVocabularySetRepo;
     private s3Service: S3Service;
+    private cardRepo: IVocabularyCardRepo;
 
     constructor() {
         this.setRepo = Container.get(VocabularySetRepo);
         this.s3Service = Container.get(S3Service);
+        this.cardRepo = Container.get(VocabularyCardRepo);
     }
 
-    get_all_public_sets = async (req: Request, res: Response): Promise<any> => {
+    get_all_public_sets = async (query: GetAllPublicSetRequest): Promise<SetsListResponse | null> => {
         try {
-            const { page_size, page_index, filter, name } = req.query;
+            const { page_size, page_index, filter, name } = query;
             let data = {}
             const take = Number(page_size) || Constants.DEFAULT_PAGINATION.take;
             let skip = 0;
@@ -39,7 +44,6 @@ class VocabularySetService implements IVocabularySetService {
                 data = { take: take, skip: skip, filter, name, sortBy: 'createdDate' };
             }
             const [sets, count] = await this.setRepo.get_all_public_sets(data);
-
             if (sets?.length) {
                 sets.forEach((set: any) => {
                     set.totalCards = set?.cards?.length;
@@ -54,29 +58,22 @@ class VocabularySetService implements IVocabularySetService {
 
                     return set;
                 });
-                return new SuccessResponse('Get all public sets successfully', {
-                    sets,
+                return {
+                    sets: sets,
                     count,
-                }).send(res);
+                };
+                // return new SuccessResponse('Get all public sets successfully', {
+                //     sets,
+                //     count,
+                // }).send(res);
             } else {
-                return new FailureMsgResponse("Empty!").send(res);
+                return null;
+                // return new FailureMsgResponse("Empty!").send(res);
             }
         } catch (error) {
             console.log('error', error);
-            return new FailureMsgResponse('Internal Server Error ').send(res);
-        }
-    }
-
-    get_my_sets = async (req: any, res: Response): Promise<any> => {
-        try {
-            const userId = req.user.id;
-            const sets = await this.setRepo.get_my_sets(userId);
-            if (sets?.length) {
-                return new SuccessResponse('Get my sets successfully', sets).send(res);
-            }
-            return new FailureMsgResponse("Empty!").send(res);
-        } catch (error) {
-            return new FailureMsgResponse('Internal Server Error ').send(res);
+            return null;
+            // return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
 
@@ -84,6 +81,9 @@ class VocabularySetService implements IVocabularySetService {
         try {
             const setId = req.params.id;
             const set = await this.setRepo.get_set_by_id(setId);
+            if (set?.is_public === false) {
+                return new FailureMsgResponse('Set not found!').send(res);
+            }
             if (set) {
                 return new SuccessResponse('Get set successfully', set).send(res);
             }
@@ -121,8 +121,10 @@ class VocabularySetService implements IVocabularySetService {
         }
     }
 
+    //admin create set
     create_Set = async (req: any, res: Response) => {
         try {
+            const { id, role } = req.user;
             const cards = [];
             const formData = req.body;
             const userId = req.user.id;
@@ -146,7 +148,7 @@ class VocabularySetService implements IVocabularySetService {
             const { set_name, set_description } = formData;
             const set_image = files.find((file: any) => file.fieldname === 'set_image');
             const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
-            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "" };
+            const set = { set_name, set_description, set_image_url: set_image_url?.Location || "", is_public: role === Constants.USER_ROLE.ADMIN };
 
             await this.setRepo.create_new_set_and_cards(userId, set, cards);
             return new SuccessMsgResponse('Create set successfully').send(res);
