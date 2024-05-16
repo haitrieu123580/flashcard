@@ -1,9 +1,12 @@
-
+import { Cards } from "@src/entity/Cards";
+import { Sets } from "@src/entity/Sets";
+import { User } from "@src/entity/User";
+import { NewCardData } from "@src/dto/cards";
 export interface IVocabularyCardRepo {
 
-    create_card(setID: any, cards: any): Promise<boolean>;
+    create_card(user: User, set: Sets, cards: NewCardData): Promise<Cards | null>;
 
-    edit_card(cardId: string, cardData: any): Promise<boolean>;
+    edit_card(card: Cards): Promise<Cards | null>;
 
     delete_card(cardId: string): Promise<boolean>;
 

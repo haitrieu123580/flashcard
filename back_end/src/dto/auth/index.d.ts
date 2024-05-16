@@ -32,6 +32,7 @@ export type ForgotPasswordRequest = {
     email: string,
 }
 export type ForgotPasswordResponse = {
+    email: string,
     otp: string,
 }
 export type ResetPasswordRequest = {

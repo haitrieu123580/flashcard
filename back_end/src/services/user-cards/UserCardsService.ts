@@ -14,6 +14,16 @@ import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetR
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import UserRepoInterface from "@repositories/user/UserRepoInterface";
 import UserRepo from "@repositories/user/UseRepo";
+import {
+    CreateCardDataRequest,
+    UpdateCardDataRequest
+} from "@src/dto/cards";
+import {
+    AuthFailureError,
+    NotFoundError,
+    ForbiddenError,
+} from "@src/core/ApiError";
+import { Cards } from "@src/entity/Cards";
 
 @Service()
 export class UserCardsService implements IUserCardsService {
@@ -28,69 +38,59 @@ export class UserCardsService implements IUserCardsService {
         this.setRepo = Container.get(VocabularySetRepo);
         this.userRepo = Container.get(UserRepo);
     }
-    CreateCard = async (req: any, res: Response): Promise<any> => {
-        try {
-            const { id } = req.user;
-            const formData = req.body;
-            const image = req.file;
-            const setId = formData.set_id;
-            const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
-            const cardData = {
-                term: formData.term,
-                define: formData.define,
-                example: formData?.example,
-                image: image_url?.Location || null
-            }
-            //todo check existed set yet
-            const set = await this.setRepo.get_set_by_id(setId);
-            const user = await this.userRepo.getUserBy("id", id);
-            if (set?.user?.id !== user?.id) {
-                return new FailureMsgResponse("You are not the owner of this set!").send(res);
-            }
+    CreateCard = async (data: CreateCardDataRequest): Promise<Cards | null> => {
+        const image = data.image;
+        const setId = data.set_id;
+        const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
 
-            const result = await this.cardRepo.create_card(setId, cardData);
-            if (result) {
-                return new SuccessMsgResponse("Create card successfully!").send(res);
-            }
-            return new FailureMsgResponse("Create card failed!").send(res);
-        } catch (error) {
-            console.log('error', error);
-            return new FailureMsgResponse('Internal Server Error ').send(res);
+        const cardData = {
+            term: data.term,
+            define: data.define,
+            example: data?.example,
+            image: image_url?.Location || ""
         }
+        const set = await this.setRepo.get_set_by_id(setId);
+        const user = await this.userRepo.getUserBy("id", data.user.id);
+        if (!user) {
+            throw new AuthFailureError("User not found");
+        }
+        if (!set) {
+            throw new NotFoundError('Set not found');
+        }
+        if (set?.user?.id !== user?.id) {
+            throw new ForbiddenError("You are not the owner of this set!");
+        }
+
+        return await this.cardRepo.create_card(user, set, cardData);
+
     }
 
-    UpdateCard = async (req: any, res: Response): Promise<any> => {
-        try {
-            const cardId = req.params.id;
-            const { id } = req.user
-            const formData = req.body;
-            const image = req.file;
-            const isDeleteImage = formData.is_delete_image === "true";
-            //todo delete image on S3
-            const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
-            const updatedCard = await this.cardRepo.getCardById(cardId);
-            const cardData = {
-                term: formData.term || updatedCard.term,
-                define: formData.define || updatedCard.define,
-                example: formData?.example || updatedCard?.example,
-                image: isDeleteImage ? null : image_url ? image_url.Location : updatedCard.image
-            }
-            const user = await this.userRepo.getUserBy("id", id);
-            if (!updatedCard) {
-                return new FailureMsgResponse("Card not found.").send(res);
-            }
-            if (!user?.email === updatedCard.created_by) {
-                return new FailureMsgResponse("You are not the owner of this card!").send(res);
-            }
-            const result = await this.cardRepo.edit_card(cardId, cardData);
-            if (!result) {
-                return new FailureMsgResponse("Update card failed!").send(res);
-            }
-            return new SuccessMsgResponse("Update card successfully!").send(res);
-        } catch (error) {
-            console.log('error', error);
-            return new FailureMsgResponse('Internal Server Error ').send(res);
+    UpdateCard = async (data: UpdateCardDataRequest): Promise<any> => {
+        const updatedCard = await this.cardRepo.getCardById(data.id);
+        const user = await this.userRepo.getUserBy("id", data.user.id);
+        if (!user) {
+            throw new AuthFailureError("User not found");
         }
+        if (!updatedCard) {
+            throw new NotFoundError('Card not found');
+        }
+        if (!user?.email === updatedCard.created_by) {
+            throw new ForbiddenError("You are not the owner of this card!");
+        }
+        const isDeleteImage = data.is_delete_image === "true";
+        //todo delete image on S3
+        const image_url = data.image ? await this.s3Service.uploadFile(data.image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
+
+        const cardData = {
+            ...updatedCard,
+            term: data.term || updatedCard.term,
+            define: data.define || updatedCard.define,
+            example: data?.example || updatedCard?.example,
+            image: isDeleteImage ? null : image_url ? image_url.Location : updatedCard.image,
+            updated_by: user.email,
+        }
+
+        return this.cardRepo.edit_card(cardData);
     }
 
     DeleteCard = async (req: any, res: Response): Promise<any> => {

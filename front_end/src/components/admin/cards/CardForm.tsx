@@ -49,7 +49,7 @@ const CardForm = (props: any) => {
                 image: null,
                 path: card?.image || "",
             },
-            example: card?.example ? JSON.parse(card?.example) : [{ sentence: '', translation: '' }]
+            example: card?.example ? card?.example : [{ sentence: '', translation: '' }]
         },
     });
     const fields = useFieldArray({
@@ -140,7 +140,7 @@ const CardForm = (props: any) => {
                             </Button>
                         </div>
 
-                        {fields.fields.map((field, index) => {
+                        {fields?.fields?.map((field, index) => {
                             return (
                                 <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
                                     <FormInput

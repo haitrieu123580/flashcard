@@ -10,14 +10,12 @@ import {
     ForbiddenError,
     NoDataError,
 } from '@src/core/ApiError';
-import { SuccessResponse, FailureMsgResponse, SuccessMsgResponse, FailureResponse } from '@src/core/ApiResponse';
+import { FailureMsgResponse, SuccessMsgResponse } from '@src/core/ApiResponse';
 import { IVocabularySetService } from './IVocabularySetService';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { S3Service } from '@services/s3/S3Service';
 import { Constants } from '@src/core/Constant';
-import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
-import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
 import { GetAllPublicSetRequest } from "@src/dto/set/GetAllPublicSetRequest";
 import { SetsListResponse, SetsServiceResponse } from '@src/dto/set/SetsListResponse';
 import { UpdateSetRequest, createNewSetAndCardsRequest } from '@src/dto/set';
@@ -27,12 +25,10 @@ class VocabularySetService implements IVocabularySetService {
 
     private setRepo: IVocabularySetRepo;
     private s3Service: S3Service;
-    private cardRepo: IVocabularyCardRepo;
 
     constructor() {
         this.setRepo = Container.get(VocabularySetRepo);
         this.s3Service = Container.get(S3Service);
-        this.cardRepo = Container.get(VocabularyCardRepo);
     }
 
     get_all_public_sets = async (query: GetAllPublicSetRequest): Promise<SetsListResponse | null> => {
@@ -90,6 +86,9 @@ class VocabularySetService implements IVocabularySetService {
             throw new BadRequestError("Set not public")
         }
         if (set) {
+            set.cards.forEach((card: any) => {
+                return card.example = card.example ? JSON.parse(card.example || "") : "";
+            });
             return set;
         }
     }
