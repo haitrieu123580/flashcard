@@ -15,5 +15,4 @@ export interface IVocabularySetRepo {
     deleteSetById(setId: string): Promise<any>;
 
     createSet(set: CreateNewSetData): Promise<any>;
-
 }

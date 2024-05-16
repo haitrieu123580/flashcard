@@ -140,34 +140,36 @@ const CardForm = (props: any) => {
                             </Button>
                         </div>
 
-                        {fields?.fields?.map((field, index) => {
-                            return (
-                                <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
-                                    <FormInput
-                                        control={form.control}
-                                        fieldName={`example.${index}.sentence`}
-                                        label="Sentence"
-                                        placeholder="Sentence"
-                                        type={Constants.INPUT_TYPE.TEXT}
-                                        className='w-1/2'
-                                    />
-                                    <FormInput
-                                        control={form.control}
-                                        fieldName={`example.${index}.translation`}
-                                        label="Translation"
-                                        placeholder="Translation"
-                                        type={Constants.INPUT_TYPE.TEXT}
-                                        className='w-1/2'
-                                    />
-                                    <Button
-                                        variant={'ghost'}
-                                        onClick={() => fields.remove(index)}
-                                    >
-                                        <Trash2 />
-                                    </Button>
-                                </div>
-                            )
-                        })}
+                        {
+                            fields?.fields?.map((field, index) => {
+                                return (
+                                    <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
+                                        <FormInput
+                                            control={form.control}
+                                            fieldName={`example.${index}.sentence`}
+                                            label="Sentence"
+                                            placeholder="Sentence"
+                                            type={Constants.INPUT_TYPE.TEXT}
+                                            className='w-1/2'
+                                        />
+                                        <FormInput
+                                            control={form.control}
+                                            fieldName={`example.${index}.translation`}
+                                            label="Translation"
+                                            placeholder="Translation"
+                                            type={Constants.INPUT_TYPE.TEXT}
+                                            className='w-1/2'
+                                        />
+                                        <Button
+                                            variant={'ghost'}
+                                            onClick={() => fields.remove(index)}
+                                        >
+                                            <Trash2 />
+                                        </Button>
+                                    </div>
+                                )
+                            })
+                        }
                         {
                             !isEdit &&
                             <Button

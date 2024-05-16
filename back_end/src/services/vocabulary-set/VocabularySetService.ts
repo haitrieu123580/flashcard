@@ -14,6 +14,8 @@ import { FailureMsgResponse, SuccessMsgResponse } from '@src/core/ApiResponse';
 import { IVocabularySetService } from './IVocabularySetService';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
+import { IVocabularyCardRepo } from '@repositories/vocabulary-card/IVocabularyCardRepo';
+import { VocabularyCardRepo } from '@repositories/vocabulary-card/VocabularyCardRepo';
 import { S3Service } from '@services/s3/S3Service';
 import { Constants } from '@src/core/Constant';
 import { GetAllPublicSetRequest } from "@src/dto/set/GetAllPublicSetRequest";
@@ -25,10 +27,12 @@ class VocabularySetService implements IVocabularySetService {
 
     private setRepo: IVocabularySetRepo;
     private s3Service: S3Service;
+    private cardRepo: IVocabularyCardRepo;
 
     constructor() {
         this.setRepo = Container.get(VocabularySetRepo);
         this.s3Service = Container.get(S3Service);
+        this.cardRepo = Container.get(VocabularyCardRepo);
     }
 
     get_all_public_sets = async (query: GetAllPublicSetRequest): Promise<SetsListResponse | null> => {
