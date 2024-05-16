@@ -24,7 +24,7 @@ export class QuestionService implements IQuestionService {
     async GetQuestionList(req: Request, res: any): Promise<any> {
         try {
             const setId = req.params.setId;
-            const isExistSet = await this.setRepo.isExistSet(setId);
+            const isExistSet = await this.setRepo.get_set_by_id(setId);
             if (!isExistSet) {
                 return new FailureMsgResponse("Set not found").send(res);
             }
@@ -61,7 +61,7 @@ export class QuestionService implements IQuestionService {
     async CreateQuestion(req: any, res: any): Promise<any> {
         try {
             const setId = req.body.set_id;
-            const isExistSet = await this.setRepo.isExistSet(setId);
+            const isExistSet = await this.setRepo.get_set_by_id(setId);
             if (!isExistSet) {
                 return new FailureMsgResponse("Set not found").send(res);
             }

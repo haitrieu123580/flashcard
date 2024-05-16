@@ -7,14 +7,13 @@ import { hasingPassword, comparePassword } from "@helper/HashingPassword";
 class UserRepo implements UserRepoInterface {
     private userDataSource = AppDataSource.getRepository(User)
 
-    createUser = async (data: any): Promise<User | null> => {
+    createUser = (data: any): Promise<User | null> => {
         const user = new User();
         user.email = data.email;
         user.username = data.username;
         const { password } = hasingPassword(String(data.password))
         user.password = password;
-        const created = await this.userDataSource.save(user);
-        return created
+        return this.userDataSource.save(user);
     }
 
     me = async (id: string): Promise<User | null> => {
@@ -93,8 +92,8 @@ class UserRepo implements UserRepoInterface {
         return result;
     }
 
-    getUserBy = async (searchBy: string, searchValue: any): Promise<User | null> => {
-        const result = await this.userDataSource.findOne(
+    getUserBy = (searchBy: string, searchValue: any): Promise<User | null> => {
+        return this.userDataSource.findOne(
             {
                 where: {
                     [searchBy]: searchValue
@@ -104,7 +103,6 @@ class UserRepo implements UserRepoInterface {
                 }
             }
         )
-        return result;
     }
 
 }

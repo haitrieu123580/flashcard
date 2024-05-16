@@ -2,17 +2,39 @@ import AuthServiceInterface from "@services/auth/AuthServiceInterface";
 import { Request, Response } from "express";
 import Container from 'typedi';
 import AuthService from "@services/auth/AuthService";
-// import { BadRequestError, AuthFailureError } from "../../core/ApiError";
-class AuthController {
+import {
+    SuccessResponse,
+    SuccessMsgResponse,
+    FailureResponse,
+    FailureMsgResponse,
+    InternalErrorResponse
+} from "@src/core/ApiResponse";
+import {
+    SignInRequestType,
+
+    SignUpRequestType,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+    ForgotPasswordResponse,
+} from "@src/dto/auth/index"; class AuthController {
     private authService: AuthServiceInterface;
     constructor() {
         this.authService = Container.get(AuthService)
     }
     sign_in = async (req: Request, res: Response): Promise<any> => {
-        await this.authService.sign_in(req, res);
+        const data: SignInRequestType = req.body;
+        const response = await this.authService.sign_in(data);
+        if (response) {
+            return new SuccessResponse('Login Success', response).send(res);
+        }
     }
     sign_up = async (req: Request, res: Response) => {
-        await this.authService.sign_up(req, res);
+        const data: SignUpRequestType = req.body;
+
+        const response = await this.authService.sign_up(data);
+        if (response) {
+            return new SuccessResponse('Register Success', response).send(res);
+        }
     }
     me = async (req: Request, res: Response) => {
         await this.authService.me(req, res);

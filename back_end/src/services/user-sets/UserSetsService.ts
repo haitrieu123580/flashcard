@@ -15,10 +15,23 @@ import { VocabularyCardRepo } from "@src/repositories/vocabulary-card/Vocabulary
 import { IVocabularyCardRepo } from "@src/repositories/vocabulary-card/IVocabularyCardRepo";
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
-import { Request, Response } from "express";
 import { S3Service } from "../s3/S3Service";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
+import { CreateNewSetData, UpdateSetRequest } from "@src/dto/set";
+import {
+    NotFoundError,
+    ApiError,
+    InternalError,
+    ErrorType,
+    BadRequestError,
+    AuthFailureError,
+    ForbiddenError,
+} from '@src/core/ApiError';
+import {
+    SetsListResponse
+    , SetsServiceResponse
+} from "@src/dto/set/SetsListResponse";
+import { Sets } from "@src/entity/Sets";
+import { CopyCardToSetRequest } from "@src/dto/uset-sets";
 @Service()
 export class UserSetsService implements IUserSetsService {
     private userSetsRepo: IUserSetsRepo;
@@ -32,157 +45,136 @@ export class UserSetsService implements IUserSetsService {
         this.setRepo = Container.get(VocabularySetRepo);
         this.cardRepo = Container.get(VocabularyCardRepo);
     }
-    async getUserSetsList(req: any, res: any): Promise<any> {
-        try {
-            const { id, email } = req.user;
-            const user = await this.userRepo.getUserBy("id", id);
-            if (!user) {
-                return new FailureMsgResponse("User not found.").send(res)
-            }
-            const [sets, count] = await this.userSetsRepo.getUserSetsList(id);
-            if (sets?.length) {
-                sets.forEach((set: any) => {
-                    set.totalCards = set?.cards?.length;
-                    set.totalQuestions = set?.questions?.length;
-                    try {
-                        set.cards.forEach((card: any) => {
-                            return card.example = card.example ? JSON.parse(card.example || "") : "";
-                        });
-                    } catch (error) {
-
-                    }
-
-                    return set;
-                });
-                return new SuccessResponse('Get all user sets successfully', {
-                    sets,
-                    count,
-                }).send(res);
-            } else {
-                return new FailureMsgResponse("Empty!").send(res);
-            }
-
-        } catch (error) {
-            console.log("error", error)
-            return new FailureResponse('Internal Server Error ', error).send(res);
+    async getUserSetsList(userId: string): Promise<SetsListResponse | null> {
+        const user = await this.userRepo.getUserBy("id", userId);
+        if (!user) {
+            throw new AuthFailureError("User not found");
         }
-    }
-    getUserSetById = async (req: any, res: any): Promise<any> => {
-        try {
-            const { id } = req.user;
-            const { setId } = req.params;
-            const set = await this.setRepo.get_set_by_id(setId);
-            const user = await this.userRepo.getUserBy("id", id);
-            if (!set) {
-                return new FailureMsgResponse("Set not found").send(res)
-            }
-            if (set?.user?.id == user?.id) {
-                return new SuccessResponse("Get set successfully", set).send(res)
-            }
-            return new FailureMsgResponse("Set not belong to user").send(res)
-        } catch (error) {
-            console.log("error", error)
-            return new FailureResponse('Internal Server Error ', error).send(res);
-        }
-    }
-    addCardToUserSet = async (req: any, res: any): Promise<any> => {
-        try {
-            const {
-                setId,
-                cardId
-            } = req.body;
-            const { id } = req.user;
-            //check if set belong to user
-            const set = await this.setRepo.get_set_by_id(setId);
-            if (set && set?.user?.id === id) {
-                const card = await this.cardRepo.getCardById(cardId);
-                if (card) {
-                    const result = await this.userSetsRepo.addCardToSet(set, card);
-                    if (result) {
-                        return new SuccessMsgResponse('Add card to set successfully').send(res);
-                    }
-                    return new FailureMsgResponse('Add card to set failed').send(res);
+        const [sets, count] = await this.userSetsRepo.getUserSetsList(userId);
+        if (sets?.length) {
+            sets.forEach((set: any) => {
+                try {
+                    set.cards.forEach((card: any) => {
+                        return card.example = card.example ? JSON.parse(card.example || "") : "";
+                    });
+                } catch (error) {
+
                 }
-                else {
-                    return new FailureMsgResponse('Card not founded!').send(res);
-                }
-            }
-            return new FailureMsgResponse('Set not founded!').send(res);
-        } catch (error) {
-            console.log("error", error)
-            return new FailureResponse('Internal Server Error ', error).send(res);
-        }
-    }
 
-    quickCreateSet = async (req: any, res: any): Promise<any> => {
-        try {
-            const { id } = req.user;
-            const {
-                setName,
-                cardId
-            } = req.body;
-            const user = await this.userRepo.getUserBy("id", id);
-            if (!user) {
-                return new FailureMsgResponse("User not found.").send(res)
-            }
-            const card = await this.cardRepo.getCardById(cardId);
-            if (!card) {
-                return new FailureMsgResponse("Card not found.").send(res)
-            }
-            const set = {
-                name: setName,
-                is_public: false,
-                created_by: user.email,
-                user: user,
-                cards: [card]
-            }
-            const result = await this.setRepo.createSet(set)
-            if (result) {
-                return new SuccessResponse("Create set successfully", result).send(res)
-            }
-            return new FailureMsgResponse("Create set failed").send(res)
-
-        } catch (error) {
-            console.log("error", error)
-            return new FailureResponse('Internal Server Error ', error).send(res);
-        }
-    }
-    updateUserSet = async (req: any, res: any): Promise<any> => {
-        try {
-            const setId = req.params.setId;
-            const { id } = req.user;
-            const formData = req?.body
-            const files = req?.files
-            const isDeleteImage = formData.is_delete_image === "true";
-            const { set_name, set_description } = formData;
-            const set_image = files?.find((file: any) => file.fieldname === 'set_image');
-            const updatedSet = await this.setRepo.get_set_by_id(setId);
-            const user = await this.userRepo.getUserBy("id", id);
-            if (updatedSet?.user?.id !== user?.id) {
-                return new FailureMsgResponse('Set not belong to user').send(res);
-            }
-            if (updatedSet?.user?.id !== user?.id) {
-                return new FailureMsgResponse('Set not belong to user').send(res);
-            }
-            const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
-            const updateSet = await this.setRepo.get_set_by_id(setId);
-            const set = {
-                set_name,
-                set_description,
-                updated_by: user?.email,
-                set_image_url: isDeleteImage
-                    ? null
-                    : set_image_url ? set_image_url.Location : updateSet.image
+                return set;
+            });
+            return {
+                sets: sets.map((set: any) => ({
+                    ...set,
+                    totalCards: set?.cards?.length,
+                    totalQuestions: set?.questions?.length,
+                })),
+                count,
             };
-            const result = await this.setRepo.edit_set_by_id(setId, set);
-            if (result) {
-                return new SuccessMsgResponse('Edit set successfully').send(res);
-            }
-            return new FailureMsgResponse('Edit set failed').send(res);
-        } catch (error) {
-            console.log("error", error)
-            return new FailureMsgResponse('Internal Server Error ').send(res);
+
+        } else {
+            throw new NotFoundError('Set not found!');
         }
+    }
+    getUserSetById = async (userId: string, setId: string): Promise<Sets> => {
+        const set = await this.setRepo.get_set_by_id(setId);
+        const user = await this.userRepo.getUserBy("id", userId);
+        if (!set) {
+            throw new NotFoundError('Set not found!');
+        }
+        if (set?.user?.id == user?.id) {
+            return set;
+        }
+        else {
+            throw new AuthFailureError("Set not belong to user");
+        }
+
+    }
+    addCardToUserSet = async (data: CopyCardToSetRequest): Promise<any> => {
+        const {
+            setId,
+            cardId
+        } = data;
+        const { id } = data.user;
+        //check if set belong to user
+        const set = await this.setRepo.get_set_by_id(setId);
+        if (set && set?.user?.id === id) {
+            const card = await this.cardRepo.getCardById(cardId);
+            if (card) {
+                return this.userSetsRepo.addCardToSet(set, card);
+            }
+            else {
+                throw new NotFoundError('Card not found!');
+            }
+        }
+        else {
+            throw new ForbiddenError("Set not belong to user");
+        }
+    }
+
+    // quickCreateSet = async (req: any, res: any): Promise<any> => {
+    //     try {
+    //         const { id } = req.user;
+    //         const {
+    //             setName,
+    //             cardId
+    //         } = req.body;
+    //         const user = await this.userRepo.getUserBy("id", id);
+    //         if (!user) {
+    //             return new FailureMsgResponse("User not found.").send(res)
+    //         }
+    //         const card = await this.cardRepo.getCardById(cardId);
+    //         if (!card) {
+    //             return new FailureMsgResponse("Card not found.").send(res)
+    //         }
+    //         const set: CreateNewSetData = {
+    //             name: setName.toString() || "",
+    //             is_public: false,
+    //             created_by: user.email,
+    //             user: user,
+    //             cards: [card]
+    //         }
+    //         const result = await this.setRepo.createSet(set)
+    //         if (result) {
+    //             return new SuccessResponse("Create set successfully", result).send(res)
+    //         }
+    //         return new FailureMsgResponse("Create set failed").send(res)
+
+    //     } catch (error) {
+    //         console.log("error", error)
+    //         return new FailureResponse('Internal Server Error ', error).send(res);
+    //     }
+    // }
+    updateUserSet = async (data: UpdateSetRequest): Promise<any> => {
+        // try {
+        const setId = data.id;
+        const id = data?.user?.id;
+
+        const files = data?.files
+        const isDeleteImage = data.is_delete_image === "true";
+        const { set_name, set_description } = data;
+        const set_image = files?.find((file: any) => file.fieldname === 'set_image');
+        const updatedSet = await this.setRepo.get_set_by_id(setId);
+        const user = await this.userRepo.getUserBy("id", id);
+        if (updatedSet?.user?.id !== user?.id) {
+            throw new AuthFailureError("Set not belong to user");
+            // return new FailureMsgResponse('Set not belong to user').send(res);
+        }
+        const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
+        const updateSet = await this.setRepo.get_set_by_id(setId);
+        if (!updateSet) {
+            throw new NotFoundError('Set not found!');
+        }
+        const set = {
+            ...updateSet,
+            name: set_name,
+            description: set_description ? set_description : updateSet.description,
+            updated_by: user?.email || "",
+            image: isDeleteImage
+                ? null
+                : set_image_url ? set_image_url.Location : updateSet.image
+        };
+        return this.setRepo.edit_set_by_id(set);
     }
 
     deleteUserSet = async (req: any, res: any): Promise<any> => {
