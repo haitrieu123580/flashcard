@@ -12,7 +12,7 @@ moduleAlias.addAliases({
     "@dto": `${__dirname}/dto`,
     "@helper": `${__dirname}/helper`,
 });
-import express, { Application } from "express";
+import express, { Request, Response, NextFunction, Application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import './services/oauth/Passport';
@@ -32,6 +32,12 @@ import questionRouter from '@routers/questions/index';
 import multipleChoice from '@routers/multiple-choice-test/index'
 import userSetsRouter from '@routers/user-sets/index';
 import userCardsRouter from '@routers/user-cards/index';
+import {
+    NotFoundError,
+    ApiError,
+    InternalError,
+    ErrorType,
+} from './core/ApiError';
 dotenv.config();
 
 const app: Application = express();
@@ -88,6 +94,31 @@ app.use('/api/question', questionRouter)
 app.use('/api/multiple-choice-test', multipleChoice)
 app.use('/api/user-sets', userSetsRouter)
 app.use('/api/user-cards', userCardsRouter)
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => next(new NotFoundError()));
+
+// Middleware Error Handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof ApiError) {
+        ApiError.handle(err, res);
+        console.log("error", err)
+        // if (err.type === ErrorType.INTERNAL)
+        // Logger.error(
+        //     `500 - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`,
+        // );
+    } else {
+        // Logger.error(
+        //     `500 - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`,
+        // );
+        // Logger.error(err);
+        // if (environment === 'development') {
+        //     return res.status(500).send(err);
+        // }
+        ApiError.handle(new InternalError(), res);
+        console.log("error", err)
+    }
+});
 
 const port = process.env.PORT || 8000;
 app.listen(Number(port), "0.0.0.0", () => {

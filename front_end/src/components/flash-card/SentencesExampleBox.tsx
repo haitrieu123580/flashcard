@@ -7,7 +7,7 @@ const SentencesExampleBox = (props: any) => {
             <CardTitle className='font-semibold text-lg'> Example Sentences</CardTitle>
             <CardContent className='grid grid-rows row-auto w-full h-full p-0'>
                 <div className='flex flex-col'>
-                    {Array.isArray(JSON.parse(example)) && JSON.parse(example).map((item: any, index: number) => (
+                    {Array.isArray(example) && example.map((item: any, index: number) => (
                         <div key={index}>
                             <Separator />
                             <div className='py-4' >

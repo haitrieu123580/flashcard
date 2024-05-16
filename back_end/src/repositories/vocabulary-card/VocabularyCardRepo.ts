@@ -3,45 +3,28 @@ import { AppDataSource } from "@src/data-source";
 import { Sets } from "@src/entity/Sets";
 import { Cards } from "@src/entity/Cards";
 import { Service } from "typedi";
+import { NewCardData } from "@src/dto/cards";
+import { User } from '../../entity/User';
 
 @Service()
 export class VocabularyCardRepo implements IVocabularyCardRepo {
     private setDataSource = AppDataSource.getRepository(Sets);
     private cardDataSource = AppDataSource.getRepository(Cards);
 
-    async create_card(setID: any, card: any): Promise<any> {
+    async create_card(user: User, set: Sets, card: NewCardData): Promise<Cards | null> {
         const newCard = new Cards();
         newCard.term = card?.term;
         newCard.define = card?.define;
         newCard.image = card?.image;
-        newCard.example = card?.example;
-        const set = await this.setDataSource.findOne({
-            where: { id: setID },
-            relations: ["user"]
-        })
-        if (!set) { return false }
+        newCard.example = card?.example || "";
         newCard.set = set;
-        newCard.created_by = set.user.email;
+        newCard.created_by = user.email;
         return await this.cardDataSource.save(newCard);
     }
 
-    async edit_card(cardId: string, cardData: any): Promise<boolean> {
-        const updateCard = await this.cardDataSource.findOneBy({
-            id: cardId
-        })
-        if (updateCard) {
-            updateCard.term = cardData?.term ? cardData.term : updateCard.term;
-            updateCard.define = cardData?.define ? cardData.define : updateCard.define;
-            updateCard.image = cardData?.image;
-            updateCard.updated_at = new Date();
-            updateCard.example = cardData?.example ? cardData.example : updateCard.example;
-            const result = await this.cardDataSource.save(updateCard);
-            if (result) {
-                return true;
-            }
-            return false;
-        }
-        return false;
+    async edit_card(card: Cards): Promise<Cards | null> {
+        card.updated_at = new Date();
+        return this.cardDataSource.save(card);
     }
 
     async delete_card(cardId: string): Promise<any> {

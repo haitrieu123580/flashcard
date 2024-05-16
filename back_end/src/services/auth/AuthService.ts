@@ -13,7 +13,23 @@ import {
     FailureMsgResponse,
     InternalErrorResponse
 } from "@src/core/ApiResponse";
-
+import {
+    NotFoundError,
+    ApiError,
+    InternalError,
+    ErrorType,
+    BadRequestError,
+    AuthFailureError,
+    ForbiddenError,
+} from '@src/core/ApiError';
+import {
+    SignInRequestType,
+    SignInSuccessResponseType,
+    SignUpRequestType,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+    ForgotPasswordResponse,
+} from "@src/dto/auth/index";
 dotenv.config();
 @Service()
 class AuthService implements AuthServiceInterface {
@@ -22,61 +38,68 @@ class AuthService implements AuthServiceInterface {
         this.userRepo = Container.get(UserRepo);
     }
 
-    public sign_in = async (req: Request, res: Response): Promise<any> => {
-        try {
-            const userData = await this.userRepo.getAllUserInfoBy("username", req.body.username);
-            if (userData) {
-                if (comparePassword(req.body.password, userData.password)) {
-                    const access_token = genAccessToken({
-                        id: userData.id,
-                        username: userData.username,
-                        role: userData.role,
-                        email: userData.email,
-                    });
-                    const refresh_token = genRefreshToken({
-                        id: userData.id,
-                        username: userData.username,
-                        role: userData.role,
-                        email: userData.email,
-                    });
-                    const result = await this.userRepo.storeToken(userData.id, refresh_token);
-                    return new SuccessResponse('Login Success', {
-                        access_token, refresh_token, exprires_access_token: "1d"
-                    }).send(res);
+    public sign_in = async (data: SignInRequestType): Promise<SignInSuccessResponseType | null | undefined> => {
+        const userData = await this.userRepo.getAllUserInfoBy("username", data.username);
+        if (userData) {
+            if (comparePassword(data.password, userData.password)) {
+                const access_token = genAccessToken({
+                    id: userData.id,
+                    username: userData.username,
+                    role: userData.role,
+                    email: userData.email,
+                });
+                const refresh_token = genRefreshToken({
+                    id: userData.id,
+                    username: userData.username,
+                    role: userData.role,
+                    email: userData.email,
+                });
+                const result = await this.userRepo.storeToken(userData.id, refresh_token);
+                if (result) {
+                    return {
+                        access_token,
+                        refresh_token,
+                        exprires_access_token: String(process.env.TOKEN_EXPIRE_TIME)
+                    }
                 }
                 else {
-                    return new FailureMsgResponse('Password is incorrect').send(res);
+                    return null;
                 }
             }
-            return new FailureMsgResponse('Username not found').send(res);
-        } catch (error: any) {
-            console.log('Error: ', error)
-            return new InternalErrorResponse('Internal Server Error').send(res);
-        }
-    };
-
-    public sign_up = async (req: Request, res: Response): Promise<any> => {
-        try {
-            const isExistedEmail = await this.userRepo.getUserBy("email", req.body.email);
-            if (isExistedEmail) {
-                return new FailureMsgResponse('Email Existed!').send(res);
-            }
-            const isExistedUsername = await this.userRepo.getUserBy("username", req.body.username);
-            if (isExistedUsername) {
-                return new FailureMsgResponse('Username Existed!').send(res);
-            }
-            const newUser = await this.userRepo.createUser(req.body)
-            if (!newUser) {
-                return new FailureMsgResponse('Create User Failed').send(res);
-            }
             else {
-                const userProfile = await this.userRepo.me(newUser.id);
-                return new SuccessResponse('User Created', userProfile).send(res);
+                throw new AuthFailureError('Password is incorrect');
             }
-        } catch (error) {
-            console.log(error)
-            return new InternalErrorResponse('Internal Server Error').send(res);
         }
+        throw new BadRequestError('Username not found');
+    };
+    public sign_up = async (data: SignUpRequestType): Promise<any> => {
+        const isExistedEmail = await this.userRepo.getUserBy("email", data.email);
+        if (isExistedEmail) {
+            throw new BadRequestError('Email Existed!');
+        }
+        const isExistedUsername = await this.userRepo.getUserBy("username", data.username);
+        if (isExistedUsername) {
+            throw new BadRequestError('Username Existed!');
+            // return new FailureMsgResponse('Username Existed!').send(res);
+        }
+        const newUser = await this.userRepo.createUser(data)
+        if (!newUser) {
+            throw new InternalError('Create User Failed');
+            // return new FailureMsgResponse('Create User Failed').send(res);
+        }
+        else {
+            const userProfile = await this.userRepo.me(newUser.id);
+            if (!userProfile) {
+                throw new InternalError('Get User Profile Failed');
+                // return new FailureMsgResponse('Get User Profile Failed').send(res);
+            }
+            return userProfile;
+            // return new SuccessResponse('User Created', userProfile).send(res);
+        }
+        // } catch (error) {
+        //     console.log(error)
+        //     return new InternalErrorResponse('Internal Server Error').send(res);
+        // }
     }
 
     public get_access_token_by_refresh_token = async (req: Request, res: Response): Promise<any> => {

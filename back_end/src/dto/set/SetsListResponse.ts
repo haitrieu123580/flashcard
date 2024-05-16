@@ -3,7 +3,7 @@ export type SetsServiceResponse = {
     id: string;
     name: string;
     description: string;
-    image: string;
+    image: string | null;
     is_public: boolean;
     cards?: {
         id: string;

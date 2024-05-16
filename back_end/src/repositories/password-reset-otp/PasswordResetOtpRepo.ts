@@ -9,7 +9,7 @@ export class PasswordResetOtpRepo implements IPasswordResetOtpRepo {
     private otpDataSource = AppDataSource.getRepository(PasswordResetOtps)
     private userDataSource = AppDataSource.getRepository(User)
 
-    createOTP = async (email: string) => {
+    createOTP = async (email: string): Promise<PasswordResetOtps | null> => {
         const updateUser = await this.userDataSource.findOne({
             where: {
                 email: email
@@ -23,16 +23,19 @@ export class PasswordResetOtpRepo implements IPasswordResetOtpRepo {
             if (updateUser.passwordResetOtps) {
                 updateUser.passwordResetOtps.otp = String(gen_otp);
                 updateUser.passwordResetOtps.updated_at = new Date();
-                await this.otpDataSource.save(updateUser.passwordResetOtps)
+                const result = await this.otpDataSource.save(updateUser.passwordResetOtps)
                 await this.userDataSource.save(updateUser)
+                return result;
+
             }
             else {
                 const otp = new PasswordResetOtps();
                 otp.otp = String(gen_otp);
                 updateUser.passwordResetOtps = otp;
                 updateUser.passwordResetOtps.created_at = new Date();
-                await this.otpDataSource.save(otp)
+                const result = await this.otpDataSource.save(otp)
                 await this.userDataSource.save(updateUser)
+                return result;
             }
 
         }

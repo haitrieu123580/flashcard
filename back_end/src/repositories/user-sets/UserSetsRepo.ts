@@ -8,8 +8,8 @@ import { Cards } from '@src/entity/Cards';
 export class UserSetsRepo implements IUserSetsRepo {
     private userDataSource = AppDataSource.getRepository(User)
     private setDataSource = AppDataSource.getRepository(Sets)
-    async getUserSetsList(userId: string): Promise<any> {
-        return await this.setDataSource.findAndCount({
+    async getUserSetsList(userId: string): Promise<[Sets[], number]> {
+        return this.setDataSource.findAndCount({
             where: {
                 user: {
                     id: userId
@@ -31,32 +31,10 @@ export class UserSetsRepo implements IUserSetsRepo {
         copiedCard.set = set;
         copiedCard.created_by = set.user.email;
         set.cards.push(copiedCard);
-        await AppDataSource.transaction(async manager => {
+        return AppDataSource.transaction(async manager => {
             await manager.save(copiedCard);
             await manager.save(set);
         });
-        return true;
-        // const set = await this.setDataSource.findOne({
-        //     where: {
-        //         id: setId,
-
-        //     },
-        //     relations: ["cards"]
-        // });
-        // if (set) {
-        //     const card = await AppDataSource.getRepository(Cards).findOne({
-        //         where: {
-        //             id: cardId
-        //         }
-        //     });
-        //     if (card) {
-        //         set.cards.push(card);
-        //         await this.setDataSource.save(set);
-        //         return true;
-        //     }
-        // }
-        // return false;
-
     }
 }
 

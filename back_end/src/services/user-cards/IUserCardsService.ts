@@ -1,10 +1,12 @@
+import { CreateCardDataRequest, UpdateCardDataRequest } from "@src/dto/cards";
+import { Cards } from "@src/entity/Cards";
 import { Request, Response } from "express";
 
 export interface IUserCardsService {
 
-    CreateCard(req: any, res: Response): Promise<any>;
+    CreateCard(data: CreateCardDataRequest): Promise<Cards | null>;
 
-    UpdateCard(req: any, res: Response): Promise<any>;
+    UpdateCard(data: UpdateCardDataRequest): Promise<any>;
 
     DeleteCard(req: any, res: Response): Promise<any>;
 

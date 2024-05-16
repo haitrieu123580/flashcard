@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
+import { CreateCardDataRequest, UpdateCardDataRequest } from '@dto/cards/index';
+import { Cards } from "@src/entity/Cards";
 
 export interface ICardService {
 
-    CreateCard(req: any, res: Response): Promise<any>;
+    CreateCard(data: CreateCardDataRequest): Promise<Cards | null>;
 
-    UpdateCard(req: any, res: Response): Promise<any>;
+    UpdateCard(data: UpdateCardDataRequest): Promise<any>;
 
     DeleteCard(req: any, res: Response): Promise<any>;
 

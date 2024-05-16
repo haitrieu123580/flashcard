@@ -56,7 +56,7 @@ const CardForm = (props: any) => {
                 image: null,
                 path: card?.image || "",
             },
-            example: card?.example ? JSON.parse(card?.example) : [{ sentence: '', translation: '' }]
+            example: card?.example ? card?.example : [{ sentence: '', translation: '' }]
         },
     });
     const fields = useFieldArray({
