@@ -1,9 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { routerPaths } from "@/routes/path";
-
-// import Validator from './Validator';
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -71,6 +68,5 @@ export const convertDateToString = (text: string) => {
 
 export const shuffleArray = (array: any[]) => {
   const newArray = [...array]; // Create a shallow copy of the original array
-  console.log("newArray", newArray.sort(() => Math.random() - 1))
   return newArray.sort(() => Math.random() - 1); // Corrected sorting logic
 }

@@ -19,7 +19,6 @@ import {
   Form,
 } from "@/components/ui/form"
 import Constants from "@/lib/Constants"
-
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
