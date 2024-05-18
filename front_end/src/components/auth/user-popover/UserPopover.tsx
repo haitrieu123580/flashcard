@@ -9,8 +9,7 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { LogOut } from 'lucide-react';
-import { CircleUserRound } from 'lucide-react';
+import { LogOut, SettingsIcon, CircleUserRound } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
 import {
     logoutAction
@@ -41,7 +40,7 @@ const UserPopover = () => {
         <Popover>
             <PopoverTrigger className="text-sm p-1 flex items-center gap-2">
                 <Avatar>
-                    <AvatarImage src={profile?.avatar || ""} />
+                    <AvatarImage src={profile?.avatar || ""} className="object-cover" />
                     <AvatarFallback> <User className="w-28 h-28" /></AvatarFallback>
                 </Avatar>
                 {profile?.username}
@@ -55,6 +54,15 @@ const UserPopover = () => {
                         >
                             <CircleUserRound />
                             Profile
+                        </Button>
+                    </Link>
+                    <Link to={routerPaths.PROFILE} className="w-full h-full">
+                        <Button
+                            className="w-full grid grid-cols-2 items- gap-4"
+                            variant={"ghost"}
+                        >
+                            <SettingsIcon />
+                            Settings
                         </Button>
                     </Link>
                     <Button

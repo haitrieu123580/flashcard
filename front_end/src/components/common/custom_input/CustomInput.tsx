@@ -21,6 +21,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { FileDropzone } from './file-dropzone/FileDropzone';
+import { AvatarInput } from './avatar/AvatarInput';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
@@ -239,6 +240,21 @@ const renderInput = ({
         case Constants.INPUT_TYPE.FILE_UPLOAD:
             return (
                 <FileDropzone
+                    {...field}
+                    type={type}
+                    placeholder={placeholder}
+                    className={classNameInput}
+                    onChange={onChange}
+                    onKeyUp={onKeyUp}
+                    maxLength={maxLength}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    onClickIcon={onClickIcon}
+                />
+            );
+        case Constants.INPUT_TYPE.AVATAR:
+            return (
+                <AvatarInput
                     {...field}
                     type={type}
                     placeholder={placeholder}

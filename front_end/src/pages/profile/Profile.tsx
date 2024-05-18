@@ -1,24 +1,23 @@
 import { useEffect, useMemo } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { User } from "lucide-react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
-import { getProfileAction } from "@/redux/auth/slice"
+import { getProfileAction, } from "@/redux/auth/slice"
+import { editUserAction } from "@/redux/user-profile/slice"
 import { FormInput } from "@/components/common/custom_input/CustomInput"
+import { toast } from "@/components/ui/use-toast";
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import {
   Form,
 } from "@/components/ui/form"
 import Constants from "@/lib/Constants"
+import { Button } from "@/components/ui/button"
+import EditPopup from "@/components/common/popup/EditPopup"
+import { objectToFormData } from "@/lib/utils"
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,9 +49,14 @@ const Profile = () => {
     email: z.string().email({
       message: 'invalidEmail',
     }),
-    password: z.string().min(6, {
-      message: t("login.invalidPassword")
-    }),
+    image: z.union([
+      z.object({
+        image: z.any().optional(),
+        path: z.string().optional()
+      }),
+      z.string().optional()
+    ]).optional()
+
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,67 +64,102 @@ const Profile = () => {
     defaultValues: {
       username: "",
       email: "",
-      password: "",
+      image: {
+        image: null,
+        path: profile?.avatar || "",
+      },
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: any) {
+    const submitValues = {
+      ...values,
+      image: values?.image?.image ? values?.image?.image : null,
+      // is_delete_image: (!values.set_image.image && !values.set_image.path) ? "true" : "false"
+    }
+    const formData = objectToFormData(submitValues);
+    dispatch({
+      type: editUserAction.type,
+
+      payload: {
+        data: formData,
+        onSuccess: (message: string | undefined) => {
+          toast({
+            title: 'Edit profile success',
+            description: message ? message : '',
+            variant: 'default',
+          })
+          getProfile();
+        },
+        onError: (message: string | undefined) => {
+          toast({
+            title: 'Edit profile failed',
+            description: message ? message : 'Please try again!',
+            variant: 'destructive',
+          })
+        }
+      }
+
+    })
   }
   useMemo(() => {
     if (profile) {
       form.reset({
         username: profile?.username,
         email: profile?.email,
-
+        image: {
+          image: null,
+          path: profile?.avatar || "",
+        }
       });
     }
   }, [profile])
   return (
     <div>
-      <Card>
-        <CardHeader>
-          <Avatar className="w-36 h-36 aspect-square m-auto mb-3">
-            <AvatarImage src={profile?.avatar || ""} className="w-full h-full object-cover" />
-            <AvatarFallback> <User className="w-28 h-28" /></AvatarFallback>
-          </Avatar>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 sm:w-full lg:w-2/4  m-auto ">
-              <FormInput
-                control={form.control}
-                fieldName="email"
-                label="Email"
-                placeholder="Email"
-                type={Constants.INPUT_TYPE.EMAIL}
-                required={true}
+      <Card className="py-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 sm:w-full lg:w-2/4  m-auto ">
+            <FormInput
+              control={form.control}
+              fieldName={`image`}
+              label="Avatar"
+              type={Constants.INPUT_TYPE.AVATAR}
+              classNameInput='h-fit'
+            />
+            <FormInput
+              control={form.control}
+              fieldName="email"
+              label="Email"
+              placeholder="Email"
+              type={Constants.INPUT_TYPE.EMAIL}
+              readOnly={true}
+            />
+            <FormInput
+              control={form.control}
+              fieldName="username"
+              label="Username"
+              placeholder="Username"
+              type={Constants.INPUT_TYPE.TEXT}
+            />
+            <div className="w-full flex justify-end">
+              <EditPopup
+                TriggerComponent={
+                  <Button type="button" >
+                    Save
+                  </Button>
+                }
+                onConfirmEdit={form.handleSubmit(onSubmit)}
               />
-              <FormInput
-                control={form.control}
-                fieldName="username"
-                label="Username"
-                placeholder="Username"
-                type={Constants.INPUT_TYPE.TEXT}
-                required={true}
-              />
-              <FormInput
-                control={form.control}
-                fieldName="password"
-                label="Password"
-                placeholder="Password"
-                required={true}
-                type={Constants.INPUT_TYPE.PASSWORD}
-              />
-              <div>
+            </div>
 
-              </div>
-            </form>
-          </Form>
-        </CardContent>
+
+          </form>
+        </Form>
+        {/* </CardContent> */}
       </Card>
 
-    </div>
+    </div >
   )
 }
 

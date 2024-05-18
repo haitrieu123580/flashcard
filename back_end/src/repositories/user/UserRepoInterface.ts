@@ -6,7 +6,7 @@ interface UserRepoInterface {
 
     me: (id: string) => Promise<User | null>;
 
-    updateUserProfile: (userId: string, userData: any) => Promise<any>;
+    updateUserProfile: (data: User) => Promise<User | null>;
 
     //todo : delete this function
     storeToken: (id: string, token: string) => Promise<boolean>;

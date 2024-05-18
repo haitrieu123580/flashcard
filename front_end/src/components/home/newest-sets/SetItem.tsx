@@ -97,8 +97,8 @@ const SetItem = (props: any) => {
             </CardContent>
             <CardFooter className="flex items-center gap-2">
                 <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>User</AvatarFallback>
+                    <AvatarImage src={data?.user?.avatar} className="object-cover" />
+                    <AvatarFallback>{data?.user?.username?.toString()?.[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                     <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block">{created_by}</span>
