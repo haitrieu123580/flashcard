@@ -179,7 +179,7 @@ export class UserSetsService implements IUserSetsService {
 
     deleteUserSet = async (req: any, res: any): Promise<any> => {
         try {
-            const setId = req.params.setId;
+            const setId = req.params.id;
             const { id } = req.user;
             const set = await this.setRepo.get_set_by_id(setId);
             const user = await this.userRepo.getUserBy("id", id);

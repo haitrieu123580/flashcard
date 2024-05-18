@@ -41,7 +41,8 @@ const EditPopup = (props: any) => {
                             No
                         </Button>
                         <Button
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.preventDefault();
                                 isFunction(onConfirmEdit) && onConfirmEdit()
                                 setOpen(false)
                             }}

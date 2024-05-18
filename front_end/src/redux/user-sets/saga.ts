@@ -17,8 +17,10 @@ import {
   createUserSetSuccessAction,
   editUserSetAction,
   editUserSetSuccessAction,
+  editUserSetFailureAction,
   deleteUserSetAction,
   deleteUserSetSuccessAction,
+  deleteUserSetFailureAction,
 } from "./slice";
 import {
   GetUSerSetsListApi,
@@ -33,8 +35,6 @@ function* watchUserSetsList() {
   yield takeLatest(getUserSetsListAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     try {
       const res = yield call(GetUSerSetsListApi);
-
-      console.log("res: ", res?.data.data);
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           // isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
@@ -44,13 +44,18 @@ function* watchUserSetsList() {
             )
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          // isFunction(payload.onError) && payload.onError(res.data.message);
-        }
+        // else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+        //   isFunction(payload.onError) && payload.onError(res.data.message);
+        //   yield put(getUserSetsListFailureAction())
+        // }
       }
-
-    } catch (error) {
-
+      // else {
+      //   isFunction(payload.onError) && payload.onError(res.data.message);
+      //   yield put(getUserSetsListFailureAction())
+      // }
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(getUserSetsListFailureAction())
     }
   });
 }
@@ -58,7 +63,6 @@ function* watchUserSetsList() {
 function* watchAddCardToMySet() {
   yield takeLatest(addCardToMySetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { data } = payload
-    console.log("data: ", data);
     try {
       const res = yield call(AddCardToSetApi, {
         setId: data?.setId,
@@ -74,13 +78,14 @@ function* watchAddCardToMySet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload?.onError) && payload?.onError(res.data.message);
-        }
+        // else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+        //   isFunction(payload?.onError) && payload?.onError(res.data.message);
+        // }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(addCardToMySetFailureAction())
     }
   });
 }
@@ -100,13 +105,14 @@ function* watchGetUserSetById() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
+        // else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+        //   isFunction(payload.onError) && payload.onError(res.data.message);
+        // }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(getUserSetByIdFailureAction())
     }
   });
 }
@@ -126,13 +132,14 @@ function* watchCreateUserSet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
+        // else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+        //   isFunction(payload.onError) && payload.onError(res.data.message);
+        // }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(getUserSetByIdFailureAction())
     }
   });
 }

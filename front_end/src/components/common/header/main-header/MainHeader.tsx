@@ -29,7 +29,7 @@ import { Send } from 'lucide-react';
 import Constants from "@/lib/Constants"
 import { logoutAction } from "@/redux/auth/slice"
 const MainHeader = (props: any) => {
-    const { isAdmin } = props
+    const { isAdmin, className } = props
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loggedIn, profile } = useSelector((state: any) => state.Auth)
@@ -58,7 +58,7 @@ const MainHeader = (props: any) => {
 
     return (
         <div className='hidden md:block md:w-full h-20'>
-            <div className='w-full p-6 flex justify-between items-center'>
+            <div className='w-full py-6 flex justify-between items-center'>
                 <div className="w-1/6 flex items-center row-span-1 md:col-span-1">
                     <Logo />
                     <Button variant={"link"}>

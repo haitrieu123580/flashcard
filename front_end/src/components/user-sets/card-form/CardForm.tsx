@@ -17,16 +17,16 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 const CardForm = (props: any) => {
     const { index,
         card,
         isEdit = true,
         setId,
-        showEditButton = true,
         onDeleteCard,
         onEditCard,
         onCreateCard,
+        openCollapsible = "",
     } = props
     const formSchema = z.object({
         term: z.string().min(1, {
@@ -45,7 +45,7 @@ const CardForm = (props: any) => {
         example: z.array(z.object({
             sentence: z.string().optional(),
             translation: z.string().optional()
-        }))
+        })).optional()
     });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -72,236 +72,129 @@ const CardForm = (props: any) => {
         }
     }
     return (
-        <>
+        <ScrollArea className="h-[600px] w-full">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <Card className='p-2'>
-                        <Accordion type="single" collapsible>
-                            <AccordionItem value="item-1">
-                                <AccordionTrigger>
-                                    <div className="w-full">
-                                        <div className=' w-full flex justify-between items-center'>
-                                            {isEdit
-                                                ? <>
-                                                    <b>{index + 1}</b>
-                                                    <div className='flex justify-center items-center mb-2'>
-                                                        {showEditButton &&
-                                                            <EditPopup
-                                                                onConfirmEdit={() => {
-                                                                    form.handleSubmit(onSubmit)()
-                                                                }}
-                                                                TriggerComponent={
-                                                                    <Button type='button' variant={'ghost'}>
-                                                                        <CheckIcon width={20} />
-                                                                    </Button>
-                                                                }
-                                                            />
+                    <Accordion type="single" collapsible defaultValue={openCollapsible} >
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger>
+                                <div className="w-full">
+                                    <div className=' w-full flex justify-between items-center'>
+                                        {isEdit
+                                            ? <>
+                                                <b>{`Card ${index + 1}: ${card.term}`}</b>
+                                                <div className='flex justify-center items-center mb-2'>
+                                                    <EditPopup
+                                                        onConfirmEdit={() => {
+                                                            console.log('onConfirmEdit', form.handleSubmit(onSubmit)())
+                                                            form.handleSubmit(onSubmit)()
+                                                        }}
+                                                        TriggerComponent={
+                                                            <Button type='button' variant={'ghost'}>
+                                                                <CheckIcon width={20} />
+                                                            </Button>
                                                         }
+                                                    />
+                                                    <DeletePopup
+                                                        onConfirmDelete={() => {
+                                                            isFunction(onDeleteCard) && onDeleteCard(card?.id)
+                                                        }}
+                                                        TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
+                                                    />
+                                                </div>
+                                            </>
+                                            : <>
 
-                                                        <DeletePopup
-                                                            onConfirmDelete={() => {
-                                                                isFunction(onDeleteCard) && onDeleteCard(card?.id)
-                                                            }}
-                                                            TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
-                                                        />
-                                                    </div>
-                                                </>
-                                                : <>
+                                            </>}
 
-                                                </>}
-
-                                        </div>
                                     </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="border-none">
-                                    <div className='flex justify-between gap-1'>
-                                        <FormInput
-                                            control={form.control}
-                                            fieldName={`term`}
-                                            label="Term"
-                                            placeholder="Term"
-                                            type={Constants.INPUT_TYPE.TEXT}
-                                            className='w-1/2'
-                                            required={true}
-                                        />
-                                        <FormInput
-                                            control={form.control}
-                                            fieldName={`define`}
-                                            label="Define"
-                                            placeholder="Define"
-                                            type={Constants.INPUT_TYPE.TEXT}
-                                            className='w-1/2'
-                                            required={true}
-                                        />
-                                    </div>
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="border-none">
+                                <div className='flex justify-between gap-1'>
                                     <FormInput
                                         control={form.control}
-                                        fieldName={`image`}
-                                        label="Image"
-                                        type={Constants.INPUT_TYPE.FILE_UPLOAD}
-                                        classNameInput='h-fit'
-                                    />
-                                    <div className='my-6 flex gap-4 items-end'>
-                                        <b>Examples</b>
-                                        <Button type="button"
-                                            variant={'ghost'}
-                                            className={`p-0 w-fit h-fit`}
-                                            onClick={() => {
-                                                fields.append({ sentence: '', translation: '' })
-                                            }}
-                                        >
-                                            <PlusCircleIcon width={18} height={18} />
-                                        </Button>
-                                    </div>
-
-                                    {fields.fields.map((field, index) => {
-                                        return (
-                                            <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
-                                                <FormInput
-                                                    control={form.control}
-                                                    fieldName={`example.${index}.sentence`}
-                                                    label="Sentence"
-                                                    placeholder="Sentence"
-                                                    type={Constants.INPUT_TYPE.TEXT}
-                                                    className='w-1/2'
-                                                />
-                                                <FormInput
-                                                    control={form.control}
-                                                    fieldName={`example.${index}.translation`}
-                                                    label="Translation"
-                                                    placeholder="Translation"
-                                                    type={Constants.INPUT_TYPE.TEXT}
-                                                    className='w-1/2'
-                                                />
-                                                <Button
-                                                    variant={'ghost'}
-                                                    onClick={() => fields.remove(index)}
-                                                >
-                                                    <Trash2 />
-                                                </Button>
-                                            </div>
-                                        )
-                                    })}
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
-
-                        {/* <div>
-                            <div className='flex justify-between items-center'>
-                                {isEdit
-                                    ? <>
-                                        <b>{index + 1}</b>
-                                        <div className='flex justify-center items-center mb-2'>
-                                            {showEditButton &&
-                                                <EditPopup
-                                                    onConfirmEdit={() => {
-                                                        form.handleSubmit(onSubmit)()
-                                                    }}
-                                                    TriggerComponent={
-                                                        <Button type='button' variant={'ghost'}>
-                                                            <CheckIcon width={20} />
-                                                        </Button>
-                                                    }
-                                                />
-                                            }
-
-                                            <DeletePopup
-                                                onConfirmDelete={() => {
-                                                    isFunction(onDeleteCard) && onDeleteCard(card?.id)
-                                                }}
-                                                TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
-                                            />
-                                        </div>
-                                    </>
-                                    : <>
-
-                                    </>}
-
-                            </div>
-                        </div>
-                        <div className='flex justify-between gap-1'>
-                            <FormInput
-                                control={form.control}
-                                fieldName={`term`}
-                                label="Term"
-                                placeholder="Term"
-                                type={Constants.INPUT_TYPE.TEXT}
-                                className='w-1/2'
-                                required={true}
-                            />
-                            <FormInput
-                                control={form.control}
-                                fieldName={`define`}
-                                label="Define"
-                                placeholder="Define"
-                                type={Constants.INPUT_TYPE.TEXT}
-                                className='w-1/2'
-                                required={true}
-                            />
-                        </div>
-                        <FormInput
-                            control={form.control}
-                            fieldName={`image`}
-                            label="Image"
-                            type={Constants.INPUT_TYPE.FILE_UPLOAD}
-                            classNameInput='h-fit'
-                        />
-                        <div className='my-6 flex gap-4 items-end'>
-                            <b>Examples</b>
-                            <Button type="button"
-                                variant={'ghost'}
-                                className={`p-0 w-fit h-fit`}
-                                onClick={() => {
-                                    fields.append({ sentence: '', translation: '' })
-                                }}
-                            >
-                                <PlusCircleIcon width={18} height={18} />
-                            </Button>
-                        </div>
-
-                        {fields.fields.map((field, index) => {
-                            return (
-                                <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
-                                    <FormInput
-                                        control={form.control}
-                                        fieldName={`example.${index}.sentence`}
-                                        label="Sentence"
-                                        placeholder="Sentence"
+                                        fieldName={`term`}
+                                        label="Term"
+                                        placeholder="Term"
                                         type={Constants.INPUT_TYPE.TEXT}
                                         className='w-1/2'
+                                        required={true}
                                     />
                                     <FormInput
                                         control={form.control}
-                                        fieldName={`example.${index}.translation`}
-                                        label="Translation"
-                                        placeholder="Translation"
+                                        fieldName={`define`}
+                                        label="Define"
+                                        placeholder="Define"
                                         type={Constants.INPUT_TYPE.TEXT}
                                         className='w-1/2'
+                                        required={true}
                                     />
-                                    <Button
+                                </div>
+                                <FormInput
+                                    control={form.control}
+                                    fieldName={`image`}
+                                    label="Image"
+                                    type={Constants.INPUT_TYPE.FILE_UPLOAD}
+                                    classNameInput='h-fit'
+                                />
+                                <div className='my-6 flex gap-4 items-end'>
+                                    <b>Examples</b>
+                                    <Button type="button"
                                         variant={'ghost'}
-                                        onClick={() => fields.remove(index)}
+                                        className={`p-0 w-fit h-fit`}
+                                        onClick={() => {
+                                            fields.append({ sentence: '', translation: '' })
+                                        }}
                                     >
-                                        <Trash2 />
+                                        <PlusCircleIcon width={18} height={18} />
                                     </Button>
                                 </div>
-                            )
-                        })} */}
-                        {
-                            !isEdit &&
-                            <Button
-                                type="submit"
-                                variant={'default'}
-                                className="w-full my-6"
-                            >
-                                Save
-                            </Button>
-                        }
 
-                    </Card >
+                                {fields?.fields?.map((field, index) => {
+                                    return (
+                                        <div key={field.id} className='flex justify-between items-end gap-1 mt-4'>
+                                            <FormInput
+                                                control={form.control}
+                                                fieldName={`example.${index}.sentence`}
+                                                label="Sentence"
+                                                placeholder="Sentence"
+                                                type={Constants.INPUT_TYPE.TEXT}
+                                                className='w-1/2'
+                                            />
+                                            <FormInput
+                                                control={form.control}
+                                                fieldName={`example.${index}.translation`}
+                                                label="Translation"
+                                                placeholder="Translation"
+                                                type={Constants.INPUT_TYPE.TEXT}
+                                                className='w-1/2'
+                                            />
+                                            <Button
+                                                variant={'ghost'}
+                                                onClick={() => fields.remove(index)}
+                                            >
+                                                <Trash2 />
+                                            </Button>
+                                        </div>
+                                    )
+                                })}
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                    {
+                        !isEdit &&
+                        <Button
+                            type="submit"
+                            variant={'default'}
+                            className="w-full my-6"
+                        >
+                            Save
+                        </Button>
+                    }
                 </form >
             </Form >
-        </>
+        </ScrollArea >
     )
 }
 

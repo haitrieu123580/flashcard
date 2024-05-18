@@ -5,11 +5,12 @@ import { objectToFormData } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import {
     createUserSetAction,
-    getUserSetsListAction,
 } from '@/redux/user-sets/slice';
 import { useNavigate } from 'react-router-dom';
 import { routerPaths } from '@/routes/path';
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup';
 const CreateMySet = () => {
+    const { isLoading } = useSelector((state: any) => state.UserSets);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const onCreate = (values: any) => {
@@ -36,7 +37,7 @@ const CreateMySet = () => {
                         variant: 'default',
                     })
                 },
-                onError: (message: string) => {
+                onError: (message: string | undefined) => {
                     toast({
                         title: 'Create failed',
                         description: message ? message : "Please try again!",
@@ -49,6 +50,9 @@ const CreateMySet = () => {
 
     return (
         <div>
+            <LoadingPopup
+                open={isLoading}
+            />
             <SetForm
                 onCreate={onCreate}
             />

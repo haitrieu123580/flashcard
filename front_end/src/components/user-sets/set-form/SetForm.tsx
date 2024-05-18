@@ -46,7 +46,7 @@ const SetForm = (props: any) => {
                 sentence: z.string().optional(),
                 translation: z.string().optional()
             })).optional()
-        })).nonempty()
+        })).optional()
 
     });
     const form = useForm<z.infer<typeof formSetCardSchema>>({
@@ -130,7 +130,7 @@ const SetForm = (props: any) => {
                         type={Constants.INPUT_TYPE.FILE_UPLOAD}
                         classNameInput='h-fit'
                     />
-                    {/* <Separator /> */}
+                    <Separator />
                     <b>Cards</b>
                     <div className='flex flex-col'>
                         {/* <ScrollArea className="h-96 w-full "> */}
@@ -177,12 +177,12 @@ const SetForm = (props: any) => {
                                         type={Constants.INPUT_TYPE.FILE_UPLOAD}
                                         classNameInput='h-fit'
                                     />
-                                    {/* <NestedCardFieldArray
+                                    <NestedCardFieldArray
                                         nestIndex={index}
                                         control={form.control}
                                         fieldName={"cards"}
                                         nestedFieldName={"example"}
-                                    /> */}
+                                    />
                                 </Card>
 
                             )

@@ -18,7 +18,7 @@ class CardController {
             define: req.body.define,
             example: req.body.example,
             image: req.file,
-            set_id: req.body.set_id
+            set_id: req.body.setId
         }
         await this.service.CreateCard(data)
         return new SuccessMsgResponse("Create card successfully!").send(res);

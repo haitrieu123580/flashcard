@@ -13,6 +13,7 @@ import CustomPagination from '@/components/common/custom-pagination/CustomPagina
 import { toast } from '@/components/ui/use-toast'
 import { Skeleton } from "@/components/ui/skeleton"
 import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup'
 const PublicSets = () => {
     const form = useForm({
         defaultValues: {
@@ -100,17 +101,14 @@ const PublicSets = () => {
                 </Form>
             </div>
 
-            {isLoading
-                ? <div className='w-full h-full flex justify-center items-center'><LoadingSpinner /></div>
-                :
-                <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
-                    {Array.isArray(data) && data.map((set, index) => {
-                        return <div key={index} className='row-span-1 md:col-span-2'>
-                            <SetItem data={set} onClick={gotoCard} />
-                        </div>
-                    })}
-                </div>
-            }
+            <LoadingPopup show={isLoading} />
+            <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
+                {Array.isArray(data) && data.map((set, index) => {
+                    return <div key={index} className='row-span-1 md:col-span-2'>
+                        <SetItem data={set} onClick={gotoCard} />
+                    </div>
+                })}
+            </div>
             {
                 errorMessage && <div className='row-span-1 md:col-span-6'>
                     <div className='text-center text-red-500'>{errorMessage}</div>

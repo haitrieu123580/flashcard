@@ -130,6 +130,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
                         onKeyUp={onKeyUp}
                         maxLength={maxLength}
                         ref={fileRef}
+                        accept='image/*'
                     />
                 </div>
                 <div

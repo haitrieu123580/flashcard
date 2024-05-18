@@ -20,7 +20,7 @@ const DeletePopup = (props: any) => {
     const [open, setOpen] = useState(false)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger className="rounded-sm text-sm p-1 w-fit font-semibold  bg-background hover:dark:text-inherit">
+            <DialogTrigger className="rounded-sm text-sm w-full font-semibold  bg-background hover:dark:text-inherit">
                 {TriggerComponent}
             </DialogTrigger>
             <DialogContent>

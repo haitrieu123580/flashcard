@@ -40,7 +40,7 @@ const SetItem = (props: any) => {
                             </Tooltip>
                         </TooltipProvider>
                     </div>
-                    <div className="col-span-1 flex justify-end">
+                    <div className="col-span-1 flex justify-end items-end flex-nowrap gap-1">
                         {showEditBtn
                             && <Button
                                 variant={"ghost"}
@@ -54,16 +54,6 @@ const SetItem = (props: any) => {
                             </Button>}
                         {showDeleteBtn
                             &&
-                            // <Button
-                            //     variant={"destructive"}
-                            //     className={'w-fit h-fit '}
-                            //     onClick={(e) => {
-                            //         e.stopPropagation();
-                            //         onDeleteBtn(id)
-                            //     }}
-                            // >
-                            //     <Trash2Icon width={18} height={18} />
-                            // </Button>
                             <DeletePopup
                                 onConfirmDelete={() => {
                                     isFunction(onDeleteBtn) && onDeleteBtn(id)
@@ -73,7 +63,7 @@ const SetItem = (props: any) => {
                                         className={'w-fit h-fit '}
                                         type="button"
                                     >
-                                        <Trash2Icon width={18} height={18} />
+                                        <Trash2Icon width={19} height={19} />
                                     </Button>}
                             />
                         }

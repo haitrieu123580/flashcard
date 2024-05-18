@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
 import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
     Tooltip,
     TooltipContent,
@@ -91,42 +92,44 @@ const UserSetPopover = (props: any) => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-fit p-0">
-                    <div className="grid w-fit">
-                        {Array.isArray(mySets?.sets)
-                            && mySets?.sets?.map((set: any, index: number) => {
-                                return (
-                                    <div key={index} className='w-full'>
-                                        <Button
-                                            variant={"ghost"}
-                                            className="w-full h-full overflow-hidden flex flex-col"
-                                            onClick={() => {
-                                                starClick(set.id)
-                                            }}
-                                        >
-                                            <p
-                                                className='hover:cursor-pointer w-full h-fit text-center truncate'>
-                                                {set.name}
-                                            </p>
-                                        </Button>
+                    <ScrollArea className='h-32'>
+                        <div className="grid w-fit">
+                            {Array.isArray(mySets?.sets)
+                                && mySets?.sets?.map((set: any, index: number) => {
+                                    return (
+                                        <div key={index} className='w-full'>
+                                            <Button
+                                                variant={"ghost"}
+                                                className="w-full h-full overflow-hidden flex flex-col"
+                                                onClick={() => {
+                                                    starClick(set.id)
+                                                }}
+                                            >
+                                                <p
+                                                    className='hover:cursor-pointer w-full h-fit text-center truncate'>
+                                                    {set.name}
+                                                </p>
+                                            </Button>
 
 
-                                        <Separator />
-                                    </div>
+                                            <Separator />
+                                        </div>
 
-                                )
-                            })
-                        }
-                        <Button
-                            className="w-full rounded-none"
-                            variant={"ghost"}
-                            onClick={() => {
-                                setOpenCreateSet(true)
+                                    )
+                                })
+                            }
+                        </div>
+                    </ScrollArea>
+                    <Button
+                        className="w-full rounded-none"
+                        variant={"ghost"}
+                        onClick={() => {
+                            setOpenCreateSet(true)
 
-                            }}
-                        >
-                            <PlusCircle width={18} height={18} />
-                        </Button>
-                    </div>
+                        }}
+                    >
+                        <PlusCircle width={18} height={18} />
+                    </Button>
                 </PopoverContent>
             </Popover >
             <CommonPopup

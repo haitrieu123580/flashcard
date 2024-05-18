@@ -1,6 +1,5 @@
 import FlipCard from "@/components/flash-card/FlipCard"
 import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
-import { Volume1 } from 'lucide-react';
 import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import SentencesExampleBox from "@/components/flash-card/SentencesExampleBox";
