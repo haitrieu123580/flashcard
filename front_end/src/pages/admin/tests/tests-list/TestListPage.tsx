@@ -4,7 +4,6 @@ import CustomPagination from '@/components/common/custom-pagination/CustomPagina
 import Constants from '@/lib/Constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
-import SetForm from '@/components/admin/sets/SetForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { getSetByIdAction, deleteSetAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
