@@ -4,7 +4,7 @@ import CustomPagination from '@/components/common/custom-pagination/CustomPagina
 import Constants from '@/lib/Constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
-import SetForm from '@/components/admin/sets/SetForm'
+import SetForm from '@/components/set-form/SetForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { getSetByIdAction, deleteSetAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
@@ -16,6 +16,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CardTitle } from '@/components/ui/card'
 import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
 import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup'
+import { ScrollArea } from '@/components/ui/scroll-area'
 const SetsList = () => {
     const { data, pagination, isLoading } = useSelector((state: any) => state.Sets)
     const dispatch = useDispatch();
@@ -188,7 +189,11 @@ const SetsList = () => {
                 setOpen={setOpen}
                 isShowTrigger={false}
                 TriggerComponent={null}
-                children={<SetForm defaultValues={defaultValues} onCreate={onCreate} />}
+                children={
+                    <ScrollArea className='h-[600px]'>
+                        <SetForm defaultValues={defaultValues} onCreate={onCreate} />
+                    </ScrollArea>
+                }
                 title={"Create Set"}
             />
             <CustomPagination

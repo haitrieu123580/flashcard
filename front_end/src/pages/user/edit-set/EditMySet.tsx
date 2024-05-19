@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form'
 import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { CardTitle } from '@/components/ui/card'
+import { CardTitle, Card } from '@/components/ui/card'
 import { PlusCircle, PencilIcon, CheckIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils'
@@ -15,7 +15,7 @@ import {
     getUserSetByIdAction,
 } from '@/redux/user-sets/slice';
 import { useParams } from "react-router-dom";
-import CardForm from '@/components/user-sets/card-form/CardForm'
+import CardForm from '@/components/card-form/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
 import {
@@ -272,14 +272,16 @@ const EditMySet = () => {
                                     }
                                 }
                                 card = convertData ? convertData : card;
-                                return <CardForm
-                                    key={index}
-                                    index={index}
-                                    card={card}
-                                    setId={set?.id}
-                                    onDeleteCard={onDeleteCard}
-                                    onEditCard={onEditCard}
-                                />
+                                return (<Card className='p-4'>
+                                    <CardForm
+                                        key={index}
+                                        index={index}
+                                        card={card}
+                                        setId={set?.id}
+                                        onDeleteCard={onDeleteCard}
+                                        onEditCard={onEditCard}
+                                    />
+                                </Card>)
                             })}
                     </div>
                     <div className='flex justify-center my-2'>
@@ -298,6 +300,7 @@ const EditMySet = () => {
                             children={
                                 <ScrollArea>
                                     <CardForm
+                                        className="h-[500px]"
                                         isEdit={false}
                                         setId={set?.id}
                                         onCreateCard={onCreateCard}

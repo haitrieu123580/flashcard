@@ -15,7 +15,7 @@ router.get("/my-sets", [isValidKey, verifyToken], AsyncHandler(controller.getUse
 
 router.get("/:id", [isValidKey, verifyToken], AsyncHandler(controller.getUserSetById))
 
-// router.post("/quick-create-set", [isValidKey, verifyToken, isValidRequest(QuickCreateSetRequest)], controller.quickCreateSet)
+router.post("/quick-create-set", [isValidKey, verifyToken, isValidRequest(QuickCreateSetRequest)], AsyncHandler(controller.quickCreateSet))
 
 router.post("/create-set", [isValidKey, verifyToken, UploadFile.any()], AsyncHandler(setController.createSet))
 

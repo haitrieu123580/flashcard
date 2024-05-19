@@ -30,10 +30,13 @@ export class UserSetsRepo implements IUserSetsRepo {
         copiedCard.pronounciation = card.pronounciation;
         copiedCard.set = set;
         copiedCard.created_by = set.user.email;
+        if (!set.cards) {
+            set.cards = [];
+        }
         set.cards.push(copiedCard);
         return AppDataSource.transaction(async manager => {
-            await manager.save(copiedCard);
             await manager.save(set);
+            await manager.save(copiedCard);
         });
     }
 }

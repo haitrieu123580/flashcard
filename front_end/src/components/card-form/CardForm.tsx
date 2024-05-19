@@ -8,7 +8,7 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { Form } from "@/components/ui/form"
 import Constants from "@/lib/Constants"
 import EditPopup from '@/components/common/popup/EditPopup'
-import { isFunction } from "@/lib/utils"
+import { cn, isFunction } from "@/lib/utils"
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
@@ -27,6 +27,7 @@ const CardForm = (props: any) => {
         onEditCard,
         onCreateCard,
         openCollapsible = "",
+        className = ""
     } = props
     const formSchema = z.object({
         term: z.string().min(1, {
@@ -72,7 +73,8 @@ const CardForm = (props: any) => {
         }
     }
     return (
-        <ScrollArea className="h-[600px] w-full">
+
+        <ScrollArea className={cn("h-fit w-full", className)}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <Accordion type="single" collapsible defaultValue={openCollapsible} >

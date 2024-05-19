@@ -55,7 +55,7 @@ const UserSets = createSlice({
     editUserSetSuccessAction: (state, { payload }) => {
       state.isLoading = false
     },
-    editUserSetFailureAction: (state, { payload }) => {
+    editUserSetFailureAction: (state) => {
       state.isLoading = false
     },
 
@@ -68,6 +68,16 @@ const UserSets = createSlice({
     },
     deleteUserSetFailureAction: (state, { payload }) => {
       state.isLoading = false
+    },
+
+    quickAddNewSetAction: (state, { payload }) => {
+      // state.isLoading = true;
+    },
+    quickAddNewSetSuccessAction: (state, { payload }) => {
+      // state.isLoading = false;
+    },
+    quickAddNewSetFailureAction: (state) => {
+      // state.isLoading = false;
     },
   }
 })
@@ -90,6 +100,9 @@ export const {
   deleteUserSetAction,
   deleteUserSetSuccessAction,
   deleteUserSetFailureAction,
+  quickAddNewSetAction,
+  quickAddNewSetSuccessAction,
+  quickAddNewSetFailureAction,
 } = UserSets.actions
 
 export default UserSets.reducer

@@ -13,7 +13,7 @@ import { objectToFormData } from '@/lib/utils'
 import { editSetAction } from '@/redux/set/slice'
 import { getSetByIdAction } from "@/redux/set/slice";
 import { useParams } from "react-router-dom";
-import CardForm from '../../../components/admin/cards/CardForm'
+import CardForm from '@/components/card-form/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
 import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card/slice"

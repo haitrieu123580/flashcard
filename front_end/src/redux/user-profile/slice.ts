@@ -11,12 +11,15 @@ const userProfile = createSlice({
   reducers: {
 
     editUserAction: (state, action) => {
+      state.isLoading = true;
     },
 
     editUserSuccessAction: (state, action) => {
+      state.isLoading = false;
     },
 
     editUserErrorAction: (state) => {
+      state.isLoading = false;
     },
 
 

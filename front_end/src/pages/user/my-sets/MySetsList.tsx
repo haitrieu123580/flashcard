@@ -7,7 +7,6 @@ import { routerPaths } from '@/routes/path'
 import { replacePathWithId } from '@/lib/utils'
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination'
 import { toast } from '@/components/ui/use-toast'
-import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
 import { PlusCircleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';

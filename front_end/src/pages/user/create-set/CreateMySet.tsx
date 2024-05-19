@@ -1,5 +1,5 @@
 import React from 'react'
-import SetForm from '@/components/user-sets/set-form/SetForm'
+import SetForm from '@/components/set-form/SetForm'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';

@@ -18,12 +18,13 @@ import Constants from "@/lib/Constants"
 import { Button } from "@/components/ui/button"
 import EditPopup from "@/components/common/popup/EditPopup"
 import { objectToFormData } from "@/lib/utils"
+import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup"
 const Profile = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const { profile } = useSelector((state: any) => state.Auth);
-
+  const { isLoading } = useSelector((state: any) => state.UserProfile);
   const getProfile = () => {
     dispatch({
       type: getProfileAction.type,
@@ -116,6 +117,7 @@ const Profile = () => {
   }, [profile])
   return (
     <div>
+      <LoadingPopup open={isLoading} />
       <Card className="py-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}
