@@ -17,11 +17,15 @@ const options: DataSourceOptions & SeederOptions = {
     password: String(process.env.DB_PASSWORD),
     database: String(process.env.DB_DATABASE),
     entities: [User, Sets, PasswordResetOtps, Cards, Questions],
-    migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
+    // migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
     synchronize: true,
     logging: false,
     subscribers: [],
     seeds: [MainSeeder],
+    ssl: {
+        rejectUnauthorized: false,
+    }
+
 }
 
 export const AppDataSource = new DataSource(options)
