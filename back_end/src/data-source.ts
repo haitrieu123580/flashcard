@@ -26,7 +26,7 @@ let options: DataSourceOptions & SeederOptions = {
     subscribers: [],
     seeds: [MainSeeder],
 }
-if (env === 'production' || env === 'development') {
+if (env === 'production' || env === 'delopment') {
     options = {
         ...options,
         ssl: {
