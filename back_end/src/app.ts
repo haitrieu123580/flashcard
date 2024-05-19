@@ -67,9 +67,8 @@ try {
 }
 
 //cors
-console.log("process.env.CLIENT_URL", String(process.env.CLIENT_URL))
 const corsOptions = {
-    origin: String(process.env.CLIENT_URL) || "https://flashcard-thth.vercel.app",
+    origin: String(process.env.CLIENT_URL),
     optionsSuccessStatus: 200,
     credentials: true,
 

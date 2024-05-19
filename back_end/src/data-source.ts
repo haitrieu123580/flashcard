@@ -8,8 +8,11 @@ import * as dotenv from 'dotenv';
 import { MainSeeder } from "./seeder/Seeder"
 import { SeederOptions } from "typeorm-extension"
 import { Questions } from "./entity/Questions"
+
 dotenv.config();
-const options: DataSourceOptions & SeederOptions = {
+const env = String(process.env.NODE_ENV);
+
+let options: DataSourceOptions & SeederOptions = {
     type: "postgres",
     host: String(process.env.DB_HOST),
     port: Number(process.env.DB_PORT),
@@ -17,14 +20,19 @@ const options: DataSourceOptions & SeederOptions = {
     password: String(process.env.DB_PASSWORD),
     database: String(process.env.DB_DATABASE),
     entities: [User, Sets, PasswordResetOtps, Cards, Questions],
-    // migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
+    migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
     synchronize: true,
     logging: false,
     subscribers: [],
     seeds: [MainSeeder],
-    ssl: {
-        rejectUnauthorized: false,
-    }
+}
+if (env === 'production' || env === 'development') {
+    options = {
+        ...options,
+        ssl: {
+            rejectUnauthorized: false,
+        }
+    };
 
 }
 
