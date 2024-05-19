@@ -56,9 +56,9 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         const { take, skip, filter, name, sortBy } = data;
         let order: any = {};
         if (sortBy === "setName") {
-            order.name = filter === "asc" ? "ASC" : "DESC";
+            order.name = String(filter).toLowerCase() === "asc" ? "ASC" : "DESC";
         } else if (sortBy === "createdDate") {
-            order.created_at = filter === "latest" ? "DESC" : "ASC";
+            order.created_at = String(filter).toLowerCase() === "latest" ? "DESC" : "ASC";
         }
 
         return this.setDataSource.findAndCount({
