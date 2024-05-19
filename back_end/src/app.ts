@@ -67,14 +67,14 @@ try {
 }
 
 //cors
-console.log("process.env.CLIENT_URL", process.env.CLIENT_URL)
-app.use(cors(
-    {
-        origin: "https://flashcard-thth.vercel.app",
-        credentials: true,
-        optionsSuccessStatus: 200,
-    }
-));
+
+const corsOptions = {
+    origin: String(process.env.CLIENT_URL),
+    optionsSuccessStatus: 200,
+    credentials: true,
+
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
