@@ -67,12 +67,13 @@ try {
 }
 
 //cors
-app.use(cors(
-    {
-        origin: String(process.env.CLIENT_URL),
-        credentials: true,
-    }
-));
+const corsOptions = {
+    origin: String(process.env.CLIENT_URL),
+    optionsSuccessStatus: 200,
+    credentials: true,
+
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

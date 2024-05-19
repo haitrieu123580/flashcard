@@ -6,12 +6,16 @@ import { isFunction } from "@/lib/utils";
 import {
   getSetByIdAction,
   getSetByIdSuccessAction,
+  getSetByIdFailedAction,
   createSetAction,
   createSetSuccessAction,
+  createSetSFailedAction,
   editSetAction,
   editSetSuccessAction,
+  editSetFailedAction,
   deleteSetAction,
   deleteSetSuccessAction,
+  deleteFailedAction,
 
 } from "./slice";
 import {
@@ -36,14 +40,11 @@ function* watchGetSetById() {
               })
           );
         }
-        // else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-        //   isFunction(payload.onError) && payload.onError(res.data.message);
-        // }
       }
 
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
-
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(getSetByIdFailedAction())
     }
   });
 }
@@ -63,13 +64,11 @@ function* watchCreateSet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(createSetSFailedAction())
     }
   });
 }
@@ -89,13 +88,10 @@ function* watchEditSet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
-
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(editSetFailedAction())
     }
   });
 }
@@ -115,15 +111,10 @@ function* watchDeleteSet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
-      else {
-        isFunction(payload.onError) && payload.onError(res.data.message);
-      }
-    } catch (error) {
-      isFunction(onError) && onError("Internal server error");
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(deleteFailedAction())
     }
   });
 }
