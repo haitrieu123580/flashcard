@@ -169,19 +169,19 @@ function* watchLogout() {
           );
           isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
         }
-        // else {
-        //   isFunction(onError) && payload.onError(res?.data?.message);
-        //   yield put(
-        //     logoutErrorsAction()
-        //   );
-        // }
+        else {
+          isFunction(onError) && payload.onError(res?.data?.message);
+          yield put(
+            logoutErrorsAction()
+          );
+        }
       }
-      // else {
-      //   isFunction(onError) && payload.onError();
-      //   yield put(
-      //     logoutErrorsAction()
-      //   );
-      // }
+      else {
+        isFunction(onError) && payload.onError();
+        yield put(
+          logoutErrorsAction()
+        );
+      }
     } catch (error: any) {
       isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
       // ! not allow to logout

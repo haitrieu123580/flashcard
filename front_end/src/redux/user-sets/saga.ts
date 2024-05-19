@@ -50,7 +50,7 @@ function* watchUserSetsList() {
         }
       }
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
       yield put(getUserSetsListFailureAction())
     }
   });
@@ -77,7 +77,7 @@ function* watchAddCardToMySet() {
       }
 
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
       yield put(addCardToMySetFailureAction())
     }
   });
@@ -90,7 +90,7 @@ function* watchGetUserSetById() {
       const res = yield call(GetUserSetByIdApi, id);
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
-          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          isFunction(payload?.onSuccess) && payload?.onSuccess(res.data?.data);
           yield put(
             getUserSetByIdSuccessAction
               ({
@@ -101,7 +101,7 @@ function* watchGetUserSetById() {
       }
 
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      isFunction(payload?.onError) && payload.onError(error?.response?.data?.message);
       yield put(getUserSetByIdFailureAction())
     }
   });
@@ -125,7 +125,7 @@ function* watchCreateUserSet() {
       }
 
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      isFunction(payload?.onError) && payload.onError(error?.response?.data?.message);
       yield put(getUserSetByIdFailureAction())
     }
   });
@@ -148,7 +148,7 @@ function* watchEditSet() {
       }
 
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
       yield put(editUserSetFailureAction())
     }
   });
@@ -170,11 +170,11 @@ function* watchDeleteSet() {
           );
         }
         else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
+          isFunction(payload?.onError) && payload?.onError(res.data.message);
         }
       }
       else {
-        isFunction(payload.onError) && payload.onError(res.data.message);
+        isFunction(payload?.onError) && payload?.onError(res.data.message);
       }
     } catch (error) {
       isFunction(onError) && onError("Internal server error");
@@ -192,7 +192,7 @@ function* watchQuickAddCardToNewSet() {
       });
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
-          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          isFunction(payload?.onSuccess) && payload?.onSuccess(res.data?.data);
           yield put(
             quickAddNewSetSuccessAction
               ({
@@ -203,7 +203,7 @@ function* watchQuickAddCardToNewSet() {
       }
 
     } catch (error: any) {
-      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
       yield put(quickAddNewSetFailureAction())
     }
   });

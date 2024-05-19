@@ -16,12 +16,17 @@ const Set = createSlice({
       state.isLoading = false;
       state.data = payload?.data
     },
-
+    getSetByIdFailedAction: (state) => {
+      state.isLoading = false;
+    },
     createSetAction: (state, { payload }) => {
       state.isLoading = true;
     },
     createSetSuccessAction: (state, { payload }) => {
       state.isLoading = false
+    },
+    createSetSFailedAction: (state) => {
+      state.isLoading = false;
     },
 
     editSetAction: (state, { payload }) => {
@@ -31,6 +36,10 @@ const Set = createSlice({
     editSetSuccessAction: (state, { payload }) => {
       state.isLoading = false
     },
+    editSetFailedAction: (state) => {
+      state.isLoading = false;
+    },
+
 
     deleteSetAction: (state, { payload }) => {
       state.isLoading = true;
@@ -39,18 +48,26 @@ const Set = createSlice({
     deleteSetSuccessAction: (state, { payload }) => {
       state.isLoading = false;
     },
+
+    deleteFailedAction: (state) => {
+      state.isLoading = true;
+    },
   },
 })
 
 export const {
   getSetByIdAction,
   getSetByIdSuccessAction,
+  getSetByIdFailedAction,
   createSetAction,
   createSetSuccessAction,
+  createSetSFailedAction,
   editSetAction,
   editSetSuccessAction,
+  editSetFailedAction,
   deleteSetAction,
   deleteSetSuccessAction,
+  deleteFailedAction,
 } = Set.actions
 
 export default Set.reducer
