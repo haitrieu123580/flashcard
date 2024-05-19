@@ -70,7 +70,7 @@ try {
 console.log("process.env.CLIENT_URL", process.env.CLIENT_URL)
 app.use(cors(
     {
-        origin: String(process.env.CLIENT_URL),
+        origin: "https://flashcard-thth.vercel.app",
         credentials: true,
         optionsSuccessStatus: 200,
     }
