@@ -2,7 +2,7 @@ import { UpdateSetRequest } from "@src/dto/set";
 import { Request, Response } from "express";
 import { SetsListResponse } from "@src/dto/set/SetsListResponse";
 import { Sets } from "@src/entity/Sets";
-import { CopyCardToSetRequest } from "@src/dto/uset-sets";
+import { CopyCardToSetRequest, QuickAddCardToSetRequest } from "@src/dto/uset-sets";
 export interface IUserSetsService {
 
     getUserSetsList: (userId: string) => Promise<SetsListResponse | null>
@@ -11,7 +11,7 @@ export interface IUserSetsService {
 
     addCardToUserSet: (data: CopyCardToSetRequest) => Promise<any>
 
-    // quickCreateSet: (req: Request, res: Response) => Promise<any>
+    quickCreateSet: (data: QuickAddCardToSetRequest) => Promise<any>
 
     updateUserSet: (data: UpdateSetRequest) => Promise<any>
 

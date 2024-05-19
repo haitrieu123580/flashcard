@@ -1,7 +1,7 @@
 export const QuickCreateSetRequest: {
     cardId: string,
-    setName: string,
+    set_name: string,
 } = {
     cardId: '',
-    setName: '',
+    set_name: '',
 }

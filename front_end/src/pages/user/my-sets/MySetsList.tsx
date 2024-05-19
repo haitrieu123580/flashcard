@@ -1,24 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import SetItem from '@/components/home/newest-sets/SetItem'
 import { useEffect, useState } from 'react'
-// import { FormInput } from '@/components/common/custom_input/CustomInput'
-// import { Form } from '@/components/ui/form'
-// import { useForm } from 'react-hook-form'
 import Constants from '@/lib/Constants'
 import { useNavigate, useLocation, useSearchParams, useParams } from 'react-router-dom'
 import { routerPaths } from '@/routes/path'
 import { replacePathWithId } from '@/lib/utils'
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination'
 import { toast } from '@/components/ui/use-toast'
-import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
 import { PlusCircleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-// import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup';
 import {
     getUserSetsListAction,
     deleteUserSetAction
 } from '@/redux/user-sets/slice';
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup';
 
 const MySetsList = () => {
     const { mySets, isLoading, pagination } = useSelector((state: any) => state.UserSets);
@@ -27,13 +23,20 @@ const MySetsList = () => {
 
     const getUserSetsList = () => {
         dispatch({
-            type: getUserSetsListAction.type
+            type: getUserSetsListAction.type,
+            payload: {
+                onSuccess: () => {
+                    // console.log('success')
+                },
+                onError: (message: string) => {
+                    setErrorMessage(message || "Something went wrong")
+                }
+            }
         })
     }
     useEffect(() => {
         getUserSetsList();
     }, [])
-
     const [pageNumber, setPageNumber] = useState(1);
     const [filter, setFilter] = useState(Constants.SORT_BY[0].key)
     let [searchParams, setSearchParams] = useSearchParams();
@@ -101,34 +104,34 @@ const MySetsList = () => {
 
                 </Link>
             </div>
-            {
-                isLoading
-                    ? <div className='w-full h-full flex justify-center items-center'><LoadingSpinner /></div>
-                    :
-                    <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
-                        {Array.isArray(mySets?.sets) && mySets?.sets.map((set: any, index: number) => {
-                            const data = {
-                                ...set,
-                                totalCards: set.cards?.length || 0
-                            }
-                            return <div key={index} className='row-span-1 md:col-span-2'>
-                                <SetItem
-                                    data={data}
-                                    onClick={gotoCard}
-                                    showEditBtn={true}
-                                    showDeleteBtn={true}
-                                    onEditBtn={(id: string) => {
-                                        navigate(replacePathWithId(routerPaths.EDIT_MY_SET, id))
-                                    }}
-                                    onDeleteBtn={(id: string) => {
-                                        onDelete(id)
-                                    }}
 
-                                />
-                            </div>
-                        })}
+            <LoadingPopup
+                open={isLoading}
+            />
+            <div className='grid grid-rows-1 md:grid-cols-6 gap-10'>
+                {Array.isArray(mySets?.sets) && mySets?.sets.map((set: any, index: number) => {
+                    const data = {
+                        ...set,
+                        totalCards: set.cards?.length || 0
+                    }
+                    return <div key={index} className='row-span-1 md:col-span-2'>
+                        <SetItem
+                            data={data}
+                            onClick={gotoCard}
+                            showEditBtn={true}
+                            showDeleteBtn={true}
+                            onEditBtn={(id: string) => {
+                                navigate(replacePathWithId(routerPaths.EDIT_MY_SET, id))
+                            }}
+                            onDeleteBtn={(id: string) => {
+                                onDelete(id)
+                            }}
+
+                        />
                     </div>
-            }
+                })}
+            </div>
+
             {
                 errorMessage && <div className='row-span-1 md:col-span-6'>
                     <div className='text-center text-red-500'>{errorMessage}</div>

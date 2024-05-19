@@ -31,7 +31,7 @@ import {
     , SetsServiceResponse
 } from "@src/dto/set/SetsListResponse";
 import { Sets } from "@src/entity/Sets";
-import { CopyCardToSetRequest } from "@src/dto/uset-sets";
+import { CopyCardToSetRequest, QuickAddCardToSetRequest } from "@src/dto/uset-sets";
 @Service()
 export class UserSetsService implements IUserSetsService {
     private userSetsRepo: IUserSetsRepo;
@@ -112,41 +112,26 @@ export class UserSetsService implements IUserSetsService {
         }
     }
 
-    // quickCreateSet = async (req: any, res: any): Promise<any> => {
-    //     try {
-    //         const { id } = req.user;
-    //         const {
-    //             setName,
-    //             cardId
-    //         } = req.body;
-    //         const user = await this.userRepo.getUserBy("id", id);
-    //         if (!user) {
-    //             return new FailureMsgResponse("User not found.").send(res)
-    //         }
-    //         const card = await this.cardRepo.getCardById(cardId);
-    //         if (!card) {
-    //             return new FailureMsgResponse("Card not found.").send(res)
-    //         }
-    //         const set: CreateNewSetData = {
-    //             name: setName.toString() || "",
-    //             is_public: false,
-    //             created_by: user.email,
-    //             user: user,
-    //             cards: [card]
-    //         }
-    //         const result = await this.setRepo.createSet(set)
-    //         if (result) {
-    //             return new SuccessResponse("Create set successfully", result).send(res)
-    //         }
-    //         return new FailureMsgResponse("Create set failed").send(res)
-
-    //     } catch (error) {
-    //         console.log("error", error)
-    //         return new FailureResponse('Internal Server Error ', error).send(res);
-    //     }
-    // }
+    quickCreateSet = async (data: QuickAddCardToSetRequest): Promise<any> => {
+        const user = await this.userRepo.getUserBy("id", data.user?.id);
+        if (!user) {
+            throw new AuthFailureError("User not found");
+        }
+        if (!data.set_name) {
+            throw new BadRequestError("Set name is required");
+        }
+        const card = await this.cardRepo.getCardById(data.cardId);
+        if (!card) {
+            throw new NotFoundError('Card not found!');
+        }
+        const newSet = new Sets();
+        newSet.name = data.set_name;
+        newSet.is_public = false;
+        newSet.created_by = user.email;
+        newSet.user = user;
+        return this.userSetsRepo.addCardToSet(newSet, card);
+    }
     updateUserSet = async (data: UpdateSetRequest): Promise<any> => {
-        // try {
         const setId = data.id;
         const id = data?.user?.id;
 
@@ -158,7 +143,6 @@ export class UserSetsService implements IUserSetsService {
         const user = await this.userRepo.getUserBy("id", id);
         if (updatedSet?.user?.id !== user?.id) {
             throw new AuthFailureError("Set not belong to user");
-            // return new FailureMsgResponse('Set not belong to user').send(res);
         }
         const set_image_url = set_image ? await this.s3Service.uploadFile(set_image) : null;
         const updateSet = await this.setRepo.get_set_by_id(setId);
@@ -179,7 +163,7 @@ export class UserSetsService implements IUserSetsService {
 
     deleteUserSet = async (req: any, res: any): Promise<any> => {
         try {
-            const setId = req.params.setId;
+            const setId = req.params.id;
             const { id } = req.user;
             const set = await this.setRepo.get_set_by_id(setId);
             const user = await this.userRepo.getUserBy("id", id);

@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form'
 import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { CardTitle } from '@/components/ui/card'
+import { CardTitle, Card } from '@/components/ui/card'
 import { PlusCircle, PencilIcon, CheckIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils'
@@ -15,7 +15,7 @@ import {
     getUserSetByIdAction,
 } from '@/redux/user-sets/slice';
 import { useParams } from "react-router-dom";
-import CardForm from '@/components/user-sets/card-form/CardForm'
+import CardForm from '@/components/card-form/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
 import {
@@ -27,6 +27,7 @@ import EditPopup from '@/components/common/popup/EditPopup'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup'
 
 const EditMySet = () => {
     const { id } = useParams();
@@ -72,7 +73,7 @@ const EditMySet = () => {
         const submitValues = {
             ...values,
             setId: setId,
-            image: values.image.image ? values.image.image : null, // image not change
+            image: values.image.image ? values.image.image : null,
             is_delete_image: (!values.image.image && !values.image.path) ? "true" : "false",
             example: values?.example ? JSON.stringify(values?.example) : null
         }
@@ -214,7 +215,9 @@ const EditMySet = () => {
 
     return (
         <div className=" w-full">
-
+            <LoadingPopup
+                open={isLoading}
+            />
             <Form {...form}>
                 <form className='flex flex-col gap-6'>
                     <div className='flex justify-between items-center my-2'>
@@ -261,17 +264,24 @@ const EditMySet = () => {
                     <div className="w-full flex flex-col gap-6">
                         {set?.cards && Array.isArray(set?.cards) &&
                             set?.cards.map((card: any, index: number) => {
-                                return <CardForm
-                                    key={index}
-                                    index={index}
-                                    card={card}
-                                    setId={set?.id}
-                                    onDeleteCard={onDeleteCard}
-                                    onEditCard={onEditCard}
-                                    showEditButton={
-                                        card?.created_by === set?.created_by
+                                let convertData = null;
+                                if (typeof card.example === 'string') {
+                                    convertData = {
+                                        ...card,
+                                        example: JSON.parse(card.example)
                                     }
-                                />
+                                }
+                                card = convertData ? convertData : card;
+                                return (<Card className='p-4'>
+                                    <CardForm
+                                        key={index}
+                                        index={index}
+                                        card={card}
+                                        setId={set?.id}
+                                        onDeleteCard={onDeleteCard}
+                                        onEditCard={onEditCard}
+                                    />
+                                </Card>)
                             })}
                     </div>
                     <div className='flex justify-center my-2'>
@@ -290,9 +300,11 @@ const EditMySet = () => {
                             children={
                                 <ScrollArea>
                                     <CardForm
+                                        className="h-[500px]"
                                         isEdit={false}
                                         setId={set?.id}
                                         onCreateCard={onCreateCard}
+                                        openCollapsible="item-1"
 
                                     />
                                 </ScrollArea>

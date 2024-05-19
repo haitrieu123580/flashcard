@@ -32,8 +32,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <div>
             {/* <div className='fixed right-10 top-5'><LocalesToggle /> </div> */}
             <div className='sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
-                <MainHeaderMobile />
-                <MainHeader />
+                <MaxWidthWrapper className=''>
+                    <MainHeaderMobile />
+                    <MainHeader className="p-0" />
+                </MaxWidthWrapper>
                 <Separator />
             </div>
             <MaxWidthWrapper>

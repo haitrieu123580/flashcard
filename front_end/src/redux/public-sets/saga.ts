@@ -29,21 +29,16 @@ function* watchGetPublicSets() {
               }
             })
           );
-          return;
-        }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res?.data?.message || "Error");
-          yield put(
-            {
-              type: getAllSetsFailedAction.type,
-            }
-          )
-          return;
         }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message || "Error");
+      yield put(
+        {
+          type: getAllSetsFailedAction.type,
+        }
+      )
     }
   });
 }

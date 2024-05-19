@@ -36,9 +36,15 @@ export class UserSetsController {
         return new SuccessMsgResponse('Card added to set successfully ').send(res);
     }
 
-    // quickCreateSet = async (req: any, res: any) => {
-    //     await this.userSetsService.quickCreateSet(req, res);
-    // }
+    quickCreateSet = async (req: any, res: any) => {
+        const data = {
+            user: req.user,
+            set_name: req.body.set_name,
+            cardId: req.body.cardId,
+        }
+        await this.userSetsService.quickCreateSet(data);
+        return new SuccessMsgResponse('Card added to set successfully ').send(res);
+    }
 
     updateSet = async (req: any, res: Response) => {
         const data: UpdateSetRequest = {

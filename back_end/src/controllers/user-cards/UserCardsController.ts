@@ -18,10 +18,15 @@ export class UserCardsController {
             define: req.body.define,
             example: req.body.example,
             image: req.file,
-            set_id: req.body.set_id
+            set_id: req.body.setId
         }
-        await this.service.CreateCard(data)
-        return new SuccessMsgResponse("Create card successfully!").send(res);
+        const result = await this.service.CreateCard(data)
+        if (!result) {
+            return new FailureMsgResponse("Create card failed!").send(res);
+        }
+        else {
+            return new SuccessMsgResponse("Create card successfully!").send(res);
+        }
     }
 
     updateCard = async (req: any, res: Response): Promise<any> => {

@@ -15,6 +15,7 @@ import { createSetAction } from '@/redux/set/slice'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CardTitle } from '@/components/ui/card'
 import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup'
 const TestListPage = () => {
     const { data, pagination, isLoading } = useSelector((state: any) => state.Sets)
     const dispatch = useDispatch();
@@ -72,27 +73,28 @@ const TestListPage = () => {
             <div className='flex justify-between mt-6'>
                 <CardTitle >Questions of Set</CardTitle>
             </div>
-            {
+            {/* {
                 isLoading
                     ? <div className='w-full h-full flex justify-center items-center'><LoadingSpinner /></div>
-                    : <>
-                        {Array.isArray(data) && data.map((set, index) => {
-                            return <div key={index} className='row-span-1 md:col-span-2'>
-                                <TestCard
-                                    data={set}
-                                />
-                            </div>
-                        })}
-                        <CustomPagination
-                            total={pagination?.total || 0}
-                            itemCount={1}
-                            siblingCount={1}
-                            limit={Constants.PAGINATION.LIMIT}
-                            onChange={(e: any) => { onChangePageNumber(e) }}
-                            page={pageNumber}
-                        />
-                    </>
-            }
+                    : <> */}
+            <LoadingPopup open={isLoading} />
+            {Array.isArray(data) && data.map((set, index) => {
+                return <div key={index} className='row-span-1 md:col-span-2'>
+                    <TestCard
+                        data={set}
+                    />
+                </div>
+            })}
+            <CustomPagination
+                total={pagination?.total || 0}
+                itemCount={1}
+                siblingCount={1}
+                limit={Constants.PAGINATION.LIMIT}
+                onChange={(e: any) => { onChangePageNumber(e) }}
+                page={pageNumber}
+            />
+            {/* </>
+            } */}
         </div>
     )
 }

@@ -13,7 +13,7 @@ import { objectToFormData } from '@/lib/utils'
 import { editSetAction } from '@/redux/set/slice'
 import { getSetByIdAction } from "@/redux/set/slice";
 import { useParams } from "react-router-dom";
-import CardForm from '../../../components/admin/cards/CardForm'
+import CardForm from '@/components/card-form/CardForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { toast } from '@/components/ui/use-toast'
 import { editCardAction, createCardAction, deleteCardAction } from "@/redux/card/slice"
@@ -21,7 +21,7 @@ import EditPopup from '@/components/common/popup/EditPopup'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
-
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup'
 const EditSetContainer = () => {
     const { id } = useParams();
     const { data, isLoading } = useSelector((state: any) => state.Set);
@@ -205,13 +205,7 @@ const EditSetContainer = () => {
 
     return (
         <div className=" w-full">
-            <CommonPopup
-                open={isLoading}
-                setOpen={() => { }}
-                isShowTrigger={false}
-                children={<LoadingSpinner />}
-                className={"w-fit h-fit"}
-            />
+            <LoadingPopup open={isLoading} />
             <Form {...form}>
                 <form className='flex flex-col gap-6'>
                     <div className='flex justify-between items-center my-2'>
@@ -255,9 +249,17 @@ const EditSetContainer = () => {
                     <b>Cards</b>
                 </div>
                 <div className='flex flex-col'>
-                    <div className="w-full flex flex-col gap-6">
+                    <div className="w-full flex flex-col gap-10">
                         {data?.cards && Array.isArray(data?.cards) &&
                             data?.cards.map((card: any, index: number) => {
+                                let convertData = null;
+                                if (typeof card.example === 'string') {
+                                    convertData = {
+                                        ...card,
+                                        example: JSON.parse(card.example)
+                                    }
+                                }
+                                card = convertData ? convertData : card;
                                 return <CardForm
                                     key={index}
                                     index={index}
@@ -282,13 +284,13 @@ const EditSetContainer = () => {
                             }
                             title="Add new card"
                             children={
-                                <ScrollArea>
-                                    <CardForm
-                                        isEdit={false}
-                                        setId={data?.id}
-                                        onCreateCard={onCreateCard}
-                                    />
-                                </ScrollArea>
+                                // <ScrollArea>
+                                <CardForm
+                                    isEdit={false}
+                                    setId={data?.id}
+                                    onCreateCard={onCreateCard}
+                                />
+                                // </ScrollArea>
                             }
                         />
                     </div>

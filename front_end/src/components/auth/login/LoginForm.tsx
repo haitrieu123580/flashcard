@@ -23,6 +23,7 @@ import { toast } from "@/components/ui/use-toast";
 import { loginAction } from "@/redux/auth/slice";
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
+import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup"
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 export function LoginForm(props: any) {
@@ -77,80 +78,82 @@ export function LoginForm(props: any) {
     }
     return (
         <>
-            {isLoading
-                ? <div className="flex justify-center items-center"> <LoadingSpinner /></div>
-                : (
-                    <Card className="">
+            <LoadingPopup
+                open={isLoading}
+            />
+            {/* {isLoading */}
+            {/* // ? <div className="flex justify-center items-center"> <LoadingSpinner /></div> */}
+            {/* // : ( */}
+            <Card className="">
 
-                        <CardHeader>
-                            <CardTitle>Login</CardTitle>
-                            <CardDescription>
-                                Login to your account
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            <Form {...form}>
-                                <form onSubmit={form.handleSubmit(onSubmit)}>
-                                    <div className="space-y-1">
-                                        <FormInput
-                                            control={form.control}
-                                            fieldName="username"
-                                            label="Username"
-                                            placeholder="Username"
-                                            type={Constants.INPUT_TYPE.TEXT}
-                                            required={true}
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <FormInput
-                                            control={form.control}
-                                            fieldName="password"
-                                            label="Password"
-                                            placeholder="Password"
-                                            required={true}
-                                            type={Constants.INPUT_TYPE.PASSWORD}
-                                        />
-                                        <Button variant={"link"}
-                                            type="button"
-                                            onClick={gotoForgotPassword}
-                                        >
-                                            Forgot password?
-                                        </Button>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <Button
-                                            type="submit"
-                                            variant="default"
-                                            className="m-auto w-full"
-                                        >
-                                            Login
-                                        </Button>
-                                    </div>
-
-                                </form>
-                            </Form>
-                        </CardContent>
-
-                        <CardFooter className="flex flex-col w-full">
-                            <div className="flex justify-between items-center w-full">
-                                <Separator className="w-1/3" />
-                                <span>or</span>
-                                <Separator className="w-1/3" />
+                <CardHeader>
+                    <CardTitle>Login</CardTitle>
+                    <CardDescription>
+                        Login to your account
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <div className="space-y-1">
+                                <FormInput
+                                    control={form.control}
+                                    fieldName="username"
+                                    label="Username"
+                                    placeholder="Username"
+                                    type={Constants.INPUT_TYPE.TEXT}
+                                    required={true}
+                                />
                             </div>
-                            <div className="w-full">
-                                <Button
+                            <div className="space-y-1">
+                                <FormInput
+                                    control={form.control}
+                                    fieldName="password"
+                                    label="Password"
+                                    placeholder="Password"
+                                    required={true}
+                                    type={Constants.INPUT_TYPE.PASSWORD}
+                                />
+                                <Button variant={"link"}
                                     type="button"
-                                    variant={"outline"}
-                                    onClick={() => { googleAuth() }}
-                                    className="m-auto w-full dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
-                                    <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
+                                    onClick={gotoForgotPassword}
+                                >
+                                    Forgot password?
                                 </Button>
                             </div>
-                        </CardFooter>
+                            <div className="space-y-1">
+                                <Button
+                                    type="submit"
+                                    variant="default"
+                                    className="m-auto w-full"
+                                >
+                                    Login
+                                </Button>
+                            </div>
 
-                    </Card >
-                )}
+                        </form>
+                    </Form>
+                </CardContent>
+
+                <CardFooter className="flex flex-col w-full">
+                    <div className="flex justify-between items-center w-full">
+                        <Separator className="w-1/3" />
+                        <span>or</span>
+                        <Separator className="w-1/3" />
+                    </div>
+                    <div className="w-full">
+                        <Button
+                            type="button"
+                            variant={"outline"}
+                            onClick={() => { googleAuth() }}
+                            className="m-auto w-full dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
+                            <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
+                        </Button>
+                    </div>
+                </CardFooter>
+
+            </Card >
+            {/* // )} */}
         </>
-
     )
 }

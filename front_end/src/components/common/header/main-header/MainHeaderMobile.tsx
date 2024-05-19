@@ -57,7 +57,7 @@ const MainHeaderMobile = (props: any) => {
     }
     return (
         <>
-            <div className='w-full md:hidden p-2 mb-2'>
+            <div className='w-full md:hidden py-2 mb-2'>
                 <div className='w-full flex justify-between mb-2'>
                     <div className="flex items-center col-span-1">
                         <Button variant={"ghost"}>

@@ -14,6 +14,8 @@ import { S3Service } from '@services/s3/S3Service';
 import { comparePassword, hasingPassword } from "@src/helper/HashingPassword";
 import { IUserSetsRepo } from "@src/repositories/user-sets/IUserSetsRepo";
 import { UserSetsRepo } from "@src/repositories/user-sets/UserSetsRepo";
+import { AuthFailureError } from "@src/core/ApiError";
+import { EditUserProfileRequest } from "@src/dto/user";
 @Service()
 export class UserService implements UserServiceInterface {
     private userRepo: UserRepoInterface;
@@ -26,36 +28,25 @@ export class UserService implements UserServiceInterface {
         this.userSetsRepo = Container.get(UserSetsRepo);
     }
 
-    editProfile = async (req: any, res: Response): Promise<any> => {
-        try {
-            const { email } = req.user;
-            const data = req.body;
-            const image = req.file;
-            let image_url = "";
-            const user = await this.userRepo.getAllUserInfoBy("email", email)
-            if (!user) {
-                return new FailureMsgResponse("User not found.").send(res)
-            }
-            if (image) {
-                const image_uploaded = await this.s3Service.uploadFile(image);
-                image_url = image_uploaded.Location;
-            }
-            const updatedData = {
-                ...user,
-                username: data?.username ? data.username : user.username,
-                avatar: image_url ? image_url : user.avatar,
-            }
-            const result = await this.userRepo.updateUserProfile(user.id, updatedData);
-            if (result) {
-                return new SuccessMsgResponse("Profile updated successfully.").send(res)
-            }
-            else {
-                return new InternalErrorResponse("Internal server error.").send(res)
-            }
-        } catch (error) {
-            console.log("error", error)
-            return new InternalErrorResponse("Internal server error.").send(res)
+    editProfile = async (data: EditUserProfileRequest): Promise<any> => {
+        if (!data.user?.email) throw new AuthFailureError("User not found.")
+        let image_url = "";
+        const user = await this.userRepo.getAllUserInfoBy("email", data?.user.email)
+        if (!user) {
+            throw new AuthFailureError("User not found.")
         }
+        if (data.image) {
+            const image_uploaded = await this.s3Service.uploadFile(data.image);
+            image_url = image_uploaded.Location;
+        }
+        const updatedData = {
+            ...user,
+            username: data?.username ? data.username : user.username,
+            avatar: image_url ? image_url : user.avatar,
+            email: data?.email ? data.email : user.email,
+            updated_by: user.email,
+        }
+        return this.userRepo.updateUserProfile(updatedData);
     }
 
     changePassword = async (req: any, res: Response): Promise<any> => {

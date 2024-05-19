@@ -4,7 +4,7 @@ import CustomPagination from '@/components/common/custom-pagination/CustomPagina
 import Constants from '@/lib/Constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllSetsAction } from '@/redux/public-sets/slice'
-import SetForm from '@/components/admin/sets/SetForm'
+import SetForm from '@/components/set-form/SetForm'
 import CommonPopup from '@/components/common/popup/CommonPopup'
 import { getSetByIdAction, deleteSetAction } from "@/redux/set/slice";
 import { PlusCircle } from 'lucide-react'
@@ -15,6 +15,8 @@ import { createSetAction } from '@/redux/set/slice'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { CardTitle } from '@/components/ui/card'
 import LoadingSpinner from '@/components/common/loading/loading-spinner/LoadingSpinner'
+import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup'
+import { ScrollArea } from '@/components/ui/scroll-area'
 const SetsList = () => {
     const { data, pagination, isLoading } = useSelector((state: any) => state.Sets)
     const dispatch = useDispatch();
@@ -160,7 +162,7 @@ const SetsList = () => {
         <div>
             <div className='flex justify-between mt-6'>
                 <CardTitle >Sets List</CardTitle>
-                <Button variant={"ghost"}
+                <Button variant={"default"}
                     onClick={() => {
                         // onCreate();
                         setOpen(true)
@@ -169,43 +171,40 @@ const SetsList = () => {
                     }}
                 >
                     <PlusCircle size={20} />
+                    <span className='ml-2'>{`Create new public set`}</span>
                 </Button>
             </div>
-            {
-                isLoading ? <div className='w-full h-full flex justify-center items-center'>
-                    <LoadingSpinner />
+            <LoadingPopup open={isLoading} />
+            {Array.isArray(data) && data.map((set, index) => {
+                return <div key={index} className='row-span-1 md:col-span-2'>
+                    <SetItem
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                        data={set}
+                    />
                 </div>
-                    :
-                    <>
-                        {Array.isArray(data) && data.map((set, index) => {
-                            return <div key={index} className='row-span-1 md:col-span-2'>
-                                <SetItem
-                                    onEdit={onEdit}
-                                    onDelete={onDelete}
-                                    data={set}
-                                />
-                            </div>
-                        })}
-                        <CommonPopup
-                            open={open}
-                            setOpen={setOpen}
-                            isShowTrigger={false}
-                            TriggerComponent={null}
-                            children={<SetForm defaultValues={defaultValues} onCreate={onCreate} />}
-                            title={"Create Set"}
-                        />
-                        <CustomPagination
-                            total={pagination?.total || 0}
-                            itemCount={1}
-                            siblingCount={1}
-                            limit={Constants.PAGINATION.LIMIT}
-                            onChange={(e: any) => { onChangePageNumber(e) }}
-                            page={pageNumber}
-                        />
-                    </>
-            }
-
-        </div>
+            })}
+            <CommonPopup
+                open={open}
+                setOpen={setOpen}
+                isShowTrigger={false}
+                TriggerComponent={null}
+                children={
+                    <ScrollArea className='h-[600px]'>
+                        <SetForm defaultValues={defaultValues} onCreate={onCreate} />
+                    </ScrollArea>
+                }
+                title={"Create Set"}
+            />
+            <CustomPagination
+                total={pagination?.total || 0}
+                itemCount={1}
+                siblingCount={1}
+                limit={Constants.PAGINATION.LIMIT}
+                onChange={(e: any) => { onChangePageNumber(e) }}
+                page={pageNumber}
+            />
+        </div >
     )
 }
 

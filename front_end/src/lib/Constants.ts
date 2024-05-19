@@ -20,6 +20,7 @@ export default class Constants {
         RADIO: 'radio',
         INPUT_CHECK: 'input_check',
         RE_CAPTCHA: 're_captcha',
+        AVATAR: 'avatar',
     };
 
     static DEFAULT_PAGESIZE = 6;

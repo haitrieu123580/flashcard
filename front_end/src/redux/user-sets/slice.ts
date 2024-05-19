@@ -14,12 +14,11 @@ const UserSets = createSlice({
       state.isLoading = true
     },
     getUserSetsListSuccessAction: (state, { payload }) => {
-      console.log("payload: ", payload.data)
       state.isLoading = false
       state.mySets = payload.data
     },
     getUserSetsListFailureAction: (state) => {
-      state.isLoading = true
+      state.isLoading = false
     },
 
     addCardToMySetAction: (state) => {
@@ -30,7 +29,7 @@ const UserSets = createSlice({
       // state.data = payload.data
     },
     addCardToMySetFailureAction: (state) => {
-      state.isLoading = true
+      state.isLoading = false
     },
 
     getUserSetByIdAction: (state) => {
@@ -56,6 +55,9 @@ const UserSets = createSlice({
     editUserSetSuccessAction: (state, { payload }) => {
       state.isLoading = false
     },
+    editUserSetFailureAction: (state) => {
+      state.isLoading = false
+    },
 
     deleteUserSetAction: (state, { payload }) => {
       state.isLoading = true;
@@ -63,6 +65,19 @@ const UserSets = createSlice({
 
     deleteUserSetSuccessAction: (state, { payload }) => {
       state.isLoading = false;
+    },
+    deleteUserSetFailureAction: (state, { payload }) => {
+      state.isLoading = false
+    },
+
+    quickAddNewSetAction: (state, { payload }) => {
+      // state.isLoading = true;
+    },
+    quickAddNewSetSuccessAction: (state, { payload }) => {
+      // state.isLoading = false;
+    },
+    quickAddNewSetFailureAction: (state) => {
+      // state.isLoading = false;
     },
   }
 })
@@ -81,8 +96,13 @@ export const {
   createUserSetSuccessAction,
   editUserSetAction,
   editUserSetSuccessAction,
+  editUserSetFailureAction,
   deleteUserSetAction,
   deleteUserSetSuccessAction,
+  deleteUserSetFailureAction,
+  quickAddNewSetAction,
+  quickAddNewSetSuccessAction,
+  quickAddNewSetFailureAction,
 } = UserSets.actions
 
 export default UserSets.reducer

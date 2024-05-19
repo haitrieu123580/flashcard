@@ -17,8 +17,13 @@ import {
   createUserSetSuccessAction,
   editUserSetAction,
   editUserSetSuccessAction,
+  editUserSetFailureAction,
   deleteUserSetAction,
   deleteUserSetSuccessAction,
+  deleteUserSetFailureAction,
+  quickAddNewSetAction,
+  quickAddNewSetSuccessAction,
+  quickAddNewSetFailureAction,
 } from "./slice";
 import {
   GetUSerSetsListApi,
@@ -27,30 +32,26 @@ import {
   CreateUserSetApi,
   DeleteUserSetApi,
   EditUserSetApi,
+  AddCardToNewSetApi
 } from '@/api/UserSetsApi';
 
 function* watchUserSetsList() {
   yield takeLatest(getUserSetsListAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     try {
       const res = yield call(GetUSerSetsListApi);
-
-      console.log("res: ", res?.data.data);
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
-          // isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
           yield put(
             getUserSetsListSuccessAction(
               { data: res.data?.data }
             )
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          // isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
-
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(getUserSetsListFailureAction())
     }
   });
 }
@@ -58,7 +59,6 @@ function* watchUserSetsList() {
 function* watchAddCardToMySet() {
   yield takeLatest(addCardToMySetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { data } = payload
-    console.log("data: ", data);
     try {
       const res = yield call(AddCardToSetApi, {
         setId: data?.setId,
@@ -74,13 +74,11 @@ function* watchAddCardToMySet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload?.onError) && payload?.onError(res.data.message);
-        }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(addCardToMySetFailureAction())
     }
   });
 }
@@ -100,13 +98,11 @@ function* watchGetUserSetById() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(getUserSetByIdFailureAction())
     }
   });
 }
@@ -126,13 +122,11 @@ function* watchCreateUserSet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(getUserSetByIdFailureAction())
     }
   });
 }
@@ -151,13 +145,11 @@ function* watchEditSet() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
 
-    } catch (error) {
-
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(editUserSetFailureAction())
     }
   });
 }
@@ -189,6 +181,34 @@ function* watchDeleteSet() {
     }
   });
 }
+
+function* watchQuickAddCardToNewSet() {
+  yield takeLatest(quickAddNewSetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { data } = payload
+    try {
+      const res = yield call(AddCardToNewSetApi, {
+        set_name: data?.set_name,
+        cardId: data?.cardId
+      });
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          yield put(
+            quickAddNewSetSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+      }
+
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
+      yield put(quickAddNewSetFailureAction())
+    }
+  });
+}
+
 export default function* UserSetsSaga() {
   yield all([
     fork(watchUserSetsList),
@@ -197,5 +217,6 @@ export default function* UserSetsSaga() {
     fork(watchCreateUserSet),
     fork(watchEditSet),
     fork(watchDeleteSet),
+    fork(watchQuickAddCardToNewSet),
   ]);
 }

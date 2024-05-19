@@ -8,3 +8,14 @@ export type CopyCardToSetRequest = {
     setId: string;
     cardId: string;
 };
+
+export type QuickAddCardToSetRequest = {
+    user: {
+        id: string;
+        role: string;
+        email: string;
+        username: string;
+    } | undefined;
+    cardId: string;
+    set_name: string;
+}

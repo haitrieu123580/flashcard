@@ -30,3 +30,8 @@ export const DeleteUserSetApi = async (id: string) => {
     const response = await AxiosConfig.delete(`${BASE_URL}/${id}`);
     return response;
 }
+
+export const AddCardToNewSetApi = async (data: any) => {
+    const response = await AxiosConfig.post(`${BASE_URL}/quick-create-set`, data);
+    return response;
+}

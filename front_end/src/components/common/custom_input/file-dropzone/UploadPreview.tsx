@@ -49,12 +49,9 @@ const UploadPreview: FC<UploadPreviewProps> = ({
                             </Button>
                         </div>
                         <div className='w-full '>
-                            <AspectRatio
-                                ratio={4 / 3}
-                                className="h-auto w-auto"
-                            >
+                            <div className='w-full h-80 bg-background'>
                                 <img src={path} alt="set" className='max-w-full max-h-full w-full h-full object-contain' />
-                            </AspectRatio>
+                            </div>
                         </div>
                     </div>
                 </>

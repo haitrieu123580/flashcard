@@ -33,7 +33,6 @@ const AdminLogin = () => {
     const navigate = useNavigate();
     useEffect(() => {
         // ! check if user is logged in
-        console.log("profile", loggedIn)
         if (loggedIn) {
             navigate(routerPaths.ADMIN_DASHBOARD);
         }

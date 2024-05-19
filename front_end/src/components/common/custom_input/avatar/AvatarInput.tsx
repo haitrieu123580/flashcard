@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { PencilIcon, Trash2, User } from "lucide-react"
 
-import UploadPreview from './UploadPreview';
-
-interface FileInfo { //for preview image
+interface FileInfo {
     path: string;
 }
 
@@ -25,7 +25,7 @@ interface FileDropzoneProps {
     name: string;
 }
 
-export const FileDropzone: React.FC<FileDropzoneProps> = ({
+export const AvatarInput: React.FC<FileDropzoneProps> = ({
     type,
     placeholder,
     classNameInput,
@@ -99,52 +99,59 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
         <>
             <div
                 {...getRootProps({
-                    className: `relative overflow-hidden flex flex-col items-center justify-center w-full border-[1px] rounded-lg `,
+                    className: `overflow-hidden flex flex-col items-center justify-center w-full `,
                 })}
             >
-                <div
-                    className={cn(
-                        'w-full flex flex-col items-center justify-center pt-5 pb-6',
-                        {
-                            'absolute z-[-10]': show,
-                        },
-                    )}
-                >
-                    <p className="mb-[12px] text-[16px] font-bold">{placeholder}</p>
-                    <Button
-                        variant="outline"
-                        type="button"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onClick();
-                        }}
-                        className="w-[30%] shadow-none border-[1px] rounded-sm min-w-fit p-[10px] text-primary border-input "
-                    >
-                        {`Select image`}
-                    </Button>
-                    <Input
-                        {...field}
-                        {...getInputProps()}
-                        type={type}
-                        className={cn(" border-none ", classNameInput)}
-                        onKeyUp={onKeyUp}
-                        maxLength={maxLength}
-                        ref={fileRef}
-                        accept='image/*'
-                    />
-                </div>
-                <div
-                    className={`${show ? '' : 'absolute z-[-10] opacity-100'} w-full h-full `}
-                >
-                    <UploadPreview
-                        show={show}
+                <div className={cn("relative w-fit m-auto")}>
+                    <Avatar className={cn("w-36 h-36 aspect-square m-auto mb-3",)}>
+                        {show &&
+                            <AvatarImage src={fileInfo.path ? fileInfo.path : ""}
+                                className={cn("w-full h-full object-cover", `${fileInfo.path ? "" : "hidden"}`)} />
+                        }
+                        {!show &&
+                            <AvatarImage src={""}
+                                className={cn("w-full h-full object-cover", `${fileInfo.path ? "" : "hidden"}`)} />
+                        }
+                        <AvatarFallback> <User className="w-28 h-28" /></AvatarFallback>
+                    </Avatar>
+                    <div className='absolute top-0 left-full flex'>
+                        <Button
+                            type="button"
+                            variant={"link"}
+                            className=""
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onClick();
+                            }}
+                        >
+                            <PencilIcon />
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            className={cn("", `${!show ? "hidden" : ""}`)}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onDelete();
+                            }}
+                        >
+                            <Trash2 size={18} />
+                        </Button>
+                    </div>
 
-                        path={fileInfo.path}
-                        onDelete={onDelete}
-                        onUpdate={onUpdate}
-                    />
                 </div>
-            </div>
+                <Input
+                    {...field}
+                    {...getInputProps()}
+                    type={'file'}
+                    className={cn(" border-none z-[-10] absolute ", classNameInput)}
+                    onKeyUp={onKeyUp}
+                    maxLength={maxLength}
+                    ref={fileRef}
+                    accept='image/*'
+                />
+
+            </div >
         </>
     );
 };

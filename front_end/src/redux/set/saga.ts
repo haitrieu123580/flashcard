@@ -36,12 +36,13 @@ function* watchGetSetById() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
+        // else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
+        //   isFunction(payload.onError) && payload.onError(res.data.message);
+        // }
       }
 
-    } catch (error) {
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
 
     }
   });

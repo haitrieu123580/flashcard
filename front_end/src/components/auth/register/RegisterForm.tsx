@@ -58,7 +58,7 @@ export function RegisterForm(props: any) {
                 })
                 // navigate(routerPaths.PROFILE);
             },
-            onError: (message: any) => {
+            onError: (message: string | undefined) => {
                 setOpen(true);
                 toast({
                     title: 'Register failed',

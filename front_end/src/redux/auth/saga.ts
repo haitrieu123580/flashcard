@@ -33,7 +33,7 @@ import {
 } from "./slice";
 
 function* watchLogin() {
-  yield takeLatest(loginAction.type, function* ({ payload }: PayloadAction<LoginPayload>): Generator<any, void, any> {
+  yield takeLatest(loginAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { onSuccess, onError, data } = payload;
     try {
       const res = yield call(LoginApi, data);
@@ -44,23 +44,15 @@ function* watchLogin() {
               data: res?.data?.data,
             })
           );
-          onSuccess && onSuccess(res?.data?.message);
+          isFunction(payload.onSuccess) && payload.onSuccess(res?.data?.message);
         }
-        else {
-          onError && onError(res?.data?.message);
-          yield put(
-            loginActionError()
-          );
-        }
+
       }
-      if (res.status === ErrorCode.BAD_REQUEST) {
-        onError && onError();
+    } catch (error: any) {
+      isFunction(payload.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(
         loginActionError()
-      }
-    } catch (error) {
-      onError && onError();
-      loginActionError()
-    } finally {
+      );
     }
   });
 }
@@ -98,7 +90,7 @@ function* watchGetProfile() {
 }
 
 function* watchRegister() {
-  yield takeLatest(registerAction.type, function* ({ payload }: any): Generator<any, void, any> {
+  yield takeLatest(registerAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
     const { onSuccess, onError, data } = payload;
     try {
       const res = yield call(SignupApi, data);
@@ -106,26 +98,13 @@ function* watchRegister() {
         if (res?.data?.statusCode == ApiCode.SUCCESS) {
           yield put(
             registerActionSuccess({
-              // data: res?.data?.data,
             })
           );
           onSuccess && onSuccess();
         }
-        else if (res?.data?.statusCode == ApiCode.FAILURE) {
-          onError && onError(res?.data?.message);
-          yield put(
-            registerActionError()
-          );
-        }
       }
-      if (res.status === ErrorCode.BAD_REQUEST) {
-        onError && onError(res?.data?.message);
-        yield put(
-          registerActionError()
-        );
-      }
-    } catch (error) {
-      onError && onError();
+    } catch (error: any) {
+      isFunction(onError) && onError(error?.response?.data?.message);
       yield put(
         registerActionError()
       );
@@ -183,7 +162,6 @@ function* watchLogout() {
     const { onSuccess, onError } = payload;
     try {
       const res = yield call(logoutApi);
-      console.log(res);
       if (res.status === ErrorCode.OK) {
         if (res?.data?.statusCode == ApiCode.SUCCESS) {
           yield put(
@@ -191,21 +169,21 @@ function* watchLogout() {
           );
           isFunction(onSuccess) && payload.onSuccess(res?.data?.data);
         }
-        else {
-          isFunction(onError) && payload.onError(res?.data?.message);
-          yield put(
-            logoutErrorsAction()
-          );
-        }
+        // else {
+        //   isFunction(onError) && payload.onError(res?.data?.message);
+        //   yield put(
+        //     logoutErrorsAction()
+        //   );
+        // }
       }
-      else {
-        isFunction(onError) && payload.onError();
-        yield put(
-          logoutErrorsAction()
-        );
-      }
-    } catch (error) {
-      isFunction(onError) && payload.onError();
+      // else {
+      //   isFunction(onError) && payload.onError();
+      //   yield put(
+      //     logoutErrorsAction()
+      //   );
+      // }
+    } catch (error: any) {
+      isFunction(payload.onError) && payload.onError(error?.response?.data?.message);
       // ! not allow to logout
       yield put(
         logoutErrorsAction()

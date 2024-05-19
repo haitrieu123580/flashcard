@@ -25,20 +25,9 @@ class UserRepo implements UserRepoInterface {
         return result;
     }
 
-    updateUserProfile = async (userId: string, userData: any): Promise<any> => {
-        const updatedUser = await this.userDataSource.findOne({
-            where: {
-                id: userId
-            }
-        })
-        if (updatedUser) {
-            updatedUser.username = userData?.username;
-            updatedUser.avatar = userData?.avatar;
-            updatedUser.updated_at = new Date();
-            const result = await this.userDataSource.save(updatedUser);
-            return result;
-        }
-        return false;
+    updateUserProfile = async (data: User): Promise<User | null> => {
+        data.updated_at = new Date();
+        return this.userDataSource.save(data);
     }
 
     storeToken = async (id: string, token: string): Promise<boolean> => {

@@ -22,6 +22,7 @@ import {
     AuthFailureError,
     NotFoundError,
     ForbiddenError,
+    BadRequestError,
 } from "@src/core/ApiError";
 import { Cards } from "@src/entity/Cards";
 
@@ -41,6 +42,9 @@ export class UserCardsService implements IUserCardsService {
     CreateCard = async (data: CreateCardDataRequest): Promise<Cards | null> => {
         const image = data.image;
         const setId = data.set_id;
+        if (!setId) {
+            throw new BadRequestError("Set id is required!");
+        }
         const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
 
         const cardData = {

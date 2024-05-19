@@ -77,11 +77,13 @@ const authSlice = createSlice({
     },
     logoutSuccessAction: (state) => {
       state.loggedIn = false;
+      state.isLoading = false;
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
     },
     logoutErrorsAction: (state) => {
-      state.loggedIn = true;
+      state.loggedIn = false;
+      state.isLoading = false;
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
     },
