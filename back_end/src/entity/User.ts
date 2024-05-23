@@ -2,6 +2,7 @@ import { Entity, Column, Unique, OneToOne, JoinColumn, OneToMany } from "typeorm
 import { BaseEntity } from "./BaseEntity"
 import { PasswordResetOtps } from "./PasswordResetOtps"
 import { Sets } from "./Sets"
+import { UserProgress } from "./UserProgress"
 import { Constants } from "../core/Constant"
 @Entity()
 export class User extends BaseEntity {
@@ -56,4 +57,7 @@ export class User extends BaseEntity {
     })
     @JoinColumn()
     sets: Sets[]
+
+    @OneToMany(() => UserProgress, progress => progress.user)
+    progress: UserProgress[];
 }

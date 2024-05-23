@@ -21,11 +21,14 @@ import {
 import { routerPaths } from "@/routes/path";
 import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
 import { shuffleArray } from "@/lib/utils";
+import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 
 const MultipleChoiceTestPage = () => {
     const { id } = useParams();
     const { examData, isLoading, result } = useSelector((state: any) => state.Test);
     // const [result, setResult] = useState<any>()
+    const [currentCard, setCurrentCard] = useState(0);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const form = useForm();
@@ -70,6 +73,13 @@ const MultipleChoiceTestPage = () => {
             }
         })
     }
+    const showCard = (index: number) => {
+        if (index >= examData?.data?.length || index < 0) {
+            return;
+        }
+        setCurrentCard(index);
+    }
+
     return (
         <div>
             {
@@ -86,39 +96,67 @@ const MultipleChoiceTestPage = () => {
                                         {
 
                                             Array.isArray(examData?.data)
-                                            && examData?.data?.map((question: any) => {
+                                            && examData?.data?.map((question: any, index: number) => {
                                                 return (
-                                                    <Card className="my-4 p-2">
-                                                        <CardContent className="">
-                                                            <CardTitle className="flex items-end gap-2 my-6">
-                                                                Question: {question.question}
-                                                            </CardTitle>
+                                                    <div key={index}>
+                                                        {currentCard === index
+                                                            && <>
+                                                                <Card className="my-4 p-2">
+                                                                    <CardContent className="">
+                                                                        <CardTitle className="flex items-end gap-2 my-6">
+                                                                            Question: {question.question}
+                                                                        </CardTitle>
 
-                                                            {
-                                                                <FormInput
-                                                                    control={form.control}
-                                                                    fieldName={question.id}
-                                                                    type={Constants.INPUT_TYPE.RADIO}
-                                                                    options={question?.answers?.map((answer: any) => { // Remove the unused 'index' variable
-                                                                        return {
-                                                                            key: answer,
-                                                                            label: answer,
-                                                                        };
-                                                                    })}
-                                                                />
-                                                            }
-                                                        </CardContent>
-                                                    </Card>
+                                                                        {
+                                                                            <FormInput
+                                                                                control={form.control}
+                                                                                fieldName={question.id}
+                                                                                type={Constants.INPUT_TYPE.RADIO}
+                                                                                options={question?.answers?.map((answer: any) => { // Remove the unused 'index' variable
+                                                                                    return {
+                                                                                        key: answer,
+                                                                                        label: answer,
+                                                                                    };
+                                                                                })}
+                                                                            />
+                                                                        }
+                                                                    </CardContent>
+                                                                    <CardFooter className="flex justify-end gap-4">
+                                                                        <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
+                                                                            <Button variant={"default"} onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                showCard(index - 1)
+
+                                                                            }}>Previous question</Button>
+                                                                            {/* <span>{`${currentCard + 1}/${examData?.data?.length}`}</span> */}
+
+                                                                            {
+                                                                                (index !== examData?.data.length - 1)
+                                                                                    ?
+                                                                                    <Button variant={"default"} onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        showCard(index + 1)
+                                                                                    }}>
+                                                                                        Next question
+                                                                                    </Button>
+                                                                                    : <Button
+                                                                                        variant={"destructive"}
+                                                                                        type="submit"
+                                                                                    >
+                                                                                        Submit
+                                                                                    </Button>
+                                                                            }
+                                                                        </div>
+                                                                    </CardFooter>
+                                                                </Card>
+                                                            </>
+                                                        }
+                                                    </div>
+
+
                                                 );
                                             })
                                         }
-                                        <div className="flex justify-end">
-                                            <Button
-                                                type="submit"
-                                            >
-                                                Submit
-                                            </Button>
-                                        </div>
                                     </form>
                                 </Form>
                                 : null

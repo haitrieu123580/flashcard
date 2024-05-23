@@ -4,10 +4,12 @@ import { AppDataSource } from "../../data-source"
 import { Service } from "typedi";
 import { Sets } from "@entity/Sets";
 import { Cards } from '@src/entity/Cards';
+import { UserProgress } from '@src/entity/UserProgress';
 @Service()
 export class UserSetsRepo implements IUserSetsRepo {
     private userDataSource = AppDataSource.getRepository(User)
     private setDataSource = AppDataSource.getRepository(Sets)
+    private progressDataSource = AppDataSource.getRepository(UserProgress)
     async getUserSetsList(userId: string): Promise<[Sets[], number]> {
         return this.setDataSource.findAndCount({
             where: {
@@ -38,6 +40,30 @@ export class UserSetsRepo implements IUserSetsRepo {
             await manager.save(set);
             await manager.save(copiedCard);
         });
+    }
+
+    async getUserProgress(userId: string, setId: string) {
+        const progress = await this.progressDataSource.find({
+            relations: ['cards'],
+            where: {
+                user: {
+                    id: userId,
+                },
+                set: {
+                    id: setId
+                }
+            }
+        })
+
+
+        return progress.map((p: any) => ({
+            flashcardId: p.flashcard.id,
+            term: p.flashcard.term,
+            definition: p.flashcard.definition,
+            isKnown: p.isKnown,
+            lastReviewedAt: p.lastReviewedAt,
+            reviewCount: p.reviewCount
+        }));
     }
 }
 
