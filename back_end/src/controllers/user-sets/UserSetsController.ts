@@ -70,4 +70,16 @@ export class UserSetsController {
     deleteMySet = async (req: Request, res: Response) => {
         await this.userSetsService.deleteUserSet(req, res);
     }
+
+    requestToPublicSet = async (req: any, res: Response) => {
+        const data = {
+            user: req.user,
+            setId: req.body.setId
+        }
+        const response = await this.userSetsService.requestToPublicSet(data);
+        if (!response) {
+            return new FailureMsgResponse('Request to public set failed').send(res);
+        }
+        return new SuccessMsgResponse('Request to public set successfully').send(res);
+    }
 }

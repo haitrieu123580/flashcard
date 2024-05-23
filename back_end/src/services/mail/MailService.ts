@@ -15,12 +15,12 @@ class EmailService {
             }
         });
     }
-    sendMail = async (email: string, subject: string, content: string) => {
+    sendMail = async (email: string, subject: string, content: any) => {
         let mailOptions = {
             from: process.env.SMTP_EMAIL,
             to: email,
             subject: subject,
-            text: content
+            text: content,
         };
         this.transporter.sendMail(mailOptions, function (error: any, info: any) {
             if (error) {
