@@ -40,3 +40,10 @@ export type ResetPasswordRequest = {
     password: string,
     otp: string,
 }
+
+export type UserJWTData = {
+    id: string,
+    email: string,
+    username: string,
+    role: string,
+}

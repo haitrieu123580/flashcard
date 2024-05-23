@@ -25,9 +25,6 @@ let options: DataSourceOptions & SeederOptions = {
     logging: false,
     subscribers: [],
     seeds: [MainSeeder],
-    ssl: {
-        rejectUnauthorized: false,
-    }
 
 }
 if (env === 'production' || env === 'delopment') {

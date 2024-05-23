@@ -2,7 +2,11 @@ import { UpdateSetRequest } from "@src/dto/set";
 import { Request, Response } from "express";
 import { SetsListResponse } from "@src/dto/set/SetsListResponse";
 import { Sets } from "@src/entity/Sets";
-import { CopyCardToSetRequest, QuickAddCardToSetRequest } from "@src/dto/uset-sets";
+import {
+    CopyCardToSetRequest,
+    QuickAddCardToSetRequest,
+    RequestToApproveSet
+} from "@src/dto/uset-sets";
 export interface IUserSetsService {
 
     getUserSetsList: (userId: string) => Promise<SetsListResponse | null>
@@ -17,4 +21,5 @@ export interface IUserSetsService {
 
     deleteUserSet: (req: Request, res: Response) => Promise<any>
 
+    requestToPublicSet(data: RequestToApproveSet): Promise<any>
 }

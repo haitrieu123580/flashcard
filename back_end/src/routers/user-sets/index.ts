@@ -25,5 +25,5 @@ router.put("/:id", [isValidKey, verifyToken, UploadFile.any()], AsyncHandler(con
 
 router.delete("/:id", [isValidKey, verifyToken], controller.deleteMySet)
 
-
+router.post("/request-to-approve-set", [isValidKey, verifyToken], AsyncHandler(controller.requestToPublicSet))
 export = router

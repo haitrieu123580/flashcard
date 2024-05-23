@@ -3,6 +3,7 @@ import { BaseEntity } from "./BaseEntity"
 import { User } from "./User"
 import { Cards } from "./Cards"
 import { Questions } from "./Questions"
+import { Constants } from "@src/core/Constant"
 @Entity()
 export class Sets extends BaseEntity {
 
@@ -28,12 +29,11 @@ export class Sets extends BaseEntity {
     })
     is_public: boolean;
 
-    // todo: change set -> sets
-    // @ManyToMany(() => Cards, {
-    //     onDelete: "CASCADE"
-    // })
-    // @JoinTable()
-    // cards: Cards[];
+    @Column({
+        nullable: true,
+    })
+    status: string;
+
     @OneToMany(() => Cards, cards => cards.set, {
         onDelete: "SET NULL"
     })

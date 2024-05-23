@@ -155,7 +155,7 @@ class VocabularySetService implements IVocabularySetService {
                 : set_image_url ? set_image_url.Location : updateSet.image,
 
         };
-        return this.setRepo.edit_set_by_id(set);
+        return this.setRepo.edit_set(set);
 
     }
 }

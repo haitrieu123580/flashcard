@@ -1,6 +1,7 @@
 import { Sets } from "@src/entity/Sets";
 import { CreateNewSetData, createNewCardData } from "@src/dto/set";
 import { Cards } from "@src/entity/Cards";
+import { Constants } from "@src/core/Constant";
 
 export interface IVocabularySetRepo {
 
@@ -10,9 +11,11 @@ export interface IVocabularySetRepo {
 
     get_set_by_id(setId: string): Promise<Sets | null>;
 
-    edit_set_by_id(set: Sets): Promise<Sets>;
+    edit_set(set: Sets): Promise<Sets>;
 
     deleteSetById(setId: string): Promise<any>;
 
-    createSet(set: CreateNewSetData): Promise<any>;
+    createSet(set: CreateNewSetData | Sets): Promise<Sets | null>;
+
+    getSetsByStatus(status: string): Promise<[Sets[], number]>;
 }

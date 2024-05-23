@@ -6,6 +6,7 @@ import { Cards } from "@src/entity/Cards";
 import { User } from "@src/entity/User";
 import { ILike } from "typeorm"
 import { CreateNewSetData, createNewCardData } from "@src/dto/set";
+import { Constants } from "@src/core/Constant";
 @Service()
 export class VocabularySetRepo implements IVocabularySetRepo {
     private setDataSource = AppDataSource.getRepository(Sets)
@@ -77,7 +78,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user", "questions"] });
     }
 
-    edit_set_by_id = async (set: Sets): Promise<Sets> => {
+    edit_set = async (set: Sets): Promise<Sets> => {
         set.updated_at = new Date();
         return this.setDataSource.save(set);
     }
@@ -88,8 +89,16 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         })
     }
 
-    createSet = (set: CreateNewSetData): Promise<any> => {
+    createSet = (set: CreateNewSetData | Sets): Promise<Sets | null> => {
         return this.setDataSource.save(set);
         // return result;
+    }
+
+    getSetsByStatus(status: string): Promise<[Sets[], number]> {
+        return this.setDataSource.findAndCount({
+            where: {
+                status: status,
+            }
+        });
     }
 }

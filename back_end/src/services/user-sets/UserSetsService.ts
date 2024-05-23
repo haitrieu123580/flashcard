@@ -16,7 +16,6 @@ import { IVocabularyCardRepo } from "@src/repositories/vocabulary-card/IVocabula
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
 import { S3Service } from "../s3/S3Service";
-import { CreateNewSetData, UpdateSetRequest } from "@src/dto/set";
 import {
     NotFoundError,
     ApiError,
@@ -26,12 +25,14 @@ import {
     AuthFailureError,
     ForbiddenError,
 } from '@src/core/ApiError';
+import { CreateNewSetData, UpdateSetRequest, } from "@src/dto/set";
 import {
     SetsListResponse
     , SetsServiceResponse
 } from "@src/dto/set/SetsListResponse";
 import { Sets } from "@src/entity/Sets";
-import { CopyCardToSetRequest, QuickAddCardToSetRequest } from "@src/dto/uset-sets";
+import { CopyCardToSetRequest, QuickAddCardToSetRequest, RequestToApproveSet } from "@src/dto/uset-sets";
+import { Constants } from "@src/core/Constant";
 @Service()
 export class UserSetsService implements IUserSetsService {
     private userSetsRepo: IUserSetsRepo;
@@ -158,7 +159,7 @@ export class UserSetsService implements IUserSetsService {
                 ? null
                 : set_image_url ? set_image_url.Location : updateSet.image
         };
-        return this.setRepo.edit_set_by_id(set);
+        return this.setRepo.edit_set(set);
     }
 
     deleteUserSet = async (req: any, res: any): Promise<any> => {
@@ -179,5 +180,31 @@ export class UserSetsService implements IUserSetsService {
         } catch (error) {
 
         }
+    }
+
+    requestToPublicSet = async (data: RequestToApproveSet): Promise<any> => {
+        const user = await this.userRepo.getUserBy("id", data?.user?.id);
+        if (!user) {
+            throw new AuthFailureError("User not found");
+        }
+        const set = await this.setRepo.get_set_by_id(data.setId);
+        if (!set) {
+            throw new NotFoundError("Set not found");
+        }
+        if (set.user.id !== user.id) {
+            throw new ForbiddenError("You cannot approve this set");
+        }
+        if (set.status === Constants.SET_STATUS.APPROVED) {
+            throw new BadRequestError("Set is already approved");
+        }
+        if (set.status === Constants.SET_STATUS.REJECTED) {
+            throw new BadRequestError("Set is already rejected");
+        }
+        if (set.status === Constants.SET_STATUS.PENDING) {
+            throw new BadRequestError("Set is already pending");
+        }
+        set.status = Constants.SET_STATUS.PENDING;
+        const result = await this.setRepo.edit_set(set)
+        return result;
     }
 }

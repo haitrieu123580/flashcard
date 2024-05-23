@@ -1,21 +1,18 @@
+import { UserJWTData } from '../auth/index';
+
 export type CopyCardToSetRequest = {
-    user: {
-        id: string;
-        email: string;
-        role: string;
-        username: string;
-    }
+    user: UserJWTData
     setId: string;
     cardId: string;
 };
 
 export type QuickAddCardToSetRequest = {
-    user: {
-        id: string;
-        role: string;
-        email: string;
-        username: string;
-    } | undefined;
+    user: UserJWTData | undefined;
     cardId: string;
     set_name: string;
+}
+
+export type RequestToApproveSet = {
+    user: UserJWTData | undefined;
+    setId: string;
 }
