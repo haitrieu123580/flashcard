@@ -11,7 +11,7 @@ export class TestController {
 
     autoCreateTestSet = async (req: any, res: Response): Promise<any> => {
         const setId = req.body.setId;
-        const result = await this.testService.createTest(setId)
+        const result = await this.testService.createTest(setId, req.user.id)
         if (!result) {
             return new FailureMsgResponse("Create card failed!").send(res);
         }

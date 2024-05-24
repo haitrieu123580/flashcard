@@ -5,9 +5,11 @@ import { Sets } from "@src/entity/Sets";
 import { Tests } from '@entity/Tests';
 import { TestQuestion } from '@entity/TestQuestion';
 import { Cards } from '@entity/Cards';
+import { TestResult } from "@src/entity/TestResult";
 import {
     NotFoundError,
     BadRequestError,
+    AuthFailureError,
 } from '@src/core/ApiError';
 import { plainToClass, classToPlain } from 'class-transformer';
 function getRandomElements<T>(array: T[], numElements: number): T[] {
@@ -41,16 +43,17 @@ export class TestService {
     private cardRepo;
     private testRepo;
     private testQuestionRepo;
-
+    private testResultRepo;
     constructor() {
         this.userRepo = AppDataSource.getRepository(User);
         this.setRepo = AppDataSource.getRepository(Sets);
         this.cardRepo = AppDataSource.getRepository(Cards);
         this.testRepo = AppDataSource.getRepository(Tests);
         this.testQuestionRepo = AppDataSource.getRepository(TestQuestion);
+        this.testResultRepo = AppDataSource.getRepository(TestResult);
     }
 
-    createTest = async (setId: string): Promise<any> => {
+    createTest = async (setId: string, userId: string): Promise<any> => {
         if (!setId) throw new BadRequestError('Set ID is required');
 
         const flashcardSet = await this.setRepo.findOne({
@@ -60,17 +63,48 @@ export class TestService {
             relations: ['cards']
         });
         if (!flashcardSet) throw new NotFoundError('Flashcard set not found');
+        const user = await this.userRepo.findOne({
+            where: {
+                id: userId
+            }
+        })
+        if (!user) throw new AuthFailureError('Please login to do the test!');
+
+        const lastestTest = await this.testRepo.findOne({
+            where: {
+                set: {
+                    id: setId
+                },
+                user: {
+                    id: userId
+                },
+            },
+            order: {
+                completedAt: 'DESC'
+            },
+            relations: ['set', 'user', 'questions', "set.cards", "questions.card"],
+        });
+        let cardsToTest = flashcardSet.cards;
+        if (lastestTest) { // Nếu chưa có bài test nào thì tạo mới
+            cardsToTest = flashcardSet.cards.filter(card => {
+                //get cards that have not been done or done wrong before
+                if (!lastestTest?.set.cards.find(c => c.id === card.id) || !lastestTest.questions.find(q => q.card.id === card.id && !q.isCorrect)) return false;
+                return true;
+            });
+        }
+        console.log("cardsToTest", cardsToTest);
 
         const test = new Tests();
+        test.user = user;
         test.set = flashcardSet;
         test.questions = [];
-
         // Lấy các thẻ chưa làm hoặc làm sai trước đó
-        const cardsToTest = flashcardSet.cards.filter(card => {
-            // Logic để xác định thẻ chưa làm hoặc làm sai
-            // Cần cập nhật với logic thực tế của bạn
-            return true; // Giả sử tất cả các thẻ đều cần kiểm tra
-        });
+        // const cardsToTest = flashcardSet.cards.filter(card => {
+        //     // Logic để xác định thẻ chưa làm hoặc làm sai
+        //     // Cần cập nhật với logic thực tế của bạn
+        //     if (!lastestTest?.test.set.cards.find(c => c.id === card.id) || !lastestTest?.test.questions.find(q => q.card.id === card.id && !q.isCorrect)) return true;
+        //     return false;
+        // });
 
         for (const flashcard of cardsToTest) {
             const question = new TestQuestion();
@@ -101,16 +135,12 @@ export class TestService {
 
             // Lấy ngẫu nhiên 2 card khác trong cùng một bộ từ vựng
             const randomCards = getRandomElements(otherCards, 2);
-
-            // Sử dụng thuộc tính của card khác cho option3 và option4
             question.options = [
                 flashcard.term,
                 flashcard.define,
-                randomCards[0].term, // Option 3
-                randomCards[1].define // Option 4
+                randomCards[0].term,
+                randomCards[1].define
             ];
-            console.log(question);
-            // await this.testQuestionRepo.save(question);
             test.questions.push(question);
         }
 
@@ -121,13 +151,13 @@ export class TestService {
         });
         return {
             id: test.id,
+            name: flashcardSet.name,
             questions: test.questions.map(question => ({
                 id: question.id,
                 questionType: question.questionType,
                 questionText: question.questionText,
                 options: question.options
             })),
-            name: flashcardSet.name
         };
     }
 }

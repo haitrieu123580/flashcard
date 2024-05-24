@@ -12,6 +12,6 @@ const controller = new TestController();
 router.post("/auto-create-test-set", [isValidKey, verifyToken, isAdmin], AsyncHandler(controller.autoCreateTestSet));
 
 //api for creating test
-router.post('/', [isValidKey], AsyncHandler(controller.autoCreateTestSet));
+router.post('/', [isValidKey, verifyToken], AsyncHandler(controller.autoCreateTestSet));
 
 export default router;

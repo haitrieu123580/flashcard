@@ -3,18 +3,40 @@ import { Sets } from './Sets';
 import { TestQuestion } from './TestQuestion';
 import { TestResult } from './TestResult';
 import { BaseEntity } from './BaseEntity';
+import { User } from "./User";
 @Entity()
 export class Tests extends BaseEntity {
 
-    @ManyToOne(() => Sets, set => set.tests)
+    @ManyToOne(() => User, user => user.test, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn()
+    user: User;
+
+    @ManyToOne(() => Sets, set => set.tests, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn()
     set: Sets;
 
-    @OneToMany(() => TestQuestion, testQuestion => testQuestion.test)
+    @OneToMany(() => TestQuestion, testQuestion => testQuestion.test, {
+        onDelete: "SET NULL"
+    })
     @JoinColumn()
     questions: TestQuestion[];
 
-    @OneToMany(() => TestResult, testResult => testResult.test)
+    @Column({
+        nullable: true
+    })
+    score: number;
+
+
+    @Column({ type: 'timestamp', nullable: true })
+    completedAt: Date;
+
+    @OneToMany(() => TestResult, testResult => testResult.test, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn()
     results: TestResult[];
 }

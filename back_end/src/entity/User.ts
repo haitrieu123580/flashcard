@@ -2,10 +2,10 @@ import { Entity, Column, Unique, OneToOne, JoinColumn, OneToMany } from "typeorm
 import { BaseEntity } from "./BaseEntity"
 import { PasswordResetOtps } from "./PasswordResetOtps"
 import { Sets } from "./Sets"
-import { UserProgress } from "./UserProgress"
 import { Constants } from "../core/Constant"
 import { TestResult } from "./TestResult"
-import { UserAnswer } from "./UserAnswer"
+import { Tests } from "./Tests"
+import { UserProgress } from "./UserProgress"
 @Entity()
 export class User extends BaseEntity {
 
@@ -60,21 +60,15 @@ export class User extends BaseEntity {
     @JoinColumn()
     sets: Sets[]
 
-    @OneToMany(() => TestResult, testResult => testResult.user, {
+    @OneToMany(() => Tests, test => test.user, {
         onDelete: "SET NULL"
     })
     @JoinColumn()
-    testResults: TestResult[]
+    test: Tests[]
 
-    @OneToMany(() => UserProgress, progresses => progresses.set, {
+    @OneToMany(() => UserProgress, process => process.user, {
         onDelete: "SET NULL"
     })
     @JoinColumn()
-    progresses: UserProgress[];
-
-    @OneToMany(() => UserAnswer, answers => answers.user, {
-        onDelete: "SET NULL"
-    })
-    @JoinColumn()
-    answers: UserAnswer[]
+    progresses: UserProgress[]
 }

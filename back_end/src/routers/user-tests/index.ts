@@ -10,15 +10,8 @@ const router = Router();
 const controller = new UserTestController();
 
 //api for save user result
-router.post('/test-results', [], AsyncHandler(controller.saveTestResult));
+router.post('/test-results', [isValidKey, verifyToken], AsyncHandler(controller.saveTestResult));
 
 //api for get user progress
-router.get('/users/:userId/progress', async (req: Request, res: Response) => {
-    const { userId } = req.params;
-    try {
-        // const progressList = await getUserProgress(Number(userId));
-        // res.status(200).json(progressList);
-    } catch (error: any) {
-        res.status(400).json({ error: error.message });
-    }
-});
+router.get('/progress', [isValidKey, verifyToken], AsyncHandler(controller.getUserProgress));
+export = router

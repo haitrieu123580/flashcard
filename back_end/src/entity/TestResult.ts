@@ -2,14 +2,13 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColum
 import { User } from './User';
 import { Tests } from './Tests';
 import { BaseEntity } from './BaseEntity';
-import { TestResultDetail } from './TestResultDetail';
 
 @Entity()
 export class TestResult extends BaseEntity {
 
-    @ManyToOne(() => User, user => user.testResults)
-    @JoinColumn()
-    user: User;
+    // @ManyToOne(() => User, user => user.testResults)
+    // @JoinColumn()
+    // user: User;
 
     @ManyToOne(() => Tests, test => test.results)
     @JoinColumn()
@@ -20,7 +19,4 @@ export class TestResult extends BaseEntity {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     completedAt: Date;
-
-    @OneToMany(() => TestResultDetail, detail => detail.testResult)
-    details: TestResultDetail[];
 }

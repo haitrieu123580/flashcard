@@ -12,7 +12,6 @@ import { UserProgress } from "./entity/UserProgress"
 import { Tests } from "./entity/Tests"
 import { TestQuestion } from "./entity/TestQuestion"
 import { TestResult } from "./entity/TestResult"
-import { TestResultDetail } from "./entity/TestResultDetail"
 
 dotenv.config();
 const env = String(process.env.NODE_ENV);
@@ -33,7 +32,6 @@ let options: DataSourceOptions & SeederOptions = {
         Tests,
         TestQuestion,
         TestResult,
-        TestResultDetail
     ],
     // migrations: [`${__dirname}/**/migrations/*.{ts,js}`],
     synchronize: true,

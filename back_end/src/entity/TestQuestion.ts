@@ -2,12 +2,13 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 import { Tests } from './Tests';
 import { Cards } from './Cards';
 import { BaseEntity } from './BaseEntity';
-import { UserAnswer } from './UserAnswer';
 
 @Entity()
 export class TestQuestion extends BaseEntity {
 
-    @ManyToOne(() => Tests, test => test.id)
+    @ManyToOne(() => Tests, test => test.id, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn()
     test: Tests;
 
@@ -42,8 +43,9 @@ export class TestQuestion extends BaseEntity {
     })
     options: string[];
 
-
-    @ManyToOne(() => UserAnswer, answers => answers.id)
-    @JoinColumn()
-    answers: UserAnswer;
+    @Column({
+        nullable: true,
+        default: false,
+    })
+    isCorrect: boolean;
 }

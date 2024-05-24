@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique, OneToOne } from 'typeorm';
 import { User } from './User';
 import { Sets } from './Sets';
 import { BaseEntity } from './BaseEntity';
@@ -7,12 +7,24 @@ import { BaseEntity } from './BaseEntity';
 // @Unique(['user', 'sets'])
 export class UserProgress extends BaseEntity {
 
-    @ManyToOne(() => User, user => user.progresses)
+    @ManyToOne(() => User, user => user.progresses, {
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE"
+    })
     user: User;
 
-    @ManyToOne(() => Sets, set => set.progresses)
+    @ManyToOne(() => Sets, set => set.progresses, {
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE"
+    })
     set: Sets;
 
     @Column({ type: 'float', default: 0 })
     progress: number;
+
+    @Column({ type: 'float', default: 0 })
+    totalLearnedCards: number;
+
+    @Column({ type: 'float', default: 0 })
+    totalCards: number;
 }

@@ -17,7 +17,6 @@ import { UserProgress } from '@entity/UserProgress';
 import { Cards } from '@entity/Cards';
 import { User } from "@src/entity/User";
 import { Sets } from "@src/entity/Sets";
-import { TestResultDetail } from "@entity/TestResultDetail";
 @Service()
 export class UserTestService {
     private userRepo;
@@ -25,7 +24,6 @@ export class UserTestService {
     private cardRepo;
     private testRepo;
     private testQuestionRepo;
-    private testResultDetailRepo;
     private testResultRepo;
     private userProgressRepo;
     constructor() {
@@ -34,7 +32,6 @@ export class UserTestService {
         this.cardRepo = AppDataSource.getRepository(Cards);
         this.testRepo = AppDataSource.getRepository(Tests);
         this.testQuestionRepo = AppDataSource.getRepository(TestQuestion);
-        this.testResultDetailRepo = AppDataSource.getRepository(TestResultDetail);
         this.testResultRepo = AppDataSource.getRepository(TestResult);
         this.userProgressRepo = AppDataSource.getRepository(UserProgress);
     }
@@ -48,123 +45,74 @@ export class UserTestService {
                 }
             }
         );
-        const test = await this.testRepo.findOne({
+        if (!user) throw new AuthFailureError('User not found');
+        const test = await this.testRepo.findOneOrFail({
             where: {
                 id: testId
             },
-            relations: ['questions', 'set']
+            relations: ['questions', 'set', 'set.cards']
         });
+        if (!test) throw new NoDataError('Test not found');
 
-
-        if (!user || !test) throw new Error('User or Test not found');
-
-        const testResult = new TestResult();
-        testResult.user = user;
-        testResult.test = test;
-        testResult.score = 0;
-        testResult.details = [];
-
-        const correctCardIds = new Set<string>();
-
+        let score = 0;
         for (const answer of answers) {
             const question = await this.testQuestionRepo.findOne({
                 where: {
                     id: answer.questionId
                 }
-            })
+            });
+
             if (!question) continue;
-
-            const isCorrect = question.correctAnswer === answer.answer;
-
-            const detail = new TestResultDetail();
-            detail.testResult = testResult;
-            detail.question = question;
-            detail.isCorrect = isCorrect;
-            await this.testResultDetailRepo.save(detail);
-            testResult.details.push(detail);
-
-            if (isCorrect) {
-                correctCardIds.add(question.card.id);
-                testResult.score++;
-            }
+            question.isCorrect = question.correctAnswer == answer.answer;
+            score += question.isCorrect ? 1 : 0;
+            await this.testQuestionRepo.save(question);
+            // score += question.correctAnswer == answer.answer ? 1 : 0;
         }
-
-        await this.testResultRepo.save(testResult);
-
-        const flashcardSet = test.set;
-        const totalCards = flashcardSet.cards.length;
-
-        const correctCardsCount = await this.testResultDetailRepo
-            .createQueryBuilder('detail')
-            .leftJoin('detail.testResult', 'testResult')
-            .leftJoin('testResult.tests', 'tests')
-            .leftJoin('test.sets', 'sets')
-            .where('testResult.userId = :userId', { userId })
-            .andWhere('flashcardSet.id = :setId', { setId: flashcardSet.id })
-            .andWhere('detail.isCorrect = true')
-            .select('detail.questionId')
-            .distinct(true)
-            .getCount();
-
-        const progress = (correctCardsCount / totalCards) * 100;
-
-        let userProgress = await this.userProgressRepo.findOne({
+        test.score = score;
+        test.completedAt = new Date();
+        const userProgress = await this.userProgressRepo.findOne({
             where: {
-                user: user,
-                set: flashcardSet
+                user: { id: user.id },
+                set: { id: test.set.id }
             }
         });
         if (!userProgress) {
-            userProgress = new UserProgress();
-            userProgress.user = user;
-            userProgress.set = flashcardSet;
+            const newUserProgress = new UserProgress();
+            newUserProgress.user = user;
+            newUserProgress.set = test.set;
+            newUserProgress.progress = score;
+            newUserProgress.totalCards = test.set.cards.length;
+            newUserProgress.totalLearnedCards = score;
+            await this.userProgressRepo.save(newUserProgress);
+        } else {
+            userProgress.progress = userProgress.progress + score;
+            userProgress.totalLearnedCards = userProgress.totalLearnedCards + score;
+            userProgress.totalCards = test.set.cards.length;
+            await this.userProgressRepo.save(userProgress);
         }
-        userProgress.progress = progress;
-
-        await this.userProgressRepo.save(userProgress);
-        return testResult;
+        const response = await this.testRepo.save(test);
+        return {
+            ...response,
+            userProgress: {
+                totalLearnCards: userProgress?.totalLearnedCards || score,
+                totalCards: test.set.cards.length,
+            }
+        }
     }
 
-
-    // async function getUserProgress(userId: number) {
-    //     const flashcardSetRepository = getRepository(FlashcardSet);
-    //     const testResultDetailRepository = getRepository(TestResultDetail);
-
-    //     // Lấy tất cả bộ flashcard mà người dùng đã học
-    //     const flashcardSets = await flashcardSetRepository
-    //         .createQueryBuilder('flashcardSet')
-    //         .leftJoinAndSelect('flashcardSet.flashcards', 'flashcard')
-    //         .leftJoin('flashcardSet.tests', 'test')
-    //         .leftJoin('test.results', 'testResult')
-    //         .where('testResult.userId = :userId', { userId })
-    //         .getMany();
-
-    //     // Tạo danh sách tiến độ học
-    //     const progressList = [];
-    //     for (const flashcardSet of flashcardSets) {
-    //         const totalCards = flashcardSet.flashcards.length;
-
-    //         const correctCards = await testResultDetailRepository
-    //             .createQueryBuilder('detail')
-    //             .leftJoin('detail.testResult', 'testResult')
-    //             .leftJoin('testResult.test', 'test')
-    //             .leftJoin('test.flashcardSet', 'flashcardSet')
-    //             .where('testResult.userId = :userId', { userId })
-    //             .andWhere('flashcardSet.id = :setId', { setId: flashcardSet.id })
-    //             .andWhere('detail.isCorrect = true')
-    //             .select('detail.questionId')
-    //             .distinct(true)
-    //             .getCount();
-
-    //         const progress = (correctCards / totalCards) * 100;
-    //         progressList.push({
-    //             setId: flashcardSet.id,
-    //             setTitle: flashcardSet.title,
-    //             progress,
-    //         });
-    //     }
-
-    //     return progressList;
-    // }
-
+    getUserProgress = async (userId: string): Promise<any> => {
+        const user = await this.userRepo.findOne({
+            where: {
+                id: userId
+            }
+        });
+        if (!user) throw new AuthFailureError('User not found');
+        const userProgress = await this.userProgressRepo.find({
+            where: {
+                user: { id: user.id }
+            },
+            relations: ['set']
+        });
+        return userProgress;
+    }
 }
