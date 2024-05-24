@@ -4,6 +4,10 @@ import { User } from "./User"
 import { Cards } from "./Cards"
 import { Questions } from "./Questions"
 import { Constants } from "@src/core/Constant"
+import { Tests } from "./Tests"
+import { UserProgress } from "./UserProgress"
+import { Exclude, Expose, Type } from 'class-transformer';
+
 @Entity()
 export class Sets extends BaseEntity {
 
@@ -34,6 +38,12 @@ export class Sets extends BaseEntity {
     })
     status: string;
 
+    @Column({
+        nullable: true,
+        default: 1,
+    })
+    level: number;
+
     @OneToMany(() => Cards, cards => cards.set, {
         onDelete: "SET NULL"
     })
@@ -51,4 +61,17 @@ export class Sets extends BaseEntity {
     })
     @JoinColumn()
     questions: Questions[];
+
+
+    @OneToMany(() => Tests, tests => tests.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    tests: Tests[];
+
+    @OneToMany(() => UserProgress, progresses => progresses.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    progresses: UserProgress[];
 }

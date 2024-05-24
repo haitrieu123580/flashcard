@@ -1,33 +1,18 @@
-import { Entity, Column, ManyToOne, JoinColumn } from "typeorm"
-import { BaseEntity } from "./BaseEntity"
-import { User } from "./User"
-import { Cards } from "./Cards"
-import { Sets } from "./Sets";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm';
+import { User } from './User';
+import { Sets } from './Sets';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
+// @Unique(['user', 'sets'])
 export class UserProgress extends BaseEntity {
 
-    @ManyToOne(() => User, user => user.progress, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn()
+    @ManyToOne(() => User, user => user.progresses)
     user: User;
 
-    @ManyToOne(() => Cards, card => card.progress, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn()
-    card: Cards;
-
-    @ManyToOne(() => Sets, set => set.id)
+    @ManyToOne(() => Sets, set => set.progresses)
     set: Sets;
 
-    @Column({ default: false })
-    isKnown: boolean;
-
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    lastReviewedAt: Date;
-
-    @Column({ default: 0 })
-    reviewCount: number;
+    @Column({ type: 'float', default: 0 })
+    progress: number;
 }

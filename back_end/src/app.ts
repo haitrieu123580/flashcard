@@ -32,6 +32,7 @@ import questionRouter from '@routers/questions/index';
 import multipleChoice from '@routers/multiple-choice-test/index'
 import userSetsRouter from '@routers/user-sets/index';
 import userCardsRouter from '@routers/user-cards/index';
+import testRouter from "@routers/test-sets/index";
 import {
     NotFoundError,
     ApiError,
@@ -95,6 +96,7 @@ app.use('/api/question', questionRouter)
 app.use('/api/multiple-choice-test', multipleChoice)
 app.use('/api/user-sets', userSetsRouter)
 app.use('/api/user-cards', userCardsRouter)
+app.use('/api/tests', testRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(new NotFoundError()));

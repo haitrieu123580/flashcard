@@ -42,9 +42,6 @@ export class Cards extends BaseEntity {
     @ManyToOne(() => Sets, set => set.cards, {
         onDelete: "CASCADE"
     })
-    @JoinTable()
+    @JoinColumn()
     set: Sets;
-
-    @OneToMany(() => UserProgress, progress => progress.card)
-    progress: UserProgress[];
 }

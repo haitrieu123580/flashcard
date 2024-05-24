@@ -4,6 +4,8 @@ import { PasswordResetOtps } from "./PasswordResetOtps"
 import { Sets } from "./Sets"
 import { UserProgress } from "./UserProgress"
 import { Constants } from "../core/Constant"
+import { TestResult } from "./TestResult"
+import { UserAnswer } from "./UserAnswer"
 @Entity()
 export class User extends BaseEntity {
 
@@ -58,6 +60,21 @@ export class User extends BaseEntity {
     @JoinColumn()
     sets: Sets[]
 
-    @OneToMany(() => UserProgress, progress => progress.user)
-    progress: UserProgress[];
+    @OneToMany(() => TestResult, testResult => testResult.user, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    testResults: TestResult[]
+
+    @OneToMany(() => UserProgress, progresses => progresses.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    progresses: UserProgress[];
+
+    @OneToMany(() => UserAnswer, answers => answers.user, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    answers: UserAnswer[]
 }
