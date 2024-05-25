@@ -16,7 +16,6 @@ export class TestController {
             return new FailureMsgResponse("Create card failed!").send(res);
         }
         else {
-            console.log(result);
             return new SuccessResponse("Create card successfully!", result).send(res);
         }
     }

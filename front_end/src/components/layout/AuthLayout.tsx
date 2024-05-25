@@ -37,7 +37,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     }, [])
 
     return (
-        <div className='bg-sky-50 dark:bg-background'>
+        <div className='bg-gray-50 dark:bg-background'>
             <div className='sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
                 <MaxWidthWrapper>
                     <MainHeaderMobile />

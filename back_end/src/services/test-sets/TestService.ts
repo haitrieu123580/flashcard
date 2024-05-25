@@ -70,41 +70,32 @@ export class TestService {
         })
         if (!user) throw new AuthFailureError('Please login to do the test!');
 
-        const lastestTest = await this.testRepo.findOne({
-            where: {
-                set: {
-                    id: setId
-                },
-                user: {
-                    id: userId
-                },
-            },
-            order: {
-                completedAt: 'DESC'
-            },
-            relations: ['set', 'user', 'questions', "set.cards", "questions.card"],
-        });
-        let cardsToTest = flashcardSet.cards;
-        if (lastestTest) { // Nếu chưa có bài test nào thì tạo mới
-            cardsToTest = flashcardSet.cards.filter(card => {
-                //get cards that have not been done or done wrong before
-                if (!lastestTest?.set.cards.find(c => c.id === card.id) || !lastestTest.questions.find(q => q.card.id === card.id && !q.isCorrect)) return false;
-                return true;
-            });
-        }
-        console.log("cardsToTest", cardsToTest);
-
+        // const lastestTest = await this.testRepo.findOne({
+        //     where: {
+        //         set: {
+        //             id: setId
+        //         },
+        //         user: {
+        //             id: userId
+        //         },
+        //     },
+        //     order: {
+        //         completedAt: 'DESC'
+        //     },
+        //     relations: ['set', 'user', 'questions', "set.cards", "questions.card"],
+        // });
+        let cardsToTest = getRandomElements(flashcardSet.cards, 10);
+        // if (lastestTest) { // Nếu chưa có bài test nào thì tạo mới
+        //     cardsToTest = flashcardSet.cards.filter(card => {
+        //         //get cards that have not been done or done wrong before
+        //         if (!lastestTest?.set.cards.find(c => c.id === card.id) || !lastestTest.questions.find(q => q.card.id === card.id && !q.isCorrect)) return false;
+        //         return true;
+        //     });
+        // }
         const test = new Tests();
         test.user = user;
         test.set = flashcardSet;
         test.questions = [];
-        // Lấy các thẻ chưa làm hoặc làm sai trước đó
-        // const cardsToTest = flashcardSet.cards.filter(card => {
-        //     // Logic để xác định thẻ chưa làm hoặc làm sai
-        //     // Cần cập nhật với logic thực tế của bạn
-        //     if (!lastestTest?.test.set.cards.find(c => c.id === card.id) || !lastestTest?.test.questions.find(q => q.card.id === card.id && !q.isCorrect)) return true;
-        //     return false;
-        // });
 
         for (const flashcard of cardsToTest) {
             const question = new TestQuestion();
@@ -113,10 +104,11 @@ export class TestService {
 
             // Lấy danh sách các card khác trong cùng một bộ từ vựng
             const otherCards = flashcardSet.cards.filter(card => card.id !== flashcard.id);
+            const randomCards = getRandomElements(otherCards, 3);
 
             if (flashcard.image) {
                 question.questionType = 'image';
-                question.questionText = flashcard.image || "oke";
+                question.questionText = flashcard.image;
                 question.correctAnswer = flashcard.term;
             } else {
                 // Randomly decide the type of question: term or definition
@@ -126,21 +118,24 @@ export class TestService {
                     question.questionType = 'term';
                     question.questionText = `What is the definition of ${flashcard.term}?`;
                     question.correctAnswer = flashcard.define;
+                    question.options = [
+                        flashcard.define,
+                        randomCards[0].define,
+                        randomCards[2].define,
+                        randomCards[1].define
+                    ];
                 } else {
                     question.questionType = 'definition';
                     question.questionText = `What is the term for the definition: ${flashcard.define}?`;
                     question.correctAnswer = flashcard.term;
+                    question.options = [
+                        flashcard.term,
+                        randomCards[0].term,
+                        randomCards[1].term,
+                        randomCards[2].term
+                    ];
                 }
             }
-
-            // Lấy ngẫu nhiên 2 card khác trong cùng một bộ từ vựng
-            const randomCards = getRandomElements(otherCards, 2);
-            question.options = [
-                flashcard.term,
-                flashcard.define,
-                randomCards[0].term,
-                randomCards[1].define
-            ];
             test.questions.push(question);
         }
 
@@ -156,7 +151,8 @@ export class TestService {
                 id: question.id,
                 questionType: question.questionType,
                 questionText: question.questionText,
-                options: question.options
+                options: question.options,
+                correctAnswer: question.correctAnswer
             })),
         };
     }

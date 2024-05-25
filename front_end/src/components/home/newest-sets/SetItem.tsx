@@ -22,7 +22,7 @@ const SetItem = (props: any) => {
     } = props;
     const { name, description, totalCards, created_by, created_at, image, id } = data || {};
     return (
-        <Card className="group overflow-hidden " >
+        <Card className="group overflow-hidden" >
             <CardHeader>
 
                 <div className="grid grid-cols-3 gap-2">

@@ -16,7 +16,7 @@ import {
 } from "@/redux/auth/slice"
 import { Link, useNavigate } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
-import { User } from "lucide-react"
+import { User, History, Percent } from "lucide-react"
 
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
@@ -61,8 +61,8 @@ const UserPopover = () => {
                             className="w-full grid grid-cols-2 items- gap-4"
                             variant={"ghost"}
                         >
-                            <SettingsIcon />
-                            Settings
+                            <Percent />
+                            Progress
                         </Button>
                     </Link>
                     <Button

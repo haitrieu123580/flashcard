@@ -9,19 +9,25 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { replacePathWithId, speek } from "@/lib/utils";
 import { routerPaths } from "@/routes/path";
+import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
+import { Progress } from "@/components/ui/progress"
 import {
     getUserSetsListAction,
     addCardToMySetAction,
     getUserSetByIdAction,
 } from '@/redux/user-sets/slice';
-import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
+import {
+    getUserLearningSetProgressAction,
+    updateUserProgressAction
+} from "@/redux/user-progress/slice";
+
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [currentCard, setCurrentCard] = useState(0);
     // const { data, isLoading } = useSelector((state: any) => state.Set);
     const { mySets, set, isLoading } = useSelector((state: any) => state.UserSets)
-
+    const { progress } = useSelector((state: any) => state.UserProgress)
     useEffect(() => {
         if (id) {
             getSetById(id);
@@ -39,6 +45,14 @@ const LearnFlashcard = () => {
                 // },
                 // onError: (error: string) => {
                 // }
+            }
+        })
+        dispatch({
+            type: getUserLearningSetProgressAction.type,
+            payload: {
+                data: {
+                    setId: id
+                }
             }
         })
     }
@@ -59,7 +73,17 @@ const LearnFlashcard = () => {
         }
         setCurrentCard(index);
     }
-
+    const onFlip = (card: any) => {
+        dispatch({
+            type: updateUserProgressAction.type,
+            payload: {
+                data: {
+                    setId: id,
+                    cardId: card?.id
+                }
+            }
+        })
+    }
     return (
         <div>
             <LoadingPopup
@@ -77,7 +101,7 @@ const LearnFlashcard = () => {
                                 <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
                                     <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
 
-                                        <FlipCard key={index} term={card?.term} define={card?.define} card={card} />
+                                        <FlipCard key={index} onFlip={onFlip} card={card} />
                                     </div>
                                     <div className="col-span-1"></div>
                                     <div className="col-span-1 md:col-span-2">
@@ -112,10 +136,11 @@ const LearnFlashcard = () => {
                             Set is empty !!!
                         </div>
                     </CardContent>
-                    <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1">
 
-                    </CardFooter>
                 </>}
+                <div className="w-full flex justify-between">
+                    <Progress value={progress || 0} className="w-[90%]" /> <span>{progress}%</span>
+                </div>
             </Card>
             <div className="mt-10">
                 <NewsetSets />

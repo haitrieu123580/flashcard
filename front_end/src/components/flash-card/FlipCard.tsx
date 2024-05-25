@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import { Card, CardTitle } from '@/components/ui/card';
 import { Star, Volume1 } from 'lucide-react';
-import { cn, speek } from '@/lib/utils';
+import { cn, isFunction, speek } from '@/lib/utils';
 import { Button } from '../ui/button';
 import UserSetPopover from './user-set-popover/UsetSetPopover';
 
 const FlipCard = (props: any) => {
-    const { card } = props
+    const { card, onFlip } = props
     const [isFlipped, setIsFlipped] = React.useState(false)
     const flipCard = () => {
         setIsFlipped(!isFlipped)
+        isFunction(onFlip) && onFlip(card)
     }
 
     return (

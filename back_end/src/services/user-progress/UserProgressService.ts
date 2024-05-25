@@ -71,7 +71,7 @@ export class UserProgressService {
             .groupBy('userProgress.setId')
             .getRawMany();
         const progressPromises = progressBySet.map(async (data) => {
-            const set = await this.setRepo.findOneOrFail({ where: { id: data.setId }, relations: ['cards'] });
+            const set = await this.setRepo.findOneOrFail({ where: { id: data.setId }, relations: ['cards', "user"] });
             const [knowCards, knowCardsCount] = await this.userProgressRepo.findAndCount({
                 where: {
                     user: {
@@ -87,14 +87,18 @@ export class UserProgressService {
             const progressPercentage = (knowCardsCount / totalCards) * 100;
 
             return {
-                setId: set.id,
-                setName: set.name,
                 knowCardsCount,
                 totalCards,
-                progressPercentage,
+                progressPercentage: Math.floor(progressPercentage),
+                set: {
+                    ...set,
+                    mySet: set?.user?.id === userId
+                },
+                // mySet: set.user.id === userId
             };
         });
         const progress = await Promise.all(progressPromises);
+        progress.sort((a, b) => a.progressPercentage - b.progressPercentage);
         return progress;
     }
 
@@ -118,6 +122,15 @@ export class UserProgressService {
         })
         const totalCards = set.cards.length;
         const progressPercentage = (knowCardsCount / totalCards) * 100;
-        return progressPercentage;
+        let studiedCards = [];
+        if (knowCards.length > 0) {
+            const cardIds = knowCards.map(card => card.id);
+            studiedCards.push(...cardIds);
+        }
+        return {
+            studiedCards,
+            knowCardsCount,
+            progressPercentage: Math.floor(progressPercentage),
+        };
     }
 }   

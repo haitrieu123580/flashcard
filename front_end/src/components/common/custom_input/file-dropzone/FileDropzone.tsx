@@ -126,7 +126,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
                         {...field}
                         {...getInputProps()}
                         type={type}
-                        className={cn(" border-none ", classNameInput)}
+                        className={cn(" border-none bg-transparent", classNameInput)}
                         onKeyUp={onKeyUp}
                         maxLength={maxLength}
                         ref={fileRef}
