@@ -70,49 +70,49 @@ export class UserTestService {
         }
         test.score = score;
         test.completedAt = new Date();
-        const userProgress = await this.userProgressRepo.findOne({
-            where: {
-                user: { id: user.id },
-                set: { id: test.set.id }
-            }
-        });
-        if (!userProgress) {
-            const newUserProgress = new UserProgress();
-            newUserProgress.user = user;
-            newUserProgress.set = test.set;
-            newUserProgress.progress = score;
-            newUserProgress.totalCards = test.set.cards.length;
-            newUserProgress.totalLearnedCards = score;
-            await this.userProgressRepo.save(newUserProgress);
-        } else {
-            userProgress.progress = userProgress.progress + score;
-            userProgress.totalLearnedCards = userProgress.totalLearnedCards + score;
-            userProgress.totalCards = test.set.cards.length;
-            await this.userProgressRepo.save(userProgress);
-        }
+        // const userProgress = await this.userProgressRepo.findOne({
+        //     where: {
+        //         user: { id: user.id },
+        //         set: { id: test.set.id }
+        //     }
+        // });
+        // if (!userProgress) {
+        //     const newUserProgress = new UserProgress();
+        //     newUserProgress.user = user;
+        //     newUserProgress.set = test.set;
+        //     newUserProgress.progress = score;
+        //     newUserProgress.totalCards = test.set.cards.length;
+        //     newUserProgress.totalLearnedCards = score;
+        //     await this.userProgressRepo.save(newUserProgress);
+        // } else {
+        //     userProgress.progress = userProgress.progress + score;
+        //     userProgress.totalLearnedCards = userProgress.totalLearnedCards + score;
+        //     userProgress.totalCards = test.set.cards.length;
+        //     await this.userProgressRepo.save(userProgress);
+        // }
         const response = await this.testRepo.save(test);
         return {
             ...response,
-            userProgress: {
-                totalLearnCards: userProgress?.totalLearnedCards || score,
-                totalCards: test.set.cards.length,
-            }
+            // userProgress: {
+            //     totalLearnCards: userProgress?.totalLearnedCards || score,
+            //     totalCards: test.set.cards.length,
+            // }
         }
     }
 
-    getUserProgress = async (userId: string): Promise<any> => {
-        const user = await this.userRepo.findOne({
-            where: {
-                id: userId
-            }
-        });
-        if (!user) throw new AuthFailureError('User not found');
-        const userProgress = await this.userProgressRepo.find({
-            where: {
-                user: { id: user.id }
-            },
-            relations: ['set']
-        });
-        return userProgress;
-    }
+    // getUserProgress = async (userId: string): Promise<any> => {
+    //     const user = await this.userRepo.findOne({
+    //         where: {
+    //             id: userId
+    //         }
+    //     });
+    //     if (!user) throw new AuthFailureError('User not found');
+    //     const userProgress = await this.userProgressRepo.find({
+    //         where: {
+    //             user: { id: user.id }
+    //         },
+    //         relations: ['set']
+    //     });
+    //     return userProgress;
+    // }
 }

@@ -68,9 +68,9 @@ const LearnFlashcard = () => {
                 open={isLoading}
             />
             <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
-                <CardTitle className="flex gap-2 items-end my-2">
+                <CardTitle className="flex gap-2 items-end justify-between my-4">
                     <span>{data?.name}</span>
-                    <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
+                    <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /> Do the test</Link>
                 </CardTitle>
                 {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
                     return (

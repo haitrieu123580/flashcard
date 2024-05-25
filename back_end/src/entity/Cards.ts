@@ -44,4 +44,10 @@ export class Cards extends BaseEntity {
     })
     @JoinColumn()
     set: Sets;
+
+    @OneToMany(() => UserProgress, progress => progress.card, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    progresses: UserProgress[]
 }

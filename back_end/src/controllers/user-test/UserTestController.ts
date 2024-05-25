@@ -23,16 +23,16 @@ export class UserTestController {
         }
     }
 
-    getUserProgress = async (req: any, res: Response): Promise<any> => {
-        const data = {
-            user: req.user,
-        }
-        const result = await this.service.getUserProgress(data?.user?.id)
-        if (!result) {
-            return new FailureMsgResponse("Get user progress failed!").send(res);
-        }
-        else {
-            return new SuccessResponse("Get user progress successfully!", result).send(res);
-        }
-    }
+    // getUserProgress = async (req: any, res: Response): Promise<any> => {
+    //     const data = {
+    //         user: req.user,
+    //     }
+    //     const result = await this.service.getUserProgress(data?.user?.id)
+    //     if (!result) {
+    //         return new FailureMsgResponse("Get user progress failed!").send(res);
+    //     }
+    //     else {
+    //         return new SuccessResponse("Get user progress successfully!", result).send(res);
+    //     }
+    // }
 }

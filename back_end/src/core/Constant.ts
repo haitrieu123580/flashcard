@@ -33,4 +33,11 @@ export class Constants {
         MEDIUM: 2,
         HARD: 3,
     }
+
+
+    static CARD_STATUS = {
+        UNKNOWN: 'unknown',
+        KNOWN: 'known',
+        REVIEW: 'review',
+    }
 }

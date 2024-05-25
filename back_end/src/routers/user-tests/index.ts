@@ -13,5 +13,5 @@ const controller = new UserTestController();
 router.post('/test-results', [isValidKey, verifyToken], AsyncHandler(controller.saveTestResult));
 
 //api for get user progress
-router.get('/progress', [isValidKey, verifyToken], AsyncHandler(controller.getUserProgress));
+// router.get('/progress', [isValidKey, verifyToken], AsyncHandler(controller.getUserProgress));
 export = router

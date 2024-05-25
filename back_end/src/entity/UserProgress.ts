@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique, OneToOne } f
 import { User } from './User';
 import { Sets } from './Sets';
 import { BaseEntity } from './BaseEntity';
+import { Cards } from './Cards';
 
 @Entity()
 // @Unique(['user', 'sets'])
@@ -19,12 +20,29 @@ export class UserProgress extends BaseEntity {
     })
     set: Sets;
 
-    @Column({ type: 'float', default: 0 })
-    progress: number;
 
-    @Column({ type: 'float', default: 0 })
-    totalLearnedCards: number;
+    @ManyToOne(() => Cards, card => card.progresses, {
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE"
+    })
+    card: Cards;
 
-    @Column({ type: 'float', default: 0 })
-    totalCards: number;
+    @Column({
+        default: 'unknown'
+    })
+    status: 'unknown' | 'known' | 'review';
+
+    @Column(
+        { nullable: true }
+    )
+    lastReview: Date;
+
+    // @Column({ type: 'float', default: 0 })
+    // progress: number;
+
+    // @Column({ type: 'float', default: 0 })
+    // totalLearnedCards: number;
+
+    // @Column({ type: 'float', default: 0 })
+    // totalCards: number;
 }
