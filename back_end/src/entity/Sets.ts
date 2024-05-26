@@ -1,9 +1,12 @@
-import { Entity, Column, Generated, ManyToOne, OneToMany, JoinColumn, ManyToMany, JoinTable } from "typeorm"
+import { Entity, Column, Generated, ManyToOne, OneToMany, JoinColumn, ManyToMany, JoinTable, OneToOne } from "typeorm"
 import { BaseEntity } from "./BaseEntity"
 import { User } from "./User"
 import { Cards } from "./Cards"
 import { Questions } from "./Questions"
 import { Constants } from "@src/core/Constant"
+import { Tests } from "./Tests"
+import { UserProgress } from "./UserProgress"
+
 @Entity()
 export class Sets extends BaseEntity {
 
@@ -34,6 +37,12 @@ export class Sets extends BaseEntity {
     })
     status: string;
 
+    @Column({
+        nullable: true,
+        default: 1,
+    })
+    level: number;
+
     @OneToMany(() => Cards, cards => cards.set, {
         onDelete: "SET NULL"
     })
@@ -51,4 +60,18 @@ export class Sets extends BaseEntity {
     })
     @JoinColumn()
     questions: Questions[];
+
+
+    @OneToMany(() => Tests, tests => tests.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    tests: Tests[];
+
+
+    @OneToMany(() => UserProgress, process => process.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    progresses: UserProgress[]
 }

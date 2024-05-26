@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Generated } from "typeorm"
+import { PrimaryGeneratedColumn, Column, Generated, BeforeInsert, BeforeUpdate } from "typeorm"
 
 export class BaseEntity {
     @PrimaryGeneratedColumn("uuid")
@@ -35,4 +35,14 @@ export class BaseEntity {
         nullable: true
     })
     deleted_by: string;
+
+    // @BeforeInsert()
+    // logInsert() {
+    //     console.log('Inserting entity:', this);
+    // }
+
+    // @BeforeUpdate()
+    // logUpdate() {
+    //     console.log('Updating entity:', this);
+    // }
 }

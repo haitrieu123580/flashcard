@@ -14,25 +14,28 @@ import Constants from "@/lib/Constants";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { routerPaths } from "@/routes/path";
+import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
+import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 import {
     getTestBySetIdAction,
     submitAnswersAction
 } from "@/redux/test/slice";
-import { routerPaths } from "@/routes/path";
-import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
-import { shuffleArray } from "@/lib/utils";
-
+import { createQuestionsBySetIdAction } from "@/redux/user-tests/slice";
 const MultipleChoiceTestPage = () => {
     const { id } = useParams();
     const { examData, isLoading, result } = useSelector((state: any) => state.Test);
-    // const [result, setResult] = useState<any>()
+    const { data } = useSelector((state: any) => state.UserTest);
+    const [currentCard, setCurrentCard] = useState(0);
+    const [selectedAnswers, setSelectedAnswers] = useState({});
+    const [showResult, setShowResult] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const form = useForm();
 
     const getTestBySetId = (id: string) => {
         dispatch({
-            type: getTestBySetIdAction.type,
+            type: createQuestionsBySetIdAction.type,
             payload: {
                 id: id,
                 onSuccess: (data: any) => {
@@ -46,11 +49,12 @@ const MultipleChoiceTestPage = () => {
         if (id) {
             getTestBySetId(id)
         }
-    }, [id])
+    }, [id]);
+
     const handleSubmit = (data: any) => {
         const answers = Object.keys(data).map((key: any) => {
             return {
-                question_id: key,
+                questionId: key,
                 answer: data[key]
             }
         })
@@ -70,6 +74,22 @@ const MultipleChoiceTestPage = () => {
             }
         })
     }
+
+    const showCard = (index: number) => {
+        if (index >= data?.questions?.length || index < 0) {
+            return;
+        }
+        setCurrentCard(index);
+    }
+
+    const handleOptionChange = (questionId: any, value: any) => {
+        setSelectedAnswers((prev) => ({ ...prev, [questionId]: value }));
+    }
+
+    const isOptionSelected = (questionId: any) => {
+        return selectedAnswers.hasOwnProperty(questionId);
+    }
+
     return (
         <div>
             {
@@ -77,57 +97,86 @@ const MultipleChoiceTestPage = () => {
                     ? <div className="w-full h-full flex justify-center items-center"> <LoadingSpinner /></div>
                     : <>
                         <div>
-                            <CardTitle>{examData?.setName}</CardTitle>
+                            <CardTitle>{data?.name}</CardTitle>
                         </div>
                         {
-                            examData?.data ?
+                            data?.questions ?
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(handleSubmit)}>
                                         {
-
-                                            Array.isArray(examData?.data)
-                                            && examData?.data?.map((question: any) => {
+                                            Array.isArray(data?.questions)
+                                            && data?.questions?.map((question: any, index: number) => {
                                                 return (
-                                                    <Card className="my-4 p-2">
-                                                        <CardContent className="">
-                                                            <CardTitle className="flex items-end gap-2 my-6">
-                                                                Question: {question.question}
-                                                            </CardTitle>
+                                                    <div key={index}>
+                                                        {currentCard === index
+                                                            && <>
+                                                                <Card className="my-4 p-2">
+                                                                    <CardContent className="">
+                                                                        <CardTitle className="flex items-end gap-2 my-6">
+                                                                            Question {index + 1}: {question.questionText}
+                                                                        </CardTitle>
 
-                                                            {
-                                                                <FormInput
-                                                                    control={form.control}
-                                                                    fieldName={question.id}
-                                                                    type={Constants.INPUT_TYPE.RADIO}
-                                                                    options={question?.answers?.map((answer: any) => { // Remove the unused 'index' variable
-                                                                        return {
-                                                                            key: answer,
-                                                                            label: answer,
-                                                                        };
-                                                                    })}
-                                                                />
-                                                            }
-                                                        </CardContent>
-                                                    </Card>
+                                                                        {
+                                                                            <FormInput
+                                                                                control={form.control}
+                                                                                fieldName={question.id}
+                                                                                type={Constants.INPUT_TYPE.RADIO}
+                                                                                options={question?.options?.map((answer: any) => { // Remove the unused 'index' variable
+                                                                                    return {
+                                                                                        key: answer,
+                                                                                        label: answer,
+                                                                                    };
+                                                                                })}
+                                                                                onChangeSelect={(value: any) => {
+                                                                                    handleOptionChange(question.id, value);
+                                                                                    setShowResult(value === question.correctAnswer);
+                                                                                }}
+                                                                            // className={showResult ? "bg-green-200 dark:text-black" : ""}
+                                                                            />
+                                                                        }
+                                                                    </CardContent>
+
+                                                                    <CardFooter className="flex justify-end gap-4">
+                                                                        <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
+                                                                            {
+                                                                                isOptionSelected(question.id) ?
+                                                                                    <>
+                                                                                        {
+                                                                                            (index !== data?.questions.length - 1)
+                                                                                                ?
+                                                                                                <Button variant={"default"} onClick={(e) => {
+                                                                                                    e.preventDefault();
+                                                                                                    showCard(index + 1)
+                                                                                                }}>
+                                                                                                    Continue
+                                                                                                </Button>
+                                                                                                : <Button
+                                                                                                    variant={"default"}
+                                                                                                    type="submit"
+                                                                                                >
+                                                                                                    End
+                                                                                                </Button>
+                                                                                        }
+                                                                                    </>
+                                                                                    : null
+                                                                            }
+                                                                        </div>
+                                                                    </CardFooter>
+                                                                </Card>
+                                                            </>
+                                                        }
+                                                    </div>
                                                 );
                                             })
                                         }
-                                        <div className="flex justify-end">
-                                            <Button
-                                                type="submit"
-                                            >
-                                                Submit
-                                            </Button>
-                                        </div>
                                     </form>
                                 </Form>
                                 : null
                         }
                     </>
-
             }
             <>
-                {
+                {/* {
                     result &&
                     <div>
                         <CardTitle className="flex justify-between">
@@ -154,9 +203,9 @@ const MultipleChoiceTestPage = () => {
                                         </CardTitle>
                                         <CardContent className="grid grid-cols-2 gap-2">
                                             {
-                                                question?.answers?.map((answer: any) => {
+                                                question?.answers?.map((answer: any, idx: number) => {
                                                     return (
-                                                        <div className={
+                                                        <div key={idx} className={
                                                             cn(`col-span-1 rounded-sm border p-4 
                                                            ${question.user_answer === answer ? "bg-rose-200 dark:text-black" : ""} 
                                                           `, (String(question.correct_answer).toLowerCase() === String(answer).toLowerCase()) ? "bg-green-200 dark:text-black" : "")
@@ -177,10 +226,10 @@ const MultipleChoiceTestPage = () => {
                             })
                         }
                     </div >
-                }
+                } */}
             </>
         </div >
     )
 }
 
-export default MultipleChoiceTestPage
+export default MultipleChoiceTestPage;

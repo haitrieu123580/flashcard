@@ -9,6 +9,9 @@ import QuestionSaga from '@/redux/question/saga';
 import UserSetsSaga from "@/redux/user-sets/saga";
 import UserCardSaga from '@/redux/user-cards/saga';
 import UserProfileSaga from '@/redux/user-profile/saga';
+import UserProgressSaga from '@/redux/user-progress/saga';
+import UserTestSaga from '@/redux/user-tests/saga';
+
 export default function* rootSaga() {
     yield all([
         TestSaga(),
@@ -21,5 +24,7 @@ export default function* rootSaga() {
         UserSetsSaga(),
         UserCardSaga(),
         UserProfileSaga(),
+        UserProgressSaga(),
+        UserTestSaga(),
     ])
 }

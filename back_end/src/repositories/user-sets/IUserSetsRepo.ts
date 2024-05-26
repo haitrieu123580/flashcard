@@ -8,4 +8,6 @@ export interface IUserSetsRepo {
 
     addCardToSet(set: Sets, card: Cards): Promise<any>
 
+    getUserProgress(userId: string, setId: string): Promise<any>
+
 }

@@ -207,4 +207,8 @@ export class UserSetsService implements IUserSetsService {
         const result = await this.setRepo.edit_set(set)
         return result;
     }
+
+    getUserLearningProgress = async (userId: string, setId: string): Promise<any> => {
+
+    }
 }
