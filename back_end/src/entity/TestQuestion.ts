@@ -48,4 +48,9 @@ export class TestQuestion extends BaseEntity {
         default: false,
     })
     isCorrect: boolean;
+
+    @Column({
+        nullable: true,
+    })
+    userAnswer: string;
 }
