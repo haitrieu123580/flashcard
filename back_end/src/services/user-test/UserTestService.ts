@@ -111,9 +111,22 @@ export class UserTestService {
             order: {
                 completedAt: 'DESC' // latest test first
             },
-            take: 5,
+            // take: ,
             relations: ['questions']
         });
+
+        let totalCorrectPercent = 0;
+        let completedTests = 0;
+        tests.forEach((test: Tests) => {
+            if (test.questions.length === 0) {
+                return;
+            }
+            const correctAnswers = test.questions.filter((question: TestQuestion) => question.isCorrect);
+            const correctPercent = (correctAnswers.length / test.questions.length) * 100;
+            totalCorrectPercent += correctPercent;
+            completedTests++;
+        });
+
         return {
             tests: tests.map((test: Tests) => {
                 return {
@@ -121,7 +134,8 @@ export class UserTestService {
                     questions: test.questions.length
                 }
             }),
-            count: testCount
+            count: testCount,
+            totalCorrectPercent: completedTests > 0 ? totalCorrectPercent / completedTests : 0
         };
     }
 

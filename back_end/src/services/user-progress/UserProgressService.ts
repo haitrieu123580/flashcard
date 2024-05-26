@@ -33,6 +33,21 @@ export class UserProgressService {
         if (!card) { throw new NotFoundError('Card not found'); }
         const user = await this.userRepo.findOneOrFail({ where: { id: userId } });
         if (!user) { throw new NotFoundError('User not found'); }
+        // check if the user has already reviewed the card
+        const existingProgress = await this.userProgressRepo.findOne({
+            where: {
+                user: {
+                    id: userId
+                },
+                set: {
+                    id: setId
+                },
+                card: {
+                    id: cardId
+                }
+            }
+        });
+        if (existingProgress) { throw new NotFoundError('Card already reviewed'); }
         let userProgress = await this.userProgressRepo.findOne({
             where: {
                 user: {
@@ -64,15 +79,18 @@ export class UserProgressService {
     }
 
     getUserProgress = async (userId: string): Promise<any> => {
+        if (!userId) { throw new NotFoundError('Invalid data'); }
         const progressBySet = await this.userProgressRepo
             .createQueryBuilder('userProgress')
             .select('userProgress.setId')
             .addSelect('COUNT(userProgress.setId)', 'progressCount')
             .where('userProgress.userId = :userId', { userId })
+            .andWhere('(userProgress.setId IS NULL OR userProgress.cardId IS NOT NULL)')
             .groupBy('userProgress.setId')
             .getRawMany();
         const progressPromises = progressBySet.map(async (data) => {
             const set = await this.setRepo.findOneOrFail({ where: { id: data.setId }, relations: ['cards', "user"] });
+            if (!set) { throw new NotFoundError('Set not found'); }
             const [knowCards, knowCardsCount] = await this.userProgressRepo.findAndCount({
                 where: {
                     user: {

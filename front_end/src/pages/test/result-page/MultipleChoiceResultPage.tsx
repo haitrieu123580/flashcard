@@ -49,11 +49,16 @@ const MultipleChoiceTestResultPage = () => {
     return (
         <div>
             <CardTitle className="flex justify-between">
-                {result?.set?.name}
-                <CardDescription className="text-lg font-bold text-green-300">
-                    {result?.score}/{result?.totalQuestions}
-                </CardDescription>
-            </CardTitle>
+                <div className="flex gap-2">
+                    {result?.set?.name}
+                    <span className=" font-bold text-green-300">
+                        {result?.score} /{result?.totalQuestions}
+                    </span>
+                </div>
+                <Button variant={"link"}>
+                    <Link to={`${replacePathWithId(routerPaths.LEARN_FLASHCARD, result.set?.id)}`}>Back to Learning page</Link>
+                </Button>
+            </CardTitle >
 
             {
                 Array.isArray(result?.questions)
