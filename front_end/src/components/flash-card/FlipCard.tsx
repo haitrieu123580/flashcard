@@ -10,7 +10,7 @@ const FlipCard = (props: any) => {
     const [isFlipped, setIsFlipped] = React.useState(false)
     const flipCard = () => {
         setIsFlipped(!isFlipped)
-        if (isFlipped) {
+        if (!isFlipped) {
             isFunction(onFlip) && onFlip(card)
         }
     }
@@ -30,7 +30,10 @@ const FlipCard = (props: any) => {
                     cardId={card?.id}
                 />
             </CardTitle>
-            <div className={`min-h-80 hover:cursor-pointer p-0 [transform:rotateY(0deg)] [transform-style:preserve-3d] ease-in-out transition-all ${isFlipped ? '[transform:rotateY(180deg)]' : ""} flex justify-center items-center w-full h-full`} onClick={flipCard} >
+            <div className={`min-h-80 hover:cursor-pointer p-0 [transform:rotateY(0deg)] [transform-style:preserve-3d] ease-in-out transition-all ${isFlipped ? '[transform:rotateY(180deg)]' : ""} flex justify-center items-center w-full h-full`}
+                onClick={() => {
+                    flipCard()
+                }} >
                 {!isFlipped
                     ? <div className="w-full h-full flex justify-center items-center overflow-auto text-lg">
                         <span>{card?.term}</span>

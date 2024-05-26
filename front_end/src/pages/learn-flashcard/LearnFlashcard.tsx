@@ -25,7 +25,7 @@ import { Separator } from "@/components/ui/separator";
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const naviate = useNavigate();
+    const navigate = useNavigate();
     const [currentCard, setCurrentCard] = useState(0);
     const { data, isLoading } = useSelector((state: any) => state.Set);
     const { mySets } = useSelector((state: any) => state.UserSets)
@@ -195,12 +195,22 @@ const LearnFlashcard = () => {
                 (history?.tests?.length > 0) &&
                 <div className="m-6">
                     <CardTitle className="text-blue-400">
-                        Test History</CardTitle>
+                        Test History
+                        <CardDescription className="text-lg">
+                            <span>
+                                You have done <span className="text-green-400">{history?.tests?.length}</span> tests,Your total correct percentage:
+                            </span>
+                            <span className="text-green-500">
+
+                                {` ${history?.totalCorrectPercent}% `}
+                            </span>
+                        </CardDescription>
+                    </CardTitle>
                     {history?.tests?.map((item: any, index: number) => {
                         return (
                             <Card className="p-6 my-4"
                                 onClick={() => {
-                                    naviate(replacePathWithId(routerPaths.USER_TEST_MULTIPLE_CHOICE_RESULT, item?.id)); //data is the test
+                                    navigate(replacePathWithId(routerPaths.USER_TEST_MULTIPLE_CHOICE_RESULT, item?.id)); //data is the test
                                 }}
                             >
 
