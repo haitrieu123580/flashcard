@@ -158,6 +158,7 @@ const MultipleChoiceTestPage = () => {
         setSelectedAnswers({});
         setSecondsLeft(10);
     }
+
     return (
         <div>
             <LoadingPopup open={isLoading} />
