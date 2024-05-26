@@ -56,7 +56,7 @@ const UserPopover = () => {
                             Profile
                         </Button>
                     </Link>
-                    <Link to={routerPaths.PROFILE} className="w-full h-full">
+                    <Link to={routerPaths.USER_PROGRESS} className="w-full h-full">
                         <Button
                             className="w-full grid grid-cols-2 items- gap-4"
                             variant={"ghost"}

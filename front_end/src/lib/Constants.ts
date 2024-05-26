@@ -72,4 +72,9 @@ export default class Constants {
             title: 'Tests'
         },
     ]
+    static QUESTION_TYPE = {
+        IMAGE: 'image',
+        TERM: 'term',
+        DEFINITION: 'definition',
+    };
 }

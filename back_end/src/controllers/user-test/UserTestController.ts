@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { Container } from "typedi";
 import { FailureMsgResponse, SuccessMsgResponse, SuccessResponse } from "@src/core/ApiResponse";
 import { UserTestService } from "@src/services/user-test/UserTestService";
+import getUser from '../../helper/GetUserRequest';
+
 export class UserTestController {
     private service: UserTestService;
     constructor() {
@@ -16,23 +18,38 @@ export class UserTestController {
         }
         const result = await this.service.saveTestResult(data?.user?.id, data.testId, data.answers)
         if (!result) {
-            return new FailureMsgResponse("Create card failed!").send(res);
+            return new FailureMsgResponse("Save the test failed!").send(res);
         }
         else {
-            return new SuccessResponse("Create card successfully!", result).send(res);
+            return new SuccessResponse("Save the test successfully!", result).send(res);
         }
     }
 
-    // getUserProgress = async (req: any, res: Response): Promise<any> => {
-    //     const data = {
-    //         user: req.user,
-    //     }
-    //     const result = await this.service.getUserProgress(data?.user?.id)
-    //     if (!result) {
-    //         return new FailureMsgResponse("Get user progress failed!").send(res);
-    //     }
-    //     else {
-    //         return new SuccessResponse("Get user progress successfully!", result).send(res);
-    //     }
-    // }
+    getRecentTestResult = async (req: any, res: Response): Promise<any> => {
+        const data = {
+            user: req.user,
+            setId: req.params.setId,
+        }
+        const result = await this.service.getUserRecentTestOfSet(data.user?.id, data.setId)
+        if (!result) {
+            return new FailureMsgResponse("failed!").send(res);
+        }
+        else {
+            return new SuccessResponse("successfully!", result).send(res);
+        }
+    }
+
+    getUserTestResult = async (req: any, res: Response): Promise<any> => {
+        const data = {
+            user: req.user,
+            testId: req.params.testId,
+        }
+        const result = await this.service.getUserTestResult(data.user?.id, data.testId)
+        if (!result) {
+            return new FailureMsgResponse("failed!").send(res);
+        }
+        else {
+            return new SuccessResponse("successfully!", result).send(res);
+        }
+    }
 }

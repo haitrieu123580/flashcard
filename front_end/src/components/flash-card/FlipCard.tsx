@@ -10,11 +10,13 @@ const FlipCard = (props: any) => {
     const [isFlipped, setIsFlipped] = React.useState(false)
     const flipCard = () => {
         setIsFlipped(!isFlipped)
-        isFunction(onFlip) && onFlip(card)
+        if (isFlipped) {
+            isFunction(onFlip) && onFlip(card)
+        }
     }
 
     return (
-        <Card className='flex flex-col items-end p-2'>
+        <Card className='flex flex-col items-end p-2 shadow-lg dard:shadow-lg'>
             <CardTitle className='flex justify-end items-end gap-2'>
                 <Button
                     variant={'ghost'}

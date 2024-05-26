@@ -44,8 +44,8 @@ const NewsetSets = (props: any) => {
             <Card className={cn("w-full h-full bg-transparent !shadow-none border-none", className)}>
                 <CardHeader>
                     <CardTitle className="flex justify-between items-end">
-                        <span>Lastest Sets</span>
-                        <Button variant={"link"} className="p-0 h-fit text-cyan-900 dark:text-rose-500">
+                        <span className="text-blue-500">Lastest Sets</span>
+                        <Button variant={"link"} className="p-0 h-fit text-blue-400 dark:text-blue-400">
                             <Link to={routerPaths.PUBLIC_SETS}>See more</Link>
                         </Button>
                     </CardTitle>

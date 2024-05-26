@@ -31,7 +31,7 @@ import { Send } from 'lucide-react';
 
 const MainHeaderMobile = (props: any) => {
     const { isAdmin } = props
-    const { loggedIn } = useSelector((state: any) => state.Auth)
+    const { loggedIn, profile } = useSelector((state: any) => state.Auth)
     const navigate = useNavigate();
     const [openDialogLogin, setOpenDialogLogin] = useState(false)
     const [openDialogRegister, setOpenDialogRegister] = useState(false)
@@ -63,6 +63,21 @@ const MainHeaderMobile = (props: any) => {
                         <Button variant={"ghost"}>
                             <Link to={routerPaths.HOME}><Logo /></Link>
                         </Button>
+                        {
+                            loggedIn ?
+                                (profile?.role === Constants.ROLE.ADMIN) ? <>
+                                    <Button variant={"link"} className="w-fit">
+                                        <Link to={routerPaths.ADMIN}>Admin site</Link>
+                                    </Button>
+                                </>
+                                    : <>
+                                        <Button variant={"link"} className="w-fit">
+                                            <Link to={routerPaths.USER_SETS}>My sets</Link>
+                                        </Button>
+
+                                    </>
+                                : null
+                        }
                         {/* <Button variant={"ghost"}>Your library</Button> */}
                     </div>
                     <div className="col-span-1 flex justify-end">

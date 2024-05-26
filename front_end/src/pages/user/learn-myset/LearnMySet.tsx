@@ -20,6 +20,7 @@ import {
     getUserLearningSetProgressAction,
     updateUserProgressAction
 } from "@/redux/user-progress/slice";
+import { Separator } from "@/components/ui/separator";
 
 const LearnFlashcard = () => {
     const { id } = useParams();
@@ -28,6 +29,7 @@ const LearnFlashcard = () => {
     // const { data, isLoading } = useSelector((state: any) => state.Set);
     const { mySets, set, isLoading } = useSelector((state: any) => state.UserSets)
     const { progress } = useSelector((state: any) => state.UserProgress)
+    console.log("progress", progress)
     useEffect(() => {
         if (id) {
             getSetById(id);
@@ -89,10 +91,10 @@ const LearnFlashcard = () => {
             <LoadingPopup
                 open={isLoading}
             />
-            <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between">
-                <CardTitle className="flex gap-2 items-end my-2">
+            <Card className="w-full min-h-[500px]  p-10 flex flex-col justify-between border-none shadow-none">
+                <CardTitle className="flex gap-2 items-end justify-between my-4">
                     <span>{set?.name}</span>
-                    <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /></Link>
+                    <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2"><NotebookPen /> Do the test</Link>
                 </CardTitle>
                 {Array.isArray(set?.cards) && set?.cards?.length ? set?.cards.map((card: any, index: number) => {
                     return (<>
@@ -138,10 +140,33 @@ const LearnFlashcard = () => {
                     </CardContent>
 
                 </>}
-                <div className="w-full flex justify-between">
-                    <Progress value={progress || 0} className="w-[90%]" /> <span>{progress}%</span>
+                <div className="w-full flex justify-between gap-2">
+                    <span></span><Progress value={progress?.progressPercentage || 0} className="w-[90%] h-2" /> <span>{progress?.progressPercentage}%</span>
                 </div>
             </Card>
+
+            <div className=" m-8">
+                <CardTitle className="text-blue-400">{`Not studied (${set?.cards?.length - progress?.studiedCards?.length})`}</CardTitle>
+                <div className="grid grid-cols-3">
+                    {
+                        Array.isArray(set?.cards) && set?.cards?.filter((card: any) => !progress?.studiedCards?.includes(card?.id)).map((card: any) => {
+                            return (
+                                <Card className="my-4 w-fit col-span-1">
+                                    <CardTitle></CardTitle>
+                                    <CardContent className="w-fit mt-4" >
+                                        <div className="flex h-5 items-center space-x-4 w-fit">
+                                            <div>{card?.term}</div>
+                                            <Separator orientation="vertical" />
+                                            <div>{card?.define}</div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+
             <div className="mt-10">
                 <NewsetSets />
             </div>

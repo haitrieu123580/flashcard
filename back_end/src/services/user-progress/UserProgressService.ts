@@ -24,6 +24,7 @@ export class UserProgressService {
 
     updateUserProgress = async (data: any): Promise<any> => {
         const { userId, setId, cardId, status } = data;
+        if (!userId || !setId || !cardId || !status) { throw new NotFoundError('Invalid data'); }
         const set = await this.setRepo.findOneOrFail(
             { where: { id: setId } }
         );
@@ -118,13 +119,14 @@ export class UserProgressService {
                     id: setId
                 },
                 status: 'known',
-            }
+            },
+            relations: ['card']
         })
         const totalCards = set.cards.length;
         const progressPercentage = (knowCardsCount / totalCards) * 100;
         let studiedCards = [];
         if (knowCards.length > 0) {
-            const cardIds = knowCards.map(card => card.id);
+            const cardIds = knowCards.map(progress => progress.card.id);
             studiedCards.push(...cardIds);
         }
         return {
