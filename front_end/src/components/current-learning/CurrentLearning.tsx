@@ -17,7 +17,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { Progress } from '../ui/progress';
+import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom'
 import { convertDateToString, replacePathWithId } from "@/lib/utils"
 import { routerPaths } from "@/routes/path"
@@ -49,8 +49,8 @@ const CurrentLearning = () => {
                 // @ts-ignore
                 data?.length === 0 ? null :
                     <Card className='my-4 bg-transparent !shadow-none border-none'>
+                        <CardTitle className='my-4 text-blue-500 px-4'>Recent</CardTitle>
                         <CardContent className='mt-4'>
-                            <CardTitle className='my-4'>Recent</CardTitle>
                             <Carousel>
                                 <CarouselContent>
                                     {Array.isArray(data) && data.map((item: any, index: number) => {
@@ -78,9 +78,9 @@ const CurrentLearning = () => {
                                                         </div>
                                                     </CardContent>
                                                     <CardFooter className='w-full flex flex-col'>
-                                                        <div className='flex justify-between items-end w-full'>
-                                                            <Progress value={item?.progressPercentage} className='w-[80%] h-3' />
-                                                            <span>{Math.floor(item?.progressPercentage)}%</span>
+                                                        <div className='w-full'>
+                                                            <div className='flex justify-end items-end w-full'>{Math.floor(item?.progressPercentage)}%</div>
+                                                            <Progress value={item?.progressPercentage} className='w-full h-2' />
                                                         </div>
                                                         <div className='flex gap-2 w-full my-4'>
                                                             <Avatar>

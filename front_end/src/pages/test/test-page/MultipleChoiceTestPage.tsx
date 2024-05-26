@@ -5,231 +5,281 @@ import {
     Card,
     CardTitle,
     CardContent,
-    CardDescription,
     CardFooter,
-} from "@/components/ui/card"
-import { Form } from "@/components/ui/form";
-import { FormInput } from "@/components/common/custom_input/CustomInput";
+} from "@/components/ui/card";
 import Constants from "@/lib/Constants";
-import { cn } from "@/lib/utils";
+import { cn, isFunction, replacePathWithId } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { routerPaths } from "@/routes/path";
-import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
-import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
+import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
+import { Progress } from "@/components/ui/progress";
+import CommonPopup from "@/components/common/popup/CommonPopup";
 import {
     getTestBySetIdAction,
     submitAnswersAction
 } from "@/redux/test/slice";
-import { createQuestionsBySetIdAction } from "@/redux/user-tests/slice";
+import { createQuestionsBySetIdAction, saveUserAnswerAction } from "@/redux/user-tests/slice";
+import AuthError from "@/components/auth-error/AuthError";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { routerPaths } from "@/routes/path";
+
+interface Question {
+    id: string;
+    questionType: string;
+    questionText: string;
+    options: string[];
+    correctAnswer: string;
+}
+
+interface TestData {
+    id: string;
+    questions: Question[];
+}
+
+interface RootState {
+    Test: {
+        examData: any;
+        isLoading: boolean;
+        result: any;
+    };
+}
+
 const MultipleChoiceTestPage = () => {
-    const { id } = useParams();
-    const { examData, isLoading, result } = useSelector((state: any) => state.Test);
-    const { data } = useSelector((state: any) => state.UserTest);
+    const { id } = useParams<{ id: string }>(); //set id
+    const { data, isLoading } = useSelector((state: any) => state.UserTest);
     const [currentCard, setCurrentCard] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState({});
-    const [showResult, setShowResult] = useState(false);
+    const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const form = useForm();
+    const [secondsLeft, setSecondsLeft] = useState(10); // 10 giây cho mỗi câu hỏi
+    const [showPopupResult, setShowPopupResult] = useState(false);
 
     const getTestBySetId = (id: string) => {
         dispatch({
             type: createQuestionsBySetIdAction.type,
             payload: {
                 id: id,
-                onSuccess: (data: any) => {
-                },
-                onError: (error: any) => {
-                }
+                onSuccess: (data: any) => { },
+                onError: (error: any) => { }
             }
-        })
-    }
+        });
+    };
+
     useEffect(() => {
         if (id) {
-            getTestBySetId(id)
+            getTestBySetId(id);
         }
     }, [id]);
 
-    const handleSubmit = (data: any) => {
-        const answers = Object.keys(data).map((key: any) => {
-            return {
-                questionId: key,
-                answer: data[key]
-            }
-        })
-        dispatch({
-            type: submitAnswersAction.type,
-            payload: {
-                data: {
-                    answers: answers,
-                    set_id: id
-                },
-                onSuccess: (data: any) => {
-                    // navigate(routerPaths.TEST_MULTIPLE_CHOICE_RESULT)
-                },
-                onError: (error: any) => {
-                    // console.log("error", error)
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setSecondsLeft(prevSecondsLeft => {
+                if (prevSecondsLeft > 0) {
+                    return prevSecondsLeft - 1;
+                } else {
+                    return 0;
                 }
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        if (secondsLeft === 0) {
+            if (currentCard < (data?.questions?.length || 0) - 1) {
+                showCard(currentCard + 1);
+                setSecondsLeft(10); // Reset lại bộ đếm thời gian
+            } else {
+                setSecondsLeft(0);
+                handleSubmit(); // Nếu là câu hỏi cuối cùng thì submit
             }
-        })
-    }
+        }
+    }, [secondsLeft, currentCard, data?.questions?.length]);
+
+    const handleSubmit = () => {
+        if (secondsLeft === 0) {
+            const answers = Object.keys(selectedAnswers).map(questionId => ({
+                questionId,
+                answer: selectedAnswers[questionId]
+            }));
+            const submitData = {
+                testId: data?.id,
+                answers: answers
+            };
+            dispatch({
+                type: saveUserAnswerAction.type,
+                payload: {
+                    data: submitData,
+                    onSuccess: (data: any) => {
+                        setShowPopupResult(true);
+                    },
+                    onError: (error: any) => { }
+                }
+            });
+        }
+    };
+
 
     const showCard = (index: number) => {
-        if (index >= data?.questions?.length || index < 0) {
+        if (index >= (data?.questions?.length || 0) || index < 0) {
             return;
         }
         setCurrentCard(index);
-    }
+        if (index < (data?.questions?.length || 0) - 1) {
+            setSecondsLeft(10); // Reset lại bộ đếm thời gian khi không phải là câu hỏi cuối cùng
+        }
+    };
 
-    const handleOptionChange = (questionId: any, value: any) => {
+    const handleOptionChange = (questionId: string, value: string, question: Question) => {
+        if (isOptionSelected(questionId)) {
+            return; // Nếu đã chọn rồi thì không làm gì cả
+        }
         setSelectedAnswers((prev) => ({ ...prev, [questionId]: value }));
-    }
 
-    const isOptionSelected = (questionId: any) => {
+        // Chuyển đến câu hỏi tiếp theo
+        if (currentCard < (data?.questions?.length || 0) - 1) {
+            setSecondsLeft(10); // Reset lại bộ đếm thời gian khi người dùng chọn câu trả lời
+            setTimeout(() => {
+                showCard(currentCard + 1);
+            }, 1000); // Đợi 1 giây trước khi chuyển sang câu hỏi tiếp theo
+        }
+    };
+
+
+    const isOptionSelected = (questionId: string) => {
         return selectedAnswers.hasOwnProperty(questionId);
-    }
+    };
 
+    const ReTake = () => {
+        getTestBySetId(id || "");
+        setShowPopupResult(false);
+        setCurrentCard(0);
+        setSelectedAnswers({});
+        setSecondsLeft(10);
+    }
     return (
         <div>
-            {
-                isLoading
-                    ? <div className="w-full h-full flex justify-center items-center"> <LoadingSpinner /></div>
-                    : <>
-                        <div>
-                            <CardTitle>{data?.name}</CardTitle>
-                        </div>
-                        {
-                            data?.questions ?
-                                <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(handleSubmit)}>
-                                        {
-                                            Array.isArray(data?.questions)
-                                            && data?.questions?.map((question: any, index: number) => {
-                                                return (
-                                                    <div key={index}>
-                                                        {currentCard === index
-                                                            && <>
-                                                                <Card className="my-4 p-2">
-                                                                    <CardContent className="">
-                                                                        <CardTitle className="flex items-end gap-2 my-6">
-                                                                            Question {index + 1}: {question.questionText}
-                                                                        </CardTitle>
-
-                                                                        {
-                                                                            <FormInput
-                                                                                control={form.control}
-                                                                                fieldName={question.id}
-                                                                                type={Constants.INPUT_TYPE.RADIO}
-                                                                                options={question?.options?.map((answer: any) => { // Remove the unused 'index' variable
-                                                                                    return {
-                                                                                        key: answer,
-                                                                                        label: answer,
-                                                                                    };
-                                                                                })}
-                                                                                onChangeSelect={(value: any) => {
-                                                                                    handleOptionChange(question.id, value);
-                                                                                    setShowResult(value === question.correctAnswer);
-                                                                                }}
-                                                                            // className={showResult ? "bg-green-200 dark:text-black" : ""}
-                                                                            />
-                                                                        }
-                                                                    </CardContent>
-
-                                                                    <CardFooter className="flex justify-end gap-4">
-                                                                        <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
-                                                                            {
-                                                                                isOptionSelected(question.id) ?
-                                                                                    <>
-                                                                                        {
-                                                                                            (index !== data?.questions.length - 1)
-                                                                                                ?
-                                                                                                <Button variant={"default"} onClick={(e) => {
-                                                                                                    e.preventDefault();
-                                                                                                    showCard(index + 1)
-                                                                                                }}>
-                                                                                                    Continue
-                                                                                                </Button>
-                                                                                                : <Button
-                                                                                                    variant={"default"}
-                                                                                                    type="submit"
-                                                                                                >
-                                                                                                    End
-                                                                                                </Button>
-                                                                                        }
-                                                                                    </>
-                                                                                    : null
-                                                                            }
-                                                                        </div>
-                                                                    </CardFooter>
-                                                                </Card>
-                                                            </>
-                                                        }
-                                                    </div>
-                                                );
-                                            })
-                                        }
-                                    </form>
-                                </Form>
-                                : null
-                        }
-                    </>
-            }
-            <>
-                {/* {
-                    result &&
-                    <div>
-                        <CardTitle className="flex justify-between">
-                            {result?.setName}
-                            <CardDescription className="text-lg font-bold text-green-300">
-                                {result?.total_correct != null ?
-                                    `${result?.total_correct}/${result?.total_questions}`
-                                    : null}
-                            </CardDescription>
-                        </CardTitle>
-
-                        {
-                            Array.isArray(result?.result)
-                            && result?.result?.map((question: any, index: number) => {
-                                return (
-                                    <Card className="my-4 p-2 " key={index}>
-                                        <CardTitle className="my-6 px-6 flex justify-between items-end">
-                                            <span>
-                                                Question: {question.question}
-                                            </span>
-                                            <CardDescription className={question.is_correct ? "text-green-400" : "text-rose-400"}>
-                                                {question.is_correct ? "Correct" : "Incorrect"}
-                                            </CardDescription>
-                                        </CardTitle>
-                                        <CardContent className="grid grid-cols-2 gap-2">
-                                            {
-                                                question?.answers?.map((answer: any, idx: number) => {
-                                                    return (
-                                                        <div key={idx} className={
-                                                            cn(`col-span-1 rounded-sm border p-4 
-                                                           ${question.user_answer === answer ? "bg-rose-200 dark:text-black" : ""} 
-                                                          `, (String(question.correct_answer).toLowerCase() === String(answer).toLowerCase()) ? "bg-green-200 dark:text-black" : "")
-                                                        }>
-                                                            {answer}
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                            <div className={
-                                                cn(`col-span-2  p-4`)
-                                            }>
-                                                <span>Correct answers is: </span> <span className="text-green-500">{question?.correct_answer}</span>
+            <LoadingPopup open={isLoading} />
+            {(Array.isArray(data?.questions) && data.questions.length > 0) ?
+                <>
+                    {data.questions.map((question: any, index: number) => {
+                        if (index !== currentCard) return null;
+                        return (
+                            <Card className="my-4 p-2" key={index}>
+                                <CardTitle className="flex gap-2 my-6 flex-col">
+                                    <div>Question {index + 1}:</div>
+                                    <div className="w-fit m-auto">
+                                        {question.questionType === Constants.QUESTION_TYPE.IMAGE
+                                            ? <div className="m-auto">
+                                                <img src={question.questionText} alt="question" className="h-72 w-72 object-cover" />
                                             </div>
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })
-                        }
-                    </div >
-                } */}
-            </>
-        </div >
-    )
-}
+                                            : <div>{question.questionText}</div>}
+                                    </div>
+                                </CardTitle>
+                                <CardContent className="grid grid-cols-2 gap-2">
+                                    {question.options.map((answer: any, idx: any) => {
+                                        const isSelected = selectedAnswers[question.id] === answer;
+                                        const isCorrect = isSelected && answer === question.correctAnswer;
+                                        const isIncorrect = isSelected && answer !== question.correctAnswer;
+                                        const isDisabled = isOptionSelected(question.id); // Kiểm tra nếu đã chọn lựa chọn rồi thì vô hiệu hóa các lựa chọn khác
+
+                                        return (
+                                            <div
+                                                key={idx}
+                                                onClick={() => {
+                                                    if (!isDisabled) { // Chỉ cho phép chọn nếu chưa chọn lựa chọn nào
+                                                        handleOptionChange(question.id, answer, question);
+                                                    }
+                                                }}
+                                                className={cn(`col-span-1 rounded-sm border p-4 cursor-pointer`, {
+                                                    "border-green-500": isCorrect,
+                                                    "border-red-500": isIncorrect,
+                                                    "border-gray-300": !isSelected,
+                                                    "cursor-not-allowed opacity-50": isDisabled // Thêm lớp để vô hiệu hóa các lựa chọn đã chọn
+                                                })}
+                                            >
+                                                {answer}
+                                            </div>
+                                        );
+                                    })}
+                                </CardContent>
+                                <CardFooter className="flex justify-end gap-4">
+                                    <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center h-8 w-full">
+                                        <div className="text-blue-500 w-full">
+                                            <div>
+                                                {secondsLeft} s
+                                            </div>
+                                            <Progress
+                                                value={secondsLeft * 10}
+                                                max={10}
+                                                color="red"
+                                                className="w-full"
+                                            />
+                                        </div>
+                                    </div>
+                                </CardFooter>
+                            </Card>
+                        );
+                    })}
+                </>
+                :
+                <div>
+                    <AuthError />
+                </div>
+            }
+
+            <CommonPopup
+                title="Congratulations!"
+                open={showPopupResult}
+                // open={true}
+                setOpen={setShowPopupResult}
+                isShowTrigger={false}
+                children={
+                    <PopUpResult
+                        id={id}
+                        onReTake={ReTake}
+                        onViewDetail={() => {
+                            navigate(replacePathWithId(routerPaths.USER_TEST_MULTIPLE_CHOICE_RESULT, data?.id)); //data is the test
+                        }}
+                    />
+                }
+                className={"w-full h-fit"}
+            />
+        </div>
+    );
+};
 
 export default MultipleChoiceTestPage;
+
+const PopUpResult = (props: any) => {
+    const { id, onReTake, onViewDetail } = props;
+    const { result } = useSelector((state: any) => state.UserTest);
+    return (
+        <>
+            <p>
+                Your score is {result?.score}/{result?.totalQuestions}
+            </p>
+            <div className="my-4 flex justify-center gap-2">
+
+                <Button
+                    variant={'default'}
+                    onClick={() => {
+                        isFunction(onReTake) && onReTake();
+                    }}
+                >
+                    Retake Test
+                </Button>
+                <Button
+                    variant={'outline'}
+                    onClick={() => {
+                        isFunction(onViewDetail) && onViewDetail();
+                    }}
+                >
+                    View Result Detail
+                </Button>
+            </div>
+        </>
+
+    );
+};

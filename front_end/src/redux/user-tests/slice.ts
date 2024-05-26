@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isLoading: false,
   data: [],
+  result: [],
+  history: [],
 }
 
 const userTestSlice = createSlice({
@@ -23,15 +25,39 @@ const userTestSlice = createSlice({
 
     saveUserAnswerAction: (state, { payload }) => {
       state.isLoading = true;
+      state.result = []
     },
     saveUserAnswerSuccessAction: (state, { payload }) => {
       state.isLoading = false;
-      state.data = payload.data;
+      state.result = payload.data;
     },
     saveUserAnswerFailedAction: (state) => {
       state.isLoading = false;
-      state.data = [];
+      state.result = [];
     },
+    getTestHistoryBySetIdAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    getTestHistoryBySetIdSuccessAction: (state, { payload }) => {
+      state.isLoading = false;
+      state.history = payload.data;
+    },
+    getTestHistoryBySetIdFailedAction: (state) => {
+      state.isLoading = false;
+      state.history = [];
+    },
+
+    getUserTestResultAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    getUserTestResultSuccessAction: (state, { payload }) => {
+      state.isLoading = false;
+      state.result = payload.data;
+    },
+    getUserTestResultFailedAction: (state) => {
+      state.isLoading = false;
+      state.result = [];
+    }
   },
 
 })
@@ -43,6 +69,12 @@ export const {
   saveUserAnswerAction,
   saveUserAnswerSuccessAction,
   saveUserAnswerFailedAction,
+  getTestHistoryBySetIdAction,
+  getTestHistoryBySetIdSuccessAction,
+  getTestHistoryBySetIdFailedAction,
+  getUserTestResultAction,
+  getUserTestResultSuccessAction,
+  getUserTestResultFailedAction,
 
 } = userTestSlice.actions
 

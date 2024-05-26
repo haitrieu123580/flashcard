@@ -1,43 +1,88 @@
-import { useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Card,
     CardTitle,
     CardContent,
-    CardDescription,
-} from "@/components/ui/card"
-import { cn } from "@/lib/utils";
+    CardFooter,
+} from "@/components/ui/card";
+import Constants from "@/lib/Constants";
+import { cn, isFunction, replacePathWithId } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
+import { Progress } from "@/components/ui/progress";
+import CommonPopup from "@/components/common/popup/CommonPopup";
+import {
+    getTestBySetIdAction,
+    submitAnswersAction
+} from "@/redux/test/slice";
+import { createQuestionsBySetIdAction, getUserTestResultAction, saveUserAnswerAction } from "@/redux/user-tests/slice";
+import AuthError from "@/components/auth-error/AuthError";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { routerPaths } from "@/routes/path";
+import { CardDescription } from "@/components/ui/card";
+
 const MultipleChoiceTestResultPage = () => {
-    const { result } = useSelector((state: any) => state.Test);
+    const { id } = useParams<{ id: string }>(); //test id
+    const { result } = useSelector((state: any) => state.UserTest);
+    console.log(result);
+    const dispatch = useDispatch();
+    const getTestBySetId = (id: string) => {
+        dispatch({
+            type: getUserTestResultAction.type,
+            payload: {
+                testId: id,
+                onSuccess: (data: any) => { },
+                onError: (error: any) => { }
+            }
+        });
+    };
+
+    useEffect(() => {
+        if (id) {
+            getTestBySetId(id);
+        }
+    }, [id]);
+
     return (
         <div>
             <CardTitle className="flex justify-between">
-                {result?.setName}
+                {result?.set?.name}
                 <CardDescription className="text-lg font-bold text-green-300">
-                    {result?.total_correct}/{result?.total_questions}
+                    {result?.score}/{result?.totalQuestions}
                 </CardDescription>
             </CardTitle>
 
             {
-                Array.isArray(result?.result)
-                && result?.result?.map((question: any, index: number) => {
+                Array.isArray(result?.questions)
+                && result?.questions?.map((question: any, index: number) => {
                     return (
                         <Card className="my-4 p-2 " key={index}>
-                            <CardTitle className="my-6 px-6 flex justify-between items-end">
+                            <CardTitle className="my-6 px-6 flex justify-between items-start">
                                 <span>
-                                    Question: {question.question}
+                                    Question:
                                 </span>
-                                <CardDescription className={question.is_correct ? "text-green-400" : "text-rose-400"}>
-                                    {question.is_correct ? "Correct" : "Incorrect"}
+                                <div className="w-fit m-auto">
+                                    {question.questionType === Constants.QUESTION_TYPE.IMAGE
+                                        ? <div className="m-auto">
+                                            <img src={question.questionText} alt="question" className="h-72 w-72 object-cover" />
+                                        </div>
+                                        : <div>{question.questionText}</div>}
+                                </div>
+                                <CardDescription className={question.isCorrect ? "text-green-400" : "text-rose-400"}>
+                                    {question.isCorrect ? "Correct" : "Incorrect"}
                                 </CardDescription>
                             </CardTitle>
                             <CardContent className="grid grid-cols-2 gap-2">
                                 {
-                                    question?.answers?.map((answer: any) => {
+                                    question?.options?.map((answer: any) => {
                                         return (
                                             <div className={
                                                 cn(`col-span-1 rounded-sm border p-4 
-                                               ${question.user_answer === answer ? "bg-rose-200 dark:text-black" : ""} 
-                                              `, (String(question.correct_answer).toLowerCase() === String(answer).toLowerCase()) ? "bg-green-200 dark:text-black" : "")
+                                               ${question.userAnswer === answer ? "bg-rose-200 dark:text-black" : ""} 
+                                              `, (String(question.correctAnswer).toLowerCase() === String(answer).toLowerCase()) ? "bg-green-200 dark:text-black" : "")
                                             }>
                                                 {answer}
                                             </div>
@@ -47,7 +92,7 @@ const MultipleChoiceTestResultPage = () => {
                                 <div className={
                                     cn(`col-span-2  p-4`)
                                 }>
-                                    <span>Correct answers is: </span> <span className="text-green-500">{question?.correct_answer}</span>
+                                    <span>Correct answers is: </span> <span className="text-green-500">{question?.correctAnswer}</span>
                                 </div>
                             </CardContent>
                         </Card>

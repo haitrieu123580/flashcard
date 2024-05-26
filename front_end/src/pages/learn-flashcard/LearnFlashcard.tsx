@@ -1,15 +1,15 @@
 import FlipCard from "@/components/flash-card/FlipCard"
-import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Volume1 } from 'lucide-react';
 import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import SentencesExampleBox from "@/components/flash-card/SentencesExampleBox";
 import NewsetSets from "@/components/home/newest-sets/NewsetSets";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSetByIdAction } from "@/redux/set/slice";
-import { replacePathWithId, speek } from "@/lib/utils";
+import { convertDateToString, replacePathWithId, speek } from "@/lib/utils";
 import { routerPaths } from "@/routes/path";
 import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner";
 import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
@@ -20,15 +20,17 @@ import {
     addCardToMySetAction,
 } from '@/redux/user-sets/slice';
 import { getUserLearningSetProgressAction, updateUserProgressAction } from "@/redux/user-progress/slice";
+import { getTestHistoryBySetIdAction } from "@/redux/user-tests/slice";
 import { Separator } from "@/components/ui/separator";
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const naviate = useNavigate();
     const [currentCard, setCurrentCard] = useState(0);
     const { data, isLoading } = useSelector((state: any) => state.Set);
     const { mySets } = useSelector((state: any) => state.UserSets)
     const { progress } = useSelector((state: any) => state.UserProgress)
-
+    const { history } = useSelector((state: any) => state.UserTest)
     useEffect(() => {
         if (id) {
             getSetById(id);
@@ -54,6 +56,12 @@ const LearnFlashcard = () => {
                 data: {
                     setId: id
                 }
+            }
+        })
+        dispatch({
+            type: getTestHistoryBySetIdAction.type,
+            payload: {
+                setId: id
             }
         })
     }
@@ -110,7 +118,7 @@ const LearnFlashcard = () => {
                                             <SentencesExampleBox example={card?.example} />
                                         </div>
                                     </CardContent>
-                                    <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1 my-4">
+                                    <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1 mt-4">
                                         <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
                                             <Button variant={"ghost"} onClick={(e) => {
                                                 e.preventDefault();
@@ -141,37 +149,87 @@ const LearnFlashcard = () => {
                     </CardContent>
 
                 </>}
-                <div className="w-full flex justify-between gap-2">
-                    <span></span><Progress value={progress?.progressPercentage || 0} className="w-[90%] h-2" /> <span>{progress?.progressPercentage}%</span>
+                <div className="mx-6">
+                    <div className="w-full">
+                        <div className="w-full flex justify-between">
+                            <span className="font-bold text-blue-700">  Learning progress</span>
+                            <span className="font-bold text-blue-700"> {progress?.progressPercentage}%</span>
+                        </div>
+                        <Progress value={progress?.progressPercentage || 0} className="w-full h-2" />
+                    </div>
+
                 </div>
             </Card>
-            <div className=" m-8">
-                <CardTitle className="text-blue-400">Not studied</CardTitle>
-                <div className="grid grid-cols-3">
-                    {
-                        data?.cards?.filter((card: any) => !progress?.studiedCards?.includes(card.id)).map((card: any) => {
-                            console.log("card", progress?.studiedCards)
-                            return (
-                                <Card className="my-4 w-fit col-span-1">
-                                    <CardTitle></CardTitle>
-                                    <CardContent className="w-fit mt-4" >
-                                        <div className="flex h-5 items-center space-x-4 w-fit">
-                                            <div>{card?.term}</div>
-                                            <Separator orientation="vertical" />
-                                            <div>{card?.define}</div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            )
-                        })
-                    }
-                </div>
-            </div>
+            {(data?.cards?.length - progress?.studiedCards?.length > 0)
+                && <>
+                    <div className="m-6">
+                        <CardTitle className="text-blue-400">
+                            {`Not studied (
+                        ${typeof (data?.cards?.length - progress?.studiedCards?.length) === 'number' && progress?.studiedCards?.length
+                                    ? data?.cards?.length - progress?.studiedCards?.length
+                                    : data?.cards?.length})`
+                            }
+                        </CardTitle>
+                        <div className="flex justify-center items-start space-x-4 flex-wrap">
+                            {
+                                data?.cards?.filter((card: any) => !progress?.studiedCards?.includes(card.id)).map((card: any) => {
+                                    return (
+                                        <Card className="my-4 w-fit col-span-1">
+                                            <CardTitle></CardTitle>
+                                            <CardContent className="w-fit mt-4" >
+                                                <div className="flex h-5 items-center space-x-4 w-fit">
+                                                    <div>{card?.term}</div>
+                                                    <Separator orientation="vertical" />
+                                                    <div>{card?.define}</div>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                </>
+            }
+            {
+                (history?.tests?.length > 0) &&
+                <div className="m-6">
+                    <CardTitle className="text-blue-400">
+                        Test History</CardTitle>
+                    {history?.tests?.map((item: any, index: number) => {
+                        return (
+                            <Card className="p-6 my-4"
+                                onClick={() => {
+                                    naviate(replacePathWithId(routerPaths.USER_TEST_MULTIPLE_CHOICE_RESULT, item?.id)); //data is the test
+                                }}
+                            >
 
+                                <CardHeader>
+                                    <CardTitle>
+                                        {`Correct questions: ${item?.score}/${item?.questions} (${((item?.score / item?.questions) * 100).toFixed(2)}%)`}
+                                    </CardTitle>
+                                    <CardDescription>
+                                        Completed at: {convertDateToString(item?.completedAt)}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Progress color="yellow"
+                                        key={index}
+                                        value={(item?.score / item?.questions) * 100}
+                                        className="w-full h-2 my-6 "
+                                        classNameIndicator="bg-primary"
+                                    />
+                                </CardContent>
+                            </Card>
+
+                        )
+                    })}
+                </div>
+            }
             <div className="mt-10">
                 <NewsetSets />
             </div>
-        </div>
+        </div >
     )
 }
 

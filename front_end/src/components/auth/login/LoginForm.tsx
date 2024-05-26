@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { routerPaths } from '@/routes/path';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "@/components/ui/use-toast";
-import { loginAction } from "@/redux/auth/slice";
+import { getProfileAction, loginAction } from "@/redux/auth/slice";
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from "@/components/common/loading/loading-spinner/LoadingSpinner"
 import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup"
@@ -57,6 +57,16 @@ export function LoginForm(props: any) {
                     title: 'Login success',
                     description: 'Welcome back!',
                     variant: 'default',
+                });
+                dispatch({
+                    type: getProfileAction.type,
+                    payload: {
+                        onSuccess: () => {
+
+                        },
+                        onError: () => {
+                        }
+                    }
                 })
             },
             onError: (message: string) => {
