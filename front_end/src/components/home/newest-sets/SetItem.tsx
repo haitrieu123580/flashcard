@@ -12,6 +12,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Button } from "@/components/ui/button"
 import { Pen, PencilIcon, Trash2Icon } from "lucide-react"
 import DeletePopup from "@/components/common/popup/DeletePopup";
+import Constants from "@/lib/Constants"
 
 const SetItem = (props: any) => {
     const { onClick, data,
@@ -71,6 +72,9 @@ const SetItem = (props: any) => {
                 </div>
                 <CardDescription className="flex gap-1 flex-wrap">
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
+                    <Badge>
+                        {Constants.LEVEL[data?.level as number as 1 | 2 | 3]?.toString()}
+                    </Badge>
                 </CardDescription>
             </CardHeader>
             <CardContent className="" onClick={(e) => {
