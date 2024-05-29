@@ -6,8 +6,8 @@ type UserAnswer = {
     answers: [{ questionId: string, answer: string }];
 }
 
-export const createQuestionsBySetId = async (setId: string) => {
-    const response = await AxiosConfig.post(`${BASE_URL}/create-test`, { setId: setId });
+export const createQuestionsBySetId = async ({ setId, level }: { setId: string, level?: number }) => {
+    const response = await AxiosConfig.post(`${BASE_URL}/create-test`, { setId: setId, level: level });
     return response;
 }
 

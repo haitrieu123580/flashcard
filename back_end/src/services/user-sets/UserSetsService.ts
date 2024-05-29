@@ -77,14 +77,34 @@ export class UserSetsService implements IUserSetsService {
             throw new NotFoundError('Set not found!');
         }
     }
-    getUserSetById = async (userId: string, setId: string): Promise<Sets> => {
+    getUserSetById = async (userId: string, setId: string): Promise<Sets | any> => {
         const set = await this.setRepo.get_set_by_id(setId);
         const user = await this.userRepo.getUserBy("id", userId);
         if (!set) {
             throw new NotFoundError('Set not found!');
         }
         if (set?.user?.id == user?.id) {
-            return set;
+
+            set.cards.forEach((card: any) => {
+                return card.example = card.example ? JSON.parse(card.example || "") : "";
+            });
+
+            const levelCount = set?.testKits.reduce((count: any, testKit: any) => {
+                const level = testKit.level;
+                const existingLevel = count.find((item: any) => item.level === level);
+                if (existingLevel) {
+                    existingLevel.count += 1;
+                } else {
+                    count.push({ level, count: 1 });
+                }
+                return count;
+            }, []);
+
+
+            return {
+                ...set,
+                levelCount
+            };;
         }
         else {
             throw new AuthFailureError("Set not belong to user");

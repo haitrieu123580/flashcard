@@ -1,18 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Tests } from './Tests';
 import { Cards } from './Cards';
 import { BaseEntity } from './BaseEntity';
+import { TestResultDetails } from './TestResultDetails';
+import { TestKits } from './TestKit';
 
 @Entity()
 export class TestQuestion extends BaseEntity {
 
     @ManyToOne(() => Tests, test => test.id, {
-        onDelete: "CASCADE"
+        onDelete: "CASCADE",
+        nullable: true,
     })
     @JoinColumn()
     test: Tests;
 
-    @ManyToOne(() => Cards, card => card.id)
+    @ManyToOne(() => Cards, card => card.id, {
+        onDelete: "SET NULL",
+        nullable: true,
+    })
     @JoinColumn()
     card: Cards;
 
@@ -21,7 +27,7 @@ export class TestQuestion extends BaseEntity {
             nullable: true,
         }
     )
-    questionType: 'term' | 'definition' | 'image' | string;
+    questionType: 'term' | 'definition' | 'image' | 'written' | string;
 
     @Column(
         {
@@ -43,14 +49,15 @@ export class TestQuestion extends BaseEntity {
     })
     options: string[];
 
-    @Column({
-        nullable: true,
-        default: false,
+    @OneToMany(() => TestResultDetails, details => details.question, {
+        onDelete: "SET NULL"
     })
-    isCorrect: boolean;
+    details: TestResultDetails[];
 
-    @Column({
+    @ManyToOne(() => TestKits, testKit => testKit.questions, {
+        onDelete: "SET NULL",
         nullable: true,
     })
-    userAnswer: string;
+    @JoinColumn()
+    testKit: TestKits;
 }

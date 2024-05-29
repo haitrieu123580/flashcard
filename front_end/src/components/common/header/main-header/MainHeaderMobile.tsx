@@ -63,6 +63,9 @@ const MainHeaderMobile = (props: any) => {
                         <Button variant={"ghost"}>
                             <Link to={routerPaths.HOME}><Logo /></Link>
                         </Button>
+                        <Button variant={"link"}>
+                            <Link to={routerPaths.PUBLIC_SETS}>Topic sets</Link>
+                        </Button>
                         {
                             loggedIn ?
                                 (profile?.role === Constants.ROLE.ADMIN) ? <>
@@ -78,42 +81,8 @@ const MainHeaderMobile = (props: any) => {
                                     </>
                                 : null
                         }
-                        {/* <Button variant={"ghost"}>Your library</Button> */}
                     </div>
                     <div className="col-span-1 flex justify-end">
-                        {isAdmin && (
-                            <>
-                                <Popover>
-                                    <PopoverTrigger className="text-sm p-1">
-                                        <PlusCircle />
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-fit">
-                                        <div className="grid gap-4">
-                                            <div className="grid gap-2">
-                                                <div className="grid grid-cols-3 items-center gap-4">
-                                                    <span ><Folder /></span>
-                                                    <Button
-                                                        className="col-span-2 h-8 text-sm"
-                                                        variant={"ghost"}
-                                                    >
-                                                        Vocabulary Sets
-                                                    </Button>
-                                                </div>
-                                                <div className="grid grid-cols-3 items-center gap-4">
-                                                    <span ><Folder /></span>
-                                                    <Button
-                                                        variant={"ghost"}
-                                                        className="col-span-2 h-8 text-sm"
-                                                    >
-                                                        Grammar Sets
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </PopoverContent>
-                                </Popover>
-                            </>
-                        )}
                         {loggedIn
                             ? (
                                 <>

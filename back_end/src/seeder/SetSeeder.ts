@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { Seeder, SeederFactoryManager } from 'typeorm-extension'
 import { Sets } from '../entity/Sets'
-import { Cards } from '../entity/Cards';
-import { Questions } from '../entity/Questions'
-import { S3Service } from '../services/s3/S3Service';
+import { Cards } from '../entity/Cards'
+import { TestKits } from '../entity/TestKit'
+import { TestQuestion } from '../entity/TestQuestion'
+import { S3Service } from '../services/s3/S3Service'
 import { Container } from 'typedi'
 import setJson from "./json/set.json"
 
@@ -22,54 +23,63 @@ export class SetSeeder implements Seeder {
         const setsData = setJson;
 
         for (const set of setsData) {
-            const newSet = new Sets()
-            newSet.name = set.name
-            newSet.description = set.description
+            const newSet = new Sets();
+            newSet.name = set.name;
+            newSet.description = set.description;
 
             if (set?.image) {
                 const image_url = await this.s3Service.uploadFile({
                     filename: String(set.name) + '.jpg',
                     path: set?.image,
                     mimetype: 'image/jpeg',
-
                 });
                 newSet.image = image_url?.Location || "";
             }
+
             newSet.is_public = set.is_public;
             newSet.created_by = set.created_by;
             newSet.created_at = new Date();
 
-            if (!newSet.cards) {
-                newSet.cards = [];
-            }
+            newSet.cards = [];
 
             for (const card of set.cards) {
-                const newCard = new Cards()
-                newCard.term = card.term
-                newCard.define = card.define
-                newCard.example = JSON.stringify(card.example)
-                newCard.created_by = card.created_by
-                newSet.cards.push(newCard)
-            }
-            if (!newSet.questions) {
-                newSet.questions = [];
-            }
-            if (set.questions) {
-                for (const question of set.questions) {
-                    const newQuestion = new Questions()
-                    newQuestion.question = question.question
-                    newQuestion.answers = question.answers
-                    newQuestion.correct_answer = question.correct_answer
-                    newQuestion.created_by = newQuestion.created_by
-                    newSet.questions.push(newQuestion)
-                }
+                const newCard = new Cards();
+                newCard.term = card.term;
+                newCard.define = card.define;
+                newCard.example = JSON.stringify(card.example);
+                newCard.created_by = card.created_by;
+                newSet.cards.push(newCard);
             }
 
+            newSet.testKits = [];
+
+            if (set.testKits) {
+                for (const testKit of set.testKits) {
+                    const newTestKit = new TestKits();
+                    newTestKit.level = testKit.level;
+                    newTestKit.questions = [];
+
+                    if (testKit.questions.length > 0) {
+                        for (const question of testKit.questions) {
+                            const newQuestion = new TestQuestion();
+                            newQuestion.questionText = question.questionText;
+                            newQuestion.correctAnswer = question.correctAnswer;
+                            newQuestion.options = question.options || [];
+                            newQuestion.questionType = question.questionType;
+                            newQuestion.testKit = newTestKit;  // Set the relation here
+                            newTestKit.questions.push(newQuestion);
+                        }
+                    }
+                    newTestKit.set = newSet;  // Set the relation here
+                    newSet.testKits.push(newTestKit);
+                }
+            }
             await dataSource.transaction(async manager => {
-                await manager.save(newSet.cards)
-                await manager.save(newSet.questions)
-                await manager.save(newSet)
-            })
+                await manager.save(newSet.cards);
+                await manager.save(newSet);
+                await manager.save(newSet.testKits);
+                await manager.save(newSet.testKits.flatMap(testKit => testKit.questions));
+            });
         }
     }
 }

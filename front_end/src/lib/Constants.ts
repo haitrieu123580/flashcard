@@ -73,8 +73,14 @@ export default class Constants {
         },
     ]
     static QUESTION_TYPE = {
+        CHOICE: 'choice',
         IMAGE: 'image',
-        TERM: 'term',
-        DEFINITION: 'definition',
-    };
+        WRITTEN: 'written',
+    }
+    static LEVEL = {
+        0: "Beginner",
+        1: "Easy",
+        2: "Medium",
+        3: "Hard",
+    }
 }

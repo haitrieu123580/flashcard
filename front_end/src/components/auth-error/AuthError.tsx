@@ -1,5 +1,5 @@
 import React from 'react'
-import Somethingwentwrong from '@/assets/somethingwentwrong.png'
+import Somethingwentwrong from '@/assets/images/somethingwentwrong.png'
 const AuthError = () => {
     return (
         <div className='w-full'>

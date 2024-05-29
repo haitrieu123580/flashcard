@@ -29,28 +29,32 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     }, [])
 
     return (
-        <div className='bg-gray-50 dark:bg-background min-h-[100vh] flex flex-col justify-between'>
-            {/* <div className='fixed right-10 top-5'><LocalesToggle /> </div> */}
-            <div className='sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
-                <MaxWidthWrapper className=''>
-                    <MainHeaderMobile />
-                    <MainHeader className="p-0" />
-                </MaxWidthWrapper>
+        <div className=''>
+            <div className=' dark:bg-background min-h-screen flex flex-col w-full'>
+                <header className="flex h-fit w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+                    <MaxWidthWrapper>
+                        <MainHeaderMobile />
+                        <MainHeader className="p-0" />
+                    </MaxWidthWrapper>
+                </header>
                 <Separator />
+                <div className="flex flex-1">
+                    <MaxWidthWrapper className='h-full m-auto'>
+                        <div className='mt-10 h-full'>
+                            <Outlet />
+                        </div>
+                        <div className='fixed bottom-10 right-10'><ModeToggle /></div>
+                    </MaxWidthWrapper>
+                </div>
+                <Separator />
+                <footer className="flex h-fit w-full">
+                    <MaxWidthWrapper>
+                        <Footer />
+                    </MaxWidthWrapper>
+                </footer>
             </div>
-            <div className='h-full'>
-                <MaxWidthWrapper className='h-full m-auto'>
-                    <div className='mt-10 h-full'>
-                        <Outlet />
-                    </div>
-                    <div className='fixed bottom-10 right-10'><ModeToggle /></div>
-                </MaxWidthWrapper>
-            </div>
-            <Footer />
-            <div className='absolute bottom-0 left-0 w-full'>
-            </div>
-
         </div>
+
     );
 };
 

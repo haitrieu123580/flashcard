@@ -1,6 +1,11 @@
+import image from '@/assets/images/flash-card.png'
+import { routerPaths } from '@/routes/path'
+import { Link } from 'react-router-dom'
 const Logo = () => {
     return (
-        <div>Logo</div>
+        <Link to={routerPaths.HOME}>
+            <img src={image} alt="logo" className='w-8 h-8 object-cover' />
+        </Link>
     )
 }
 

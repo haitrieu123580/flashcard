@@ -70,12 +70,12 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             order: order,
             take: take,
             skip: skip,
-            relations: ["cards", "questions"]
+            relations: ["cards", "testKits"]
         });
     }
 
     get_set_by_id(setId: string): Promise<Sets | null> {
-        return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user", "questions"] });
+        return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user", "questions", "testKits", "testKits.questions"] });
     }
 
     edit_set = async (set: Sets): Promise<Sets> => {

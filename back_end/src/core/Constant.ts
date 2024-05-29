@@ -9,7 +9,7 @@ export class Constants {
 
     static USER_ROLE = {
         ADMIN: 1,
-        TEACHER: 2,
+        // TEACHER: 2,
         USER: 10,
     }
 
@@ -28,7 +28,8 @@ export class Constants {
         REJECTED: 'rejected',
     }
 
-    static SET_LEVEL = {
+    static LEVEL = {
+        BEGINER: 0,
         EASY: 1,
         MEDIUM: 2,
         HARD: 3,
@@ -39,5 +40,11 @@ export class Constants {
         UNKNOWN: 'unknown',
         KNOWN: 'known',
         REVIEW: 'review',
+    }
+
+    static QUESTION_TYPE = {
+        CHOICE: 'choice',
+        IMAGE: 'image',
+        WRITTEN: 'written',
     }
 }

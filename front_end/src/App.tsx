@@ -21,84 +21,86 @@ const store = initStore()
 function App() {
   return (
     <div className='App'>
-      <Provider store={store}>
-        <ErrorBoundary fallbackRender={ErrorFallbackRenderer}>
-          <ThemeProvider>
-            <Toaster />
-            <Router>
-              <Suspense fallback={<div>Loading...</div>}>
-                <Routes>
-                  <Route
-                    path='/'
-                    element={
-                      <MainLayout />
-                    }
-                  >
-                    <>
-                      {publicRoutes.map((route: any, index: number) => {
+      <div className='dark:bg-[#0a092d] bg-gray-100 overflow-hidden'>
+        <Provider store={store}>
+          <ErrorBoundary fallbackRender={ErrorFallbackRenderer}>
+            <ThemeProvider>
+              <Toaster />
+              <Router>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Routes>
+                    <Route
+                      path='/'
+                      element={
+                        <MainLayout />
+                      }
+                    >
+                      <>
+                        {publicRoutes.map((route: any, index: number) => {
+                          const Page = route.component;
+                          return (
+                            <Route
+                              key={index}
+                              path={route.path}
+                              element={
+                                <Page />
+                              }
+                            />
+                          );
+                        })}
+                      </>
+                    </Route>
+                    <Route path="/user" element={<AuthLayout />}>
+                      {protectedRoutes.map((route, index) => (
+                        <Route
+                          key={index}
+                          path={route.path}
+                          element={
+                            <RequireAuth allowedRoles={[Constants.ROLE.USER, Constants.ROLE.ADMIN]}>
+                              <route.component />
+                            </RequireAuth>
+                          }
+                        />
+                      ))}
+                    </Route>
+                    <Route
+                      path='/admin'
+                      element={
+                        <AdminLayout />
+                      }
+                    >
+                      {privateRouters.map((route: any, index: number) => {
                         const Page = route.component;
                         return (
                           <Route
                             key={index}
                             path={route.path}
                             element={
-                              <Page />
+                              <>
+                                <RequireAuth allowedRoles={[Constants.ROLE.ADMIN]}>
+                                  <Page />
+                                </RequireAuth>
+                              </>
                             }
                           />
                         );
                       })}
-                    </>
-                  </Route>
-                  <Route path="/user" element={<AuthLayout />}>
-                    {protectedRoutes.map((route, index) => (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={
-                          <RequireAuth allowedRoles={[Constants.ROLE.USER, Constants.ROLE.ADMIN]}>
-                            <route.component />
-                          </RequireAuth>
-                        }
-                      />
-                    ))}
-                  </Route>
-                  <Route
-                    path='/admin'
-                    element={
-                      <AdminLayout />
-                    }
-                  >
-                    {privateRouters.map((route: any, index: number) => {
-                      const Page = route.component;
-                      return (
-                        <Route
-                          key={index}
-                          path={route.path}
-                          element={
-                            <>
-                              <RequireAuth allowedRoles={[Constants.ROLE.ADMIN]}>
-                                <Page />
-                              </RequireAuth>
-                            </>
-                          }
-                        />
-                      );
-                    })}
-                  </Route>
-                  <Route
-                    path='*'
-                    element={
-                      <MainLayout>
-                        <PageNotFound />
-                      </MainLayout>
-                    }
-                  />
-                </Routes>
-              </Suspense>
-            </Router >
-          </ThemeProvider>
-        </ErrorBoundary>
-      </Provider>
+                    </Route>
+                    <Route
+                      path='*'
+                      element={
+                        <MainLayout>
+                          <PageNotFound />
+                        </MainLayout>
+                      }
+                    />
+                  </Routes>
+                </Suspense>
+              </Router >
+            </ThemeProvider>
+          </ErrorBoundary>
+        </Provider>
+      </div>
     </div>
   );
 }

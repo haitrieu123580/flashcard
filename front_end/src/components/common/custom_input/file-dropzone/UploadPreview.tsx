@@ -22,7 +22,7 @@ const UploadPreview: FC<UploadPreviewProps> = ({
             {show && (
                 <>
                     <div
-                        className="w-full flex flex-col py-[23px] px-3 opacity-100"
+                        className="w-full flex flex-col py-[23px] px-3 opacity-100 bg-transparent"
                     >
                         <div className='w-full h-16 flex justify-end gap-6'>
                             <Button
@@ -49,7 +49,7 @@ const UploadPreview: FC<UploadPreviewProps> = ({
                             </Button>
                         </div>
                         <div className='w-full '>
-                            <div className='w-full h-80 bg-background'>
+                            <div className='w-full h-80 bg-transparent'>
                                 <img src={path} alt="set" className='max-w-full max-h-full w-full h-full object-contain' />
                             </div>
                         </div>

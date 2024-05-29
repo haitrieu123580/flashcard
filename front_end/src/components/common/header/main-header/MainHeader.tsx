@@ -59,10 +59,10 @@ const MainHeader = (props: any) => {
     return (
         <div className='hidden md:block md:w-full h-20'>
             <div className='w-full py-6 flex justify-between items-center'>
-                <div className="w-1/6 flex items-center row-span-1 md:col-span-1">
+                <div className="w-fit flex items-center row-span-1 md:col-span-1">
                     <Logo />
                     <Button variant={"link"}>
-                        <Link to={routerPaths.HOME}>Home</Link>
+                        <Link to={routerPaths.PUBLIC_SETS}>Sets</Link>
                     </Button>
                     {
                         loggedIn ?

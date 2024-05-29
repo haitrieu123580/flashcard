@@ -27,9 +27,9 @@ import {
 } from "@/api/UserTestApi";
 function* watchCreateQuestionsBySetId() {
   yield takeLatest(createQuestionsBySetIdAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
-    const { id, onSuccess, onError } = payload;
+    const { id, onSuccess, onError, level } = payload;
     try {
-      const res = yield call(createQuestionsBySetId, id);
+      const res = yield call(createQuestionsBySetId, { setId: id, level: level });
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(onSuccess) && onSuccess(res.data?.data);

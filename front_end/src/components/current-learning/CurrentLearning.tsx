@@ -48,7 +48,7 @@ const CurrentLearning = () => {
             {
                 // @ts-ignore
                 data?.length === 0 ? null :
-                    <Card className='my-4 bg-transparent !shadow-none border-none'>
+                    <Card className='my-4 !bg-transparent !shadow-none border-none'>
                         <CardTitle className='my-4 text-blue-500 px-4'>Recent</CardTitle>
                         <CardContent className='mt-4'>
                             <Carousel>
@@ -65,13 +65,13 @@ const CurrentLearning = () => {
                                                     <CardContent>
                                                         <div className="overflow-hidden rounded-md ">
                                                             <AspectRatio
-                                                                ratio={1 / 1}
+                                                                ratio={2 / 2}
                                                                 className="h-auto w-auto object-cover transition-all hover:scale-105 aspect-square "
                                                             >
                                                                 {
                                                                     !item?.set?.image
                                                                         ? <div className="w-full h-full bg-slate-100 flex justify-center items-center text-white text-2xl"></div>
-                                                                        : <img src={item?.set?.image} alt="set" className="max-w-full max-h-full object-cover" />
+                                                                        : <img src={item?.set?.image} alt="set" className="w-full h-full max-w-full max-h-full object-cover" />
                                                                 }
 
                                                             </AspectRatio>
