@@ -21,7 +21,7 @@ const publicSet = createSlice({
       state.pagination = payload?.pagination;
     },
     getAllSetsFailedAction: (state) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.data = [];
       state.pagination = {};
     },
