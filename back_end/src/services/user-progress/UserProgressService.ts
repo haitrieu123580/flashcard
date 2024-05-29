@@ -81,7 +81,7 @@ export class UserProgressService {
             .select('userProgress.setId')
             .addSelect('COUNT(userProgress.setId)', 'progressCount')
             .where('userProgress.userId = :userId', { userId })
-            .andWhere('(userProgress.setId IS NULL OR userProgress.cardId IS NOT NULL)')
+            .andWhere('(userProgress.setId IS NOT NULL OR userProgress.cardId IS NOT NULL)')
             .groupBy('userProgress.setId')
             .getRawMany();
         const progressPromises = progressBySet.map(async (data) => {
