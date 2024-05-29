@@ -2,7 +2,7 @@
     {
         "name": "Animals",
         "description": "A set of vocabulary related to animals.",
-        "image": "./src/seeder/image/dog.jpg",
+        "image": "./src/seeder/image/animal_cover.png",
         "created_by": "Seeder",
         "is_public": true,
         "cards": [
@@ -10,6 +10,7 @@
                 "term": "Dog",
                 "define": "Con chó",
                 "set": null,
+                "image": "./src/seeder/image/dog.jpg",
                 "example": [
                     {
                         "sentence": "The dog barked loudly at the mailman.",
@@ -22,6 +23,7 @@
                 "term": "Cat",
                 "define": "Con mèo",
                 "set": null,
+                "image": "./src/seeder/image/cat.jfif",
                 "example": [
                     {
                         "sentence": "The cat stretched lazily in the sunbeam.",
@@ -31,9 +33,62 @@
                 "created_by": "Seeder"
             },
             {
+                "term": "Bee",
+                "define": "Con ong",
+                "set": null,
+                "image": "./src/seeder/image/bee.jpg",
+                "example": [
+                    {
+                        "sentence": "The bee is buzzing around the flower.",
+                        "translation": "Con ong đang bay quanh bông hoa."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Snake",
+                "define": "Con rắn",
+                "set": null,
+                "image": "./src/seeder/image/snake.jpg",
+                "example": [
+                    {
+                        "sentence": "The snake coiled around the branch.",
+                        "translation": "Con rắn quấn quanh cành cây."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Spider",
+                "define": "Con nhện",
+                "set": null,
+                "image": "./src/seeder/image/spider.jpg",
+                "example": [
+                    {
+                        "sentence": "The spider is spinning a web.",
+                        "translation": "Con nhện đang giăng tơ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Parrot",
+                "define": "Con vẹt",
+                "set": null,
+                "image": "./src/seeder/image/parrot.jpg",
+                "example": [
+                    {
+                        "sentence": "The parrot can mimic human speech.",
+                        "translation": "Con vẹt có thể bắt chước tiếng nói của con người."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
                 "term": "Bird",
                 "define": "Con chim",
                 "set": null,
+                "image": "./src/seeder/image/bird.jfif",
                 "example": [
                     {
                         "sentence": "The bird chirped sweetly in the tree.",
@@ -46,6 +101,7 @@
                 "term": "Fish",
                 "define": "Con cá",
                 "set": null,
+                "image": "./src/seeder/image/fish.jfif",
                 "example": [
                     {
                         "sentence": "The fish swam gracefully in the pond.",
@@ -58,6 +114,7 @@
                 "term": "Rabbit",
                 "define": "Con thỏ",
                 "set": null,
+                "image": "./src/seeder/image/rabbit.jpg",
                 "example": [
                     {
                         "sentence": "The rabbit hopped through the garden.",
@@ -70,6 +127,7 @@
                 "term": "Horse",
                 "define": "Con ngựa",
                 "set": null,
+                "image": "./src/seeder/image/horse.png",
                 "example": [
                     {
                         "sentence": "The horse galloped across the field.",
@@ -82,6 +140,7 @@
                 "term": "Elephant",
                 "define": "Con voi",
                 "set": null,
+                "image": "./src/seeder/image/elephant.jfif",
                 "example": [
                     {
                         "sentence": "The elephant trumpeted loudly in the zoo.",
@@ -94,6 +153,7 @@
                 "term": "Tiger",
                 "define": "Con hổ",
                 "set": null,
+                "image": "./src/seeder/image/tiger.jpg",
                 "example": [
                     {
                         "sentence": "The tiger prowled through the jungle.",
@@ -106,6 +166,7 @@
                 "term": "Lion",
                 "define": "Con sư tử",
                 "set": null,
+                "image": "./src/seeder/image/lion.jpg",
                 "example": [
                     {
                         "sentence": "The lion roared fiercely in the savannah.",
@@ -115,9 +176,62 @@
                 "created_by": "Seeder"
             },
             {
+                "term": "Cow",
+                "define": "Con bò",
+                "set": null,
+                "image": "./src/seeder/image/cow.jpg",
+                "example": [
+                    {
+                        "sentence": "The farmer milked the cow each morning.",
+                        "translation": "Người nông dân vắt sữa bò mỗi sáng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Duck",
+                "define": "Con vịt",
+                "set": null,
+                "image": "./src/seeder/image/duck.jpg",
+                "example": [
+                    {
+                        "sentence": "We watched the ducks swim in the lake.",
+                        "translation": "Chúng tôi nhìn những chú vịt bơi trong hồ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Pig",
+                "define": "Con heo",
+                "set": null,
+                "image": "./src/seeder/image/pig.jpg",
+                "example": [
+                    {
+                        "sentence": "The pig was a lazy animal.",
+                        "translation": "Con lợn là một loài động vật lười biếng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Sheep",
+                "define": "Con cừu",
+                "set": null,
+                "image": "./src/seeder/image/sheep.jpg",
+                "example": [
+                    {
+                        "sentence": "The sheep are grazing in the field.",
+                        "translation": "Bầy cừu đang gặm cỏ trên cánh đồng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
                 "term": "Monkey",
                 "define": "Con khỉ",
                 "set": null,
+                "image": "./src/seeder/image/monkey.jpg",
                 "example": [
                     {
                         "sentence": "The monkey swung from branch to branch.",
@@ -130,6 +244,7 @@
                 "term": "Bear",
                 "define": "Con gấu",
                 "set": null,
+                "image": "./src/seeder/image/bear.jpg",
                 "example": [
                     {
                         "sentence": "The bear hibernated in the winter.",
@@ -142,6 +257,7 @@
                 "term": "Penguin",
                 "define": "Chim cánh cụt",
                 "set": null,
+                "image": "./src/seeder/image/penguin.jpg",
                 "example": [
                     {
                         "sentence": "The penguin waddled across the ice.",
@@ -149,716 +265,6 @@
                     }
                 ],
                 "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Con chó'?",
-                "answers": [
-                    "Cat",
-                    "Dog",
-                    "Fish",
-                    "Bird"
-                ],
-                "correct_answer": "Dog"
-            },
-            {
-                "question": "What is the term for 'Con mèo'?",
-                "answers": [
-                    "Fish",
-                    "Bird",
-                    "Cat",
-                    "Dog"
-                ],
-                "correct_answer": "Cat"
-            },
-            {
-                "question": "What is the term for 'Con chim'?",
-                "answers": [
-                    "Dog",
-                    "Bird",
-                    "Fish",
-                    "Cat"
-                ],
-                "correct_answer": "Bird"
-            },
-            {
-                "question": "What is the term for 'Con cá'?",
-                "answers": [
-                    "Bird",
-                    "Dog",
-                    "Fish",
-                    "Cat"
-                ],
-                "correct_answer": "Fish"
-            }
-        ],
-        "testKits": [
-            {
-                "level": 2,
-                "questions": [
-                    {
-                        "questionText": "What is the capital of France?",
-                        "questionType": "choice",
-                        "options": [
-                            "Paris",
-                            "London",
-                            "Berlin",
-                            "Madrid"
-                        ],
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "... is the capital of Germany?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "... is the capital of Spain?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "What is the capital of Italy?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "What is the capital of the United Kingdom?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    }
-                ]
-            },
-            {
-                "level": 3,
-                "questions": [
-                    {
-                        "questionText": "What is the capital of France?",
-                        "questionType": "choice",
-                        "options": [
-                            "Paris",
-                            "London",
-                            "Berlin",
-                            "Madrid"
-                        ],
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "... is the capital of Germany?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "... is the capital of Spain?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "What is the capital of Italy?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    },
-                    {
-                        "questionText": "What is the capital of the United Kingdom?",
-                        "questionType": "written",
-                        "correctAnswer": "Paris"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "Music",
-        "description": "A set of vocabulary related to music.",
-        "image": "./src/seeder/image/music.jpg",
-        "created_by": "Seeder",
-        "is_public": true,
-        "cards": [
-            {
-                "term": "Guitar",
-                "define": "Đàn guitar",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "He played the guitar skillfully.",
-                        "translation": "Anh ta chơi đàn guitar thành thạo."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Piano",
-                "define": "Đàn piano",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "She practiced the piano every day.",
-                        "translation": "Cô ấy luyện tập đàn piano mỗi ngày."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Violin",
-                "define": "Đàn vi-ô-lông",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The violinist performed a beautiful melody.",
-                        "translation": "Người chơi đàn vi-ô-lông biểu diễn một giai điệu đẹp."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Drums",
-                "define": "Trống",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "He played the drums with energy.",
-                        "translation": "Anh ta chơi trống với năng lượng."
-                    }
-                ],
-                "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Đàn guitar'?",
-                "answers": [
-                    "Piano",
-                    "Violin",
-                    "Drums",
-                    "Guitar"
-                ],
-                "correct_answer": "Guitar"
-            },
-            {
-                "question": "What is the term for 'Đàn piano'?",
-                "answers": [
-                    "Violin",
-                    "Guitar",
-                    "Piano",
-                    "Drums"
-                ],
-                "correct_answer": "Piano"
-            },
-            {
-                "question": "What is the term for 'Đàn vi-ô-lông'?",
-                "answers": [
-                    "Guitar",
-                    "Piano",
-                    "Violin",
-                    "Drums"
-                ],
-                "correct_answer": "Violin"
-            },
-            {
-                "question": "What is the term for 'Trống'?",
-                "answers": [
-                    "Guitar",
-                    "Violin",
-                    "Drums",
-                    "Piano"
-                ],
-                "correct_answer": "Drums"
-            }
-        ]
-    },
-    {
-        "name": "Furniture",
-        "description": "A set of vocabulary related to furniture.",
-        "image": "./src/seeder/image/furnitures.jpg",
-        "created_by": "Seeder",
-        "is_public": true,
-        "cards": [
-            {
-                "term": "Chair",
-                "define": "Ghế",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "She sat on the chair by the window.",
-                        "translation": "Cô ấy ngồi trên chiếc ghế bên cửa sổ."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Table",
-                "define": "Bàn",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "They gathered around the table for dinner.",
-                        "translation": "Họ tụ tập xung quanh bàn ăn tối."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Bed",
-                "define": "Giường",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "He slept soundly in his bed.",
-                        "translation": "Anh ta ngủ ngon lành trong giường của mình."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Sofa",
-                "define": "Ghế sofa",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The whole family relaxed on the sofa together.",
-                        "translation": "Cả gia đình thư giãn trên ghế sofa cùng nhau."
-                    }
-                ],
-                "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Ghế'?",
-                "answers": [
-                    "Table",
-                    "Bed",
-                    "Chair",
-                    "Sofa"
-                ],
-                "correct_answer": "Chair"
-            },
-            {
-                "question": "What is the term for 'Bàn'?",
-                "answers": [
-                    "Table",
-                    "Bed",
-                    "Sofa",
-                    "Chair"
-                ],
-                "correct_answer": "Table"
-            },
-            {
-                "question": "What is the term for 'Giường'?",
-                "answers": [
-                    "Sofa",
-                    "Bed",
-                    "Chair",
-                    "Table"
-                ],
-                "correct_answer": "Bed"
-            },
-            {
-                "question": "What is the term for 'Ghế sofa'?",
-                "answers": [
-                    "Sofa",
-                    "Chair",
-                    "Table",
-                    "Bed"
-                ],
-                "correct_answer": "Sofa"
-            }
-        ]
-    },
-    {
-        "name": "Film",
-        "description": "A set of vocabulary related to films.",
-        "image": "./src/seeder/image/film.jpg",
-        "created_by": "Seeder",
-        "is_public": true,
-        "cards": [
-            {
-                "term": "Movie",
-                "define": "Bộ phim",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "They watched a movie at the cinema last night.",
-                        "translation": "Họ xem một bộ phim tại rạp chiếu phim vào tối qua."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Actor",
-                "define": "Diễn viên",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The actor portrayed the character brilliantly.",
-                        "translation": "Diễn viên thể hiện vai diễn một cách xuất sắc."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Director",
-                "define": "Đạo diễn",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The director brought the vision of the film to life.",
-                        "translation": "Đạo diễn thực hiện ý tưởng của bộ phim thành hiện thực."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Scene",
-                "define": "Cảnh",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The emotional scene brought tears to the audience's eyes.",
-                        "translation": "Cảnh quay xúc động khiến khán giả rơi nước mắt."
-                    }
-                ],
-                "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Bộ phim'?",
-                "answers": [
-                    "Director",
-                    "Scene",
-                    "Movie",
-                    "Actor"
-                ],
-                "correct_answer": "Movie"
-            },
-            {
-                "question": "What is the term for 'Diễn viên'?",
-                "answers": [
-                    "Actor",
-                    "Director",
-                    "Scene",
-                    "Movie"
-                ],
-                "correct_answer": "Actor"
-            },
-            {
-                "question": "What is the term for 'Đạo diễn'?",
-                "answers": [
-                    "Scene",
-                    "Movie",
-                    "Director",
-                    "Actor"
-                ],
-                "correct_answer": "Director"
-            },
-            {
-                "question": "What is the term for 'Cảnh'?",
-                "answers": [
-                    "Movie",
-                    "Actor",
-                    "Director",
-                    "Scene"
-                ],
-                "correct_answer": "Scene"
-            }
-        ]
-    },
-    {
-        "name": "Book",
-        "description": "A set of vocabulary related to books.",
-        "image": "./src/seeder/image/book.jpg",
-        "created_by": "Seeder",
-        "is_public": true,
-        "cards": [
-            {
-                "term": "Book",
-                "define": "Cuốn sách",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "She loves reading books in her free time.",
-                        "translation": "Cô ấy thích đọc sách vào thời gian rảnh rỗi."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Author",
-                "define": "Tác giả",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The author has written many best-selling novels.",
-                        "translation": "Tác giả đã viết nhiều tiểu thuyết bán chạy nhất."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Chapter",
-                "define": "Chương",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "She finished reading the first chapter of the book.",
-                        "translation": "Cô ấy đã đọc xong chương đầu tiên của cuốn sách."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Genre",
-                "define": "Thể loại",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "She enjoys reading books of various genres.",
-                        "translation": "Cô ấy thích đọc sách của nhiều thể loại khác nhau."
-                    }
-                ],
-                "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Cuốn sách'?",
-                "answers": [
-                    "Author",
-                    "Chapter",
-                    "Book",
-                    "Genre"
-                ],
-                "correct_answer": "Book"
-            },
-            {
-                "question": "What is the term for 'Tác giả'?",
-                "answers": [
-                    "Chapter",
-                    "Genre",
-                    "Book",
-                    "Author"
-                ],
-                "correct_answer": "Author"
-            },
-            {
-                "question": "What is the term for 'Chương'?",
-                "answers": [
-                    "Chapter",
-                    "Genre",
-                    "Book",
-                    "Author"
-                ],
-                "correct_answer": "Chapter"
-            },
-            {
-                "question": "What is the term for 'Thể loại'?",
-                "answers": [
-                    "Book",
-                    "Author",
-                    "Chapter",
-                    "Genre"
-                ],
-                "correct_answer": "Genre"
-            }
-        ]
-    },
-    {
-        "name": "School",
-        "description": "A set of vocabulary related to school.",
-        "image": "./src/seeder/image/school.jpg",
-        "created_by": "Seeder",
-        "is_public": true,
-        "cards": [
-            {
-                "term": "Classroom",
-                "define": "Phòng học",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The students gathered in the classroom for the lesson.",
-                        "translation": "Các học sinh tụ tập trong phòng học để học bài."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Teacher",
-                "define": "Giáo viên",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The teacher explained the lesson clearly.",
-                        "translation": "Giáo viên giải thích bài học một cách rõ ràng."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Student",
-                "define": "Học sinh",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "The student asked a question about the assignment.",
-                        "translation": "Học sinh đặt câu hỏi về bài tập về nhà."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Homework",
-                "define": "Bài tập về nhà",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "She completed her homework before going to bed.",
-                        "translation": "Cô ấy hoàn thành bài tập về nhà trước khi đi ngủ."
-                    }
-                ],
-                "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Phòng học'?",
-                "answers": [
-                    "Classroom",
-                    "Teacher",
-                    "Student",
-                    "Homework"
-                ],
-                "correct_answer": "Classroom"
-            },
-            {
-                "question": "What is the term for 'Giáo viên'?",
-                "answers": [
-                    "Student",
-                    "Teacher",
-                    "Homework",
-                    "Classroom"
-                ],
-                "correct_answer": "Teacher"
-            },
-            {
-                "question": "What is the term for 'Học sinh'?",
-                "answers": [
-                    "Homework",
-                    "Classroom",
-                    "Teacher",
-                    "Student"
-                ],
-                "correct_answer": "Student"
-            },
-            {
-                "question": "What is the term for 'Bài tập về nhà'?",
-                "answers": [
-                    "Classroom",
-                    "Teacher",
-                    "Student",
-                    "Homework"
-                ],
-                "correct_answer": "Homework"
-            }
-        ]
-    },
-    {
-        "name": "Environmental",
-        "description": "A set of vocabulary related to the environment.",
-        "image": "./src/seeder/image/environment.jpg",
-        "created_by": "Seeder",
-        "is_public": true,
-        "cards": [
-            {
-                "term": "Environment",
-                "define": "Môi trường",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "We must protect the environment for future generations.",
-                        "translation": "Chúng ta phải bảo vệ môi trường cho các thế hệ tương lai."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Pollution",
-                "define": "Ô nhiễm",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "Air pollution is a serious problem in many cities.",
-                        "translation": "Ô nhiễm không khí là một vấn đề nghiêm trọng ở nhiều thành phố."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Recycling",
-                "define": "Tái chế",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "Recycling paper helps to save trees.",
-                        "translation": "Tái chế giấy giúp tiết kiệm cây xanh."
-                    }
-                ],
-                "created_by": "Seeder"
-            },
-            {
-                "term": "Sustainability",
-                "define": "Bền vững",
-                "set": null,
-                "example": [
-                    {
-                        "sentence": "We need to find sustainable solutions to protect the planet.",
-                        "translation": "Chúng ta cần tìm kiếm những giải pháp bền vững để bảo vệ hành tinh."
-                    }
-                ],
-                "created_by": "Seeder"
-            }
-        ],
-        "questions": [
-            {
-                "question": "What is the term for 'Môi trường'?",
-                "answers": [
-                    "Pollution",
-                    "Environment",
-                    "Recycling",
-                    "Sustainability"
-                ],
-                "correct_answer": "Environment"
-            },
-            {
-                "question": "What is the term for 'Ô nhiễm'?",
-                "answers": [
-                    "Recycling",
-                    "Sustainability",
-                    "Pollution",
-                    "Environment"
-                ],
-                "correct_answer": "Pollution"
-            },
-            {
-                "question": "What is the term for 'Tái chế'?",
-                "answers": [
-                    "Sustainability",
-                    "Environment",
-                    "Pollution",
-                    "Recycling"
-                ],
-                "correct_answer": "Recycling"
-            },
-            {
-                "question": "What is the term for 'Bền vững'?",
-                "answers": [
-                    "Environment",
-                    "Sustainability",
-                    "Pollution",
-                    "Recycling"
-                ],
-                "correct_answer": "Sustainability"
             }
         ]
     }

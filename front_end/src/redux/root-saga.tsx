@@ -11,7 +11,7 @@ import UserCardSaga from '@/redux/user-cards/saga';
 import UserProfileSaga from '@/redux/user-profile/saga';
 import UserProgressSaga from '@/redux/user-progress/saga';
 import UserTestSaga from '@/redux/user-tests/saga';
-
+import ApproveSetSaga from '@/redux/approve-sets/saga'
 export default function* rootSaga() {
     yield all([
         TestSaga(),
@@ -26,5 +26,6 @@ export default function* rootSaga() {
         UserProfileSaga(),
         UserProgressSaga(),
         UserTestSaga(),
+        ApproveSetSaga(),
     ])
 }

@@ -79,6 +79,16 @@ const UserSets = createSlice({
     quickAddNewSetFailureAction: (state) => {
       // state.isLoading = false;
     },
+
+    requestToApproveSetAction: (state, { payload }) => {
+      // state.isLoading = true;
+    },
+    requestToApproveSetSuccessAction: (state, { payload }) => {
+      // state.isLoading = false;
+    },
+    requestToApproveSetFailureAction: (state) => {
+      // state.isLoading = false;
+    },
   }
 })
 
@@ -103,6 +113,9 @@ export const {
   quickAddNewSetAction,
   quickAddNewSetSuccessAction,
   quickAddNewSetFailureAction,
+  requestToApproveSetAction,
+  requestToApproveSetSuccessAction,
+  requestToApproveSetFailureAction,
 } = UserSets.actions
 
 export default UserSets.reducer

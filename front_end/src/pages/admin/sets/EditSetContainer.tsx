@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form'
 import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { CardTitle } from '@/components/ui/card'
+import { Card, CardTitle } from '@/components/ui/card'
 import { PlusCircle, PencilIcon, CheckIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils'
@@ -260,14 +260,18 @@ const EditSetContainer = () => {
                                     }
                                 }
                                 card = convertData ? convertData : card;
-                                return <CardForm
-                                    key={index}
-                                    index={index}
-                                    card={card}
-                                    setId={data?.id}
-                                    onDeleteCard={onDeleteCard}
-                                    onEditCard={onEditCard}
-                                />
+                                return (
+                                    <Card className='p-4'>
+                                        <CardForm
+                                            key={index}
+                                            index={index}
+                                            card={card}
+                                            setId={data?.id}
+                                            onDeleteCard={onDeleteCard}
+                                            onEditCard={onEditCard}
+                                        />
+                                    </Card>
+                                )
                             })}
                     </div>
                     <div className='flex justify-center my-2'>

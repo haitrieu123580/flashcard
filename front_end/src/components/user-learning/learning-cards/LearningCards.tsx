@@ -27,7 +27,7 @@ const LearningCards = (props: any) => {
     const navigate = useNavigate();
     return (
         <div>
-            <Card className="w-full min-h-[500px] flex flex-col justify-between bg-transparent border-none !shadow-none">
+            <Card className="w-full min-h-[500px] flex flex-col justify-between !bg-transparent border-none !shadow-none">
                 <CardTitle className="flex gap-2 items-end justify-between my-4">
                     <span>{data?.name}</span>
                     <div className='flex gap-2'>

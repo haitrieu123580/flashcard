@@ -7,6 +7,7 @@ import { TestQuestion } from '../entity/TestQuestion'
 import { S3Service } from '../services/s3/S3Service'
 import { Container } from 'typedi'
 import setJson from "./json/set.json"
+import { Constants } from '@src/core/Constant'
 
 export class SetSeeder implements Seeder {
     private s3Service: S3Service;
@@ -26,12 +27,13 @@ export class SetSeeder implements Seeder {
             const newSet = new Sets();
             newSet.name = set.name;
             newSet.description = set.description;
+            newSet.level = Constants.LEVEL.EASY
 
             if (set?.image) {
                 const image_url = await this.s3Service.uploadFile({
                     filename: String(set.name) + '.jpg',
                     path: set?.image,
-                    mimetype: 'image/jpeg',
+                    mimetype: 'image/*',
                 });
                 newSet.image = image_url?.Location || "";
             }
@@ -44,6 +46,16 @@ export class SetSeeder implements Seeder {
 
             for (const card of set.cards) {
                 const newCard = new Cards();
+                console.log("card.image", card.image)
+                if (card?.image) {
+                    const image_url = await this.s3Service.uploadFile({
+                        filename: String(card.term) + '.jpg',
+                        path: card?.image,
+                        mimetype: 'image/*',
+                    });
+                    console.log("image_url", image_url)
+                    newCard.image = image_url?.Location || "";
+                }
                 newCard.term = card.term;
                 newCard.define = card.define;
                 newCard.example = JSON.stringify(card.example);
@@ -51,34 +63,34 @@ export class SetSeeder implements Seeder {
                 newSet.cards.push(newCard);
             }
 
-            newSet.testKits = [];
 
-            if (set.testKits) {
-                for (const testKit of set.testKits) {
-                    const newTestKit = new TestKits();
-                    newTestKit.level = testKit.level;
-                    newTestKit.questions = [];
+            // newSet.testKits = [];
+            // if (set?.testKits) {
+            //     for (const testKit of set?.testKits) {
+            //         const newTestKit = new TestKits();
+            //         newTestKit.level = testKit.level;
+            //         newTestKit.questions = [];
 
-                    if (testKit.questions.length > 0) {
-                        for (const question of testKit.questions) {
-                            const newQuestion = new TestQuestion();
-                            newQuestion.questionText = question.questionText;
-                            newQuestion.correctAnswer = question.correctAnswer;
-                            newQuestion.options = question.options || [];
-                            newQuestion.questionType = question.questionType;
-                            newQuestion.testKit = newTestKit;  // Set the relation here
-                            newTestKit.questions.push(newQuestion);
-                        }
-                    }
-                    newTestKit.set = newSet;  // Set the relation here
-                    newSet.testKits.push(newTestKit);
-                }
-            }
+            //         if (testKit.questions.length > 0) {
+            //             for (const question of testKit.questions) {
+            //                 const newQuestion = new TestQuestion();
+            //                 newQuestion.questionText = question.questionText;
+            //                 newQuestion.correctAnswer = question.correctAnswer;
+            //                 newQuestion.options = question.options || [];
+            //                 newQuestion.questionType = question.questionType;
+            //                 newQuestion.testKit = newTestKit;  // Set the relation here
+            //                 newTestKit.questions.push(newQuestion);
+            //             }
+            //         }
+            //         newTestKit.set = newSet;  // Set the relation here
+            //         newSet.testKits.push(newTestKit);
+            //     }
+            // }
             await dataSource.transaction(async manager => {
                 await manager.save(newSet.cards);
                 await manager.save(newSet);
-                await manager.save(newSet.testKits);
-                await manager.save(newSet.testKits.flatMap(testKit => testKit.questions));
+                // await manager.save(newSet.testKits);
+                // await manager.save(newSet.testKits.flatMap(testKit => testKit.questions));
             });
         }
     }

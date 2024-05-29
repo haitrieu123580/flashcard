@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { IApproveSetService } from '@services/approve-sets/IApproveSetService';
 import { ApproveSetService } from '@src/services/approve-sets/ApproveSetService';
 import {
@@ -12,24 +12,27 @@ import {
 import { AuthFailureError } from '@src/core/ApiError';
 import { username } from '@src/dto/auth/SignInRequest';
 export class ApproveSetController {
-    private service: IApproveSetService;
+    private service: IApproveSetService = Container.get(ApproveSetService);
     constructor() {
         this.service = Container.get(ApproveSetService);
     }
-    async getPendingSets(req: Request, res: Response) {
+    getPendingSets = async (req: Request, res: Response) => {
+        const response = await this.service.getPendingSets();
+        if (response) {
+            return new SuccessResponse("Pending sets list", response).send(res);
+        }
+        return new FailureMsgResponse("Pending sets list not found")
     }
-    async approveSet(req: any, res: Response) {
+    approveSet = async (req: any, res: Response) => {
         const data = {
             setId: req.body.setId,
-            user: req.user
+            user: req.user,
+            level: req.body.level,
         }
-        const response = await this.service.approveSet(data);
-        if (response) {
-            return new SuccessMsgResponse('Set approved successfully').send(res);
-        }
-        return new FailureMsgResponse('Set not approved').send(res);
+        await this.service.approveSet(data);
+        return new SuccessMsgResponse('Set approved successfully').send(res);
     }
-    async rejectSet(req: any, res: Response) {
+    rejectSet = async (req: any, res: Response) => {
         const data = {
             setId: req.body.setId,
             user: req.user
@@ -40,9 +43,17 @@ export class ApproveSetController {
         }
         return new FailureMsgResponse('Set rejected failed').send(res);
     }
-    async getApprovedSets(req: Request, res: Response) {
-    }
-    async getRejectedSets(req: Request, res: Response) {
+
+    getSetByAdmin = async (req: any, res: Response) => {
+        const data = {
+            setId: req.body.setId,
+            user: req.user
+        }
+        const response = await this.service.getSetByAdmin({ userId: data.user?.id, setId: data.setId })
+        if (response) {
+            return new SuccessResponse("Set", response).send(res);
+        }
+        return new FailureMsgResponse("Set not found").send(res)
     }
 
 }

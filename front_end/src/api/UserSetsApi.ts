@@ -35,3 +35,8 @@ export const AddCardToNewSetApi = async (data: any) => {
     const response = await AxiosConfig.post(`${BASE_URL}/quick-create-set`, data);
     return response;
 }
+
+export const RequestToApproveSetApi = async (setId: string) => {
+    const response = await AxiosConfig.post(`${BASE_URL}/request-to-approve-set`, { setId });
+    return response;
+}

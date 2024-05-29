@@ -24,6 +24,9 @@ import {
   quickAddNewSetAction,
   quickAddNewSetSuccessAction,
   quickAddNewSetFailureAction,
+  requestToApproveSetAction,
+  requestToApproveSetSuccessAction,
+  requestToApproveSetFailureAction,
 } from "./slice";
 import {
   GetUSerSetsListApi,
@@ -32,7 +35,8 @@ import {
   CreateUserSetApi,
   DeleteUserSetApi,
   EditUserSetApi,
-  AddCardToNewSetApi
+  AddCardToNewSetApi,
+  RequestToApproveSetApi
 } from '@/api/UserSetsApi';
 
 function* watchUserSetsList() {
@@ -209,6 +213,30 @@ function* watchQuickAddCardToNewSet() {
   });
 }
 
+function* watchRequestToApproveSet() {
+  yield takeLatest(requestToApproveSetAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { setId } = payload
+    try {
+      const res = yield call(RequestToApproveSetApi, setId);
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(payload?.onSuccess) && payload?.onSuccess(res.data?.data);
+          yield put(
+            requestToApproveSetSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+      }
+
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(requestToApproveSetFailureAction())
+    }
+  });
+}
+
 export default function* UserSetsSaga() {
   yield all([
     fork(watchUserSetsList),
@@ -218,5 +246,6 @@ export default function* UserSetsSaga() {
     fork(watchEditSet),
     fork(watchDeleteSet),
     fork(watchQuickAddCardToNewSet),
+    fork(watchRequestToApproveSet),
   ]);
 }

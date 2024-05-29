@@ -16,31 +16,36 @@ import { Link } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
 
 const SetItem = (props: any) => {
-    const { data, onEdit, onDelete, onCreate } = props
+    const { data, onEdit, onDelete, onCreate, showAction = true, onClick } = props
 
     return (
-        <Card className="my-6">
+        <Card className="my-6" onClick={() => {
+            isFunction(onClick) && onClick(data)
+        }}>
             <CardHeader className={""}>
                 <CardTitle className="flex justify-between items-center">
                     <span>{data?.name}</span>
-                    <div className="flex gap-2 items-center">
-                        <Button
-                            variant={"secondary"}
-                        >
-                            <Link
-                                to={replacePathWithId(routerPaths.ADMIN_SETS_EDIT, data?.id)}
+                    {
+                        showAction &&
+                        <div className="flex gap-2 items-center">
+                            <Button
+                                variant={"secondary"}
                             >
-                                <Pencil />
-                            </Link>
+                                <Link
+                                    to={replacePathWithId(routerPaths.ADMIN_SETS_EDIT, data?.id)}
+                                >
+                                    <Pencil />
+                                </Link>
 
-                        </Button>
-                        <DeletePopup
-                            onConfirmDelete={() => {
-                                isFunction(onDelete) && onDelete(data?.id)
-                            }}
-                            TriggerComponent={<Button variant={'destructive'}><Trash2 /></Button>}
-                        />
-                    </div>
+                            </Button>
+                            <DeletePopup
+                                onConfirmDelete={() => {
+                                    isFunction(onDelete) && onDelete(data?.id)
+                                }}
+                                TriggerComponent={<Button variant={'destructive'}><Trash2 /></Button>}
+                            />
+                        </div>
+                    }
                 </CardTitle>
                 <CardDescription>
                     <Badge variant="default">{`${data?.totalCards} cards`}</Badge>

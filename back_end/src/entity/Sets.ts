@@ -40,7 +40,6 @@ export class Sets extends BaseEntity {
 
     @Column({
         nullable: true,
-        default: 1,
     })
     level: number;
 

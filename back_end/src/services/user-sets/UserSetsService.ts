@@ -203,6 +203,8 @@ export class UserSetsService implements IUserSetsService {
     }
 
     requestToPublicSet = async (data: RequestToApproveSet): Promise<any> => {
+        const { setId } = data
+        if (!data.user?.id || !setId) { throw new BadRequestError("Invalid data") }
         const user = await this.userRepo.getUserBy("id", data?.user?.id);
         if (!user) {
             throw new AuthFailureError("User not found");
@@ -226,9 +228,5 @@ export class UserSetsService implements IUserSetsService {
         set.status = Constants.SET_STATUS.PENDING;
         const result = await this.setRepo.edit_set(set)
         return result;
-    }
-
-    getUserLearningProgress = async (userId: string, setId: string): Promise<any> => {
-
     }
 }

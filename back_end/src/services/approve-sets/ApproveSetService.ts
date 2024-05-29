@@ -1,4 +1,4 @@
-import Container, { Service } from "typedi";
+import { Container, Service } from "typedi";
 import { IApproveSetService } from "./IApproveSetService";
 import { VocabularySetRepo } from "@src/repositories/vocabulary-set/VocabularySetRepo";
 import { IVocabularySetRepo } from "@src/repositories/vocabulary-set/IVocabularySetRepo";
@@ -14,7 +14,9 @@ import {
 } from "@src/core/ApiError";
 import { Sets } from "@src/entity/Sets";
 import { ApproveSetRequest } from "@src/dto/approve-sets";
-
+import { Cards } from "@src/entity/Cards";
+import { isAdmin } from '../../middleware/isAdmin';
+import { AppDataSource } from "@src/data-source";
 
 @Service()
 export class ApproveSetService implements IApproveSetService {
@@ -24,7 +26,7 @@ export class ApproveSetService implements IApproveSetService {
         this.setRepo = Container.get(VocabularySetRepo);
         this.userRepo = Container.get(UserRepo);
     }
-    async getPendingSets(): Promise<any> {
+    getPendingSets = async (): Promise<any> => {
         const [sets, count] = await this.setRepo.getSetsByStatus(Constants.SET_STATUS.PENDING);
         if (sets?.length) {
             sets.forEach((set: any) => {
@@ -51,7 +53,8 @@ export class ApproveSetService implements IApproveSetService {
             throw new NoDataError('Set not found!');
         }
     }
-    async approveSet(data: ApproveSetRequest): Promise<any> {
+    approveSet = async (data: ApproveSetRequest): Promise<any> => {
+        if (!data.setId || !data.user?.id) { throw new BadRequestError("Invalid data") }
         const set = await this.setRepo.get_set_by_id(data.setId);
         const user = await this.userRepo.getUserBy("id", data.user?.id);
         if (!set) {
@@ -60,19 +63,40 @@ export class ApproveSetService implements IApproveSetService {
         if (!user) {
             throw new NotFoundError("User not found");
         }
-        set?.status === Constants.SET_STATUS.PENDING ? Constants.SET_STATUS.APPROVED : set?.status;
+        // if (set?.status != Constants.SET_STATUS.PENDING) {
+        //     throw new ForbiddenError("Set already approved or rejected");
+        // }
+        set.status = Constants.SET_STATUS.APPROVED;
+        console.log("set", set);
         await this.setRepo.edit_set(set);
         const newSet = new Sets();
         newSet.name = set.name;
         newSet.description = set.description;
         newSet.image = set.image;
         newSet.created_by = set.created_by;
-        newSet.cards = set.cards;
+        newSet.cards = [];
+        set.cards.forEach((card: Cards) => {
+            const newCard = new Cards();
+            newCard.set = newSet;
+            newCard.term = card.term;
+            newCard.define = card.define;
+            newCard.image = card.image;
+            newCard.example = card.example;
+            newCard.created_by = card.created_by;
+            newSet.cards.push(newCard);
+
+        })
         newSet.is_public = true;
         newSet.user = user;
-        return this.setRepo.createSet(newSet);
+        newSet.level = data?.level ? data.level : 1;
+        await AppDataSource.transaction(async manager => {
+            await manager.save(newSet);
+            await manager.save(newSet.cards);
+        });
+        // return await this.setRepo.createSet(newSet);
     }
-    async rejectSet(data: ApproveSetRequest): Promise<any> {
+    rejectSet = async (data: ApproveSetRequest): Promise<any> => {
+        if (!data.setId || !data.user?.id) { throw new BadRequestError("Invalid data") }
         const set = await this.setRepo.get_set_by_id(data.setId);
         const user = await this.userRepo.getUserBy("id", data.user?.id);
         if (!set) {
@@ -81,15 +105,22 @@ export class ApproveSetService implements IApproveSetService {
         if (!user) {
             throw new NotFoundError("User not found");
         }
-        set?.status === Constants.SET_STATUS.PENDING ? Constants.SET_STATUS.REJECTED : set?.status;
+        // if (set?.status != Constants.SET_STATUS.PENDING) {
+        //     throw new ForbiddenError("Set already approved or rejected");
+        // }
+        set.status = Constants.SET_STATUS.REJECTED;
         set.is_public = false;
         return this.setRepo.edit_set(set);
     }
-    async getApprovedSets(): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
-    async getRejectedSets(): Promise<any> {
-        throw new Error("Method not implemented.");
+
+    getSetByAdmin = async (data: any) => {
+        const { userId, setId } = data
+        if (!userId || !setId) { throw new BadRequestError("Invalid data") }
+        const user = await this.userRepo.getUserBy("id", userId);
+        if (!user) throw new AuthFailureError("user not found");
+        if (user.role !== Constants.USER_ROLE.ADMIN) throw new ForbiddenError("admin only")
+        const set = await this.setRepo.get_set_by_id(setId);
+        return set;
     }
 
 }

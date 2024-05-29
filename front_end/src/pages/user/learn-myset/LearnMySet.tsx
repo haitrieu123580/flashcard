@@ -1,22 +1,17 @@
-import FlipCard from "@/components/flash-card/FlipCard"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import SentencesExampleBox from "@/components/flash-card/SentencesExampleBox";
 import NewsetSets from "@/components/home/newest-sets/NewsetSets";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { convertDateToString, replacePathWithId, speek } from "@/lib/utils";
-import { routerPaths } from "@/routes/path";
+
 import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
-import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator";
+
 import UserTestHistory from "@/components/user-learning/user-test-history/UserTestHistory";
 import {
     getUserSetsListAction,
     addCardToMySetAction,
     getUserSetByIdAction,
+    requestToApproveSetAction,
 } from '@/redux/user-sets/slice';
 import {
     getUserLearningSetProgressAction,
@@ -25,6 +20,9 @@ import {
 import { getTestHistoryBySetIdAction } from "@/redux/user-tests/slice";
 import UserNotStudiedCards from "@/components/user-learning/user-progress/UserLearningProgress";
 import LearningCards from "@/components/user-learning/learning-cards/LearningCards";
+import { toast } from "@/components/ui/use-toast";
+import Constants from "@/lib/Constants";
+
 const LearnFlashcard = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -96,11 +94,72 @@ const LearnFlashcard = () => {
             }
         })
     }
+
+    const buttonColor = (status: string) => {
+        switch (status) {
+            case Constants.SET_STATUS.APPROVED:
+                return 'default';
+            case Constants.SET_STATUS.PENDING:
+                return 'secondary';
+            case Constants.SET_STATUS.REJECTED:
+                return 'destructive';
+            default:
+                return 'ghost';
+        }
+    }
+
+    const onRequestToApproveSet = () => {
+        dispatch({
+            type: requestToApproveSetAction.type,
+            payload: {
+                setId: id,
+                onSuccess: (message: string) => {
+                    toast({
+                        title: 'Success',
+                        description: message ? message : 'Your set is pending',
+                        variant: 'default',
+                    });
+                },
+                onError: (message: string) => {
+                    toast({
+                        title: 'Error',
+                        description: message ? message : 'Failed :(',
+                        variant: 'destructive',
+                    });
+                }
+            }
+        })
+    }
     return (
         <div>
             <LoadingPopup
                 open={isLoading}
             />
+            <div className="w-full flex justify-end">
+                {set?.status ?
+                    <>
+                        <Button
+                            onClick={() => {
+
+                            }}
+                            variant={buttonColor(set.status)}
+                        >
+                            {set?.status.toUpperCase()}
+                        </Button>
+
+                    </>
+                    : <>
+                        <Button
+                            onClick={() => {
+                                onRequestToApproveSet();
+                            }}
+                            variant={buttonColor(set.status)}
+                        >
+                            {'Publish your set'}
+                        </Button>
+                    </>
+                }
+            </div>
             <LearningCards data={set} onFlip={onFlip} id={id} progress={progress} />
             <UserNotStudiedCards data={set} progress={progress} />
 

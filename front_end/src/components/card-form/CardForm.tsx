@@ -27,7 +27,8 @@ const CardForm = (props: any) => {
         onEditCard,
         onCreateCard,
         openCollapsible = "",
-        className = ""
+        className = "",
+        readMode = false
     } = props
     const formSchema = z.object({
         term: z.string().min(1, {
@@ -82,32 +83,39 @@ const CardForm = (props: any) => {
                             <AccordionTrigger>
                                 <div className="w-full">
                                     <div className=' w-full flex justify-between items-center'>
-                                        {isEdit
+                                        {!readMode
                                             ? <>
-                                                <b>{`Card ${index + 1}: ${card.term}`}</b>
-                                                <div className='flex justify-center items-center mb-2'>
-                                                    <EditPopup
-                                                        onConfirmEdit={() => {
-                                                            console.log('onConfirmEdit', form.handleSubmit(onSubmit)())
-                                                            form.handleSubmit(onSubmit)()
-                                                        }}
-                                                        TriggerComponent={
-                                                            <Button type='button' variant={'ghost'}>
-                                                                <CheckIcon width={20} />
-                                                            </Button>
-                                                        }
-                                                    />
-                                                    <DeletePopup
-                                                        onConfirmDelete={() => {
-                                                            isFunction(onDeleteCard) && onDeleteCard(card?.id)
-                                                        }}
-                                                        TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
-                                                    />
-                                                </div>
+                                                {isEdit
+                                                    ? <>
+                                                        <b>{`Card ${index + 1}: ${card.term}`}</b>
+                                                        <div className='flex justify-center items-center mb-2'>
+                                                            <EditPopup
+                                                                onConfirmEdit={() => {
+                                                                    console.log('onConfirmEdit', form.handleSubmit(onSubmit)())
+                                                                    form.handleSubmit(onSubmit)()
+                                                                }}
+                                                                TriggerComponent={
+                                                                    <Button type='button' variant={'ghost'}>
+                                                                        <CheckIcon width={20} />
+                                                                    </Button>
+                                                                }
+                                                            />
+                                                            <DeletePopup
+                                                                onConfirmDelete={() => {
+                                                                    isFunction(onDeleteCard) && onDeleteCard(card?.id)
+                                                                }}
+                                                                TriggerComponent={<Button type='button' variant={'destructive'}><Trash2 width={20} /></Button>}
+                                                            />
+                                                        </div>
+                                                    </>
+                                                    : <>
+
+                                                    </>}
                                             </>
                                             : <>
-
-                                            </>}
+                                                <b>{`Card ${index + 1}: ${card.term}`}</b>
+                                            </>
+                                        }
 
                                     </div>
                                 </div>
@@ -122,6 +130,7 @@ const CardForm = (props: any) => {
                                         type={Constants.INPUT_TYPE.TEXT}
                                         className='w-1/2'
                                         required={true}
+                                        readOnly={!readMode}
                                     />
                                     <FormInput
                                         control={form.control}
@@ -131,6 +140,7 @@ const CardForm = (props: any) => {
                                         type={Constants.INPUT_TYPE.TEXT}
                                         className='w-1/2'
                                         required={true}
+                                        readOnly={!readMode}
                                     />
                                 </div>
                                 <FormInput
@@ -139,18 +149,22 @@ const CardForm = (props: any) => {
                                     label="Image"
                                     type={Constants.INPUT_TYPE.FILE_UPLOAD}
                                     classNameInput='h-fit'
+                                    readOnly={!readMode}
                                 />
                                 <div className='my-6 flex gap-4 items-end'>
                                     <b>Examples</b>
-                                    <Button type="button"
-                                        variant={'ghost'}
-                                        className={`p-0 w-fit h-fit`}
-                                        onClick={() => {
-                                            fields.append({ sentence: '', translation: '' })
-                                        }}
-                                    >
-                                        <PlusCircleIcon width={18} height={18} />
-                                    </Button>
+                                    {
+                                        !readMode &&
+                                        <Button type="button"
+                                            variant={'ghost'}
+                                            className={`p-0 w-fit h-fit`}
+                                            onClick={() => {
+                                                fields.append({ sentence: '', translation: '' })
+                                            }}
+                                        >
+                                            <PlusCircleIcon width={18} height={18} />
+                                        </Button>
+                                    }
                                 </div>
 
                                 {fields?.fields?.map((field, index) => {
@@ -172,12 +186,14 @@ const CardForm = (props: any) => {
                                                 type={Constants.INPUT_TYPE.TEXT}
                                                 className='w-1/2'
                                             />
-                                            <Button
-                                                variant={'ghost'}
-                                                onClick={() => fields.remove(index)}
-                                            >
-                                                <Trash2 />
-                                            </Button>
+                                            {!readMode &&
+                                                <Button
+                                                    variant={'ghost'}
+                                                    onClick={() => fields.remove(index)}
+                                                >
+                                                    <Trash2 />
+                                                </Button>
+                                            }
                                         </div>
                                     )
                                 })}

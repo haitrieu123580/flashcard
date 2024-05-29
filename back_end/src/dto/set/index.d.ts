@@ -10,8 +10,8 @@ export type CreateNewSetData = {
         id: string;
         term: string;
         define: string;
-        image: string;
-        example: string;
+        image?: string;
+        example?: string;
     }[];
     questions?: {
         id: string;

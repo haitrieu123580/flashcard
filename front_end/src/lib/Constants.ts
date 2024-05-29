@@ -1,4 +1,7 @@
 import { routerPaths } from "@/routes/path";
+interface LevelMap {
+    [key: number]: string;
+}
 
 export default class Constants {
     static ACCESS_TOKEN = 'access_token';
@@ -64,23 +67,31 @@ export default class Constants {
             title: 'Sets'
         },
         {
-            href: routerPaths.ADMIN_ACCOUNTS,
-            title: 'Users'
+            href: routerPaths.ADMIN_PENDING_SETS,
+            title: 'Pending Sets'
         },
-        {
-            href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
-            title: 'Tests'
-        },
+        // {
+        //     href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
+        //     title: 'Tests'
+        // },
     ]
     static QUESTION_TYPE = {
         CHOICE: 'choice',
         IMAGE: 'image',
         WRITTEN: 'written',
     }
-    static LEVEL = {
+    static LEVEL: LevelMap = {
         0: "Beginner",
         1: "Easy",
         2: "Medium",
         3: "Hard",
+    }
+    static SET_STATUS = {
+        DRAFT: 'draft',
+        PUBLISHED: 'published',
+        ARCHIVED: 'archived',
+        PENDING: 'pending',
+        APPROVED: 'approved',
+        REJECTED: 'rejected',
     }
 }

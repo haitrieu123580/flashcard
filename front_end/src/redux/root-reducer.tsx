@@ -11,6 +11,7 @@ import UserCardsReducer from "@/redux/user-cards/slice";
 import UserProfileReducer from "@/redux/user-profile/slice";
 import UserProgressReducer from "@/redux/user-progress/slice";
 import UserTestReducer from "@/redux/user-tests/slice";
+import ApproveSetReducer from "@/redux/approve-sets/slice"
 const rootReducer = {
     Test: TestReducer,
     Auth: AuthReducer,
@@ -24,6 +25,7 @@ const rootReducer = {
     UserProfile: UserProfileReducer,
     UserProgress: UserProgressReducer,
     UserTest: UserTestReducer,
+    ApproveSet: ApproveSetReducer,
 };
 
 export default rootReducer;

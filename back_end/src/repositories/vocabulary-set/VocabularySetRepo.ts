@@ -98,7 +98,10 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         return this.setDataSource.findAndCount({
             where: {
                 status: status,
-            }
+            },
+            relations: [
+                "cards", "user"
+            ]
         });
     }
 }

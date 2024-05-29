@@ -72,9 +72,11 @@ const SetItem = (props: any) => {
                 </div>
                 <CardDescription className="flex gap-1 flex-wrap">
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
-                    <Badge>
-                        {Constants.LEVEL[data?.level as number as 1 | 2 | 3]?.toString()}
-                    </Badge>
+                    {data?.level &&
+                        <Badge>
+                            {Constants.LEVEL[data?.level as number as 1 | 2 | 3]?.toString()}
+                        </Badge>
+                    }
                 </CardDescription>
             </CardHeader>
             <CardContent className="" onClick={(e) => {
