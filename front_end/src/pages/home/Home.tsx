@@ -7,17 +7,19 @@ const Home = () => {
         <div>
             <CurrentLearning />
             <NewsetSets />
-            {
-                homePageData.map((data, index) => (
-                    <div className="my-6" key={index}>
-                        {index % 2 === 0
-                            ? (
-                                <> <Banner data={data} /></>
-                            )
-                            : (<><Banner isReverse={true} data={data} /> </>)}
-                    </div>
-                ))
-            }
+            <div className="py-8">
+                {
+                    homePageData.map((data, index) => (
+                        <div className="space-y-8 py-4" key={index}>
+                            {index % 2 === 0
+                                ? (
+                                    <> <Banner data={data} /></>
+                                )
+                                : (<><Banner isReverse={true} data={data} /> </>)}
+                        </div>
+                    ))
+                }
+            </div>
         </div >
     )
 }

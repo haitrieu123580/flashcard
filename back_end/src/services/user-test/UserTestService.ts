@@ -10,7 +10,7 @@ import {
     ForbiddenError,
     NoDataError,
 } from '@src/core/ApiError';
-import { TestResult } from '@entity/TestResult';
+import { TestResultDetails } from '@src/entity/TestResultDetails';
 import { TestQuestion } from '@entity/TestQuestion';
 import { Tests } from '@entity/Tests';
 import { UserProgress } from '@entity/UserProgress';
@@ -18,6 +18,7 @@ import { Cards } from '@entity/Cards';
 import { User } from "@src/entity/User";
 import { Sets } from "@src/entity/Sets";
 import { IsNull, Not } from "typeorm";
+import { Constants } from "@src/core/Constant";
 @Service()
 export class UserTestService {
     private userRepo;
@@ -33,58 +34,72 @@ export class UserTestService {
         this.cardRepo = AppDataSource.getRepository(Cards);
         this.testRepo = AppDataSource.getRepository(Tests);
         this.testQuestionRepo = AppDataSource.getRepository(TestQuestion);
-        this.testResultRepo = AppDataSource.getRepository(TestResult);
+        this.testResultRepo = AppDataSource.getRepository(TestResultDetails);
         this.userProgressRepo = AppDataSource.getRepository(UserProgress);
     }
 
     saveTestResult = async (userId: string, testId: string, answers: { questionId: string, answer: string }[]): Promise<any> => {
         if (!userId || !testId || !answers) throw new BadRequestError('User id, Test id or Answers are not provided');
-        const user = await this.userRepo.findOne(
-            {
-                where: {
-                    id: userId
-                }
-            }
-        );
+
+        const user = await this.userRepo.findOne({ where: { id: userId } });
         if (!user) throw new AuthFailureError('User not found');
+
         const test = await this.testRepo.findOneOrFail({
-            where: {
-                id: testId
-            },
+            where: { id: testId },
             relations: ['questions', 'set', 'set.cards']
         });
         if (!test) throw new NoDataError('Test not found');
 
         let score = 0;
-        let updatedQuestions: TestQuestion[] = [];
-        for (const answer of answers) {
-            const question = await this.testQuestionRepo.findOne({
-                where: {
-                    id: answer.questionId
-                }
+        let updatedResultsDetails: TestResultDetails[] = [];
+
+        for (const question of test.questions) {
+            const userAnswer = answers.find((answer) => answer.questionId === question.id);
+            const existedResult = await this.testResultRepo.findOne({
+                where: { question: { id: question.id }, test: { id: test.id } }
             });
 
-            if (!question) continue;
-            question.isCorrect = question.correctAnswer == answer.answer;
-            question.userAnswer = answer.answer;
-            score += question.isCorrect ? 1 : 0;
-            updatedQuestions.push(question);
-            // await this.testQuestionRepo.save(question);
-            // score += question.correctAnswer == answer.answer ? 1 : 0;
+            let testResult;
+            if (existedResult) {
+                testResult = existedResult;
+            } else {
+                testResult = new TestResultDetails();
+            }
+
+            if (!userAnswer) {
+                testResult.isCorrect = false;
+                testResult.userAnswer = "";
+            } else {
+                testResult.isCorrect = userAnswer.answer
+                    ? question.correctAnswer.toLowerCase() === userAnswer.answer.toLowerCase()
+                    : false;
+                testResult.userAnswer = userAnswer.answer;
+                score += testResult.isCorrect ? 1 : 0;
+            }
+
+            testResult.question = question;
+            testResult.test = test;
+            updatedResultsDetails.push(testResult);
+            await this.testResultRepo.save(testResult);
         }
+
         test.score = score;
         test.completedAt = new Date();
 
-        // const response = await this.testRepo.save(test);
         await AppDataSource.transaction(async manager => {
             await manager.save(test);
-            await manager.save(updatedQuestions);
         });
+
         return {
             ...test,
+            set: {
+                ...test.set,
+                mySet: test.set?.user?.id === userId
+            },
             totalQuestions: test.questions.length,
-        }
+        };
     }
+
 
     getUserRecentTestOfSet = async (userId: string, setId: string): Promise<any> => {
         if (!userId || !setId) throw new BadRequestError('User id or Set id is not provided');
@@ -106,13 +121,15 @@ export class UserTestService {
             where: {
                 user: { id: user.id },
                 set: { id: set.id },
-                completedAt: Not(IsNull())
+                completedAt: Not(IsNull()),
+                score: Not(IsNull()),
+                // level: Not(Constants.LEVEL.BEGINER)
             },
             order: {
                 completedAt: 'DESC' // latest test first
             },
             // take: ,
-            relations: ['questions']
+            relations: ['questions', "results"]
         });
 
         let totalCorrectPercent = 0;
@@ -121,7 +138,7 @@ export class UserTestService {
             if (test.questions.length === 0) {
                 return;
             }
-            const correctAnswers = test.questions.filter((question: TestQuestion) => question.isCorrect);
+            const correctAnswers = test.results.filter((result: TestResultDetails) => result.isCorrect);
             const correctPercent = (correctAnswers.length / test.questions.length) * 100;
             totalCorrectPercent += correctPercent;
             completedTests++;
@@ -135,7 +152,7 @@ export class UserTestService {
                 }
             }),
             count: testCount,
-            totalCorrectPercent: completedTests > 0 ? totalCorrectPercent / completedTests : 0
+            totalCorrectPercent: Math.round(completedTests > 0 ? totalCorrectPercent / completedTests : 0)
         };
     }
 
@@ -154,11 +171,15 @@ export class UserTestService {
                 id: testId,
                 user: { id: user.id }
             },
-            relations: ['questions', "set"]
+            relations: ['questions', "set", "results", "results.question", "set.user"]
         });
         if (!test) throw new NoDataError('Test not found');
         return {
             ...test,
+            set: {
+                ...test.set,
+                mySet: test.set?.user?.id === userId
+            },
             totalQuestions: test.questions.length
         };
     }

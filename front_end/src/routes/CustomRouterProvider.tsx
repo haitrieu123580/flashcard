@@ -1,5 +1,5 @@
 import { routerPaths } from './path';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { publicRoutes, protectedRoutes, privateRouters } from './MainRouters'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import AuthLayout from '@/components/layout/AuthLayout';
@@ -8,8 +8,25 @@ import Constants from '@/lib/Constants';
 import AdminLayout from '@/components/layout/AdminLayout';
 import PageNotFound from '@/components/common/PageNotFound';
 import MainLayout from '@/components/layout/MainLayout';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileAction } from '@/redux/auth/slice';
 
 const CustomRouterProvider = () => {
+    // const { profile } = useSelector((state: any) => state.Auth);
+    // const dispatch = useDispatch();
+    // useEffect(() => {
+    //     if (profile) return;
+    //     dispatch({
+    //         type: getProfileAction.type,
+    //         payload: {
+    //             onSuccess: () => {
+
+    //             },
+    //             onError: () => {
+    //             }
+    //         }
+    //     })
+    // }, [profile])
     return (
         <Router>
             <Suspense fallback={<div>Loading...</div>}>

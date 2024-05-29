@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { Sets } from './Sets';
 import { TestQuestion } from './TestQuestion';
-import { TestResult } from './TestResult';
+import { TestResultDetails } from './TestResultDetails';
 import { BaseEntity } from './BaseEntity';
 import { User } from "./User";
 @Entity()
@@ -30,13 +30,17 @@ export class Tests extends BaseEntity {
     })
     score: number;
 
+    @Column({
+        nullable: true
+    })
+    level: number;
 
     @Column({ type: 'timestamp', nullable: true })
     completedAt: Date;
 
-    @OneToMany(() => TestResult, testResult => testResult.test, {
-        onDelete: "CASCADE"
+    @OneToMany(() => TestResultDetails, results => results.test, {
+        onDelete: "SET NULL"
     })
     @JoinColumn()
-    results: TestResult[];
+    results: TestResultDetails[];
 }

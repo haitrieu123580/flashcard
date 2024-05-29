@@ -88,7 +88,7 @@ const PublicSets = () => {
         <div>
             <div className='flex justify-end'>
                 <Form {...form}>
-                    <form className='mb-10 w-fit'>
+                    <form className='w-fit'>
                         <FormInput
                             control={form.control}
                             fieldName="sort_by"

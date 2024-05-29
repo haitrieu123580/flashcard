@@ -105,7 +105,7 @@ const SetItem = (props: any) => {
                     <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block">{convertDateToString(created_at)}</span>
                 </div>
             </CardFooter>
-            <div className="w-ful h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
+            <div className="w-full h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
         </Card>
     )
 }

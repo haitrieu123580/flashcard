@@ -37,19 +37,18 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     }, [])
 
     return (
-        <div className='bg-gray-50'>
-            <div className='bg-gray-50 dark:bg-background min-h-lvh flex flex-col '>
-                <div className='sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+        <div className='bg-background-400'>
+            <div className='dark:bg-background min-h-screen flex flex-col w-full'>
+                <header className="flex h-fit w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
                     <MaxWidthWrapper>
                         <MainHeaderMobile />
-                        <MainHeader />
+                        <MainHeader className="p-0" />
                     </MaxWidthWrapper>
-                    <Separator />
-                </div>
-                <div className='min-h-fit'>
-                    <MaxWidthWrapper >
-                        <div className='mt-2 md:mt-10 min-h-96'>
-                            {/* {children} */}
+                </header>
+                <Separator />
+                <div className="flex flex-1">
+                    <MaxWidthWrapper className='h-full m-auto'>
+                        <div className='mt-10 h-full'>
                             {
                                 profile
                                 &&
@@ -59,8 +58,13 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                         <div className='fixed bottom-10 right-10'><ModeToggle /></div>
                     </MaxWidthWrapper>
                 </div>
+                <Separator />
+                <footer className="flex h-fit w-full">
+                    <MaxWidthWrapper>
+                        <Footer />
+                    </MaxWidthWrapper>
+                </footer>
             </div>
-            <Footer />
         </div>
     );
 };

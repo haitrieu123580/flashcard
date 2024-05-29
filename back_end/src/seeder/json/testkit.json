@@ -1,0 +1,76 @@
+[
+    {
+        "setId": "",
+        "level": 2,
+        "questions": [
+            {
+                "questionText": "What is the capital of France?",
+                "questionType": "choice",
+                "options": [
+                    "Paris",
+                    "London",
+                    "Berlin",
+                    "Madrid"
+                ],
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "... is the capital of Germany?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "... is the capital of Spain?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "What is the capital of Italy?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "What is the capital of the United Kingdom?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            }
+        ]
+    },
+    {
+        "setId": "",
+        "level": 3,
+        "questions": [
+            {
+                "questionText": "What is the capital of France?",
+                "questionType": "choice",
+                "options": [
+                    "Paris",
+                    "London",
+                    "Berlin",
+                    "Madrid"
+                ],
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "... is the capital of Germany?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "... is the capital of Spain?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "What is the capital of Italy?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            },
+            {
+                "questionText": "What is the capital of the United Kingdom?",
+                "questionType": "written",
+                "correctAnswer": "Paris"
+            }
+        ]
+    }
+]

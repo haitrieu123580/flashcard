@@ -3,7 +3,6 @@ import { BaseEntity } from "./BaseEntity"
 import { PasswordResetOtps } from "./PasswordResetOtps"
 import { Sets } from "./Sets"
 import { Constants } from "../core/Constant"
-import { TestResult } from "./TestResult"
 import { Tests } from "./Tests"
 import { UserProgress } from "./UserProgress"
 @Entity()

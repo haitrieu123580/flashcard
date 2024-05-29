@@ -22,6 +22,7 @@ import { GetAllPublicSetRequest } from "@src/dto/set/GetAllPublicSetRequest";
 import { SetsListResponse, SetsServiceResponse } from '@src/dto/set/SetsListResponse';
 import { UpdateSetRequest, createNewSetAndCardsRequest } from '@src/dto/set';
 import { Sets } from '@src/entity/Sets';
+import { TestKits } from '@src/entity/TestKit';
 @Service()
 class VocabularySetService implements IVocabularySetService {
 
@@ -81,8 +82,9 @@ class VocabularySetService implements IVocabularySetService {
         }
     }
 
-    getSet = async (setId: string): Promise<Sets | null | undefined> => {
+    getSet = async (setId: string): Promise<Sets | null | undefined | any> => {
         const set = await this.setRepo.get_set_by_id(setId);
+        if (!setId) { throw new BadRequestError("Set id is required") }
         if (!set) {
             throw new NoDataError('Set not found!');
         }
@@ -93,7 +95,22 @@ class VocabularySetService implements IVocabularySetService {
             set.cards.forEach((card: any) => {
                 return card.example = card.example ? JSON.parse(card.example || "") : "";
             });
-            return set;
+
+            const levelCount = set?.testKits.reduce((count: any, testKit: any) => {
+                const level = testKit.level;
+                const existingLevel = count.find((item: any) => item.level === level);
+                if (existingLevel) {
+                    existingLevel.count += 1;
+                } else {
+                    count.push({ level, count: 1 });
+                }
+                return count;
+            }, []);
+
+            return {
+                ...set,
+                levelCount
+            };
         }
     }
 

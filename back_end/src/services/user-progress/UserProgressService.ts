@@ -1,14 +1,10 @@
 import { Service } from "typedi";
 import { AppDataSource } from "../../data-source"
 import { NotFoundError } from '@src/core/ApiError';
-import { TestResult } from '@entity/TestResult';
-import { TestQuestion } from '@entity/TestQuestion';
-import { Tests } from '@entity/Tests';
 import { UserProgress } from '@entity/UserProgress';
 import { Cards } from '@entity/Cards';
 import { User } from "@src/entity/User";
 import { Sets } from "@src/entity/Sets";
-import { Constants } from "@src/core/Constant";
 @Service()
 export class UserProgressService {
     private userRepo;
@@ -85,7 +81,7 @@ export class UserProgressService {
             .select('userProgress.setId')
             .addSelect('COUNT(userProgress.setId)', 'progressCount')
             .where('userProgress.userId = :userId', { userId })
-            .andWhere('(userProgress.setId IS NULL OR userProgress.cardId IS NOT NULL)')
+            .andWhere('(userProgress.setId IS NOT NULL OR userProgress.cardId IS NOT NULL)')
             .groupBy('userProgress.setId')
             .getRawMany();
         const progressPromises = progressBySet.map(async (data) => {

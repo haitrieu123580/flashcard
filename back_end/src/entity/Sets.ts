@@ -6,6 +6,7 @@ import { Questions } from "./Questions"
 import { Constants } from "@src/core/Constant"
 import { Tests } from "./Tests"
 import { UserProgress } from "./UserProgress"
+import { TestKits } from "./TestKit"
 
 @Entity()
 export class Sets extends BaseEntity {
@@ -74,4 +75,11 @@ export class Sets extends BaseEntity {
     })
     @JoinColumn()
     progresses: UserProgress[]
+
+    @OneToMany(() => TestKits, kits => kits.set, {
+        onDelete: "SET NULL"
+    })
+    @JoinColumn()
+    testKits: TestKits[]
+
 }

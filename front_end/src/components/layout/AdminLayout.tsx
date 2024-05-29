@@ -43,32 +43,43 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     }, [])
 
     return (
-        <div className='bg-gray-50 dark:bg-background'>
-            <div className='sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
-                <MaxWidthWrapper>
-                    <MainHeaderMobile isAdmin={true} />
-                    <MainHeader isAdmin={true} />
-                </MaxWidthWrapper>
+        <div className=''>
+            <div className='dark:bg-background min-h-screen flex flex-col w-full'>
+                <header className="flex h-fit w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+                    <MaxWidthWrapper>
+                        <MainHeaderMobile isAdmin={true} />
+                        <MainHeader isAdmin={true} />
+                    </MaxWidthWrapper>
+                </header>
                 <Separator />
-            </div>
-            <MaxWidthWrapper>
-                <div className='mt-2 md:mt-10 grid grid-rows-1 md:grid-cols-12 gap-10 min-h-[70vh]'>
-                    <div className='row-span-1 md:col-span-2'>
-                        <SidebarNav items={Constants.SidebarNavItems} className='md:fixed ' />
-                    </div>
-                    <Card className='row-span-1 px-3 md:col-span-10 md:ml-6 md:px-6'>
-                        {/* {children} */}
-                        {
-                            profile
-                            &&
-                            <Outlet />
-                        }
+                <div className="flex flex-1">
+                    <MaxWidthWrapper className='h-full'>
+                        <div className='mt-2 flex flex-col md:flex-row gap-4 w-full h-full relative'>
+                            {/* <div className='flex md:fixed'
+                            >
+                            </div> */}
+                            <SidebarNav
+                                items={Constants.SidebarNavItems}
+                            />
+                            <Card className='flex-1 md:ml-6 md:px-6 bg-transparent border-none shadow-none'>
+                                {
+                                    profile
+                                    &&
+                                    <Outlet />
+                                }
 
-                    </Card>
+                            </Card>
+                        </div>
+                        <div className='fixed bottom-10 right-10'><ModeToggle /></div>
+                    </MaxWidthWrapper>
                 </div>
-                <div className='fixed bottom-10 right-10'><ModeToggle /></div>
-            </MaxWidthWrapper>
-            <Footer />
+                <Separator />
+                <footer className="flex h-fit w-full">
+                    <MaxWidthWrapper>
+                        <Footer />
+                    </MaxWidthWrapper>
+                </footer>
+            </div>
         </div>
     );
 };

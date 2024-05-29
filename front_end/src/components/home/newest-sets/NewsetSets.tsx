@@ -41,7 +41,7 @@ const NewsetSets = (props: any) => {
     }
     return (
         <>
-            <Card className={cn("w-full h-full bg-transparent !shadow-none border-none", className)}>
+            <Card className={cn("w-full h-full !bg-transparent !shadow-none border-none", className)}>
                 <CardHeader>
                     <CardTitle className="flex justify-between items-end">
                         <span className="text-blue-500">Lastest Sets</span>
