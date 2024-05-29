@@ -163,11 +163,11 @@ const MultipleChoiceTestPage = () => {
         setSelectedAnswers((prev) => ({ ...prev, [questionId]: value }));
         setIsCorrect(value === question.correctAnswer); // Update the correctness state
 
-        // Sau 2 giây, chuyển sang câu hỏi tiếp theo
-        setTimeout(() => {
-            setShowCorrectAnswer(false);
-            setCurrentCard(currentCard + 1);
-        }, 2000);
+        // // Sau 2 giây, chuyển sang câu hỏi tiếp theo
+        // setTimeout(() => {
+        //     setShowCorrectAnswer(false);
+        //     setCurrentCard(currentCard + 1);
+        // }, 2000);
     };
 
     const handleWrittenAnswer = (questionId: string, value: string, question: Question) => {
@@ -178,11 +178,11 @@ const MultipleChoiceTestPage = () => {
         setSelectedAnswers((prev) => ({ ...prev, [questionId]: value }));
         setIsCorrect(value.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase()); // Update the correctness state
 
-        // Sau 2 giây, chuyển sang câu hỏi tiếp theo
-        setTimeout(() => {
-            setShowCorrectAnswer(false);
-            setCurrentCard(currentCard + 1);
-        }, 2000);
+        // // Sau 2 giây, chuyển sang câu hỏi tiếp theo
+        // setTimeout(() => {
+        //     setShowCorrectAnswer(false);
+        //     setCurrentCard(currentCard + 1);
+        // }, 2000);
     };
 
     const isOptionSelected = (questionId: string) => {
