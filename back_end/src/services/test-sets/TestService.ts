@@ -88,6 +88,52 @@ export class TestService {
         test.questions = [];
         test.level = Constants.LEVEL.BEGINER;
 
+        // for (const flashcard of cardsToTest) {
+        //     const question = new TestQuestion();
+        //     question.test = test;
+        //     question.card = flashcard;
+
+        //     // Get other cards excluding the current question card
+        //     const randomCards = getRandomElements(flashcardSet.cards, 3, flashcard);
+
+        //     if (flashcard.image) {
+        //         question.questionType = 'image';
+        //         question.questionText = flashcard.image;
+        //         question.correctAnswer = flashcard.term;
+        //         question.options = [
+        //             flashcard.term,
+        //             randomCards[0].term,
+        //             randomCards[1].term,
+        //             randomCards[2].term
+        //         ];
+        //     } else {
+        //         // Randomly decide the type of question: term or definition
+        //         const questionTypeIndex = Math.floor(Math.random() * 2);
+
+        //         if (questionTypeIndex === 0) {
+        //             question.questionType = 'term';
+        //             question.questionText = `${flashcard.term}?`;
+        //             question.correctAnswer = flashcard.define;
+        //             question.options = [
+        //                 flashcard.define,
+        //                 randomCards[0].define,
+        //                 randomCards[1].define,
+        //                 randomCards[2].define
+        //             ];
+        //         } else {
+        //             question.questionType = 'definition';
+        //             question.questionText = `${flashcard.define}`;
+        //             question.correctAnswer = flashcard.term;
+        //             question.options = [
+        //                 flashcard.term,
+        //                 randomCards[0].term,
+        //                 randomCards[1].term,
+        //                 randomCards[2].term
+        //             ];
+        //         }
+        //     }
+        //     test.questions.push(question);
+        // }
         for (const flashcard of cardsToTest) {
             const question = new TestQuestion();
             question.test = test;
@@ -156,6 +202,7 @@ export class TestService {
             await manager.save(test);
             await manager.save(test.questions);
         });
+
         return {
             id: test.id,
             name: flashcardSet.name,
