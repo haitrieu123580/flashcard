@@ -86,7 +86,7 @@ export class TestService {
         test.user = user;
         test.set = flashcardSet;
         test.questions = [];
-        test.level = Constants.LEVEL.BEGINER;
+        test.level = Constants.LEVEL.EASY;
 
         for (const flashcard of cardsToTest) {
             const question = new TestQuestion();

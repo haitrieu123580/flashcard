@@ -70,10 +70,10 @@ export default class Constants {
             href: routerPaths.ADMIN_PENDING_SETS,
             title: 'Pending Sets'
         },
-        // {
-        //     href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
-        //     title: 'Tests'
-        // },
+        {
+            href: routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_TEST,
+            title: 'Tests'
+        },
     ]
     static QUESTION_TYPE = {
         CHOICE: 'choice',

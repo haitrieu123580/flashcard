@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import SentencesExampleBox from "@/components/flash-card/SentencesExampleBox";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { isFunction, replacePathWithId } from "@/lib/utils";
+import { convertDateToString, isFunction, replacePathWithId } from "@/lib/utils";
 import { routerPaths } from "@/routes/path";
 import { Progress } from "@/components/ui/progress"
 import FlipCard from '@/components/flash-card/FlipCard';
@@ -13,8 +13,16 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 import Constants from '@/lib/Constants';
 import { useNavigate } from 'react-router-dom';
+import image from '@/assets/images/try_again.jpg';
+import { setColorLevel } from '@/lib/utils';
 const LearningCards = (props: any) => {
     const { data, progress, id, onFlip, showTest, testLevel } = props;
     const [currentCard, setCurrentCard] = useState(0);
@@ -26,15 +34,37 @@ const LearningCards = (props: any) => {
     }
     const navigate = useNavigate();
     return (
-        <div>
+        <div >
             <Card className="w-full min-h-[500px] flex flex-col justify-between !bg-transparent border-none !shadow-none">
                 <CardTitle className="flex gap-2 items-end justify-between my-4">
-                    <span>{data?.name}</span>
+                    <div className='flex gap-2'>
+                        {data.image
+                            &&
+                            <img src={data.image} className="w-40 h-40 rounded-md object-cover" />
+                        }
+                        <div className='flex flex-col justify-center gap-2'>
+                            <div >
+                                <div className='font-bold'>{data?.name}</div>
+                                <div className='text-base'>{data?.description}</div>
+                            </div>
+                            {data?.user?.avatar
+                                &&
+                                <Avatar>
+                                    <AvatarImage src={data?.user?.avatar} className="object-cover" />
+                                    <AvatarFallback>{data?.user?.username?.toString()?.[0]}</AvatarFallback>
+                                </Avatar>
+                            }
+                            <div className="flex flex-col">
+                                <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block"><span>Created by: </span>{data?.created_by}</span>
+                                <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block"><span>Created at: </span>{convertDateToString(data?.created_at)}</span>
+                            </div>
+                        </div>
+                    </div>
                     <div className='flex gap-2'>
                         {data?.levelCount?.length > 0 &&
                             <Popover>
                                 <PopoverTrigger>
-                                    <Button variant="default">Test</Button>
+                                    <Button variant="default">Advanced Test</Button>
                                 </PopoverTrigger>
                                 <PopoverContent className='flex flex-col gap-2'>
                                     {
@@ -45,6 +75,8 @@ const LearningCards = (props: any) => {
                                                         const queryParams = new URLSearchParams(level).toString();
                                                         navigate(`${replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))}?${queryParams}`)
                                                     }}
+                                                    className={`${setColorLevel(Constants.LEVEL[level?.level as 1 | 2 | 3].toString())} hover:${setColorLevel(Constants.LEVEL[level?.level as 1 | 2 | 3].toString())}`}
+
                                                 >
                                                     {Constants.LEVEL[level?.level as 1 | 2 | 3]?.toString()}
                                                 </Button>
@@ -54,9 +86,9 @@ const LearningCards = (props: any) => {
                                 </PopoverContent>
                             </Popover>
                         }
-                        <Button variant={"outline"}>
+                        <Button variant={"outline"} className={'bg-green-500 hover:bg-green-500 text-white'}>
                             <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2">
-                                Learn
+                                Try your self
                             </Link>
                         </Button>
                     </div>
@@ -118,7 +150,7 @@ const LearningCards = (props: any) => {
 
                 </div>
             </Card>
-        </div>
+        </div >
     )
 }
 

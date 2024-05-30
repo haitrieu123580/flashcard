@@ -148,7 +148,7 @@ export class UserSetsService implements IUserSetsService {
         const newSet = new Sets();
         newSet.name = data.set_name;
         newSet.is_public = false;
-        newSet.created_by = user.email;
+        newSet.created_by = user.username;
         newSet.user = user;
         return this.userSetsRepo.addCardToSet(newSet, card);
     }

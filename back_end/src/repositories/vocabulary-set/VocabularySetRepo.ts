@@ -23,7 +23,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
             newSet.name = set.name;
             newSet.description = set?.description || "";
             newSet.image = set.image || "";
-            newSet.created_by = owner?.email;
+            newSet.created_by = owner.role === Constants.USER_ROLE.ADMIN ? "flashcard.web" : owner?.username;
             newSet.user = owner;
             newSet.is_public = set.is_public
             if (!newSet.cards) {
@@ -36,7 +36,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
                     card.define = cards[i].define;
                     card.image = cards[i]?.image || "";
                     card.example = cards[i].example;
-                    card.created_by = owner?.email;
+                    card.created_by = owner?.username;
                     newSet.cards.push(card);
                 }
             }

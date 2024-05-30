@@ -130,7 +130,7 @@ const CardForm = (props: any) => {
                                         type={Constants.INPUT_TYPE.TEXT}
                                         className='w-1/2'
                                         required={true}
-                                        readOnly={!readMode}
+                                        readOnly={readMode}
                                     />
                                     <FormInput
                                         control={form.control}
@@ -140,7 +140,7 @@ const CardForm = (props: any) => {
                                         type={Constants.INPUT_TYPE.TEXT}
                                         className='w-1/2'
                                         required={true}
-                                        readOnly={!readMode}
+                                        readOnly={readMode}
                                     />
                                 </div>
                                 <FormInput
@@ -149,7 +149,7 @@ const CardForm = (props: any) => {
                                     label="Image"
                                     type={Constants.INPUT_TYPE.FILE_UPLOAD}
                                     classNameInput='h-fit'
-                                    readOnly={!readMode}
+                                    readOnly={readMode}
                                 />
                                 <div className='my-6 flex gap-4 items-end'>
                                     <b>Examples</b>
@@ -177,6 +177,7 @@ const CardForm = (props: any) => {
                                                 placeholder="Sentence"
                                                 type={Constants.INPUT_TYPE.TEXT}
                                                 className='w-1/2'
+                                                readOnly={readMode}
                                             />
                                             <FormInput
                                                 control={form.control}
@@ -185,6 +186,7 @@ const CardForm = (props: any) => {
                                                 placeholder="Translation"
                                                 type={Constants.INPUT_TYPE.TEXT}
                                                 className='w-1/2'
+                                                readOnly={readMode}
                                             />
                                             {!readMode &&
                                                 <Button

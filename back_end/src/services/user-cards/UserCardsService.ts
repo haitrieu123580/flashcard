@@ -78,7 +78,7 @@ export class UserCardsService implements IUserCardsService {
         if (!updatedCard) {
             throw new NotFoundError('Card not found');
         }
-        if (!user?.email === updatedCard.created_by) {
+        if (!user?.username === updatedCard.created_by) {
             throw new ForbiddenError("You are not the owner of this card!");
         }
         const isDeleteImage = data.is_delete_image === "true";
@@ -106,7 +106,7 @@ export class UserCardsService implements IUserCardsService {
             if (!deleteCard) {
                 return new FailureMsgResponse("Card not found.").send(res);
             }
-            if (!user?.email === deleteCard?.created_by) {
+            if (!user?.username === deleteCard?.created_by) {
                 return new FailureMsgResponse("You are not the owner of this card!").send(res);
             }
             const result = await this.cardRepo.delete_card(cardId);

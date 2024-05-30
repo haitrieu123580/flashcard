@@ -39,18 +39,6 @@ interface Question {
     correctAnswer: string;
 }
 
-interface TestData {
-    id: string;
-    questions: Question[];
-}
-
-interface RootState {
-    Test: {
-        examData: any;
-        isLoading: boolean;
-        result: any;
-    };
-}
 
 const MultipleChoiceTestPage = () => {
     const { id } = useParams<{ id: string }>(); // set id
@@ -60,7 +48,6 @@ const MultipleChoiceTestPage = () => {
     const location = useLocation();
     const form = useForm();
     const [currentCard, setCurrentCard] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState<{ [key: string]: string }>({});
     const [showPopupResult, setShowPopupResult] = useState(false);
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false); // State to track if the correct answer should be shown
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null); // State to track if the answer was correct or not
@@ -103,22 +90,25 @@ const MultipleChoiceTestPage = () => {
             setProgress((prev) => {
                 if (prev <= 0) {
                     clearInterval(timerRef.current!);
-                    setShowCorrectAnswer(true);
-                    setTimeout(() => {
-                        if (currentCard < (data?.questions?.length || 0) - 1) {
-                            showCard(currentCard + 1);
-                            setShowCorrectAnswer(false);
-                            startTimer();
-                        } else {
-                            setShowPopupResult(true);
-                            form.handleSubmit(handleSubmit)();
-                        }
-                    }, 3000);
+                    handleTimeout();
                     return 0;
                 }
                 return prev - 0.1;
             });
         }, 10);
+    };
+
+    const handleTimeout = () => {
+        setShowCorrectAnswer(true);
+        setTimeout(() => {
+            if (currentCard < (data?.questions?.length || 0) - 1) {
+                showCard(currentCard + 1);
+                setShowCorrectAnswer(false);
+                startTimer();
+            } else {
+                form.handleSubmit(handleSubmit)(); // Ensure form submission on last question timeout
+            }
+        }, 3000);
     };
 
     const handleSubmit = (values: any) => {
@@ -156,44 +146,42 @@ const MultipleChoiceTestPage = () => {
     };
 
     const handleOptionChange = (questionId: string, value: string, question: Question) => {
-        if (isOptionSelected(questionId)) {
-            return; // Nếu đã chọn rồi thì không làm gì cả
-        }
         setShowCorrectAnswer(true); // Hiển thị đáp án đúng trước
-        setSelectedAnswers((prev) => ({ ...prev, [questionId]: value }));
         setIsCorrect(value === question.correctAnswer); // Update the correctness state
+        form.setValue(questionId, value.trim().toLowerCase());
 
-        // // Sau 2 giây, chuyển sang câu hỏi tiếp theo
-        // setTimeout(() => {
-        //     setShowCorrectAnswer(false);
-        //     setCurrentCard(currentCard + 1);
-        // }, 2000);
+        setTimeout(() => {
+            if (currentCard < (data?.questions?.length || 0) - 1) {
+                setShowCorrectAnswer(false);
+                setCurrentCard(currentCard + 1);
+                startTimer();
+            } else {
+                form.handleSubmit(handleSubmit)(); // Ensure form submission on last question selection
+            }
+        }, 2000);
+
     };
 
     const handleWrittenAnswer = (questionId: string, value: string, question: Question) => {
-        if (isOptionSelected(questionId)) {
-            return; // Nếu đã chọn rồi thì không làm gì cả
-        }
         setShowCorrectAnswer(true); // Hiển thị đáp án đúng trước
-        setSelectedAnswers((prev) => ({ ...prev, [questionId]: value }));
         setIsCorrect(value.trim().toLowerCase() === question.correctAnswer.trim().toLowerCase()); // Update the correctness state
+        form.setValue(questionId, value.trim().toLowerCase());
+        setTimeout(() => {
+            if (currentCard < (data?.questions?.length || 0) - 1) {
+                setShowCorrectAnswer(false);
+                setCurrentCard(currentCard + 1);
+                startTimer();
+            } else {
+                form.handleSubmit(handleSubmit)(); // Ensure form submission on last question selection
+            }
+        }, 2000);
 
-        // // Sau 2 giây, chuyển sang câu hỏi tiếp theo
-        // setTimeout(() => {
-        //     setShowCorrectAnswer(false);
-        //     setCurrentCard(currentCard + 1);
-        // }, 2000);
-    };
-
-    const isOptionSelected = (questionId: string) => {
-        return selectedAnswers.hasOwnProperty(questionId);
     };
 
     const ReTake = () => {
         getTestBySetId(id || "");
         setShowPopupResult(false);
         setCurrentCard(0);
-        setSelectedAnswers({});
         setShowCorrectAnswer(false);
         startTimer();
     };
@@ -226,46 +214,47 @@ const MultipleChoiceTestPage = () => {
                                         <div className="py-4">
                                             <CardContent className="grid grid-cols-2 gap-2">
                                                 {
-                                                    question?.questionType === Constants.QUESTION_TYPE.WRITTEN ?
-                                                        <div className="col-span-2">
-                                                            <FormInput
-                                                                control={form.control}
-                                                                fieldName={question?.id}
-                                                                type={Constants.INPUT_TYPE.TEXT}
-                                                                label="Your answer"
-                                                                icon={<CheckIcon />}
-                                                                onClickIcon={() => {
-                                                                    handleWrittenAnswer(question?.id, form.getValues(question?.id), question);
-                                                                }}
-                                                                alignIcon="right"
-                                                            />
+                                                    <>
+                                                        {question?.questionType === Constants.QUESTION_TYPE.WRITTEN ?
+                                                            <div className="col-span-2">
+                                                                <FormInput
+                                                                    control={form.control}
+                                                                    fieldName={question?.id}
+                                                                    type={Constants.INPUT_TYPE.TEXT}
+                                                                    label="Your answer"
+                                                                    icon={<CheckIcon />}
+                                                                    onClickIcon={() => {
+                                                                        handleWrittenAnswer(question?.id, form.getValues(question?.id), question);
+                                                                    }}
+                                                                    alignIcon="right"
+                                                                />
+                                                            </div>
+                                                            : <div className="col-span-2">
+                                                                <FormInput
+                                                                    control={form.control}
+                                                                    fieldName={question.id}
+                                                                    type={Constants.INPUT_TYPE.RADIO}
+                                                                    options={question?.options?.map((answer: any) => {
+                                                                        return {
+                                                                            key: answer,
+                                                                            label: answer,
+                                                                        };
+                                                                    })}
+                                                                    onChangeSelect={(value: any) => {
+                                                                        handleOptionChange(question.id, value, question);
+                                                                    }}
+                                                                />
+
+                                                            </div>}
+                                                        <div className="my-2 w-full h-2">
                                                             {showCorrectAnswer && (
                                                                 <div className={`mt-2 ${isCorrect ? 'text-green-500' : 'text-red-500'}`}>
                                                                     {isCorrect ? "Correct" : `Incorrect. Correct Answer: ${question.correctAnswer}`}
                                                                 </div>
                                                             )}
                                                         </div>
-                                                        : <div className="col-span-2">
-                                                            <FormInput
-                                                                control={form.control}
-                                                                fieldName={question.id}
-                                                                type={Constants.INPUT_TYPE.RADIO}
-                                                                options={question?.options?.map((answer: any) => {
-                                                                    return {
-                                                                        key: answer,
-                                                                        label: answer,
-                                                                    };
-                                                                })}
-                                                                onChangeSelect={(value: any) => {
-                                                                    handleOptionChange(question.id, value, question);
-                                                                }}
-                                                            />
-                                                            {showCorrectAnswer && (
-                                                                <div className={`mt-2 ${isCorrect ? 'text-green-500' : 'text-red-500'}`}>
-                                                                    {isCorrect ? "Correct" : `Incorrect. Correct Answer: ${question.correctAnswer}`}
-                                                                </div>
-                                                            )}
-                                                        </div>
+                                                    </>
+
                                                 }
                                             </CardContent>
                                             <CardFooter className="flex justify-end gap-4">
