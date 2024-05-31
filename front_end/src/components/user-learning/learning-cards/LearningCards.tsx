@@ -36,13 +36,13 @@ const LearningCards = (props: any) => {
     return (
         <div >
             <Card className="w-full min-h-[500px] flex flex-col justify-between !bg-transparent border-none !shadow-none">
-                <CardTitle className="flex gap-2 items-end justify-between my-4">
+                <CardTitle className="flex gap-2 items-start justify-between my-4">
                     <div className='flex gap-2'>
                         {data.image
                             &&
                             <img src={data.image} className="w-40 h-40 rounded-md object-cover" />
                         }
-                        <div className='flex flex-col justify-center gap-2'>
+                        <div className='flex flex-col justify-start gap-2'>
                             <div >
                                 <div className='font-bold'>{data?.name}</div>
                                 <div className='text-base'>{data?.description}</div>

@@ -61,6 +61,9 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         } else if (sortBy === "createdDate") {
             order.created_at = String(filter).toLowerCase() === "latest" ? "DESC" : "ASC";
         }
+        else {
+            order.created_at = "DESC";
+        }
 
         return this.setDataSource.findAndCount({
             where: {

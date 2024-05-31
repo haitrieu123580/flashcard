@@ -36,6 +36,7 @@ import testRouter from "@routers/test-sets/index";
 import userTestRouter from "@routers/user-tests/index";
 import userProgressRouter from "@routers/user-progress/index";
 import adminAprroveUserSetRouter from "@routers/approve-sets/index";
+import testKitRouter from '@routers/test-kit/index';
 import {
     NotFoundError,
     ApiError,
@@ -103,6 +104,7 @@ app.use('/api/tests', testRouter)
 app.use('/api/user-tests', userTestRouter)
 app.use('/api/user-progress', userProgressRouter)
 app.use('/api/admin/approve-set', adminAprroveUserSetRouter)
+app.use('/api/test-kit', testKitRouter)
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(new NotFoundError()));
 

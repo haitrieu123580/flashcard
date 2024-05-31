@@ -12,7 +12,7 @@ export class TestKits extends BaseEntity {
     @JoinColumn()
     set: Sets;
 
-    @OneToMany(() => TestQuestion, testQuestion => testQuestion.test, {
+    @OneToMany(() => TestQuestion, testQuestion => testQuestion.testKit, {
         onDelete: "SET NULL"
     })
     @JoinColumn()

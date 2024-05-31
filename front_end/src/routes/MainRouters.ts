@@ -19,9 +19,10 @@ const QuestionListEditPage = lazy(() => import('@/pages/admin/tests/edit-questio
 const AdminLogin = lazy(() => import('@/pages/admin/login/AdminLogin'))
 const PendingSetsListPage = lazy(() => import("@/pages/admin/pending-set/PendingSetListPage"))
 const PendingSetPage = lazy(() => import("@/pages/admin/pending-set/PendingSetPage"))
+const KitsListPage = lazy(() => import('@/pages/admin/tests/kits-list/KitsListPage'))
+
 const MultipleChoiceTestPage = lazy(() => import('@/pages/test/test-page/MultipleChoiceTestPage'))
 const MultipleChoiceResultPage = lazy(() => import('@/pages/test/result-page/MultipleChoiceResultPage'))
-
 const MySetsList = lazy(() => import('@/pages/user/my-sets/MySetsList'))
 const LearnMySet = lazy(() => import('@/pages/user/learn-myset/LearnMySet'))
 const CreateMySet = lazy(() => import('@/pages/user/create-set/CreateMySet'))
@@ -57,11 +58,6 @@ const publicRoutes = [
         component: MultipleChoiceTestPage,
         layout: MainLayout,
     },
-    // {
-    //     path: routerPaths.TEST_MULTIPLE_CHOICE_RESULT,
-    //     component: MultipleChoiceResultPage,
-    //     layout: MainLayout,
-    // },
     {
         path: routerPaths.ADMIN_LOGIN,
         component: AdminLogin,
@@ -155,6 +151,11 @@ const privateRouters = [
     {
         path: routerPaths.ADMIN_PENDING_SET,
         component: PendingSetPage,
+        layout: AdminLayout
+    },
+    {
+        path: routerPaths.ADMIN_TEST_KITS_IN_SET,
+        component: KitsListPage,
         layout: AdminLayout
     },
 ]

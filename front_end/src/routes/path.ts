@@ -16,6 +16,7 @@ export const routerPaths = {
     ADMIN_PENDING_SETS: '/admin/pending-sets',
     ADMIN_PENDING_SET: '/admin/pending-set/:id',
     ADMIN_SETS_MULTIPLE_CHOICE_TEST: '/admin/sets/test',
+    ADMIN_TEST_KITS_IN_SET: '/admin/sets/test/:id',
     ADMIN_SETS_MULTIPLE_CHOICE_EDIT: '/admin/sets/test/edit/:id',
 
     TEST_MULTIPLE_CHOICE: '/multiple-choice/:id',
