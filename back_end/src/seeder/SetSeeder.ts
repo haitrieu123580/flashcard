@@ -7,7 +7,7 @@ import { TestQuestion } from '../entity/TestQuestion'
 import { S3Service } from '../services/s3/S3Service'
 import { Container } from 'typedi'
 import setJson from "./json/set.json"
-import { Constants } from '@src/core/Constant'
+import { Constants } from '../core/Constant'
 
 export class SetSeeder implements Seeder {
     private s3Service: S3Service;
@@ -46,20 +46,18 @@ export class SetSeeder implements Seeder {
 
             for (const card of set.cards) {
                 const newCard = new Cards();
-                console.log("card.image", card.image)
                 if (card?.image) {
                     const image_url = await this.s3Service.uploadFile({
                         filename: String(card.term) + '.jpg',
                         path: card?.image,
                         mimetype: 'image/*',
                     });
-                    console.log("image_url", image_url)
                     newCard.image = image_url?.Location || "";
                 }
                 newCard.term = card.term;
                 newCard.define = card.define;
                 newCard.example = JSON.stringify(card.example);
-                newCard.created_by = card.created_by;
+                newCard.created_by = 'flashcard.web';
                 newSet.cards.push(newCard);
             }
 

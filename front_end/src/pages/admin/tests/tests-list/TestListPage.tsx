@@ -70,7 +70,7 @@ const TestListPage = () => {
     return (
         <div>
             <div className='flex justify-between mt-6'>
-                <CardTitle >Questions of Set</CardTitle>
+                <CardTitle >Test kits</CardTitle>
             </div>
             {/* {
                 isLoading

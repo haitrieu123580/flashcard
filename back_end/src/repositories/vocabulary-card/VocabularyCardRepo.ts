@@ -18,7 +18,7 @@ export class VocabularyCardRepo implements IVocabularyCardRepo {
         newCard.image = card?.image;
         newCard.example = card?.example || "";
         newCard.set = set;
-        newCard.created_by = user.email;
+        newCard.created_by = user.username;
         return await this.cardDataSource.save(newCard);
     }
 

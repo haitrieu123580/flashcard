@@ -5,9 +5,9 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-
+import defaultImageAvatar from "@/assets/images/flash-card.png"
 import { Badge } from "@/components/ui/badge"
-import { convertDateToString, isFunction } from "@/lib/utils"
+import { convertDateToString, isFunction, setColorLevel } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Pen, PencilIcon, Trash2Icon } from "lucide-react"
@@ -73,8 +73,10 @@ const SetItem = (props: any) => {
                 <CardDescription className="flex gap-1 flex-wrap">
                     <Badge variant="default">{`${totalCards} cards`}</Badge>
                     {data?.level &&
-                        <Badge>
-                            {Constants.LEVEL[data?.level as number as 1 | 2 | 3]?.toString()}
+                        <Badge
+                            className={setColorLevel(Constants.LEVEL[data?.level as number as 0 | 1 | 2 | 3].toString())}
+                        >
+                            {Constants.LEVEL[data?.level as number as 0 | 1 | 2 | 3]?.toString()}
                         </Badge>
                     }
                 </CardDescription>
@@ -103,7 +105,7 @@ const SetItem = (props: any) => {
             </CardContent>
             <CardFooter className="flex items-center gap-2">
                 <Avatar>
-                    <AvatarImage src={data?.user?.avatar} className="object-cover" />
+                    <AvatarImage src={data?.user?.avatar || defaultImageAvatar} className="object-cover" />
                     <AvatarFallback>{data?.user?.username?.toString()?.[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">

@@ -16,6 +16,9 @@ import { routerPaths } from "@/routes/path";
 import { CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "react-router-dom";
+import { setColorLevel } from "@/lib/utils";
+
+
 const MultipleChoiceTestResultPage = () => {
     const { id } = useParams<{ id: string }>(); //test id
     const { result } = useSelector((state: any) => state.UserTest);
@@ -45,8 +48,10 @@ const MultipleChoiceTestResultPage = () => {
                     <span className="text-sm text-primary">
                         {result?.level as number
                             ?
-                            <Badge>
-                                {Constants.LEVEL[result?.level as number as 1 | 2 | 3]?.toString()}
+                            <Badge
+                                className={setColorLevel(Constants.LEVEL[result?.level as number as 0 | 1 | 2 | 3].toString())}
+                            >
+                                {Constants.LEVEL[result?.level as number as 0 | 1 | 2 | 3].toString()}
                             </Badge>
                             : ""}
                     </span>
