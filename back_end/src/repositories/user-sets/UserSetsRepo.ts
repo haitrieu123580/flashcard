@@ -31,7 +31,7 @@ export class UserSetsRepo implements IUserSetsRepo {
         copiedCard.example = card.example;
         copiedCard.pronounciation = card.pronounciation;
         copiedCard.set = set;
-        copiedCard.created_by = set.user.email;
+        copiedCard.created_by = set.user.username;
         if (!set.cards) {
             set.cards = [];
         }

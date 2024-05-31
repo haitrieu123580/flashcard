@@ -28,7 +28,7 @@ const TestCard = (props: any) => {
                             variant={"secondary"}
                         >
                             <Link
-                                to={replacePathWithId(routerPaths.ADMIN_SETS_MULTIPLE_CHOICE_EDIT, data?.id)}
+                                to={replacePathWithId(routerPaths.ADMIN_TEST_KITS_IN_SET, data?.id)}
                             >
                                 <Pencil />
                             </Link>
@@ -37,7 +37,7 @@ const TestCard = (props: any) => {
                     </div>
                 </CardTitle>
                 <CardDescription>
-                    <Badge variant="default">{`${data?.totalQuestions} questions`}</Badge>
+                    <Badge variant="default">{`${data?.totalTestKits} kits`}</Badge>
                 </CardDescription>
             </CardHeader>
             <CardContent className="overflow-hidden grid grid-cols-12 gap-6">

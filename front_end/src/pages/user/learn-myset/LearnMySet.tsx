@@ -104,7 +104,7 @@ const LearnFlashcard = () => {
             case Constants.SET_STATUS.REJECTED:
                 return 'destructive';
             default:
-                return 'ghost';
+                return 'outline';
         }
     }
 

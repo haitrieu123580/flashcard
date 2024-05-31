@@ -86,7 +86,7 @@ export class TestService {
         test.user = user;
         test.set = flashcardSet;
         test.questions = [];
-        test.level = Constants.LEVEL.BEGINER;
+        test.level = Constants.LEVEL.EASY;
 
         for (const flashcard of cardsToTest) {
             const question = new TestQuestion();
@@ -165,7 +165,7 @@ export class TestService {
                 id: question.id,
                 questionType: question.questionType,
                 questionText: question.questionText,
-                options: question.options,
+                options: (typeof question.options === 'string') ? JSON.parse(question.options) : question.options,
                 correctAnswer: question.correctAnswer
             })),
         }
@@ -179,7 +179,6 @@ export class TestService {
             },
             relations: ['questions']
         });
-
         if (count === 0) {
             throw new NotFoundError('Test kit not found');
         }
@@ -206,7 +205,7 @@ export class TestService {
             testQuestion.questionType = question.questionType;
             testQuestion.questionText = question.questionText;
             testQuestion.correctAnswer = question.correctAnswer;
-            testQuestion.options = question.options;
+            testQuestion.options = (typeof question.options === 'string') ? JSON.parse(question.options) : question.options;
             return testQuestion;
         });
         const testResultArray: TestResultDetails[] = [];

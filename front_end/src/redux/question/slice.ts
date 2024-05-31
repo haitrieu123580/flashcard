@@ -37,6 +37,9 @@ const questionSlice = createSlice({
       state.isLoading = false;
       state.data = payload.data;
     },
+    deleteQuestionErrorAction: (state) => {
+      state.isLoading = false;
+    },
 
     createQuestionAction: (state, { payload }) => {
       state.isLoading = true;
@@ -45,6 +48,21 @@ const questionSlice = createSlice({
       state.isLoading = false;
       state.data = payload.data;
     },
+    createQuestionErrorAction: (state) => {
+      state.isLoading = false;
+    },
+
+    createTestKitAction: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    createTestKitSuccessAction: (state, { payload }) => {
+      state.isLoading = false;
+      state.data = payload.data;
+    },
+    createTestKitErrorAction: (state) => {
+      state.isLoading = false;
+    },
+
   },
 
 })
@@ -57,8 +75,13 @@ export const {
   editQuestionSuccessAction,
   deleteQuestionAction,
   deleteQuestionSuccessAction,
+  deleteQuestionErrorAction,
   createQuestionAction,
   createQuestionSuccessAction,
+  createQuestionErrorAction,
+  createTestKitAction,
+  createTestKitSuccessAction,
+  createTestKitErrorAction,
 } = questionSlice.actions
 
 export default questionSlice.reducer

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/accordion"
 import { Badge } from '@/components/ui/badge';
 import Constants from '@/lib/Constants';
+import { setColorLevel } from '@/lib/utils';
+
 const UserTestHistory = (props: any) => {
     const history = props?.history;
     const navigate = useNavigate();
@@ -59,14 +61,16 @@ const UserTestHistory = (props: any) => {
                                                         {item?.level
                                                             &&
                                                             <>
-                                                                <Badge>
-                                                                    {Constants.LEVEL[item?.level as number as 1 | 2 | 3].toString()}
+                                                                <Badge
+                                                                    className={setColorLevel(Constants.LEVEL[item?.level as number as 0 | 1 | 2 | 3].toString())}
+                                                                >
+                                                                    {Constants.LEVEL[item?.level as number as 0 | 1 | 2 | 3].toString()}
                                                                 </Badge>
                                                             </>}
                                                     </CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
-                                                    <Progress color="yellow"
+                                                    <Progress
                                                         key={index}
                                                         value={(item?.score / item?.questions) * 100}
                                                         className="w-full h-2 my-6 "
@@ -97,14 +101,16 @@ const UserTestHistory = (props: any) => {
                                                         {item?.level
                                                             &&
                                                             <>
-                                                                <Badge>
-                                                                    {Constants.LEVEL[item?.level as number as 1 | 2 | 3].toString()}
+                                                                <Badge
+                                                                    className={setColorLevel(Constants.LEVEL[item?.level as number as 0 | 1 | 2 | 3].toString())}
+                                                                >
+                                                                    {Constants.LEVEL[item?.level as number as 0 | 1 | 2 | 3].toString()}
                                                                 </Badge>
                                                             </>}
                                                     </CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
-                                                    <Progress color="yellow"
+                                                    <Progress
                                                         key={index}
                                                         value={(item?.score / item?.questions) * 100}
                                                         className="w-full h-2 my-6 "

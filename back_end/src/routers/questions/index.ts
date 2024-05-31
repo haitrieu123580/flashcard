@@ -9,7 +9,6 @@ import { checkValidQuestionBodyRequest } from '@src/middleware/ValidQuestionBody
 const controller = new QuestionController();
 const router = Router();
 
-router.get('/get-set-questions', [isValidKey], (req: Request, res: Response) => { });
 
 //get all question in a set
 router.get('/list/:setId', [isValidKey], controller.getQuestionList);

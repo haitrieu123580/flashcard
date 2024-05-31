@@ -73,6 +73,7 @@ class VocabularySetService implements IVocabularySetService {
                     ...set,
                     totalCards: set?.cards?.length,
                     totalQuestions: set?.questions?.length,
+                    totalTestKits: set?.testKits?.length,
                 })),
                 count,
             };

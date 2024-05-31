@@ -12,8 +12,13 @@ import {
   editQuestionSuccessAction,
   deleteQuestionAction,
   deleteQuestionSuccessAction,
+  deleteQuestionErrorAction,
   createQuestionAction,
   createQuestionSuccessAction,
+  createQuestionErrorAction,
+  createTestKitAction,
+  createTestKitSuccessAction,
+  createTestKitErrorAction,
 } from "./slice";
 
 import {
@@ -21,6 +26,7 @@ import {
   editQuestionApi,
   createQuestionApi,
   deleteQuestionApi,
+  createTestKitApi,
 } from "@/api/QuestionApi";
 function* watchGetQuestionsListBySetId() {
   yield takeLatest(getQuestionsListBySetIdAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
@@ -49,9 +55,9 @@ function* watchGetQuestionsListBySetId() {
 }
 function* watchEditQuestion() {
   yield takeLatest(editQuestionAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
-    const { data, id, onError, onSuccess } = payload
+    const { data, questionId, testKitId, onError, onSuccess } = payload
     try {
-      const res = yield call(editQuestionApi, { id, data });
+      const res = yield call(editQuestionApi, { questionId: questionId, testKitId: testKitId, data: data });
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
@@ -62,24 +68,20 @@ function* watchEditQuestion() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
-      else {
-        isFunction(payload.onError) && payload.onError(res.data.message);
-      }
-    } catch (error) {
-      isFunction(onError) && onError("Internal server error");
+
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(createQuestionErrorAction())
     }
   });
 }
 
 function* watchCreateQuestion() {
   yield takeLatest(createQuestionAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
-    const { data, onError, onSuccess } = payload
+    const { data, onError, onSuccess, testId } = payload
     try {
-      const res = yield call(createQuestionApi, data);
+      const res = yield call(createQuestionApi, { testId: testId, data: data });
       if (res.status === ErrorCode.OK) {
         if (res.data.statusCode === ApiCode.SUCCESS) {
           isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
@@ -90,15 +92,12 @@ function* watchCreateQuestion() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
+
       }
-      else {
-        isFunction(payload.onError) && payload.onError(res.data.message);
-      }
-    } catch (error) {
-      isFunction(onError) && onError("Internal server error");
+
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(createQuestionErrorAction())
     }
   });
 }
@@ -118,23 +117,45 @@ function* watchDeleteQuestion() {
               })
           );
         }
-        else if (res.data.statusCode === ApiCode.FAILURE || res.data.statusCode === ApiCode.INVALID_ACCESS_TOKEN) {
-          isFunction(payload.onError) && payload.onError(res.data.message);
-        }
       }
-      else {
-        isFunction(payload.onError) && payload.onError(res.data.message);
-      }
-    } catch (error) {
-      isFunction(onError) && onError("Internal server error");
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(deleteQuestionErrorAction())
     }
   });
 }
+
+function* watchCreateTestKit() {
+  yield takeLatest(createTestKitAction.type, function* ({ payload }: PayloadAction<any>): Generator<any, void, any> {
+    const { level, onError, onSuccess, setId } = payload
+    try {
+      const res = yield call(createTestKitApi, { setId: setId, level: level });
+      if (res.status === ErrorCode.OK) {
+        if (res.data.statusCode === ApiCode.SUCCESS) {
+          isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+          yield put(
+            createTestKitSuccessAction
+              ({
+                data: res.data?.data
+              })
+          );
+        }
+
+      }
+
+    } catch (error: any) {
+      isFunction(payload?.onError) && payload?.onError(error?.response?.data?.message);
+      yield put(createQuestionErrorAction())
+    }
+  });
+}
+
 export default function* QuestionSaga() {
   yield all([
     fork(watchGetQuestionsListBySetId),
     fork(watchEditQuestion),
     fork(watchCreateQuestion),
     fork(watchDeleteQuestion),
+    fork(watchCreateTestKit)
   ]);
 }
