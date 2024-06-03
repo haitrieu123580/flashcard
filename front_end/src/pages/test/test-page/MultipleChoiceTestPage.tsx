@@ -246,9 +246,9 @@ const MultipleChoiceTestPage = () => {
                                                                 />
 
                                                             </div>}
-                                                        <div className="my-2 w-full h-2">
+                                                        <div className="my-2 w-full h-4">
                                                             {showCorrectAnswer && (
-                                                                <div className={`mt-2 ${isCorrect ? 'text-green-500' : 'text-red-500'}`}>
+                                                                <div className={`mt-2 ${isCorrect ? 'text-green-500' : 'text-red-500'} w-full text-nowrap`}>
                                                                     {isCorrect ? "Correct" : `Incorrect. Correct Answer: ${question.correctAnswer}`}
                                                                 </div>
                                                             )}

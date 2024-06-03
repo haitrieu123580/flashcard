@@ -267,5 +267,157 @@
                 "created_by": "Seeder"
             }
         ]
+    },
+    {
+        "name": "Book",
+        "description": "A set of vocabulary related to books.",
+        "image": "./src/seeder/image/book/cover_book.jpg",
+        "created_by": "Seeder",
+        "is_public": true,
+        "cards": [
+            {
+                "term": "Book",
+                "define": "Cuốn sách",
+                "set": null,
+                "image": "./src/seeder/image/book/a_book.jpg",
+                "example": [
+                    {
+                        "sentence": "She loves reading books in her free time.",
+                        "translation": "Cô ấy thích đọc sách vào thời gian rảnh rỗi."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Author",
+                "define": "Tác giả",
+                "set": null,
+                "image": "./src/seeder/image/book/author.jpg",
+                "example": [
+                    {
+                        "sentence": "The author has written many best-selling novels.",
+                        "translation": "Tác giả đã viết nhiều tiểu thuyết bán chạy nhất."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Chapter",
+                "define": "Chương",
+                "set": null,
+                "image": "./src/seeder/image/book/chapter.jpg",
+                "example": [
+                    {
+                        "sentence": "She finished reading the first chapter of the book.",
+                        "translation": "Cô ấy đã đọc xong chương đầu tiên của cuốn sách."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Novel",
+                "define": "Tiểu thuyết",
+                "set": null,
+                "image": "./src/seeder/image/book/novel.jpg",
+                "example": [
+                    {
+                        "sentence": "The movie is based on the novel.",
+                        "translation": "Bộ phim dựa trên cuốn tiểu thuyết."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Textbook",
+                "define": "Sách giáo khoa",
+                "set": null,
+                "image": "./src/seeder/image/book/textbook.jpg",
+                "example": [
+                    {
+                        "sentence": "The textbook is full of information and examples.",
+                        "translation": "Cuốn sách giáo khoa chứa đầy đủ thông tin và ví dụ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Character",
+                "define": "Nhân vật",
+                "set": null,
+                "image": "./src/seeder/image/book/character.jpg",
+                "example": [
+                    {
+                        "sentence": "The main character in the story is a brave hero.",
+                        "translation": "Nhân vật chính trong câu chuyện là một anh hùng dũng cảm."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Bookshelf",
+                "define": "Giá sách",
+                "set": null,
+                "image": "./src/seeder/image/book/bookshelf.jpg",
+                "example": [
+                    {
+                        "sentence": "The books are neatly arranged on the bookshelf.",
+                        "translation": "Những cuốn sách được xếp gọn gàng trên giá sách."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Comic book",
+                "define": "Truyện tranh",
+                "set": null,
+                "image": "./src/seeder/image/book/comic_book.jpg",
+                "example": [
+                    {
+                        "sentence": "I read a comic book every day.",
+                        "translation": "Tôi đọc truyện tranh mỗi ngày."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Dictionary",
+                "define": "Từ điển",
+                "set": null,
+                "image": "./src/seeder/image/book/dictionary.png",
+                "example": [
+                    {
+                        "sentence": "She needs a dictionary to translate the text.",
+                        "translation": "Cô ấy cần từ điển để dịch văn bản."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Publisher",
+                "define": "Nhà xuất bản",
+                "set": null,
+                "image": "./src/seeder/image/book/publisher.png",
+                "example": [
+                    {
+                        "sentence": "I submitted my manuscript to the publisher.",
+                        "translation": "Tôi đã gửi bản thảo của mình cho nhà xuất bản."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Genre",
+                "define": "Thể loại",
+                "set": null,
+                "image": "./src/seeder/image/book/genre.png",
+                "example": [
+                    {
+                        "sentence": "She enjoys reading books of various genres.",
+                        "translation": "Cô ấy thích đọc sách của nhiều thể loại khác nhau."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ]
     }
 ]

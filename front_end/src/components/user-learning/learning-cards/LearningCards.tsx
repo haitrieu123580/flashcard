@@ -36,7 +36,7 @@ const LearningCards = (props: any) => {
     return (
         <div >
             <Card className="w-full min-h-[500px] flex flex-col justify-between !bg-transparent border-none !shadow-none">
-                <CardTitle className="flex gap-2 items-start justify-between my-4">
+                <CardTitle className="flex flex-col gap-2 items-start justify-between my-4 md:flex-row">
                     <div className='flex gap-2'>
                         {data.image
                             &&
@@ -60,7 +60,7 @@ const LearningCards = (props: any) => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex gap-2'>
+                    <div className='flex gap-2 justify-between'>
                         {data?.levelCount?.length > 0 &&
                             <Popover>
                                 <PopoverTrigger>
