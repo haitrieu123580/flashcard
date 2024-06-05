@@ -121,6 +121,7 @@ export class TestKitService {
         testQuestion.options = question.options || [];
         testQuestion.correctAnswer = question.correctAnswer;
         testQuestion.questionType = question.questionType;
+        testQuestion.explain = question.explain;
         testQuestion.testKit = testKit;
         await this.testQuestionRepo.save(testQuestion);
         return testQuestion;
@@ -152,6 +153,7 @@ export class TestKitService {
         }
         testQuestion.correctAnswer = question.correctAnswer;
         testQuestion.questionType = question.questionType;
+        testQuestion.explain = question.explain;
         testQuestion.updated_at = new Date();
         await this.testQuestionRepo.save(testQuestion);
         return testQuestion;

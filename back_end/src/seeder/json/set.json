@@ -419,5 +419,1042 @@
                 "created_by": "Seeder"
             }
         ]
+    },
+    {
+        "name": "Music",
+        "description": "A set of vocabulary related to music.",
+        "image": "./src/seeder/image/music/cover_music.jpg",
+        "created_by": "Seeder",
+        "is_public": true,
+        "cards": [
+            {
+                "term": "Guitar",
+                "define": "Đàn ghi-ta",
+                "set": null,
+                "image": "./src/seeder/image/music/guitar.jpg",
+                "example": [
+                    {
+                        "sentence": "He played the guitar skillfully.",
+                        "translation": "Anh ta chơi đàn ghi-ta thành thạo."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Piano",
+                "define": "Đàn piano",
+                "set": null,
+                "image": "./src/seeder/image/music/piano.jpg",
+                "example": [
+                    {
+                        "sentence": "She practiced the piano every day.",
+                        "translation": "Cô ấy luyện tập đàn piano mỗi ngày."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Violin",
+                "define": "Đàn vi-ô-lông",
+                "set": null,
+                "image": "./src/seeder/image/music/violin.jpg",
+                "example": [
+                    {
+                        "sentence": "The violinist performed a beautiful melody.",
+                        "translation": "Người chơi đàn vi-ô-lông biểu diễn một giai điệu đẹp."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Band",
+                "define": "Ban nhạc",
+                "set": null,
+                "image": "./src/seeder/image/music/band.jpg",
+                "example": [
+                    {
+                        "sentence": "The band is playing my favorite song.",
+                        "translation": "Ban nhạc đang chơi bài hát yêu thích của tôi."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Flute",
+                "define": "Sáo",
+                "set": null,
+                "image": "./src/seeder/image/music/flute.jpg",
+                "example": [
+                    {
+                        "sentence": "The flute has a clear, bright sound.",
+                        "translation": "Sáo có âm thanh trong trẻo, sáng rõ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Harp",
+                "define": "Đàn hạc",
+                "set": null,
+                "image": "./src/seeder/image/music/harp.jpg",
+                "example": [
+                    {
+                        "sentence": "The harp is a symbol of Ireland.",
+                        "translation": "Đàn hạc là biểu tượng của Ireland."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Lyric",
+                "define": "Lời bài hát",
+                "set": null,
+                "image": "./src/seeder/image/music/lyric.jpg",
+                "example": [
+                    {
+                        "sentence": "The lyrics to the song are very meaningful.",
+                        "translation": "Lời bài hát này rất ý nghĩa."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Note",
+                "define": "Nốt nhạc",
+                "set": null,
+                "image": "./src/seeder/image/music/note.jpg",
+                "example": [
+                    {
+                        "sentence": "The song ended on a high note.",
+                        "translation": "Bài hát kết thúc với một nốt nhạc cao."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "CD player",
+                "define": "Máy nghe nhạc đĩa CD",
+                "set": null,
+                "image": "./src/seeder/image/music/cd_player.jpg",
+                "example": [
+                    {
+                        "sentence": "I'm going to buy a new CD player for my dad's birthday.",
+                        "translation": "Tôi sẽ mua một máy nghe nhạc đĩa CD cho sinh nhật của bố tôi."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Pop music",
+                "define": "Nhạc trẻ",
+                "set": null,
+                "image": "./src/seeder/image/music/pop_music.jpg",
+                "example": [
+                    {
+                        "sentence": "Pop music is the most popular genre of music in the world..",
+                        "translation": "Nhạc trẻ là thể loại nhạc phổ biến nhất trên thế giới."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Classical music",
+                "define": "Nhạc cổ điển",
+                "set": null,
+                "image": "./src/seeder/image/music/classical_music.jpg",
+                "example": [
+                    {
+                        "sentence": "The orchestra played a selection of classical music pieces.",
+                        "translation": "Dàn nhạc chơi một số bản nhạc cổ điển."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Folk_music",
+                "define": "Nhạc dân gian",
+                "set": null,
+                "image": "./src/seeder/image/music/folk_music.jpg",
+                "example": [
+                    {
+                        "sentence": "Folk music often tells stories about the history and culture of a people.",
+                        "translation": "Nhạc dân gian thường kể về lịch sử và văn hoá của một dân tộc."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "National anthem",
+                "define": "Bài quốc ca",
+                "set": null,
+                "image": "./src/seeder/image/music/national_anthem.jpg",
+                "example": [
+                    {
+                        "sentence": "The crowd stood up and sang the national anthem with pride.",
+                        "translation": "Đám đông đứng dậy và hát quốc ca một cách tự hào."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Ukulele",
+                "define": "Đàn ukulele",
+                "set": null,
+                "image": "./src/seeder/image/music/ukulele.jpg",
+                "example": [
+                    {
+                        "sentence": "I enjoy playing the ukulele in my free time.",
+                        "translation": "Tôi thích chơi ukulele vào thời gian rảnh."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Recorder",
+                "define": "Tiêu",
+                "set": null,
+                "image": "./src/seeder/image/music/recorder.jpg",
+                "example": [
+                    {
+                        "sentence": "The recorder's sweet sound filled the room.",
+                        "translation": " m thanh ngọt ngào của tiêu tràn ngập căn phòng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Saxophone",
+                "define": "Kèn saxophone",
+                "set": null,
+                "image": "./src/seeder/image/music/saxophone.jpg",
+                "example": [
+                    {
+                        "sentence": "The saxophone was invented in the 1840s.",
+                        "translation": "Kèn saxophone được phát minh những năm 1840."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Trumpet",
+                "define": "Kèn trumpet",
+                "set": null,
+                "image": "./src/seeder/image/music/trumpet.jpg",
+                "example": [
+                    {
+                        "sentence": "The trumpet is a symbol of victory and triumph.",
+                        "translation": "Kèn trumpet là biểu tượng của chiến thắng và khải hoàn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Singer",
+                "define": "Ca sĩ",
+                "set": null,
+                "image": "./src/seeder/image/music/singer.jpg",
+                "example": [
+                    {
+                        "sentence": "My favorite singer is Son Tung MTP.",
+                        "translation": "Ca sĩ yêu thích của tôi là Sơn Tùng MTP."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Electric guitar",
+                "define": "Đàn ghi-ta điện",
+                "set": null,
+                "image": "./src/seeder/image/music/electric_guitar.jpg",
+                "example": [
+                    {
+                        "sentence": "The electric guitar is a popular instrument in rock music. ",
+                        "translation": "Ghi-ta điện là nhạc cụ phổ biến trong nhạc rock."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Drums",
+                "define": "Trống",
+                "set": null,
+                "image": "./src/seeder/image/music/drums.png",
+                "example": [
+                    {
+                        "sentence": "He played the drums with energy.",
+                        "translation": "Anh ta chơi trống với năng lượng."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ]
+    },
+    {
+        "name": "Film",
+        "description": "A set of vocabulary related to films.",
+        "image": "./src/seeder/image/film/cover_film.jpg",
+        "created_by": "Seeder",
+        "is_public": true,
+        "cards": [
+            {
+                "term": "Movie",
+                "define": "Bộ phim",
+                "set": null,
+                "image": "./src/seeder/image/film/movie.jpg",
+                "example": [
+                    {
+                        "sentence": "They watched a movie at the cinema last night.",
+                        "translation": "Họ xem một bộ phim tại rạp chiếu phim vào tối qua."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Actor",
+                "define": "Diễn viên",
+                "set": null,
+                "image": "./src/seeder/image/film/actor.jfif",
+                "example": [
+                    {
+                        "sentence": "The actor portrayed the character brilliantly.",
+                        "translation": "Diễn viên thể hiện vai diễn một cách xuất sắc."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Director",
+                "define": "Đạo diễn",
+                "set": null,
+                "image": "./src/seeder/image/film/director.jpg",
+                "example": [
+                    {
+                        "sentence": "The director brought the vision of the film to life.",
+                        "translation": "Đạo diễn thực hiện ý tưởng của bộ phim thành hiện thực."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Actress",
+                "define": "Nữ diễn viên",
+                "set": null,
+                "image": "./src/seeder/image/film/actress.jpg",
+                "example": [
+                    {
+                        "sentence": "She is a talented actress who has won many awards.",
+                        "translation": "Cô ấy à một nữ diễn viên tài năng đã dành được nhiều giải thưởng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Producer",
+                "define": "Nhà sản xuất",
+                "set": null,
+                "image": "./src/seeder/image/film/producer.jpeg",
+                "example": [
+                    {
+                        "sentence": "The producer of the film was Steven Spielberg.",
+                        "translation": "Steven Spielberg là nhà sản xuất của bộ phim."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Soundtrack",
+                "define": "Nhạc phim",
+                "set": null,
+                "image": "./src/seeder/image/film/soundtrack.jpg",
+                "example": [
+                    {
+                        "sentence": "I love listening to movie soundtracks.",
+                        "translation": "Tôi thích nghe nhạc phim."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Documentary",
+                "define": "Phim tài liệu",
+                "set": null,
+                "image": "./src/seeder/image/film/documentary.jpg",
+                "example": [
+                    {
+                        "sentence": "I watched a documentary about the history of the internet last night.",
+                        "translation": "Tối qua tôi đã xem một bộ phim tài liệu về lịch sử của internet."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Cinema",
+                "define": "Rạp chiếu phim",
+                "set": null,
+                "image": "./src/seeder/image/film/cinema.jfif",
+                "example": [
+                    {
+                        "sentence": "Let's go to the cinema tonight.",
+                        "translation": "Chúng ta đi phim tối nay nhé."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Animation",
+                "define": "Phim hoạt hình",
+                "set": null,
+                "image": "./src/seeder/image/film/animation.jpeg",
+                "example": [
+                    {
+                        "sentence": "Animated movies can be enjoyed by people of all ages.",
+                        "translation": "Phim hoạt hình có thể được mọi lứa tuổi yêu thích."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Comedy",
+                "define": "Phim hài",
+                "set": null,
+                "image": "./src/seeder/image/film/comedy.jfif",
+                "example": [
+                    {
+                        "sentence": "I love watching comedies because they make me laugh.",
+                        "translation": "Tôi thích xem phim hài vì chúng khiến tôi cười."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Horror film",
+                "define": "Phim kinh dị",
+                "set": null,
+                "image": "./src/seeder/image/film/horror_film.jpg",
+                "example": [
+                    {
+                        "sentence": "I was so scared when I watched that horror movie.",
+                        "translation": "Tôi đã rất sợ khi xem bộ phim kinh dị đó."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Action film",
+                "define": "Phim hành động",
+                "set": null,
+                "image": "./src/seeder/image/film/action_film.jpg",
+                "example": [
+                    {
+                        "sentence": "I get adrenaline rush from action films.",
+                        "translation": "Tôi cảm thấy phấn khích khi xem phim hành động"
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Romance film",
+                "define": "Phim tình cảm",
+                "set": null,
+                "image": "./src/seeder/image/film/romance_film.jpg",
+                "example": [
+                    {
+                        "sentence": "The Notebook is a classic romance film.",
+                        "translation": "The Notebook là một bộ phim tình cảm kinh điển."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Detective film",
+                "define": "Phim trinh thám",
+                "set": null,
+                "image": "./src/seeder/image/film/detective_film.jpg",
+                "example": [
+                    {
+                        "sentence": "Detective films are often suspenseful and exciting.",
+                        "translation": "Phim trinh thám thường ly kì và gay cấn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Sci-fi film",
+                "define": "Phim khoa học viễn tưởng",
+                "set": null,
+                "image": "./src/seeder/image/film/sci-fi_film.jpg",
+                "example": [
+                    {
+                        "sentence": "I'm looking for a good sci-fi film to watch tonight.",
+                        "translation": "Tôi đang tìm một bộ phim khoa học viễn tưởng hay để xem tối nay."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Sitcom movie",
+                "define": "Phim hài dài tập",
+                "set": null,
+                "image": "./src/seeder/image/film/sitcom_movie.jfif",
+                "example": [
+                    {
+                        "sentence": " Watching sitcom films are a great way to learn about American culture and language.",
+                        "translation": "Xem phim hài dài tập là cách tuyệt vời để học về văn hoá và ngôn ngữ nước Mỹ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Cameo",
+                "define": "Diễn viên khách mời",
+                "set": null,
+                "image": "./src/seeder/image/film/cameo.jpg",
+                "example": [
+                    {
+                        "sentence": "The movie featured many cameos by famous celebrities.",
+                        "translation": "Bộ phim có nhiều diễn viên khách mời là những người nổi tiếng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Screenwriter",
+                "define": "Biên kịch",
+                "set": null,
+                "image": "./src/seeder/image/film/screenwriter.jpg",
+                "example": [
+                    {
+                        "sentence": "He's a talented screenwriter.",
+                        "translation": "Anh ấy là một nhà biên kịch tài năng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Scene",
+                "define": "Cảnh",
+                "set": null,
+                "image": "./src/seeder/image/film/scene.jfif",
+                "example": [
+                    {
+                        "sentence": "The emotional scene brought tears to the audience's eyes.",
+                        "translation": "Cảnh quay xúc động khiến khán giả rơi nước mắt."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ]
+    },
+    {
+        "name": "Furniture",
+        "description": "A set of vocabulary related to furniture.",
+        "image": "./src/seeder/image/furniture/cover_furniture.png",
+        "created_by": "Seeder",
+        "is_public": true,
+        "cards": [
+            {
+                "term": "Chair",
+                "define": "Ghế",
+                "set": null,
+                "image": "./src/seeder/image/furniture/chair.jfif",
+                "example": [
+                    {
+                        "sentence": "She sat on the chair by the window.",
+                        "translation": "Cô ấy ngồi trên chiếc ghế bên cửa sổ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Table",
+                "define": "Bàn",
+                "set": null,
+                "image": "./src/seeder/image/furniture/table.jpg",
+                "example": [
+                    {
+                        "sentence": "They gathered around the table for dinner.",
+                        "translation": "Họ tụ tập xung quanh bàn ăn tối."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Bed",
+                "define": "Giường",
+                "set": null,
+                "image": "./src/seeder/image/furniture/bed.jpg",
+                "example": [
+                    {
+                        "sentence": "He slept soundly in his bed.",
+                        "translation": "Anh ta ngủ ngon lành trong giường của mình."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Bookcase",
+                "define": "Tủ sách",
+                "set": null,
+                "image": "./src/seeder/image/furniture/bookcase.jfif",
+                "example": [
+                    {
+                        "sentence": "I put my books on the bookcase in the living room.",
+                        "translation": "Tôi đặt sách của mình lên tủ sách trong phòng khách."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Rug",
+                "define": "Thảm",
+                "set": null,
+                "image": "./src/seeder/image/furniture/rug.jpg",
+                "example": [
+                    {
+                        "sentence": "I bought a new rug for my bedroom.",
+                        "translation": "Tôi đã mua một tấm thảm mới cho phòng ngủ của mình."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Wardrobe",
+                "define": "Tủ quần áo",
+                "set": null,
+                "image": "./src/seeder/image/furniture/wardrobe.jpg",
+                "example": [
+                    {
+                        "sentence": "He has a large collection of suits in his wardrobe.",
+                        "translation": "Anh ấy có một bộ sưu tập vest lớn trong tủ quần áo của mình"
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Mop",
+                "define": "Cây lau nhà",
+                "set": null,
+                "image": "./src/seeder/image/furniture/mop.jpg",
+                "example": [
+                    {
+                        "sentence": "I need to mop the floor before the guests arrive.",
+                        "translation": "Tôi cần lau nhà trước khi khách đến."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Fridge",
+                "define": "Tủ lạnh",
+                "set": null,
+                "image": "./src/seeder/image/furniture/fridge.jpg",
+                "example": [
+                    {
+                        "sentence": "My fridge is full of food.",
+                        "translation": "Tủ lạnh của tôi có đầy thức ăn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Bath",
+                "define": "Bồn tắm",
+                "set": null,
+                "image": "./src/seeder/image/furniture/bath.jpg",
+                "example": [
+                    {
+                        "sentence": "Can you please fill up the bath for me?",
+                        "translation": "Bạn có thể đổ đầy nước vào bồn tắm cho tôi được không?"
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Shower",
+                "define": "Vòi sen",
+                "set": null,
+                "image": "./src/seeder/image/furniture/shower.jfif",
+                "example": [
+                    {
+                        "sentence": "I prefer taking a shower to taking a bath.",
+                        "translation": "Tôi thích vòi sen hơn là tắm bồn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Lamp",
+                "define": "Đèn",
+                "set": null,
+                "image": "./src/seeder/image/furniture/lamp.jpg",
+                "example": [
+                    {
+                        "sentence": "I turned on the lamp to read a book.",
+                        "translation": "Tôi bật đèn để đọc sách."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Armchair",
+                "define": "Ghế bành",
+                "set": null,
+                "image": "./src/seeder/image/furniture/armchair.jfif",
+                "example": [
+                    {
+                        "sentence": "I like to curl up in an armchair with a good book.",
+                        "translation": "Tôi thích cuộn tròn trên chiếc ghế bành với một quyển sách hay."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Television/TV",
+                "define": "Ti vi",
+                "set": null,
+                "image": "./src/seeder/image/furniture/television.jfif",
+                "example": [
+                    {
+                        "sentence": "I like to watch TV in the evening.",
+                        "translation": "Tôi thích xem ti vi vào buổi tối."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Stool",
+                "define": "Ghế đẩu",
+                "set": null,
+                "image": "./src/seeder/image/furniture/stool.jfif",
+                "example": [
+                    {
+                        "sentence": "She sat on a stool in the corner and read her book.",
+                        "translation": "Cô ấy ngồi trên ghế đẩu ở góc phòng và đọc sách."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Ceiling light",
+                "define": "Đèn trần",
+                "set": null,
+                "image": "./src/seeder/image/furniture/ceiling_light.jfif",
+                "example": [
+                    {
+                        "sentence": "A bright ceiling light can make a room feel more spacious.",
+                        "translation": "Một chiếc đèn trần sáng có thể khiến căn phòng cảm thấy rộng rãi hơn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Curtain",
+                "define": "Rèm, màn",
+                "set": null,
+                "image": "./src/seeder/image/furniture/curtain.jpg",
+                "example": [
+                    {
+                        "sentence": "She pulled the lace curtains aside to let in some light.",
+                        "translation": "Cô ấy kéo rèm sang một bên để ánh sáng lọt vào."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Air-conditioner",
+                "define": "Điều hoà",
+                "set": null,
+                "image": "./src/seeder/image/furniture/air_conditioner.jfif",
+                "example": [
+                    {
+                        "sentence": "I can't sleep without the air conditioner on.",
+                        "translation": "Tôi không thể ngủ nếu không bật máy lạnh."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Cupboard",
+                "define": "Tủ ly chén",
+                "set": null,
+                "image": "./src/seeder/image/furniture/cupboard.jpg",
+                "example": [
+                    {
+                        "sentence": "Please put the dishes away in the cupboard.",
+                        "translation": "Vui lòng cất dĩa vào tủ ly chén."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Electric fire",
+                "define": "Lò sưởi điện",
+                "set": null,
+                "image": "./src/seeder/image/furniture/electric_fire.jfif",
+                "example": [
+                    {
+                        "sentence": "We sat electricsing close to the electrics fire to keep warm.",
+                        "translation": "Chúng tôi ngồi sát lò sưởi điện để giữ ấm."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Sofa",
+                "define": "Ghế sofa",
+                "set": null,
+                "image": "./src/seeder/image/furniture/sofa.jpg",
+                "example": [
+                    {
+                        "sentence": "The whole family relaxed on the sofa together.",
+                        "translation": "Cả gia đình thư giãn trên ghế sofa cùng nhau."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ]
+    },
+    {
+        "name": "Environmental",
+        "description": "A set of vocabulary related to the environment.",
+        "image": "./src/seeder/image/env/cover_environment.jpg",
+        "created_by": "Seeder",
+        "is_public": true,
+        "cards": [
+            {
+                "term": "Environment",
+                "define": "Môi trường",
+                "set": null,
+                "image": "./src/seeder/image/env/environment.png",
+                "example": [
+                    {
+                        "sentence": "We must protect the environment for future generations.",
+                        "translation": "Chúng ta phải bảo vệ môi trường cho các thế hệ tương lai."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Pollution",
+                "define": "Ô nhiễm",
+                "set": null,
+                "image": "./src/seeder/image/env/pollution.jpg",
+                "example": [
+                    {
+                        "sentence": "Air pollution is a serious problem in many cities.",
+                        "translation": "Ô nhiễm không khí là một vấn đề nghiêm trọng ở nhiều thành phố."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Recycling",
+                "define": "Tái chế",
+                "set": null,
+                "image": "./src/seeder/image/env/recycling.png",
+                "example": [
+                    {
+                        "sentence": "Recycling paper helps to save trees.",
+                        "translation": "Tái chế giấy giúp tiết kiệm cây xanh."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Waste",
+                "define": "Chất thải",
+                "set": null,
+                "image": "./src/seeder/image/env/waste.jfif",
+                "example": [
+                    {
+                        "sentence": "The waste from the factory is polluting the river.",
+                        "translation": "Chất thải từ nhà máy đang làm ô nhiễm sông."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Water pollution",
+                "define": "Ô nhiễm nước",
+                "set": null,
+                "image": "./src/seeder/image/env/water_pollution.jpg",
+                "example": [
+                    {
+                        "sentence": "The cause of the water pollution is industrial waste.",
+                        "translation": "Nguyên nhân của ô nhiễm nước là chất thải công nghiệp."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Air pollution",
+                "define": "Ô nhiễm không khí",
+                "set": null,
+                "image": "./src/seeder/image/env/air_pollution.jpg",
+                "example": [
+                    {
+                        "sentence": "Air pollution is a major threat to public health.",
+                        "translation": "Ô nhiễm không khí là mối đe doạ lớn đối với sức khoẻ cộng đồng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Noise pollution",
+                "define": "Ô nhiễm tiếng ồn",
+                "set": null,
+                "image": "./src/seeder/image/env/noise_pollution.jpg",
+                "example": [
+                    {
+                        "sentence": "Noise pollution can disturb sleep and concentration.",
+                        "translation": "Ô nhiễm tiếng ồn có thể gây rối loạn giấc ngủ và gây mất tập trung."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Soil pollution",
+                "define": "Ô nhiễm đất",
+                "set": null,
+                "image": "./src/seeder/image/env/soil_pollution.jpg",
+                "example": [
+                    {
+                        "sentence": "Soil pollution can harm plants and animals.",
+                        "translation": "Ô nhiễm đất có thể gây hại cho thực vật và động vật."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Global warming",
+                "define": "Sự nóng lên toàn cầu",
+                "set": null,
+                "image": "./src/seeder/image/env/global_warming.jfif",
+                "example": [
+                    {
+                        "sentence": "Global warming is melting glaciers and raising sea levels.",
+                        "translation": "Sự nóng lên toàn cầu đang làm chảy sông băng và dâng cao mực nước biển."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Garbage",
+                "define": "Rác thải",
+                "set": null,
+                "image": "./src/seeder/image/env/garbage.jfif",
+                "example": [
+                    {
+                        "sentence": "Garbage is a major environmental problem.",
+                        "translation": "Rác thải là một vấn đề môi trường nghiêm trọng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Deforestation",
+                "define": "Phá rừng",
+                "set": null,
+                "image": "./src/seeder/image/env/deforestation.jpg",
+                "example": [
+                    {
+                        "sentence": "Deforestation is a major cause of climate change.",
+                        "translation": "Phá rừng là một nguyên nhân chính gây biến đổi khí hậu."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Oil Spill",
+                "define": "Sự cố tràn dầu",
+                "set": null,
+                "image": "./src/seeder/image/env/oil_spill.jpg",
+                "example": [
+                    {
+                        "sentence": "The oil spill caused extensive damage to the marine environment.",
+                        "translation": "Sự cố tràn dầu gây thiệt hại nặng nề cho môi trường biển."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Ecosystem",
+                "define": "Hệ sinh thái",
+                "set": null,
+                "image": "./src/seeder/image/env/ecosystem.jfif",
+                "example": [
+                    {
+                        "sentence": "Humans are part of the ecosystem and have a responsibility to protect it.",
+                        "translation": "Con người là một phần của hệ sinh thái và có trách nhiệm bảo vệ nó."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Eco-friendly",
+                "define": "Thân thiện với môi trường",
+                "set": null,
+                "image": "./src/seeder/image/env/eco_friendly.jfif",
+                "example": [
+                    {
+                        "sentence": "Eco-friendly tourism is becoming increasingly popular.",
+                        "translation": "Du lịch thân thiện với môi trường đang ngày càng phổ biến."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Greenhouse gas",
+                "define": "Khí nhà kính",
+                "set": null,
+                "image": "./src/seeder/image/env/greenhouse_gas.png",
+                "example": [
+                    {
+                        "sentence": "Governments around the world are working to mitigate the effects of greenhouse gases..",
+                        "translation": "Các chính phủ trên thế giới đang nỗ lực giảm thiểu tác động nhà kín."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Reuse",
+                "define": "Tái sử dụng",
+                "set": null,
+                "image": "./src/seeder/image/env/reuse.jpg",
+                "example": [
+                    {
+                        "sentence": "Reuse shopping bags to reduce waste.",
+                        "translation": "Tái sử dụng túi mua sắm để giảm thiểu rác thải."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Conservation",
+                "define": "Bảo tồn",
+                "set": null,
+                "image": "./src/seeder/image/env/conservation.jpg",
+                "example": [
+                    {
+                        "sentence": "Conservation efforts are essential for protecting our planet.",
+                        "translation": "Nỗ lực bảo tồn là điều cần thiết để bảo vệ hành tinh của chúng ta."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Sustainability",
+                "define": "Bền vững",
+                "set": null,
+                "image": "./src/seeder/image/env/sustainability.jfif",
+                "example": [
+                    {
+                        "sentence": "We need to find sustainable solutions to protect the planet.",
+                        "translation": "Chúng ta cần tìm kiếm những giải pháp bền vững để bảo vệ hành tinh."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ]
     }
 ]

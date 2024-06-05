@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Card, CardTitle } from '@/components/ui/card';
 import { Star, Volume1 } from 'lucide-react';
-import { cn, isFunction, speek } from '@/lib/utils';
+import { cn, isFunction, speak } from '@/lib/utils';
 import { Button } from '../ui/button';
 import UserSetPopover from './user-set-popover/UsetSetPopover';
 
@@ -22,7 +22,7 @@ const FlipCard = (props: any) => {
                     variant={'ghost'}
                     className='w-fit h-fit rounded-full p-0'
                     onClick={() => {
-                        speek(card?.term)
+                        speak(card?.term)
                     }}>
                     <Volume1 />
                 </Button>

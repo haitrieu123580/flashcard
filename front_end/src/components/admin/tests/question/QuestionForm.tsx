@@ -46,6 +46,7 @@ const QuestionForm = (props: any) => {
         questionType: z.string().min(1, {
             message: "Required",
         }),
+        explain: z.string().optional(),
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -63,6 +64,7 @@ const QuestionForm = (props: any) => {
                 image: null,
                 path: question?.questionText || "",
             },
+            explain: question?.explain || "",
         },
     });
 
@@ -91,6 +93,7 @@ const QuestionForm = (props: any) => {
             options: values.options.map((answer: any) => answer.value).filter(Boolean), // Loại bỏ các option trống
             questionType: values.questionType,
             image: values.image?.image || values.image?.path || null,
+            explain: values.explain,
         };
 
         // Ensure correctAnswer is among the options for non-WRITTEN questions
@@ -206,6 +209,13 @@ const QuestionForm = (props: any) => {
                             placeholder="Enter correct answer"
                             type={Constants.INPUT_TYPE.TEXT}
                             required={true}
+                        />
+                        <FormInput
+                            control={form.control}
+                            fieldName={`explain`}
+                            label="Explain"
+                            placeholder="Enter explaination for the answer"
+                            type={Constants.INPUT_TYPE.TEXT}
                         />
                         {!isEdit && (
                             <Button

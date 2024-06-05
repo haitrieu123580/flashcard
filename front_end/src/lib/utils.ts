@@ -53,7 +53,7 @@ export const replacePathWithId = (path: string, id: string) => {
   return path.replace(':id', id);
 }
 
-export const speek = (text: string) => {
+export const speak = (text: string) => {
   const text_to_speech = new SpeechSynthesisUtterance();
   text_to_speech.text = text;
   text_to_speech.lang = 'en-US';

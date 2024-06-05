@@ -1,5 +1,8 @@
 import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 import { Separator } from '../ui/separator';
+import { cn, isFunction, speak } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { Volume1 } from 'lucide-react';
 const SentencesExampleBox = (props: any) => {
     const { example } = props;
     return (
@@ -11,8 +14,16 @@ const SentencesExampleBox = (props: any) => {
                         <div key={index}>
                             <Separator />
                             <div className='py-4' >
-                                <div>
+                                <div className='flex justify-between items-center'>
                                     {item?.sentence}
+                                    <Button
+                                        variant={'ghost'}
+                                        className='w-fit h-fit rounded-full p-0'
+                                        onClick={() => {
+                                            speak(item?.sentence)
+                                        }}>
+                                        <Volume1 />
+                                    </Button>
                                 </div>
                                 <i className=''>
                                     {item?.translation}

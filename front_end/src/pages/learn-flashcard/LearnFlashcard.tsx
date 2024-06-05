@@ -1,18 +1,9 @@
-import FlipCard from "@/components/flash-card/FlipCard"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Volume1 } from 'lucide-react';
-import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
-import { Button } from "@/components/ui/button";
-import SentencesExampleBox from "@/components/flash-card/SentencesExampleBox";
 import NewsetSets from "@/components/home/newest-sets/NewsetSets";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSetByIdAction } from "@/redux/set/slice";
-import { convertDateToString, replacePathWithId, speek } from "@/lib/utils";
-import { routerPaths } from "@/routes/path";
 import LoadingPopup from "@/components/common/loading/loading-popup/LoadingPopup";
-import { Progress } from "@/components/ui/progress"
 import UserTestHistory from "@/components/user-learning/user-test-history/UserTestHistory";
 import {
     getUserSetsListAction,

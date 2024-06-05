@@ -115,7 +115,7 @@ const MultipleChoiceTestResultPage = () => {
                                             <div className={
                                                 cn(`col-span-2`)
                                             }>
-                                                <span>Correct answers is: </span> <span className="text-green-500">{result?.question?.correctAnswer}</span>
+                                                <span>Correct answers is: </span> <span className="text-green-500">{result?.question?.correctAnswer} {result?.question?.explain ? `- ${result?.question?.explain}` : ""}</span>
                                             </div>
                                         </CardContent>
                                     </Card>

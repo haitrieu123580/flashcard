@@ -43,6 +43,13 @@ export class TestQuestion extends BaseEntity {
     )
     correctAnswer: string;
 
+    @Column(
+        {
+            nullable: true,
+        }
+    )
+    explain: string;
+
     @Column({
         nullable: true,
         type: 'jsonb',

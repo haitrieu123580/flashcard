@@ -52,6 +52,7 @@ export class TestKitController {
                 options: req.body.options,
                 correctAnswer: req.body.correctAnswer,
                 questionType: req.body.questionType,
+                explain: req.body.explain,
                 questionImage: req.file,
             }
         }
@@ -79,6 +80,7 @@ export class TestKitController {
                 correctAnswer: req.body.correctAnswer,
                 questionType: req.body.questionType,
                 questionImage: req.file,
+                explain: req.body.explain,
             }
         }
         const response = await this.testKitService.addQuestion(data);

@@ -100,18 +100,19 @@ export class TestService {
                 question.questionType = 'image';
                 question.questionText = flashcard.image;
                 question.correctAnswer = flashcard.term;
+                question.explain = flashcard.define;
                 question.options = [flashcard.term, ...randomCards.map(card => card.term)];
             } else {
                 // Randomly decide the type of question: term or definition
                 const questionTypeIndex = Math.floor(Math.random() * 2);
 
                 if (questionTypeIndex === 0) {
-                    question.questionType = 'term';
+                    question.questionType = 'choice';
                     question.questionText = `${flashcard.term}?`;
                     question.correctAnswer = flashcard.define;
                     question.options = [flashcard.define, ...randomCards.map(card => card.define)];
                 } else {
-                    question.questionType = 'definition';
+                    question.questionType = 'choice';
                     question.questionText = `${flashcard.define}`;
                     question.correctAnswer = flashcard.term;
                     question.options = [flashcard.term, ...randomCards.map(card => card.term)];
@@ -166,7 +167,8 @@ export class TestService {
                 questionType: question.questionType,
                 questionText: question.questionText,
                 options: (typeof question.options === 'string') ? JSON.parse(question.options) : question.options,
-                correctAnswer: question.correctAnswer
+                correctAnswer: question.correctAnswer,
+                explain: question.explain,
             })),
         }
     }
@@ -206,6 +208,7 @@ export class TestService {
             testQuestion.questionText = question.questionText;
             testQuestion.correctAnswer = question.correctAnswer;
             testQuestion.options = (typeof question.options === 'string') ? JSON.parse(question.options) : question.options;
+            testQuestion.explain = question.explain;
             return testQuestion;
         });
         const testResultArray: TestResultDetails[] = [];
@@ -230,7 +233,8 @@ export class TestService {
                     questionType: question.questionType,
                     questionText: question.questionText,
                     options: question.options,
-                    correctAnswer: question.correctAnswer
+                    correctAnswer: question.correctAnswer,
+                    explain: question.explain,
                 };
             }),
         };
