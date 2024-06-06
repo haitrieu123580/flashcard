@@ -61,7 +61,7 @@ const SetItem = (props: any) => {
                         </div>
                         <div >
                             {data?.updated_at && <p><b>Updated at: </b>{convertDateToString(data?.updated_at)}</p>}
-                            {data?.updated_by && <p><b>Updated by: </b>{convertDateToString(data?.updated_by)}</p>}
+                            {data?.updated_by && <p><b>Updated by: </b>{data?.updated_by}</p>}
                         </div>
                     </div>
                 </div>

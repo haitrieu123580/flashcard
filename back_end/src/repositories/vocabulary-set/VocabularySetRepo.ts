@@ -78,7 +78,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
     }
 
     get_set_by_id(setId: string): Promise<Sets | null> {
-        return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user", "questions", "testKits", "testKits.questions"] });
+        return this.setDataSource.findOne({ where: { id: setId }, relations: ["cards", "user", "testKits", "testKits.questions"] });
     }
 
     edit_set = async (set: Sets): Promise<Sets> => {

@@ -28,8 +28,6 @@ import userRouter from '@routers/user/index';
 import passportRouter from '@routers/passport/index';
 import vocabRouter from '@routers/vocabulary-set/index';
 import cardRouter from '@routers/card/index';
-import questionRouter from '@routers/questions/index';
-import multipleChoice from '@routers/multiple-choice-test/index'
 import userSetsRouter from '@routers/user-sets/index';
 import userCardsRouter from '@routers/user-cards/index';
 import testRouter from "@routers/test-sets/index";
@@ -96,8 +94,6 @@ app.use('/api/user', userRouter)
 app.use('/passport', passportRouter)
 app.use('/api/vocabulary-set', vocabRouter)
 app.use('/api/card', cardRouter)
-app.use('/api/question', questionRouter)
-app.use('/api/multiple-choice-test', multipleChoice)
 app.use('/api/user-sets', userSetsRouter)
 app.use('/api/user-cards', userCardsRouter)
 app.use('/api/tests', testRouter)

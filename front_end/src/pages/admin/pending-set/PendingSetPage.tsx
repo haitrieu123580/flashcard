@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { Form } from '@/components/ui/form'
 import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
-import { Card, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import {
     Popover,
     PopoverContent,
@@ -136,7 +136,7 @@ const PendingSetPage = () => {
             <Form {...form}>
                 <form className='flex flex-col gap-6'>
                     <div className='flex justify-between items-center my-2'>
-                        <CardTitle>Set {data?.name}</CardTitle>
+                        <CardTitle>{data?.name}</CardTitle>
                         <div className='space-x-2'>
                             <Popover>
                                 <PopoverTrigger className=" ">
@@ -178,30 +178,34 @@ const PendingSetPage = () => {
                             </Button>
                         </div>
                     </div>
-                    <FormInput
-                        control={form.control}
-                        fieldName="name"
-                        label="Name"
-                        placeholder="Name"
-                        type={Constants.INPUT_TYPE.TEXT}
-                        readOnly={true}
-                    />
-                    <FormInput
-                        control={form.control}
-                        fieldName="description"
-                        label="Description"
-                        placeholder="Description"
-                        readOnly={true}
-                        type={Constants.INPUT_TYPE.TEXT}
-                    />
-                    <FormInput
-                        control={form.control}
-                        fieldName="image"
-                        label="Image"
-                        readOnly={true}
-                        type={Constants.INPUT_TYPE.FILE_UPLOAD}
-                        classNameInput='h-fit'
-                    />
+                    <Card>
+                        <CardContent>
+                            <FormInput
+                                control={form.control}
+                                fieldName="name"
+                                label="Name"
+                                placeholder="Name"
+                                type={Constants.INPUT_TYPE.TEXT}
+                                readOnly={true}
+                            />
+                            <FormInput
+                                control={form.control}
+                                fieldName="description"
+                                label="Description"
+                                placeholder="Description"
+                                readOnly={true}
+                                type={Constants.INPUT_TYPE.TEXT}
+                            />
+                            <FormInput
+                                control={form.control}
+                                fieldName="image"
+                                label="Image"
+                                readOnly={true}
+                                type={Constants.INPUT_TYPE.FILE_UPLOAD}
+                                classNameInput='h-fit'
+                            />
+                        </CardContent>
+                    </Card>
                     <Separator />
                 </form>
                 <div className='my-6 flex justify-between items-center '>

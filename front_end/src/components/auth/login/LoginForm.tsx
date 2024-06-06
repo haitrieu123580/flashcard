@@ -91,9 +91,7 @@ export function LoginForm(props: any) {
             <LoadingPopup
                 open={isLoading}
             />
-            {/* {isLoading */}
-            {/* // ? <div className="flex justify-center items-center"> <LoadingSpinner /></div> */}
-            {/* // : ( */}
+
             <Card className="">
 
                 <CardHeader>
@@ -146,12 +144,12 @@ export function LoginForm(props: any) {
                 </CardContent>
 
                 <CardFooter className="flex flex-col w-full">
-                    <div className="flex justify-between items-center w-full">
+                    {/* <div className="flex justify-between items-center w-full">
                         <Separator className="w-1/3" />
                         <span>or</span>
                         <Separator className="w-1/3" />
-                    </div>
-                    <div className="w-full">
+                    </div> */}
+                    {/* <div className="w-full">
                         <Button
                             type="button"
                             variant={"outline"}
@@ -159,7 +157,7 @@ export function LoginForm(props: any) {
                             className="m-auto w-full dark:bg-red-400 bg-white my-2 text-rose-500 dark:text-white">
                             <GoogleIcon /> <span className="ml-2">Sign in with Google</span>
                         </Button>
-                    </div>
+                    </div> */}
                 </CardFooter>
 
             </Card >

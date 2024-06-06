@@ -63,11 +63,6 @@ export class CardService implements ICardService {
         }
         return await this.cardRepo.create_card(user, set, cardData);
 
-        // return new FailureMsgResponse("Create card failed!").send(res);
-        // } catch (error) {
-        //     console.log('error', error);
-        //     return new FailureMsgResponse('Internal Server Error ').send(res);
-        // }
     }
 
     UpdateCard = async (data: UpdateCardDataRequest): Promise<any> => {

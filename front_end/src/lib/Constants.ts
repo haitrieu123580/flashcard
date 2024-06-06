@@ -59,10 +59,6 @@ export default class Constants {
 
     static SidebarNavItems = [
         {
-            href: routerPaths.ADMIN_DASHBOARD,
-            title: 'Dashboard'
-        },
-        {
             href: routerPaths.ADMIN_SETS,
             title: 'Sets'
         },

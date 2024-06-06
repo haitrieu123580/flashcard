@@ -2,7 +2,6 @@ import { Entity, Column, Generated, ManyToOne, OneToMany, JoinColumn, ManyToMany
 import { BaseEntity } from "./BaseEntity"
 import { User } from "./User"
 import { Cards } from "./Cards"
-import { Questions } from "./Questions"
 import { Constants } from "@src/core/Constant"
 import { Tests } from "./Tests"
 import { UserProgress } from "./UserProgress"
@@ -53,14 +52,6 @@ export class Sets extends BaseEntity {
         nullable: true
     })
     image: string;
-
-
-    @OneToMany(() => Questions, questions => questions.set, {
-        onDelete: "SET NULL"
-    })
-    @JoinColumn()
-    questions: Questions[];
-
 
     @OneToMany(() => Tests, tests => tests.set, {
         onDelete: "SET NULL"

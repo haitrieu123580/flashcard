@@ -67,7 +67,6 @@ export class ApproveSetService implements IApproveSetService {
         //     throw new ForbiddenError("Set already approved or rejected");
         // }
         set.status = Constants.SET_STATUS.APPROVED;
-        console.log("set", set);
         await this.setRepo.edit_set(set);
         const newSet = new Sets();
         newSet.name = set.name;

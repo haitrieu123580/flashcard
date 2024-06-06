@@ -7,7 +7,6 @@ import { Cards } from "./entity/Cards"
 import * as dotenv from 'dotenv';
 import { MainSeeder } from "./seeder/Seeder"
 import { SeederOptions } from "typeorm-extension"
-import { Questions } from "./entity/Questions"
 import { UserProgress } from "./entity/UserProgress"
 import { Tests } from "./entity/Tests"
 import { TestQuestion } from "./entity/TestQuestion"
@@ -28,7 +27,6 @@ let options: DataSourceOptions & SeederOptions = {
         Sets,
         PasswordResetOtps,
         Cards,
-        Questions,
         UserProgress,
         Tests,
         TestQuestion,

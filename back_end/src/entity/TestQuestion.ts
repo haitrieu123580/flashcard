@@ -15,12 +15,6 @@ export class TestQuestion extends BaseEntity {
     @JoinColumn()
     test: Tests;
 
-    @ManyToOne(() => Cards, card => card.id, {
-        onDelete: "SET NULL",
-        nullable: true,
-    })
-    @JoinColumn()
-    card: Cards;
 
     @Column(
         {

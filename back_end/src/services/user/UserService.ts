@@ -74,7 +74,6 @@ export class UserService implements UserServiceInterface {
             }
             return new SuccessMsgResponse("Changed password successfully").send(res)
         } catch (error) {
-            console.log("error", error)
             return new InternalErrorResponse("Internal server error.").send(res)
         }
     }

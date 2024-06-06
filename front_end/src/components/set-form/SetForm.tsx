@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PlusCircle, Trash2 } from 'lucide-react'
 import { isFunction } from '@/lib/utils'
 import NestedCardFieldArray from '@/components/card-form/NestedCardFieldArray'
@@ -105,28 +105,35 @@ const SetForm = (props: any) => {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-6'>
-                    <FormInput
-                        control={form.control}
-                        fieldName="set_name"
-                        label="Name"
-                        placeholder="Name"
-                        type={Constants.INPUT_TYPE.TEXT}
-                        required={true}
-                    />
-                    <FormInput
-                        control={form.control}
-                        fieldName="set_description"
-                        label="Description"
-                        placeholder="Description"
-                        type={Constants.INPUT_TYPE.TEXT}
-                    />
-                    <FormInput
-                        control={form.control}
-                        fieldName="set_image"
-                        label="Image"
-                        type={Constants.INPUT_TYPE.FILE_UPLOAD}
-                        classNameInput='h-fit'
-                    />
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Create new Set</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <FormInput
+                                control={form.control}
+                                fieldName="set_name"
+                                label="Name"
+                                placeholder="Name"
+                                type={Constants.INPUT_TYPE.TEXT}
+                                required={true}
+                            />
+                            <FormInput
+                                control={form.control}
+                                fieldName="set_description"
+                                label="Description"
+                                placeholder="Description"
+                                type={Constants.INPUT_TYPE.TEXT}
+                            />
+                            <FormInput
+                                control={form.control}
+                                fieldName="set_image"
+                                label="Image"
+                                type={Constants.INPUT_TYPE.FILE_UPLOAD}
+                                classNameInput='h-fit'
+                            />
+                        </CardContent>
+                    </Card>
                     {showCards &&
                         <>
                             <Separator />

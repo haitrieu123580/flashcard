@@ -46,7 +46,7 @@ const SetsList = () => {
             payload: {
                 page_size: Constants.DEFAULT_PAGESIZE,
                 page_index: pageNumber,
-                filter: filter,
+                filter: filter || Constants.SORT_BY[0].key,
                 name: name || null,
                 onSuccess: () => {
                 },
@@ -194,7 +194,7 @@ const SetsList = () => {
                         <SetForm defaultValues={defaultValues} onCreate={onCreate} />
                     </ScrollArea>
                 }
-                title={"Create Set"}
+            // title={"Create Set"}
             />
             <CustomPagination
                 total={pagination?.total || 0}

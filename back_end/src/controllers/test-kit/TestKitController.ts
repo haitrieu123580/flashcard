@@ -103,8 +103,6 @@ export class TestKitController {
                 questionImage: req.file,
             }
         }
-        console.log("req", req)
-        console.log("body", req.body)
         const response = await this.testKitService.updateQuestion(data);
         if (response) {
             return new SuccessMsgResponse("Update question successfully!").send(res);

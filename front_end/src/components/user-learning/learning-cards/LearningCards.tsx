@@ -100,8 +100,27 @@ const LearningCards = (props: any) => {
                                 && <>
                                     <CardContent className="w-full h-full md:h-1/2 p-0 grid grid-cols-1 md:grid-cols-6 gap-1">
                                         <div className="col-span-1 md:col-span-3 flex flex-col gap-2 h-fit">
+                                            <div className='relative'>
+                                                <div>
 
-                                            <FlipCard key={index} card={card} onFlip={onFlip} />
+                                                    <FlipCard key={index} card={card} onFlip={onFlip} />
+                                                    <div className='text-center mt-2'>{`${currentCard + 1}/${data?.cards?.length}`}</div>
+                                                </div>
+                                                <div className='absolute top-1/2 right-full translate-y-[-1/2]'>
+
+                                                    <Button variant={"ghost"} onClick={(e) => {
+                                                        e.preventDefault();
+                                                        isFunction(showCard) && showCard(index - 1)
+
+                                                    }}><ChevronLeft /></Button>
+                                                </div>
+                                                <div className='absolute top-1/2 left-full translate-y-[-1/2]'>
+                                                    <Button variant={"ghost"} onClick={(e) => {
+                                                        e.preventDefault();
+                                                        isFunction(showCard) && showCard(index + 1)
+                                                    }}><ChevronRight /></Button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="col-span-1"></div>
                                         <div className="col-span-1 md:col-span-2">
@@ -109,7 +128,7 @@ const LearningCards = (props: any) => {
                                         </div>
                                     </CardContent>
                                     <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1 mt-4">
-                                        <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
+                                        {/* <div className="col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
                                             <Button variant={"ghost"} onClick={(e) => {
                                                 e.preventDefault();
                                                 isFunction(showCard) && showCard(index - 1)
@@ -120,7 +139,7 @@ const LearningCards = (props: any) => {
                                                 e.preventDefault();
                                                 isFunction(showCard) && showCard(index + 1)
                                             }}><ChevronRight /></Button>
-                                        </div>
+                                        </div> */}
                                         <div className="col-span-3"></div>
                                     </CardFooter>
                                 </>}

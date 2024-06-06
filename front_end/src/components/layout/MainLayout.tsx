@@ -24,9 +24,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
             }
         })
     }
-    useEffect(() => {
-        loginSuccessWithOauth()
-    }, [])
+    // useEffect(() => {
+    //     loginSuccessWithOauth()
+    // }, [])
 
     return (
         <div className=''>

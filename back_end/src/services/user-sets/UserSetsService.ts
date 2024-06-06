@@ -45,6 +45,7 @@ export class UserSetsService implements IUserSetsService {
         this.userRepo = Container.get(UserRepo);
         this.setRepo = Container.get(VocabularySetRepo);
         this.cardRepo = Container.get(VocabularyCardRepo);
+        this.s3Service = Container.get(S3Service);
     }
     async getUserSetsList(userId: string): Promise<SetsListResponse | null> {
         const user = await this.userRepo.getUserBy("id", userId);

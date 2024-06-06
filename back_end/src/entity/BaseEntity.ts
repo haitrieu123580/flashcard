@@ -35,14 +35,4 @@ export class BaseEntity {
         nullable: true
     })
     deleted_by: string;
-
-    // @BeforeInsert()
-    // logInsert() {
-    //     console.log('Inserting entity:', this);
-    // }
-
-    // @BeforeUpdate()
-    // logUpdate() {
-    //     console.log('Updating entity:', this);
-    // }
 }

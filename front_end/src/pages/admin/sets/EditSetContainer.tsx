@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form'
 import Constants from '@/lib/Constants'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Card, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { PlusCircle, PencilIcon, CheckIcon } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { objectToFormData } from '@/lib/utils'
@@ -208,98 +208,102 @@ const EditSetContainer = () => {
             <LoadingPopup open={isLoading} />
             <Form {...form}>
                 <form className='flex flex-col gap-6'>
-                    <div className='flex justify-between items-center my-2'>
-                        <CardTitle>Edit set</CardTitle>
-                        <EditPopup
-                            TriggerComponent={
-                                <Button
-                                    type='button'
-                                    variant={"ghost"}>
-                                    <CheckIcon width={20} />
-                                </Button>
-                            }
-                            onConfirmEdit={form.handleSubmit(onSubmitSet)}
-                        />
-                    </div>
-                    <FormInput
-                        control={form.control}
-                        fieldName="set_name"
-                        label="Name"
-                        placeholder="Name"
-                        type={Constants.INPUT_TYPE.TEXT}
-                        required={true}
-                    />
-                    <FormInput
-                        control={form.control}
-                        fieldName="set_description"
-                        label="Description"
-                        placeholder="Description"
-                        type={Constants.INPUT_TYPE.TEXT}
-                    />
-                    <FormInput
-                        control={form.control}
-                        fieldName="set_image"
-                        label="Image"
-                        type={Constants.INPUT_TYPE.FILE_UPLOAD}
-                        classNameInput='h-fit'
-                    />
-                    <Separator />
-                </form>
-                <div className='my-6 flex justify-between items-center '>
-                    <b>Cards</b>
-                </div>
-                <div className='flex flex-col'>
-                    <div className="w-full flex flex-col gap-10">
-                        {data?.cards && Array.isArray(data?.cards) &&
-                            data?.cards.map((card: any, index: number) => {
-                                let convertData = null;
-                                if (typeof card.example === 'string') {
-                                    convertData = {
-                                        ...card,
-                                        example: JSON.parse(card.example)
+                    <Card>
+                        <CardContent>
+                            <div className='flex justify-between items-center my-2'>
+                                <CardTitle>Edit set</CardTitle>
+                                <EditPopup
+                                    TriggerComponent={
+                                        <Button
+                                            type='button'
+                                            variant={"ghost"}>
+                                            <CheckIcon width={20} />
+                                        </Button>
                                     }
-                                }
-                                card = convertData ? convertData : card;
-                                return (
-                                    <Card className='p-4'>
-                                        <CardForm
-                                            key={index}
-                                            index={index}
-                                            card={card}
-                                            setId={data?.id}
-                                            onDeleteCard={onDeleteCard}
-                                            onEditCard={onEditCard}
-                                        />
-                                    </Card>
-                                )
-                            })}
-                    </div>
-                    <div className='flex justify-center my-2'>
-                        <CommonPopup
-                            open={showCardFormPopup}
-                            setOpen={setShowCardFormPopup}
-                            isShowTrigger={true}
-                            TriggerComponent={
-                                <Button
-                                    type='button'
-                                    className='w-fit h-fit p-0'
-                                    variant={"ghost"}><PlusCircle />
-                                </Button>
-                            }
-                            title="Add new card"
-                            children={
-                                // <ScrollArea>
-                                <CardForm
-                                    isEdit={false}
-                                    setId={data?.id}
-                                    onCreateCard={onCreateCard}
+                                    onConfirmEdit={form.handleSubmit(onSubmitSet)}
                                 />
-                                // </ScrollArea>
-                            }
-                        />
-                    </div>
-                </div>
+                            </div>
+                            <FormInput
+                                control={form.control}
+                                fieldName="set_name"
+                                label="Name"
+                                placeholder="Name"
+                                type={Constants.INPUT_TYPE.TEXT}
+                                required={true}
+                            />
+                            <FormInput
+                                control={form.control}
+                                fieldName="set_description"
+                                label="Description"
+                                placeholder="Description"
+                                type={Constants.INPUT_TYPE.TEXT}
+                            />
+                            <FormInput
+                                control={form.control}
+                                fieldName="set_image"
+                                label="Image"
+                                type={Constants.INPUT_TYPE.FILE_UPLOAD}
+                                classNameInput='h-fit'
+                            />
+                        </CardContent>
+                    </Card>
+                </form>
             </Form >
+            <Separator />
+            <div className='my-6 flex justify-between items-center '>
+                <b>Cards</b>
+            </div>
+            <div className='flex flex-col'>
+                <div className="w-full flex flex-col gap-10">
+                    {data?.cards && Array.isArray(data?.cards) &&
+                        data?.cards.map((card: any, index: number) => {
+                            let convertData = null;
+                            if (typeof card.example === 'string') {
+                                convertData = {
+                                    ...card,
+                                    example: JSON.parse(card.example)
+                                }
+                            }
+                            card = convertData ? convertData : card;
+                            return (
+                                <Card className='p-4'>
+                                    <CardForm
+                                        key={index}
+                                        index={index}
+                                        card={card}
+                                        setId={data?.id}
+                                        onDeleteCard={onDeleteCard}
+                                        onEditCard={onEditCard}
+                                    />
+                                </Card>
+                            )
+                        })}
+                </div>
+                <div className='flex justify-center my-2'>
+                    <CommonPopup
+                        open={showCardFormPopup}
+                        setOpen={setShowCardFormPopup}
+                        isShowTrigger={true}
+                        TriggerComponent={
+                            <Button
+                                type='button'
+                                className='w-fit h-fit p-0'
+                                variant={"ghost"}><PlusCircle />
+                            </Button>
+                        }
+                        title="Add new card"
+                        children={
+                            // <ScrollArea>
+                            <CardForm
+                                isEdit={false}
+                                setId={data?.id}
+                                onCreateCard={onCreateCard}
+                            />
+                            // </ScrollArea>
+                        }
+                    />
+                </div>
+            </div>
         </div >
     )
 }

@@ -91,7 +91,6 @@ export class TestService {
         for (const flashcard of cardsToTest) {
             const question = new TestQuestion();
             question.test = test;
-            question.card = flashcard;
 
             // Get other cards excluding the current question card
             const randomCards = getRandomElements(flashcardSet.cards, 3, flashcard);

@@ -115,7 +115,6 @@ export class UserCardsService implements IUserCardsService {
             }
             return new SuccessMsgResponse("Delete card successfully!").send(res);
         } catch (error) {
-            console.log('error', error);
             return new FailureMsgResponse('Internal Server Error ').send(res);
         }
     }
