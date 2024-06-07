@@ -1456,5 +1456,274 @@
                 "created_by": "Seeder"
             }
         ]
+    },
+    {
+        "name": "School",
+        "description": "A set of vocabulary related to school.",
+        "image": "./src/seeder/image/school/cover_school.jpg",
+        "created_by": "Seeder",
+        "is_public": true,
+        "cards": [
+            {
+                "term": "Teacher",
+                "define": "Giáo viên",
+                "set": null,
+                "image": "./src/seeder/image/school/teacher.jpg",
+                "example": [
+                    {
+                        "sentence": "The teacher explained the lesson very clearly.",
+                        "translation": "Giáo viên giải thích bài học rất rõ ràng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Student",
+                "define": "Học sinh",
+                "set": null,
+                "image": "./src/seeder/image/school/student.jpg",
+                "example": [
+                    {
+                        "sentence": "The students are working on their assignments.",
+                        "translation": "Các học sinh đang làm bài tập của mình."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Classroom",
+                "define": "Phòng học",
+                "set": null,
+                "image": "./src/seeder/image/school/classroom.jpg",
+                "example": [
+                    {
+                        "sentence": "The classroom was decorated with colorful posters.",
+                        "translation": "Phòng học được trang trí bằng những tấm áp phích nhiều màu sắc."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Exam",
+                "define": "Kỳ thi",
+                "set": null,
+                "image": "./src/seeder/image/school/exam.jpg",
+                "example": [
+                    {
+                        "sentence": "The final exams will start next week.",
+                        "translation": "Kỳ thi cuối cùng sẽ bắt đầu vào tuần tới."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Library",
+                "define": "Thư viện",
+                "set": null,
+                "image": "./src/seeder/image/school/library.jpg",
+                "example": [
+                    {
+                        "sentence": "The library has a vast collection of books.",
+                        "translation": "Thư viện có một bộ sưu tập sách phong phú."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Principal",
+                "define": "Hiệu trưởng",
+                "set": null,
+                "image": "./src/seeder/image/school/principal.jpg",
+                "example": [
+                    {
+                        "sentence": "The principal gave a speech at the assembly.",
+                        "translation": "Hiệu trưởng đã phát biểu tại buổi lễ."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Subject",
+                "define": "Môn học",
+                "set": null,
+                "image": "./src/seeder/image/school/subject.jpg",
+                "example": [
+                    {
+                        "sentence": "Mathematics is his favorite subject.",
+                        "translation": "Toán học là môn học yêu thích của cậu ấy."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Textbook",
+                "define": "Sách giáo khoa",
+                "set": null,
+                "image": "./src/seeder/image/school/textbook.jpg",
+                "example": [
+                    {
+                        "sentence": "She forgot her textbook at home.",
+                        "translation": "Cô ấy quên sách giáo khoa ở nhà."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Recess",
+                "define": "Giờ giải lao",
+                "set": null,
+                "image": "./src/seeder/image/school/recess.jpg",
+                "example": [
+                    {
+                        "sentence": "The children played outside during recess.",
+                        "translation": "Các em chơi ngoài trời trong giờ giải lao."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "School Uniform",
+                "define": "Đồng phục học sinh",
+                "set": null,
+                "image": "./src/seeder/image/school/school_uniform.jpg",
+                "example": [
+                    {
+                        "sentence": "All students must wear the school uniform.",
+                        "translation": "Tất cả học sinh phải mặc đồng phục học sinh."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Blackboard",
+                "define": "Bảng đen",
+                "set": null,
+                "image": "./src/seeder/image/school/blackboard.jpg",
+                "example": [
+                    {
+                        "sentence": "The teacher wrote the new vocabulary on the blackboard.",
+                        "translation": "Giáo viên viết từ vựng mới lên bảng đen."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Graduation",
+                "define": "Lễ tốt nghiệp",
+                "set": null,
+                "image": "./src/seeder/image/school/graduation.jpg",
+                "example": [
+                    {
+                        "sentence": "The graduation ceremony will be held in the auditorium.",
+                        "translation": "Lễ tốt nghiệp sẽ được tổ chức tại hội trường."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Notebook",
+                "define": "Sổ tay",
+                "set": null,
+                "image": "./src/seeder/image/school/notebook.jpg",
+                "example": [
+                    {
+                        "sentence": "He jotted down the important points in his notebook.",
+                        "translation": "Anh ấy ghi lại những điểm quan trọng trong sổ tay của mình."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Science Lab",
+                "define": "Phòng thí nghiệm khoa học",
+                "set": null,
+                "image": "./src/seeder/image/school/science_lab.jpg",
+                "example": [
+                    {
+                        "sentence": "The students conducted experiments in the science lab.",
+                        "translation": "Các học sinh tiến hành thí nghiệm trong phòng thí nghiệm khoa học."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Maths",
+                "define": "Môn toán",
+                "set": null,
+                "image": "./src/seeder/image/school/maths.jpg",
+                "example": [
+                    {
+                        "sentence": "I'm not very good at maths.",
+                        "translation": "Tôi không giỏi môn toán lắm"
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Music",
+                "define": "Môn âm nhạc",
+                "set": null,
+                "image": "./src/seeder/image/school/music.jpg",
+                "example": [
+                    {
+                        "sentence": "I love listening to music when I'm studying.",
+                        "translation": "Tôi thích nghe nhạc khi học bài."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Geography",
+                "define": "Môn địa lý",
+                "set": null,
+                "image": "./src/seeder/image/school/geography.jpg",
+                "example": [
+                    {
+                        "sentence": "I'm going to Geography class.",
+                        "translation": "Tôi sẽ đi đến lớp học địa lý."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Crayon",
+                "define": "Bút sáp màu",
+                "set": null,
+                "image": "./src/seeder/image/school/crayon.jpg",
+                "example": [
+                    {
+                        "sentence": " I liki coloring with crayons.",
+                        "translation": "Tôi thích tô màu bằng bút sáp màu"
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Pencil case",
+                "define": "Hộp bút chì",
+                "set": null,
+                "image": "./src/seeder/image/school/pencil_case.jpg",
+                "example": [
+                    {
+                        "sentence": "I need a new pencil case for school.",
+                        "translation": "Tôi cần một hộp bút chì mới cho việc du học."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "School Bus",
+                "define": "Xe buýt trường học",
+                "set": null,
+                "image": "./src/seeder/image/school/school_bus.jpg",
+                "example": [
+                    {
+                        "sentence": "The school bus arrives at 7:30 AM every morning.",
+                        "translation": "Xe buýt trường học đến lúc 7:30 sáng mỗi ngày."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ]
     }
 ]

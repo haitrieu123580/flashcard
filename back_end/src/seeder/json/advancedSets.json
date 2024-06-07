@@ -1,0 +1,138 @@
+[
+    {
+        "name": "Advanced Vocabulary Set",
+        "description": "A set of advanced level vocabulary words.",
+        "image": "./src/seeder/image/advanced_vocabulary_cover.png",
+        "created_by": "Seeder",
+        "is_public": true,
+        "level": 3,
+        "cards": [
+            {
+                "term": "Phenomenon",
+                "define": "Hiện tượng",
+                "set": null,
+                "image": "./src/seeder/image/phenomenon.jpg",
+                "example": [
+                    {
+                        "sentence": "A rainbow is a natural phenomenon.",
+                        "translation": "Cầu vồng là một hiện tượng tự nhiên."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Hypothesis",
+                "define": "Giả thuyết",
+                "set": null,
+                "image": "./src/seeder/image/hypothesis.jpg",
+                "example": [
+                    {
+                        "sentence": "The scientist formulated a new hypothesis.",
+                        "translation": "Nhà khoa học đã đưa ra một giả thuyết mới."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Ecosystem",
+                "define": "Hệ sinh thái",
+                "set": null,
+                "image": "./src/seeder/image/ecosystem.jpg",
+                "example": [
+                    {
+                        "sentence": "An ecosystem includes all living and non-living things in an area.",
+                        "translation": "Một hệ sinh thái bao gồm tất cả các sinh vật sống và không sống trong một khu vực."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Photosynthesis",
+                "define": "Quang hợp",
+                "set": null,
+                "image": "./src/seeder/image/photosynthesis.jpg",
+                "example": [
+                    {
+                        "sentence": "Photosynthesis is a process used by plants to convert light energy into chemical energy.",
+                        "translation": "Quang hợp là một quá trình mà thực vật sử dụng để chuyển đổi năng lượng ánh sáng thành năng lượng hóa học."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Quantum",
+                "define": "Lượng tử",
+                "set": null,
+                "image": "./src/seeder/image/quantum.jpg",
+                "example": [
+                    {
+                        "sentence": "Quantum mechanics is a fundamental theory in physics.",
+                        "translation": "Cơ học lượng tử là một lý thuyết cơ bản trong vật lý."
+                    }
+                ],
+                "created_by": "Seeder"
+            }
+        ],
+        "testKits": [
+            {
+                "level": 2,
+                "questions": [
+                    {
+                        "questionText": "What process is used by plants to convert light energy into chemical energy?",
+                        "questionType": "choice",
+                        "options": [
+                            "Photosynthesis",
+                            "Respiration",
+                            "Digestion",
+                            "Metabolism"
+                        ],
+                        "correctAnswer": "Photosynthesis",
+                        "explain": "Photosynthesis is the process used by plants to convert light energy into chemical energy."
+                    },
+                    {
+                        "questionText": "Quantum mechanics is a fundamental theory in ...?",
+                        "questionType": "written",
+                        "correctAnswer": "physics",
+                        "explain": "Quantum mechanics is a fundamental theory in physics."
+                    },
+                    {
+                        "questionText": "A hypothesis is a ...?",
+                        "questionType": "choice",
+                        "options": [
+                            "Conclusion",
+                            "Observation",
+                            "Prediction",
+                            "Guess"
+                        ],
+                        "correctAnswer": "Prediction",
+                        "explain": "A hypothesis is a prediction that can be tested through experiments."
+                    },
+                    {
+                        "questionText": "An ecosystem includes all living and non-living things in an ...?",
+                        "questionType": "written",
+                        "correctAnswer": "area",
+                        "explain": "An ecosystem includes all living and non-living things in an area."
+                    },
+                    {
+                        "questionText": "Which of the following is a natural phenomenon?",
+                        "questionType": "choice",
+                        "options": [
+                            "Car",
+                            "House",
+                            "Rainbow",
+                            "Computer"
+                        ],
+                        "correctAnswer": "Rainbow",
+                        "explain": "A rainbow is a natural phenomenon."
+                    },
+                    {
+                        "questionText": "The scientist formulated a new ...?",
+                        "questionType": "written",
+                        "correctAnswer": "hypothesis",
+                        "explain": "The scientist formulated a new hypothesis."
+                    }
+                ]
+            }
+        ]
+    }
+]

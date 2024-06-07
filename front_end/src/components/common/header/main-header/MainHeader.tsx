@@ -13,7 +13,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-
 import { Button } from "@/components/ui/button"
 import { LoginForm } from "@/components/auth/login/LoginForm"
 import { RegisterForm } from "@/components/auth/register/RegisterForm"
@@ -36,7 +35,6 @@ const MainHeader = (props: any) => {
     const [openDialogLogin, setOpenDialogLogin] = useState(false)
     const [openDialogRegister, setOpenDialogRegister] = useState(false)
     const [showSubmit, setShowSubmit] = useState(false)
-
     const form = useForm()
     const onSubmit = (data: any) => {
         const param: Record<string, string> = {

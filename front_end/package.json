@@ -40,6 +40,7 @@
     "i18next": "^23.8.2",
     "i18next-browser-languagedetector": "^7.2.0",
     "input-otp": "^1.2.2",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.323.0",
     "multer-s3": "^3.0.1",
     "prettier": "^3.2.5",

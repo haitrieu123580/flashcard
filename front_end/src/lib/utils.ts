@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { routerPaths } from "@/routes/path";
 import Constants from "./Constants";
+import { jwtDecode } from 'jwt-decode';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -85,4 +85,13 @@ export const setColorLevel = (level: string) => {
     default:
       return 'bg-primary';
   }
+}
+
+export const getUserJWTDecode = () => {
+  const token = localStorage.getItem('access_token') && localStorage.getItem('access_token') || '';
+  if (!token) {
+    return null;
+  }
+  const value = jwtDecode(token);
+  return value;
 }

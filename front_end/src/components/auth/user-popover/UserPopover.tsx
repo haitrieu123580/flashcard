@@ -17,7 +17,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { routerPaths } from "@/routes/path";
 import { User, History, Percent } from "lucide-react"
+import { getUserJWTDecode } from "@/lib/utils";
+import { JwtPayload } from "jwt-decode";
 
+const userProfile: JwtPayload | any = getUserJWTDecode() || {};
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const UserPopover = () => {
@@ -43,7 +46,7 @@ const UserPopover = () => {
                     <AvatarImage src={profile?.avatar || ""} className="object-cover" />
                     <AvatarFallback> <User className="w-28 h-28" /></AvatarFallback>
                 </Avatar>
-                {profile?.username}
+                {profile?.username || userProfile?.username || ""}
             </PopoverTrigger>
             <PopoverContent className="w-fit">
                 <div className="grid gap-4">

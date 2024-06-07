@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/avatar"
 import defaultImageAvatar from "@/assets/images/flash-card.png"
 import { Badge } from "@/components/ui/badge"
-import { convertDateToString, isFunction, setColorLevel } from "@/lib/utils"
+import { cn, convertDateToString, isFunction, setColorLevel } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Pen, PencilIcon, Trash2Icon } from "lucide-react"
@@ -23,11 +23,11 @@ const SetItem = (props: any) => {
     } = props;
     const { name, description, totalCards, created_by, created_at, image, id } = data || {};
     return (
-        <Card className="group overflow-hidden" >
+        <Card className="group overflow-hidden h-full relative" >
             <CardHeader>
 
                 <div className="grid grid-cols-3 gap-2">
-                    <div className="col-span-2">
+                    <div className={cn("col-span-2", (showEditBtn || showDeleteBtn) ? "" : "col-span-3")}>
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger className="max-w-full text-left">
@@ -41,11 +41,11 @@ const SetItem = (props: any) => {
                             </Tooltip>
                         </TooltipProvider>
                     </div>
-                    <div className="col-span-1 flex justify-end items-end flex-nowrap gap-1">
+                    <div className={cn("col-span-1 flex justify-end items-end flex-nowrap gap-1", (showEditBtn || showDeleteBtn) ? "" : "hidden")}>
                         {showEditBtn
                             && <Button
                                 variant={"ghost"}
-                                className={'w-fit h-fit '}
+                                className={'w-fit h-fit'}
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     onEditBtn(id)
@@ -113,7 +113,7 @@ const SetItem = (props: any) => {
                     <span className="text-sm text-ellipsis overflow-hidden whitespace-nowrap block">{convertDateToString(created_at)}</span>
                 </div>
             </CardFooter>
-            <div className="w-full h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
+            <div className="w-full absolute bottom-0 h-1 group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
         </Card>
     )
 }
