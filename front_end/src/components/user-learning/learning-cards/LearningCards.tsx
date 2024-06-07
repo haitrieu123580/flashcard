@@ -127,21 +127,6 @@ const LearningCards = (props: any) => {
                                             <SentencesExampleBox example={card?.example} />
                                         </div>
                                     </CardContent>
-                                    {/* <CardFooter className="grid grid-cols-1 md:grid-cols-6 gap-1 mt-4">
-                                        <div className="md:hidden col-span-1 md:col-span-3 flex justify-end gap-6 items-center">
-                                            <Button variant={"ghost"} onClick={(e) => {
-                                                e.preventDefault();
-                                                isFunction(showCard) && showCard(index - 1)
-
-                                            }}><ChevronLeft /></Button>
-                                            <span>{`${currentCard + 1}/${data?.cards?.length}`}</span>
-                                            <Button variant={"ghost"} onClick={(e) => {
-                                                e.preventDefault();
-                                                isFunction(showCard) && showCard(index + 1)
-                                            }}><ChevronRight /></Button>
-                                        </div>
-                                        <div className="col-span-3"></div>
-                                    </CardFooter> */}
                                 </>}
                         </div>
                     )
