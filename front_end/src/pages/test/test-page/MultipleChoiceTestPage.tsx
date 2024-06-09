@@ -142,7 +142,7 @@ const MultipleChoiceTestPage = () => {
             return;
         }
         setCurrentCard(index);
-        setIsCorrect(null); // Reset the correctness state for the new question
+        setIsCorrect(false); // Reset the correctness state for the new question
     };
 
     const handleOptionChange = (questionId: string, value: string, question: Question) => {

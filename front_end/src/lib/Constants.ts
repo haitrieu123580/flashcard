@@ -77,7 +77,6 @@ export default class Constants {
         WRITTEN: 'written',
     }
     static LEVEL: LevelMap = {
-        0: "Beginner",
         1: "Easy",
         2: "Medium",
         3: "Hard",

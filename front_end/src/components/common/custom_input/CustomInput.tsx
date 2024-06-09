@@ -277,7 +277,7 @@ const renderInput = ({
                         onChangeSelect(e);
                     }}
                     disabled={disabled}
-                    className={cn('grid grid-cols-2 gap-2', classNameInput)}
+                    className={cn('grid grid-cols-2 gap-4', classNameInput)}
                 >
                     {options?.map((x: any, index: number) => {
                         const id = React.useId();
@@ -285,8 +285,8 @@ const renderInput = ({
 
                         return (
                             <div key={index}
-                                className={cn(`flex items-center w-full border rounded-sm p-4 gap-2 
-                                ${field.value?.toString() === x.key ? 'border-blue-300' : ''}
+                                className={cn(`flex items-center w-full border rounded-sm p-4 gap-2 hover:border-gray-300 bg-background 
+                                ${field.value?.toString() === x.key ? 'border-blue-500' : ''}
                                 `, classNameContent)}
 
                             >
@@ -295,7 +295,7 @@ const renderInput = ({
                                     id={formItemId}
                                 />
                                 <FormLabel
-                                    className={cn("w-full flex items-center justify-start",
+                                    className={cn("w-full block cursor-pointer ",
                                         classNameContent)}
                                     htmlFor={formItemId}>{x.label}</FormLabel>
                             </div>
