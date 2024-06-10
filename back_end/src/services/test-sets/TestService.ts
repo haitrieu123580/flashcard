@@ -1,4 +1,4 @@
-import { Service } from "typedi";
+import Container, { Service } from "typedi";
 import { AppDataSource } from "../../data-source";
 import { User } from "@src/entity/User";
 import { Sets } from "@src/entity/Sets";
@@ -7,13 +7,14 @@ import { TestQuestion } from '@entity/TestQuestion';
 import { Cards } from '@entity/Cards';
 import { TestResultDetails } from "@src/entity/TestResultDetails";
 import { TestKits } from "@src/entity/TestKit";
+import { UserProgress } from "@src/entity/UserProgress";
 import {
     NotFoundError,
     BadRequestError,
     AuthFailureError,
 } from '@src/core/ApiError';
 import { Constants } from "@src/core/Constant";
-
+import { UserProgressService } from "../user-progress/UserProgressService";
 function getRandomElements<T>(array: T[], numElements: number, exclude?: T): T[] {
     const filteredArray = exclude ? array.filter(item => item !== exclude) : array;
     if (numElements >= filteredArray.length) {
@@ -46,6 +47,8 @@ export class TestService {
     private testQuestionRepo;
     private testResultDetailRepo;
     private testKitsRepo;
+    private userProgress;
+    private userProgressService: UserProgressService;
     constructor() {
         this.userRepo = AppDataSource.getRepository(User);
         this.setRepo = AppDataSource.getRepository(Sets);
@@ -54,6 +57,8 @@ export class TestService {
         this.testQuestionRepo = AppDataSource.getRepository(TestQuestion);
         this.testResultDetailRepo = AppDataSource.getRepository(TestResultDetails);
         this.testKitsRepo = AppDataSource.getRepository(TestKits);
+        this.userProgress = AppDataSource.getRepository(UserProgress);
+        this.userProgressService = Container.get(UserProgressService);
     }
 
     createTest = async (data: { setId: string, userId: string, level: number }): Promise<any> => {
@@ -80,7 +85,24 @@ export class TestService {
     }
 
     createQuestionFromCardInSet = async (flashcardSet: Sets, user: User): Promise<any> => {
-        let cardsToTest = getRandomElements(flashcardSet.cards, 10);
+        // let cardsToTest = getRandomElements(flashcardSet.cards, 10);
+        let cardsToTest: Cards[] = [];
+        // const [learnedCards, count] = await 
+        const [knowCards, knowCardsCount] = await this.userProgress.findAndCount({
+            where: {
+                user: {
+                    id: user.id
+                },
+                set: {
+                    id: flashcardSet.id
+                },
+                status: 'known',
+            },
+            relations: ['card']
+        })
+        if (knowCardsCount > 0) {
+            cardsToTest = getRandomElements(knowCards.map(knowCard => knowCard.card), 10);
+        }
 
         const test = new Tests();
         test.user = user;
@@ -93,28 +115,28 @@ export class TestService {
             question.test = test;
 
             // Get other cards excluding the current question card
-            const randomCards = getRandomElements(flashcardSet.cards, 3, flashcard);
+            const randomCards = getRandomElements(flashcardSet.cards, 3, flashcard as Cards);
 
-            if (flashcard.image) {
+            if (flashcard.hasOwnProperty('image')) {
                 question.questionType = 'image';
-                question.questionText = flashcard.image;
-                question.correctAnswer = flashcard.term;
-                question.explain = flashcard.define;
-                question.options = [flashcard.term, ...randomCards.map(card => card.term)];
+                question.questionText = flashcard['image'];
+                question.correctAnswer = flashcard['term'];
+                question.explain = flashcard['define'];
+                question.options = [flashcard['term'], ...randomCards.map(card => card['term'])];
             } else {
                 // Randomly decide the type of question: term or definition
                 const questionTypeIndex = Math.floor(Math.random() * 2);
 
                 if (questionTypeIndex === 0) {
                     question.questionType = 'choice';
-                    question.questionText = `${flashcard.term}?`;
-                    question.correctAnswer = flashcard.define;
-                    question.options = [flashcard.define, ...randomCards.map(card => card.define)];
+                    question.questionText = `${flashcard['term']}?`;
+                    question.correctAnswer = flashcard['define'];
+                    question.options = [flashcard['define'], ...randomCards.map(card => card['define'])];
                 } else {
                     question.questionType = 'choice';
-                    question.questionText = `${flashcard.define}`;
-                    question.correctAnswer = flashcard.term;
-                    question.options = [flashcard.term, ...randomCards.map(card => card.term)];
+                    question.questionText = `${flashcard['define']}`;
+                    question.correctAnswer = flashcard['term'];
+                    question.options = [flashcard['term'], ...randomCards.map(card => card['term'])];
                 }
             }
 
@@ -123,10 +145,10 @@ export class TestService {
 
             // If there are not enough unique options, reduce the number of options
             if (question.options.length < 4) {
-                const additionalCards = getRandomElements(flashcardSet.cards, 4 - question.options.length, flashcard);
+                const additionalCards = getRandomElements(flashcardSet.cards, 4 - question.options.length, flashcard as Cards);
                 const additionalOptions = question.questionType === 'image' || question.questionType === 'definition'
-                    ? additionalCards.map(card => card.term)
-                    : additionalCards.map(card => card.define);
+                    ? additionalCards.map(card => card['term'])
+                    : additionalCards.map(card => card['define']);
 
                 additionalOptions.forEach(option => {
                     if (!question.options.includes(option)) {

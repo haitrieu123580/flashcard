@@ -263,12 +263,12 @@ const MultipleChoiceTestPage = () => {
                                                         <div>
                                                             {Math.ceil(progress / 10)} s
                                                         </div>
-                                                        <Progress
+                                                        {/* <Progress
                                                             value={progress}
                                                             max={100}
                                                             color="red"
                                                             className="w-full"
-                                                        />
+                                                        /> */}
                                                     </div>
                                                 </div>
                                             </CardFooter>

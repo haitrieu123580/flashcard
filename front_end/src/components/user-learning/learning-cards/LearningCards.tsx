@@ -86,11 +86,14 @@ const LearningCards = (props: any) => {
                                 </PopoverContent>
                             </Popover>
                         }
-                        <Button variant={"outline"} className={'bg-green-500 hover:bg-green-500 text-white'}>
-                            <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2">
-                                Try your self
-                            </Link>
-                        </Button>
+                        {
+                            (progress?.studiedCards?.length != 0) &&
+                            <Button variant={"outline"} className={'bg-green-500 hover:bg-green-500 text-white'}>
+                                <Link to={replacePathWithId(routerPaths.TEST_MULTIPLE_CHOICE, String(id))} className="hover:cursor-pointer flex items-center gap-2">
+                                    Try your memory
+                                </Link>
+                            </Button>
+                        }
                     </div>
                 </CardTitle>
                 {Array.isArray(data?.cards) && data?.cards?.length ? data?.cards.map((card: any, index: number) => {
