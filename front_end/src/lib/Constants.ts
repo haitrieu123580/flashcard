@@ -37,13 +37,21 @@ export default class Constants {
             key: "oldest",
             label: "Oldest"
         },
+        // {
+        //     key: "desc",
+        //     label: "Z-A"
+        // },
+        // {
+        //     key: "asc",
+        //     label: "A-Z"
+        // },
         {
-            key: "desc",
-            label: "Z-A"
+            key: "level_asc",
+            label: "Level Asc"
         },
         {
-            key: "asc",
-            label: "A-Z"
+            key: "level_desc",
+            label: "Level Desc"
         },
     ]
 

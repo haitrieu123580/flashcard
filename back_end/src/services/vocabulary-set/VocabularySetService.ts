@@ -52,6 +52,9 @@ class VocabularySetService implements IVocabularySetService {
         else if (filter === 'latest' || filter === 'oldest') {
             data = { take: take, skip: skip, filter, name, sortBy: 'createdDate' };
         }
+        else if (filter === "level_asc" || filter === "level_desc") {
+            data = { take: take, skip: skip, filter, name, sortBy: 'level' };
+        }
         else {
             data = { take: take, skip: skip, filter, name, sortBy: 'createdDate' };
         }

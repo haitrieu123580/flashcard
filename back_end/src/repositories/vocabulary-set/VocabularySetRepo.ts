@@ -61,6 +61,9 @@ export class VocabularySetRepo implements IVocabularySetRepo {
         } else if (sortBy === "createdDate") {
             order.created_at = String(filter).toLowerCase() === "latest" ? "DESC" : "ASC";
         }
+        else if (sortBy === "level") {
+            order.level = String(filter).toLowerCase() === "level_asc" ? "ASC" : "DESC";
+        }
         else {
             order.created_at = "DESC";
         }

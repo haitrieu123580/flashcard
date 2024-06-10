@@ -21,7 +21,7 @@ const store = initStore()
 function App() {
   return (
     <div className='App'>
-      <div className='dark:bg-[#0a092d] bg-gray-100 overflow-hidden'>
+      <div className='dark:bg-[#0a092d] bg-[#e4e9f7] overflow-hidden'>
         <Provider store={store}>
           <ErrorBoundary fallbackRender={ErrorFallbackRenderer}>
             <ThemeProvider>
