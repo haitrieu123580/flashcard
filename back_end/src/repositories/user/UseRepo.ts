@@ -1,12 +1,12 @@
+import { User } from '@entity/User';
 import { Service } from 'typedi';
 import { comparePassword, hasingPassword } from '@helper/HashingPassword';
 
 import { AppDataSource } from '../../data-source';
-import { User } from '../../entity/User';
 import UserRepoInterface from './UserRepoInterface';
 
 @Service()
-class UserRepo implements UserRepoInterface {
+export class UserRepo implements UserRepoInterface {
   private userDataSource = AppDataSource.getRepository(User);
 
   createUser = (data: any): Promise<User | null> => {

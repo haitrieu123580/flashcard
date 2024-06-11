@@ -1,11 +1,23 @@
 import 'reflect-metadata';
+// prettier-ignore
+import moduleAlias from 'module-alias';
+// prettier-ignore
+moduleAlias.addAliases({
+  "@src": `${__dirname}/`,
+  "@routers": `${__dirname}/routers`,
+  "@controllers": `${__dirname}/controllers`,
+  "@s ervices": `${__dirname}/services`,
+  "@repositories": `${__dirname}/repositories`,
+  "@middleware": `${__dirname}/middleware`,
+  "@entity": `${__dirname}/entity`,
+  "@dto": `${__dirname}/dto`,
+  "@helper": `${__dirname}/helper`,
+});
+
 
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Application, NextFunction, Request, Response } from 'express';
-// import 'module-alias/register';
-import moduleAlias from 'module-alias';
-
 import './services/oauth/Passport';
 
 import fs from 'fs';
@@ -35,18 +47,6 @@ import {
 } from './core/ApiError';
 import { AppDataSource } from './data-source';
 
-moduleAlias.addAliases({
-  '@src': `${__dirname}/`,
-  '@routers': `${__dirname}/routers`,
-  '@controllers': `${__dirname}/controllers`,
-  '@services': `${__dirname}/services`,
-  '@repositories': `${__dirname}/repositories`,
-  '@middleware': `${__dirname}/middleware`,
-  '@entity': `${__dirname}/entity`,
-  '@dto': `${__dirname}/dto`,
-  '@helper': `${__dirname}/helper`,
-});
-
 dotenv.config();
 
 const app: Application = express();
@@ -73,7 +73,7 @@ try {
   );
   const swaggerDocument = YAML.parse(file);
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-} catch (error) {}
+} catch (error) { }
 
 //cors
 const corsOptions = {
