@@ -1,35 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   data: [],
-}
+};
 
 const userCard = createSlice({
   name: 'user-cards',
   initialState,
   reducers: {
+    editUserCardAction: (state, action) => {},
 
-    editUserCardAction: (state, action) => {
-    },
+    editUserCardSuccessAction: (state, action) => {},
 
-    editUserCardSuccessAction: (state, action) => {
-    },
+    createUserCardAction: (state, action) => {},
 
-    createUserCardAction: (state, action) => {
-    },
+    createUserCardSuccessAction: (state, action) => {},
 
-    createUserCardSuccessAction: (state, action) => {
-    },
+    deleteUserCardAction: (state, action) => {},
 
-    deleteUserCardAction: (state, action) => {
-    },
-
-    deleteUserCardSuccessAction: (state, action) => {
-    },
-
+    deleteUserCardSuccessAction: (state, action) => {},
   },
-})
+});
 
 export const {
   editUserCardAction,
@@ -38,6 +30,6 @@ export const {
   createUserCardSuccessAction,
   deleteUserCardAction,
   deleteUserCardSuccessAction,
-} = userCard.actions
+} = userCard.actions;
 
-export default userCard.reducer
+export default userCard.reducer;

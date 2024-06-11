@@ -1,20 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   data: [],
-}
+};
 
 const Set = createSlice({
   name: 'set',
   initialState,
   reducers: {
     getSetByIdAction: (state, action) => {
-      state.isLoading = true
+      state.isLoading = true;
     },
     getSetByIdSuccessAction: (state, { payload }) => {
       state.isLoading = false;
-      state.data = payload?.data
+      state.data = payload?.data;
     },
     getSetByIdFailedAction: (state) => {
       state.isLoading = false;
@@ -23,7 +23,7 @@ const Set = createSlice({
       state.isLoading = true;
     },
     createSetSuccessAction: (state, { payload }) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
     createSetSFailedAction: (state) => {
       state.isLoading = false;
@@ -34,12 +34,11 @@ const Set = createSlice({
     },
 
     editSetSuccessAction: (state, { payload }) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
     editSetFailedAction: (state) => {
       state.isLoading = false;
     },
-
 
     deleteSetAction: (state, { payload }) => {
       state.isLoading = true;
@@ -53,7 +52,7 @@ const Set = createSlice({
       state.isLoading = true;
     },
   },
-})
+});
 
 export const {
   getSetByIdAction,
@@ -68,6 +67,6 @@ export const {
   deleteSetAction,
   deleteSetSuccessAction,
   deleteFailedAction,
-} = Set.actions
+} = Set.actions;
 
-export default Set.reducer
+export default Set.reducer;

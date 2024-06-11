@@ -1,16 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   data: [],
   progress: 0,
-}
+};
 
 const userProgress = createSlice({
   name: 'user-progress',
   initialState,
   reducers: {
-
     updateUserProgressAction: (state, action) => {
       state.isLoading = true;
     },
@@ -48,9 +47,8 @@ const userProgress = createSlice({
     getUserProgressErrorAction: (state) => {
       state.isLoading = false;
     },
-
   },
-})
+});
 
 export const {
   updateUserProgressAction,
@@ -62,7 +60,6 @@ export const {
   getUserProgressAction,
   getUserProgressSuccessAction,
   getUserProgressErrorAction,
+} = userProgress.actions;
 
-} = userProgress.actions
-
-export default userProgress.reducer
+export default userProgress.reducer;

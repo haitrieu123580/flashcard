@@ -1,6 +1,7 @@
-import { UserJWTData } from "../auth"
+import { UserJWTData } from '../auth';
+
 export type ApproveSetRequest = {
-    user: UserJWTData | undefined;
-    setId: string;
-    level?: number;
-}
+  user: UserJWTData | undefined;
+  setId: string;
+  level?: number;
+};

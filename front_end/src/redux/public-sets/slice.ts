@@ -1,19 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   data: [],
-  pagination: {
-
-  }
-}
+  pagination: {},
+};
 
 const publicSet = createSlice({
   name: 'public-set',
   initialState,
   reducers: {
     getAllSetsAction: (state, action) => {
-      state.isLoading = true
+      state.isLoading = true;
     },
     getAllSetsSuccessAction: (state, { payload }) => {
       state.isLoading = false;
@@ -26,12 +24,12 @@ const publicSet = createSlice({
       state.pagination = {};
     },
   },
-})
+});
 
 export const {
   getAllSetsAction,
   getAllSetsSuccessAction,
-  getAllSetsFailedAction
-} = publicSet.actions
+  getAllSetsFailedAction,
+} = publicSet.actions;
 
-export default publicSet.reducer
+export default publicSet.reducer;

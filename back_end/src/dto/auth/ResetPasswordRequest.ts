@@ -1,6 +1,6 @@
 const ResetPasswordRequest: {
-    otp: string,
+  otp: string;
 } = {
-    otp: "",
-}
-export = ResetPasswordRequest
+  otp: '',
+};
+export = ResetPasswordRequest;

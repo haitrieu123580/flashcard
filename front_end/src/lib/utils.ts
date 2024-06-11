@@ -1,9 +1,11 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-import Constants from "./Constants";
+import { clsx, type ClassValue } from 'clsx';
 import { jwtDecode } from 'jwt-decode';
+import { twMerge } from 'tailwind-merge';
+
+import Constants from './Constants';
+
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 // ? need this function?
 export const isFunction = (func: any) => {
@@ -24,7 +26,11 @@ export const getLoggedInUserInfoFromToken = () => {
   return null;
 };
 
-export function objectToFormData(obj: any, formData: FormData | null = null, namespace = ''): FormData {
+export function objectToFormData(
+  obj: any,
+  formData: FormData | null = null,
+  namespace = '',
+): FormData {
   const fd = formData || new FormData();
 
   for (const property in obj) {
@@ -38,7 +44,10 @@ export function objectToFormData(obj: any, formData: FormData | null = null, nam
           const itemNamespace = `${formKey}[${index}]`;
           objectToFormData(item, fd, itemNamespace);
         });
-      } else if (typeof obj[property] === 'object' && !(obj[property] instanceof File)) {
+      } else if (
+        typeof obj[property] === 'object' &&
+        !(obj[property] instanceof File)
+      ) {
         objectToFormData(obj[property], fd, formKey);
       } else {
         fd.append(formKey, obj[property]);
@@ -51,26 +60,24 @@ export function objectToFormData(obj: any, formData: FormData | null = null, nam
 
 export const replacePathWithId = (path: string, id: string) => {
   return path.replace(':id', id);
-}
+};
 
 export const speak = (text: string) => {
   const text_to_speech = new SpeechSynthesisUtterance();
   text_to_speech.text = text;
   text_to_speech.lang = 'en-US';
-  window.speechSynthesis.speak(text_to_speech)
-}
+  window.speechSynthesis.speak(text_to_speech);
+};
 
 export const convertDateToString = (text: string) => {
   const date = new Date(text);
   return date.toDateString();
-}
-
-
+};
 
 export const shuffleArray = (array: any[]) => {
   const newArray = [...array]; // Create a shallow copy of the original array
   return newArray.sort(() => Math.random() - 1); // Corrected sorting logic
-}
+};
 
 export const setColorLevel = (level: string) => {
   switch (level) {
@@ -85,13 +92,16 @@ export const setColorLevel = (level: string) => {
     default:
       return 'bg-primary';
   }
-}
+};
 
 export const getUserJWTDecode = () => {
-  const token = localStorage.getItem('access_token') && localStorage.getItem('access_token') || '';
+  const token =
+    (localStorage.getItem('access_token') &&
+      localStorage.getItem('access_token')) ||
+    '';
   if (!token) {
     return null;
   }
   const value = jwtDecode(token);
   return value;
-}
+};

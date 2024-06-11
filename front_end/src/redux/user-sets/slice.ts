@@ -1,62 +1,62 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   mySets: [],
   set: [],
-}
+};
 
 const UserSets = createSlice({
   name: 'user-sets',
   initialState,
   reducers: {
     getUserSetsListAction: (state) => {
-      state.isLoading = true
+      state.isLoading = true;
     },
     getUserSetsListSuccessAction: (state, { payload }) => {
-      state.isLoading = false
-      state.mySets = payload.data
+      state.isLoading = false;
+      state.mySets = payload.data;
     },
     getUserSetsListFailureAction: (state) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
 
     addCardToMySetAction: (state) => {
-      state.isLoading = true
+      state.isLoading = true;
     },
     addCardToMySetSuccessAction: (state, { payload }) => {
-      state.isLoading = false
+      state.isLoading = false;
       // state.data = payload.data
     },
     addCardToMySetFailureAction: (state) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
 
     getUserSetByIdAction: (state) => {
-      state.isLoading = true
+      state.isLoading = true;
     },
     getUserSetByIdSuccessAction: (state, { payload }) => {
-      state.isLoading = false
-      state.set = payload.data
+      state.isLoading = false;
+      state.set = payload.data;
     },
     getUserSetByIdFailureAction: (state) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
     createUserSetAction: (state, { payload }) => {
       state.isLoading = true;
     },
     createUserSetSuccessAction: (state, { payload }) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
     editUserSetAction: (state, { payload }) => {
       state.isLoading = true;
     },
 
     editUserSetSuccessAction: (state, { payload }) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
     editUserSetFailureAction: (state) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
 
     deleteUserSetAction: (state, { payload }) => {
@@ -67,7 +67,7 @@ const UserSets = createSlice({
       state.isLoading = false;
     },
     deleteUserSetFailureAction: (state, { payload }) => {
-      state.isLoading = false
+      state.isLoading = false;
     },
 
     quickAddNewSetAction: (state, { payload }) => {
@@ -89,8 +89,8 @@ const UserSets = createSlice({
     requestToApproveSetFailureAction: (state) => {
       // state.isLoading = false;
     },
-  }
-})
+  },
+});
 
 export const {
   getUserSetsListSuccessAction,
@@ -116,6 +116,6 @@ export const {
   requestToApproveSetAction,
   requestToApproveSetSuccessAction,
   requestToApproveSetFailureAction,
-} = UserSets.actions
+} = UserSets.actions;
 
-export default UserSets.reducer
+export default UserSets.reducer;

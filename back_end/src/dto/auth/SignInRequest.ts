@@ -1,8 +1,8 @@
 const SignInRequest: {
-    username: string,
-    password: string
+  username: string;
+  password: string;
 } = {
-    username: "",
-    password: ""
-}
-export = SignInRequest
+  username: '',
+  password: '',
+};
+export = SignInRequest;

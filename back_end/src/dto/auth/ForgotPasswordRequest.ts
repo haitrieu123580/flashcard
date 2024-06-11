@@ -1,6 +1,6 @@
 const ForgotPasswordRequest: {
-    email: string,
+  email: string;
 } = {
-    email: "",
-}
-export = ForgotPasswordRequest
+  email: '',
+};
+export = ForgotPasswordRequest;

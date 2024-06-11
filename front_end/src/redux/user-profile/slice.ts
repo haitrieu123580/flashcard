@@ -1,15 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   data: [],
-}
+};
 
 const userProfile = createSlice({
   name: 'user-profile',
   initialState,
   reducers: {
-
     editUserAction: (state, action) => {
       state.isLoading = true;
     },
@@ -21,16 +20,10 @@ const userProfile = createSlice({
     editUserErrorAction: (state) => {
       state.isLoading = false;
     },
-
-
-
   },
-})
+});
 
-export const {
-  editUserSuccessAction,
-  editUserAction,
-  editUserErrorAction,
-} = userProfile.actions
+export const { editUserSuccessAction, editUserAction, editUserErrorAction } =
+  userProfile.actions;
 
-export default userProfile.reducer
+export default userProfile.reducer;

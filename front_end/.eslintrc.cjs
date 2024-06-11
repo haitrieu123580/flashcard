@@ -1,24 +1,32 @@
-module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended-type-checked',
-    'plugin:react-hooks/recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'eslint-config-prettier',
-    'prettier',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts'],
-  parser: '@typescript-eslint/parser',
-  // plugins: ['react-refresh', 'prettier'],
+// eslint.config.cjs
+
+const { defineConfig } = require('eslint-define-config');
+
+module.exports = defineConfig({
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
+    '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-function-return-types': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'indent': ['error', 2],
+    'quotes': ['error', 'single'],
+    'semi': ['error', 'always'],
+    'prettier/prettier': 'error'
   },
-}
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'plugin:prettier/recommended'
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module'
+  },
+  env: {
+    node: true
+  }
+});

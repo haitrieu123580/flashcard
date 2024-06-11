@@ -1,27 +1,39 @@
 import './i18n';
 import 'react-toastify/dist/ReactToastify.css';
-import { ThemeProvider } from "@/components/themes/ThemeProvider";
-import { Toaster } from "@/components/ui/toaster"
+
+import { Suspense } from 'react';
+import {
+  privateRouters,
+  protectedRoutes,
+  publicRoutes,
+} from '@/routes/MainRouters';
+import { ErrorBoundary } from 'react-error-boundary';
 // import CustomRouterProvider from "@/routes/CustomRouterProvider";
 import { Provider } from 'react-redux';
-import { ErrorBoundary } from 'react-error-boundary';
-import ErrorFallbackRenderer from "@/components/common/error-fallback-render/ErrorFallbackRenderer";
-import initStore from '@/redux/store';
-import { Suspense } from 'react';
-import { publicRoutes, protectedRoutes, privateRouters } from '@/routes/MainRouters'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import AuthLayout from '@/components/layout/AuthLayout';
-import RequireAuth from '@/components/common/RequireAuth';
-import Constants from '@/lib/Constants';
-import AdminLayout from '@/components/layout/AdminLayout';
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from 'react-router-dom';
+
+import ErrorFallbackRenderer from '@/components/common/error-fallback-render/ErrorFallbackRenderer';
 import PageNotFound from '@/components/common/PageNotFound';
+import RequireAuth from '@/components/common/RequireAuth';
+import AdminLayout from '@/components/layout/AdminLayout';
+import AuthLayout from '@/components/layout/AuthLayout';
 import MainLayout from '@/components/layout/MainLayout';
-const store = initStore()
+import { ThemeProvider } from '@/components/themes/ThemeProvider';
+import { Toaster } from '@/components/ui/toaster';
+import initStore from '@/redux/store';
+import Constants from '@/lib/Constants';
+
+const store = initStore();
 
 function App() {
   return (
-    <div className='App'>
-      <div className='dark:bg-[#0a092d] bg-[#e4e9f7] overflow-hidden'>
+    <div className="App">
+      <div className="overflow-hidden bg-[#e4e9f7] dark:bg-[#0a092d]">
         <Provider store={store}>
           <ErrorBoundary fallbackRender={ErrorFallbackRenderer}>
             <ThemeProvider>
@@ -29,12 +41,7 @@ function App() {
               <Router>
                 <Suspense fallback={<div>Loading...</div>}>
                   <Routes>
-                    <Route
-                      path='/'
-                      element={
-                        <MainLayout />
-                      }
-                    >
+                    <Route path="/" element={<MainLayout />}>
                       <>
                         {publicRoutes.map((route: any, index: number) => {
                           const Page = route.component;
@@ -42,9 +49,7 @@ function App() {
                             <Route
                               key={index}
                               path={route.path}
-                              element={
-                                <Page />
-                              }
+                              element={<Page />}
                             />
                           );
                         })}
@@ -56,19 +61,19 @@ function App() {
                           key={index}
                           path={route.path}
                           element={
-                            <RequireAuth allowedRoles={[Constants.ROLE.USER, Constants.ROLE.ADMIN]}>
+                            <RequireAuth
+                              allowedRoles={[
+                                Constants.ROLE.USER,
+                                Constants.ROLE.ADMIN,
+                              ]}
+                            >
                               <route.component />
                             </RequireAuth>
                           }
                         />
                       ))}
                     </Route>
-                    <Route
-                      path='/admin'
-                      element={
-                        <AdminLayout />
-                      }
-                    >
+                    <Route path="/admin" element={<AdminLayout />}>
                       {privateRouters.map((route: any, index: number) => {
                         const Page = route.component;
                         return (
@@ -77,7 +82,9 @@ function App() {
                             path={route.path}
                             element={
                               <>
-                                <RequireAuth allowedRoles={[Constants.ROLE.ADMIN]}>
+                                <RequireAuth
+                                  allowedRoles={[Constants.ROLE.ADMIN]}
+                                >
                                   <Page />
                                 </RequireAuth>
                               </>
@@ -87,7 +94,7 @@ function App() {
                       })}
                     </Route>
                     <Route
-                      path='*'
+                      path="*"
                       element={
                         <MainLayout>
                           <PageNotFound />
@@ -96,7 +103,7 @@ function App() {
                     />
                   </Routes>
                 </Suspense>
-              </Router >
+              </Router>
             </ThemeProvider>
           </ErrorBoundary>
         </Provider>

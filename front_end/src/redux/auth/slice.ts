@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
-  token: localStorage.getItem("access_token") || "",
-  refresh_token: localStorage.getItem("refresh_token") || "",
-  loggedIn: localStorage.getItem("access_token") ? true : false,
-  profile: null
-}
+  token: localStorage.getItem('access_token') || '',
+  refresh_token: localStorage.getItem('refresh_token') || '',
+  loggedIn: localStorage.getItem('access_token') ? true : false,
+  profile: null,
+};
 
 const authSlice = createSlice({
   name: 'auth',
@@ -20,8 +20,8 @@ const authSlice = createSlice({
 
     loginActionSuccess: (state, { payload }) => {
       state.isLoading = false;
-      localStorage.setItem("access_token", String(payload.data.access_token));
-      localStorage.setItem("refresh_token", String(payload.data.refresh_token));
+      localStorage.setItem('access_token', String(payload.data.access_token));
+      localStorage.setItem('refresh_token', String(payload.data.refresh_token));
       state.token = String(payload.data.access_token);
       state.refresh_token = String(payload.data.refresh_token);
       state.loggedIn = true;
@@ -51,8 +51,7 @@ const authSlice = createSlice({
       state.profile = payload.data;
     },
 
-    getAccessTokenByRefreshTokenActionSuccess: (state, { payload }) => {
-    },
+    getAccessTokenByRefreshTokenActionSuccess: (state, { payload }) => {},
 
     registerAction: (state, { payload }) => {
       state.isLoading = true;
@@ -66,9 +65,7 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
 
-    loginSuccessWithOauthAction: (state) => {
-
-    },
+    loginSuccessWithOauthAction: (state) => {},
 
     logoutAction: (state, { payload }) => {
       state.loggedIn = true;
@@ -78,18 +75,17 @@ const authSlice = createSlice({
     logoutSuccessAction: (state) => {
       state.loggedIn = false;
       state.isLoading = false;
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     },
     logoutErrorsAction: (state) => {
       state.loggedIn = false;
       state.isLoading = false;
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     },
   },
-
-})
+});
 
 export const {
   loginAction,
@@ -107,6 +103,6 @@ export const {
   logoutAction,
   logoutSuccessAction,
   logoutErrorsAction,
-} = authSlice.actions
+} = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;

@@ -1,10 +1,5 @@
-
 const AccountsListContainer = () => {
-    return (
-        <div>
-            Page not ready yet
-        </div>
-    )
-}
+  return <div>Page not ready yet</div>;
+};
 
-export default AccountsListContainer
+export default AccountsListContainer;

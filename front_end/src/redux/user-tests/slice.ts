@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   data: [],
   result: [],
   history: [],
-}
+};
 
 const userTestSlice = createSlice({
   name: 'user-test',
@@ -25,7 +25,7 @@ const userTestSlice = createSlice({
 
     saveUserAnswerAction: (state, { payload }) => {
       state.isLoading = true;
-      state.result = []
+      state.result = [];
     },
     saveUserAnswerSuccessAction: (state, { payload }) => {
       state.isLoading = false;
@@ -57,10 +57,9 @@ const userTestSlice = createSlice({
     getUserTestResultFailedAction: (state) => {
       state.isLoading = false;
       state.result = [];
-    }
+    },
   },
-
-})
+});
 
 export const {
   createQuestionsBySetIdAction,
@@ -75,7 +74,6 @@ export const {
   getUserTestResultAction,
   getUserTestResultSuccessAction,
   getUserTestResultFailedAction,
+} = userTestSlice.actions;
 
-} = userTestSlice.actions
-
-export default userTestSlice.reducer
+export default userTestSlice.reducer;

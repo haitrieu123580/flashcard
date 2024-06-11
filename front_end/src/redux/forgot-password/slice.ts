@@ -1,15 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
-  email: "",
-}
+  email: '',
+};
 
 const passwordResetSlice = createSlice({
   name: 'password-reset',
   initialState,
   reducers: {
-
     forgotPasswordAction: (state, { payload }) => {
       state.isLoading = true;
     },
@@ -24,18 +23,17 @@ const passwordResetSlice = createSlice({
     },
 
     resetPasswordActionSuccess: (state) => {
-      state.email = "";
+      state.email = '';
       state.isLoading = false;
     },
   },
-
-})
+});
 
 export const {
   forgotPasswordAction,
   forgotPasswordActionSuccess,
   resetPasswordAction,
   resetPasswordActionSuccess,
-} = passwordResetSlice.actions
+} = passwordResetSlice.actions;
 
-export default passwordResetSlice.reducer
+export default passwordResetSlice.reducer;

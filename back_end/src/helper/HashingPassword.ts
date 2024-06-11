@@ -1,23 +1,26 @@
-import { genSaltSync, hashSync, compareSync } from "bcrypt";
+import { compareSync, genSaltSync, hashSync } from 'bcrypt';
 
 const hasingResult: {
-    salt: string,
-    password: string,
+  salt: string;
+  password: string;
 } = {
-    salt: "",
-    password: ""
-}
+  salt: '',
+  password: '',
+};
 
 export const hasingPassword = (inputString: string): typeof hasingResult => {
-    const salt: string = genSaltSync(10);
-    const password: string = hashSync(inputString, salt);
-    return {
-        salt,
-        password
-    };
-}
+  const salt: string = genSaltSync(10);
+  const password: string = hashSync(inputString, salt);
+  return {
+    salt,
+    password,
+  };
+};
 
-export const comparePassword = (inputPassword: string, password: string): boolean => {
-    const result: boolean = compareSync(inputPassword, password)
-    return result;
-}
+export const comparePassword = (
+  inputPassword: string,
+  password: string,
+): boolean => {
+  const result: boolean = compareSync(inputPassword, password);
+  return result;
+};

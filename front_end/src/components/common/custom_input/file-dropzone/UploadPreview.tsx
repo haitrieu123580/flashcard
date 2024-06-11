@@ -1,64 +1,66 @@
 import { FC, MouseEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { PencilIcon, Trash2 } from 'lucide-react'
 import { AspectRatio } from '@radix-ui/react-aspect-ratio';
+import { PencilIcon, Trash2 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 interface UploadPreviewProps {
-    show: boolean;
-    path?: string;
-    onDelete?: () => void;
-    onUpdate?: () => void;
+  show: boolean;
+  path?: string;
+  onDelete?: () => void;
+  onUpdate?: () => void;
 }
 
 const UploadPreview: FC<UploadPreviewProps> = ({
-    show,
+  show,
 
-    path,
-    onDelete = () => { },
-    onUpdate = () => { },
+  path,
+  onDelete = () => {},
+  onUpdate = () => {},
 }) => {
-    return (
+  return (
+    <>
+      {show && (
         <>
-            {show && (
-                <>
-                    <div
-                        className="w-full flex flex-col py-[23px] px-3 opacity-100 bg-transparent"
-                    >
-                        <div className='w-full h-16 flex justify-end gap-6'>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                // className="p-0 h-4 "
-                                onClick={(e: MouseEvent) => {
-                                    e.preventDefault();
-                                    onUpdate();
-                                }}
-                            >
-                                Change
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="default"
-                                // className="p-0 h-4"
-                                onClick={(e: MouseEvent) => {
-                                    e.preventDefault();
-                                    onDelete();
-                                }}
-                            >
-                                Delete
-                            </Button>
-                        </div>
-                        <div className='w-full '>
-                            <div className='w-full h-80 bg-transparent'>
-                                <img src={path} alt="set" className='max-w-full max-h-full w-full h-full object-contain' />
-                            </div>
-                        </div>
-                    </div>
-                </>
-            )
-            }
+          <div className="flex w-full flex-col bg-transparent px-3 py-[23px] opacity-100">
+            <div className="flex h-16 w-full justify-end gap-6">
+              <Button
+                type="button"
+                variant="secondary"
+                // className="p-0 h-4 "
+                onClick={(e: MouseEvent) => {
+                  e.preventDefault();
+                  onUpdate();
+                }}
+              >
+                Change
+              </Button>
+              <Button
+                type="button"
+                variant="default"
+                // className="p-0 h-4"
+                onClick={(e: MouseEvent) => {
+                  e.preventDefault();
+                  onDelete();
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+            <div className="w-full">
+              <div className="h-80 w-full bg-transparent">
+                <img
+                  src={path}
+                  alt="set"
+                  className="h-full max-h-full w-full max-w-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
         </>
-    );
+      )}
+    </>
+  );
 };
 
 export default UploadPreview;

@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 type AsyncFunction = (
-    req: Request,
-    res: Response,
-    next: NextFunction,
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => Promise<any>;
 
 export const AsyncHandler = (execution: AsyncFunction) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        execution(req, res, next).catch(next);
-    };
+  return (req: Request, res: Response, next: NextFunction) => {
+    execution(req, res, next).catch(next);
+  };
 };

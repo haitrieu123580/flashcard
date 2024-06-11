@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
-  message: "",
+  message: '',
   data: [],
-}
+};
 
 const questionSlice = createSlice({
   name: 'test',
@@ -62,10 +62,8 @@ const questionSlice = createSlice({
     createTestKitErrorAction: (state) => {
       state.isLoading = false;
     },
-
   },
-
-})
+});
 
 export const {
   getQuestionsListBySetIdAction,
@@ -82,6 +80,6 @@ export const {
   createTestKitAction,
   createTestKitSuccessAction,
   createTestKitErrorAction,
-} = questionSlice.actions
+} = questionSlice.actions;
 
-export default questionSlice.reducer
+export default questionSlice.reducer;

@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
-  message: "",
+  message: '',
   examData: [],
   result: [],
-}
+};
 
 const testSlice = createSlice({
   name: 'test',
@@ -34,8 +34,7 @@ const testSlice = createSlice({
       state.examData = [];
     },
   },
-
-})
+});
 
 export const {
   getTestBySetIdAction,
@@ -43,6 +42,6 @@ export const {
   submitAnswersAction,
   submitAnswersActionSuccess,
   getTestBySetIdErrorAction,
-} = testSlice.actions
+} = testSlice.actions;
 
-export default testSlice.reducer
+export default testSlice.reducer;

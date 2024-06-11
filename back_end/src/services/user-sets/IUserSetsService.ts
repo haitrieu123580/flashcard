@@ -1,25 +1,25 @@
-import { UpdateSetRequest } from "@src/dto/set";
-import { Request, Response } from "express";
-import { SetsListResponse } from "@src/dto/set/SetsListResponse";
-import { Sets } from "@src/entity/Sets";
+import { Request, Response } from 'express';
+import { UpdateSetRequest } from '@src/dto/set';
+import { SetsListResponse } from '@src/dto/set/SetsListResponse';
 import {
-    CopyCardToSetRequest,
-    QuickAddCardToSetRequest,
-    RequestToApproveSet
-} from "@src/dto/uset-sets";
+  CopyCardToSetRequest,
+  QuickAddCardToSetRequest,
+  RequestToApproveSet,
+} from '@src/dto/uset-sets';
+import { Sets } from '@src/entity/Sets';
+
 export interface IUserSetsService {
+  getUserSetsList: (userId: string) => Promise<SetsListResponse | null>;
 
-    getUserSetsList: (userId: string) => Promise<SetsListResponse | null>
+  getUserSetById: (userId: string, setId: string) => Promise<Sets>;
 
-    getUserSetById: (userId: string, setId: string) => Promise<Sets>
+  addCardToUserSet: (data: CopyCardToSetRequest) => Promise<any>;
 
-    addCardToUserSet: (data: CopyCardToSetRequest) => Promise<any>
+  quickCreateSet: (data: QuickAddCardToSetRequest) => Promise<any>;
 
-    quickCreateSet: (data: QuickAddCardToSetRequest) => Promise<any>
+  updateUserSet: (data: UpdateSetRequest) => Promise<any>;
 
-    updateUserSet: (data: UpdateSetRequest) => Promise<any>
+  deleteUserSet: (req: Request, res: Response) => Promise<any>;
 
-    deleteUserSet: (req: Request, res: Response) => Promise<any>
-
-    requestToPublicSet(data: RequestToApproveSet): Promise<any>
+  requestToPublicSet(data: RequestToApproveSet): Promise<any>;
 }
