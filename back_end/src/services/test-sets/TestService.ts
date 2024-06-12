@@ -181,7 +181,7 @@ export class TestService {
         );
         const additionalOptions =
           question.questionType === 'image' ||
-            question.questionType === 'definition'
+          question.questionType === 'definition'
             ? additionalCards.map((card) => card['term'])
             : additionalCards.map((card) => card['define']);
 
