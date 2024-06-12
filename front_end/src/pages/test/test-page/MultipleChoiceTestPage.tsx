@@ -67,8 +67,8 @@ const MultipleChoiceTestPage = () => {
         payload: {
           id: id,
           level: level,
-          onSuccess: (data: any) => {},
-          onError: (error: any) => {},
+          onSuccess: (data: any) => { },
+          onError: (error: any) => { },
         },
       });
     },
@@ -139,7 +139,7 @@ const MultipleChoiceTestPage = () => {
         onSuccess: (data: any) => {
           setShowPopupResult(true);
         },
-        onError: (error: any) => {},
+        onError: (error: any) => { },
       },
     });
   };
@@ -180,7 +180,7 @@ const MultipleChoiceTestPage = () => {
     setShowCorrectAnswer(true); // Hiển thị đáp án đúng trước
     setIsCorrect(
       value.trim().toLowerCase() ===
-        question.correctAnswer.trim().toLowerCase(),
+      question.correctAnswer.trim().toLowerCase(),
     ); // Update the correctness state
     form.setValue(questionId, value.trim().toLowerCase());
     setTimeout(() => {
@@ -220,10 +220,13 @@ const MultipleChoiceTestPage = () => {
                   >
                     <CardHeader className="">
                       <CardTitle className="my-6 flex flex-col gap-2">
-                        <div>Question {index + 1}:</div>
+                        <div className='flex justify-between'>
+                          <span>Question {index + 1}:</span>
+                          <span className='text-primary'>{Math.ceil(progress / 10)} s</span>
+                        </div>
                         <div className="m-auto min-h-40 w-fit">
                           {question.questionType ===
-                          Constants.QUESTION_TYPE.IMAGE ? (
+                            Constants.QUESTION_TYPE.IMAGE ? (
                             <div className="m-auto">
                               <img
                                 src={question.questionText}
@@ -242,7 +245,7 @@ const MultipleChoiceTestPage = () => {
                         {
                           <>
                             {question?.questionType ===
-                            Constants.QUESTION_TYPE.WRITTEN ? (
+                              Constants.QUESTION_TYPE.WRITTEN ? (
                               <div className="col-span-2">
                                 <FormInput
                                   control={form.control}

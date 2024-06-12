@@ -137,7 +137,7 @@ export class TestService {
         flashcard as Cards,
       );
 
-      if (flashcard.hasOwnProperty('image')) {
+      if (flashcard.image) {
         question.questionType = 'image';
         question.questionText = flashcard['image'];
         question.correctAnswer = flashcard['term'];
@@ -181,7 +181,7 @@ export class TestService {
         );
         const additionalOptions =
           question.questionType === 'image' ||
-          question.questionType === 'definition'
+            question.questionType === 'definition'
             ? additionalCards.map((card) => card['term'])
             : additionalCards.map((card) => card['define']);
 
