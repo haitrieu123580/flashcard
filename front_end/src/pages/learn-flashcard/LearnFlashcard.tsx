@@ -6,6 +6,7 @@ import LoadingPopup from '@/components/common/loading/loading-popup/LoadingPopup
 import NewsetSets from '@/components/home/newest-sets/NewsetSets';
 import { Separator } from '@/components/ui/separator';
 import LearningCards from '@/components/user-learning/learning-cards/LearningCards';
+import RecommendList from '@/components/user-learning/recommend/RecommendList';
 import UserNotStudiedCards from '@/components/user-learning/user-progress/UserLearningProgress';
 import UserTestHistory from '@/components/user-learning/user-test-history/UserTestHistory';
 import { getSetByIdAction } from '@/redux/set/slice';
@@ -96,9 +97,10 @@ const LearnFlashcard = () => {
       <LearningCards data={data} progress={progress} onFlip={onFlip} id={id} />
       <UserNotStudiedCards data={data} progress={progress} />
       <UserTestHistory history={history} />
-      <div className="mt-10">
+      <RecommendList id={id} />
+      {/* <div className="mt-10">
         <NewsetSets />
-      </div>
+      </div> */}
     </div>
   );
 };

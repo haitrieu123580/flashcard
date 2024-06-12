@@ -46,6 +46,7 @@ const EditSetContainer = () => {
         z.string().optional(),
       ])
       .optional(),
+    level: z.string().optional(),
     is_delete_image: z.string().optional(),
   });
 
@@ -126,6 +127,7 @@ const EditSetContainer = () => {
       setId: data?.id,
       image: values.image.image ? values.image.image : null,
       example: values?.example ? JSON.stringify(values?.example) : null,
+      level: values?.level,
     };
     const formData = objectToFormData(submitValues);
     dispatch({
@@ -160,6 +162,7 @@ const EditSetContainer = () => {
         image: null,
         path: data?.image || '',
       },
+      level: data?.level,
     },
   });
 
@@ -202,6 +205,7 @@ const EditSetContainer = () => {
           image: null,
           path: data.image || '',
         },
+        level: data.level,
       });
     }
   }, [data]);
@@ -238,6 +242,21 @@ const EditSetContainer = () => {
                 label="Description"
                 placeholder="Description"
                 type={Constants.INPUT_TYPE.TEXT}
+              />
+              <FormInput
+                control={form.control}
+                fieldName={'level'}
+                label={'Level'}
+                type={Constants.INPUT_TYPE.SELECT}
+                options={Object.keys(Constants.LEVEL).map(
+                  (key: any, index: number) => {
+                    // Add type annotation to index parameter
+                    return {
+                      key: key,
+                      label: Constants.LEVEL[key],
+                    };
+                  },
+                )}
               />
               <FormInput
                 control={form.control}

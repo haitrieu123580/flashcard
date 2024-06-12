@@ -29,6 +29,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
       const newSet = new Sets();
       newSet.name = set.name;
       newSet.description = set?.description || '';
+      newSet.level = set.level || 1;
       newSet.image = set.image || '';
       newSet.created_by =
         owner.role === Constants.USER_ROLE.ADMIN

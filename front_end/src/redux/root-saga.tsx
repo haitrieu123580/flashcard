@@ -6,6 +6,7 @@ import CardSaga from '@/redux/card/saga';
 import PasswordResetSaga from '@/redux/forgot-password/saga';
 import PublicSetsSaga from '@/redux/public-sets/saga';
 import QuestionSaga from '@/redux/question/saga';
+import recommendSaga from '@/redux/recommend/saga';
 import SetSaga from '@/redux/set/saga';
 import TestSaga from '@/redux/test/saga';
 import UserCardSaga from '@/redux/user-cards/saga';
@@ -29,5 +30,6 @@ export default function* rootSaga() {
     UserProgressSaga(),
     UserTestSaga(),
     ApproveSetSaga(),
+    recommendSaga(),
   ]);
 }

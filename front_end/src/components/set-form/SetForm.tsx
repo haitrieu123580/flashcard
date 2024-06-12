@@ -17,7 +17,13 @@ import Constants from '@/lib/Constants';
 import { isFunction } from '@/lib/utils';
 
 const SetForm = (props: any) => {
-  const { defaultValues, onCreate, className, showCards = true } = props;
+  const {
+    defaultValues,
+    onCreate,
+    className,
+    showCards = true,
+    showLevel,
+  } = props;
   const formSetCardSchema = z.object({
     set_name: z.string().min(1, {
       message: 'Required',
@@ -32,6 +38,7 @@ const SetForm = (props: any) => {
         z.string().optional(),
       ])
       .optional(),
+    level: z.string().optional(),
     cards: z
       .array(
         z.object({
@@ -77,6 +84,7 @@ const SetForm = (props: any) => {
         image: null,
         path: defaultValues?.image || '',
       },
+      level: defaultValues?.level || '',
       cards: defaultValues?.cards || [
         {
           term: '',
@@ -109,6 +117,7 @@ const SetForm = (props: any) => {
           image: null,
           path: defaultValues.image || '',
         },
+        level: defaultValues.level,
         cards: defaultValues.cards.map((card: any) => ({
           term: card.term,
           define: card.define,
@@ -151,6 +160,23 @@ const SetForm = (props: any) => {
                 placeholder="Description"
                 type={Constants.INPUT_TYPE.TEXT}
               />
+              {showLevel && (
+                <FormInput
+                  control={form.control}
+                  fieldName={'level'}
+                  label={'Level'}
+                  type={Constants.INPUT_TYPE.SELECT}
+                  options={Object.keys(Constants.LEVEL).map(
+                    (key: any, index: number) => {
+                      // Add type annotation to index parameter
+                      return {
+                        key: key,
+                        label: Constants.LEVEL[key],
+                      };
+                    },
+                  )}
+                />
+              )}
               <FormInput
                 control={form.control}
                 fieldName="set_image"

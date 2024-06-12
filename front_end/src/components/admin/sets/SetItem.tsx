@@ -13,10 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import Constants from '@/lib/Constants';
 import {
   convertDateToString,
   isFunction,
   replacePathWithId,
+  setColorLevel,
 } from '@/lib/utils';
 
 const SetItem = (props: any) => {
@@ -63,6 +65,19 @@ const SetItem = (props: any) => {
         </CardTitle>
         <CardDescription>
           <Badge variant="default">{`${data?.totalCards} cards`}</Badge>
+          {data?.level && (
+            <Badge
+              className={setColorLevel(
+                Constants.LEVEL[
+                  data?.level as number as 0 | 1 | 2 | 3
+                ].toString(),
+              )}
+            >
+              {Constants.LEVEL[
+                data?.level as number as 0 | 1 | 2 | 3
+              ]?.toString()}
+            </Badge>
+          )}{' '}
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-12 gap-6 overflow-hidden">
