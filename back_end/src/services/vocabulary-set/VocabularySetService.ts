@@ -72,7 +72,7 @@ class VocabularySetService implements IVocabularySetService {
               ? JSON.parse(card.example || '')
               : '');
           });
-        } catch (error) {}
+        } catch (error) { }
 
         return set;
       });
@@ -138,7 +138,7 @@ class VocabularySetService implements IVocabularySetService {
         return new FailureMsgResponse('Delete set failed').send(res);
       }
       return new FailureMsgResponse('Set not founded!').send(res);
-    } catch (error) {}
+    } catch (error) { }
   };
   CreateSetAndCards = async (data: createNewSetAndCardsRequest) => {
     let is_public = false;

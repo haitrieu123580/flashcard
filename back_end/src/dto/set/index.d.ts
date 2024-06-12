@@ -25,13 +25,13 @@ export type CreateNewSetData = {
 export type UpdateSetRequest = {
   // todo: create jwt data type
   user:
-    | {
-        id: string;
-        role: string;
-        email: string;
-        username: string;
-      }
-    | undefined;
+  | {
+    id: string;
+    role: string;
+    email: string;
+    username: string;
+  }
+  | undefined;
   id: string;
   set_name: string;
   set_description?: string;
@@ -48,13 +48,13 @@ export type UpdateSetRequest = {
 
 export type createNewSetAndCardsRequest = {
   user?:
-    | {
-        id: string;
-        role: string;
-        email: string;
-        username: string;
-      }
-    | undefined;
+  | {
+    id: string;
+    role: string;
+    email: string;
+    username: string;
+  }
+  | undefined;
   set_name: string;
   set_description?: string;
   set_image?: any;
