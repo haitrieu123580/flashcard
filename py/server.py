@@ -106,8 +106,6 @@ def get_recommendations(set_id, cosine_sim=cosine_sim):
     return recommendations
 
 
-print("df_cards", df_cards)
-
 # Hàm để tính tổng số card thuộc về setId
 def count_cards(set_id):
     # Chuyển đổi set_id thành UUID
@@ -132,5 +130,4 @@ async def recommend(request: Request):
         # Chuyển đổi dataframe thành dictionary và trả về JSONResponse
         return JSONResponse(content=recommendations.to_dict(orient='records'))
     except ValueError as e:
-        print("erorr", e)
         return JSONResponse(content={'error': str(e)}, status_code=400)
