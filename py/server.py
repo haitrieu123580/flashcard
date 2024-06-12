@@ -29,44 +29,20 @@ db_name = os.getenv('DB_DATABASE')
 DATABASE_URI = f'postgresql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}'
 engine = create_engine(DATABASE_URI)
 
-# Truy vấn dữ liệu từ các bảng
-df_sets = pd.read_sql('SELECT * FROM "sets"', engine)
-df_cards = pd.read_sql('SELECT * FROM "cards"', engine)
-df_user_progress = pd.read_sql('SELECT * FROM "user_progress"', engine)
+def get_recommendations(set_id):
+    # Truy vấn dữ liệu từ các bảng
+    df_sets = pd.read_sql('SELECT * FROM "sets"', engine)
+    df_cards = pd.read_sql('SELECT * FROM "cards"', engine)
+    df_user_progress = pd.read_sql('SELECT * FROM "user_progress"', engine)
+    df_sets.fillna({'score': 0, 'level': 0}, inplace=True)
+    df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['description']} {x['level']} {x['created_by']}", axis=1)
+    # Tính TF-IDF matrix
+    tfidf = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = tfidf.fit_transform(df_sets['combined_features'])
 
-# Truy vấn dữ liệu kết quả làm đề từ PostgreSQL
-query_tests = """
-SELECT * FROM tests;
-"""
-df_tests = pd.read_sql(query_tests, engine)
+    # Tính điểm tương đồng cosine
+    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
-# Truy vấn dữ liệu chi tiết kết quả làm đề từ PostgreSQL
-query_test_results = """
-SELECT * FROM test_result_details;
-"""
-df_test_results = pd.read_sql(query_test_results, engine)
-
-# Kết hợp thông tin kết quả làm đề vào DataFrame df_sets
-# Giả sử chúng ta tính điểm trung bình của các bài kiểm tra và mức độ khó trung bình của các bộ từ vựng
-# df_sets = df_sets.merge(df_tests.groupby('setId').agg({'score': 'mean'}).reset_index(), left_on='id', right_on='setId', how='left')
-
-# Điền giá trị NaN bằng giá trị mặc định (ví dụ: 0)
-df_sets.fillna({'score': 0, 'level': 0}, inplace=True)
-
-
-# Chỉ sử dụng các thuộc tính có sẵn trong DataFrame df_sets để tính điểm tương đồng
-df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['description']} {x['level']} {x['created_by']}", axis=1)
-# df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['description']} {x['level_x']} {x['score']}", axis=1)
-
-# Tính TF-IDF matrix
-tfidf = TfidfVectorizer(stop_words='english')
-tfidf_matrix = tfidf.fit_transform(df_sets['combined_features'])
-
-# Tính điểm tương đồng cosine
-cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-
-
-def get_recommendations(set_id, cosine_sim=cosine_sim):
     try:
         # Chuyển đổi set_id thành UUID
         set_uuid = uuid.UUID(set_id)
@@ -94,12 +70,10 @@ def get_recommendations(set_id, cosine_sim=cosine_sim):
     recommendations = df_sets.iloc[public_set_indices].copy()
     recommendations['id'] = recommendations['id'].apply(lambda x: str(x))  # Chuyển đổi UUID thành chuỗi
     recommendations['userId'] = recommendations['userId'].apply(lambda x: str(x))  # Chuyển đổi UUID thành chuỗi
-    # recommendations['setId'] = recommendations['setId'].apply(lambda x: str(x))  # Chuyển đổi UUID thành chuỗi
 
     recommendations['created_at'] = recommendations['created_at'].astype(str)  # Chuyển đổi Timestamp thành chuỗi
     recommendations['updated_at'] = recommendations['updated_at'].astype(str)  # Chuyển đổi Timestamp thành chuỗi
     recommendations['deleted_at'] = recommendations['deleted_at'].astype(str)  # Chuyển đổi Timestamp thành chuỗi
-    # recommendations['level'] = recommendations['level_x'].astype(str)  # Chuyển đổi Timestamp thành chuỗi
     recommendations.fillna(value='', inplace=True)
 
 
@@ -111,6 +85,8 @@ def count_cards(set_id):
     # Chuyển đổi set_id thành UUID
     set_uuid = uuid.UUID(set_id)
     # Thực hiện truy vấn để lấy tổng số card thuộc về setId từ bảng Cards
+    df_cards = pd.read_sql('SELECT * FROM "cards"', engine)
+
     total_cards = len(df_cards[df_cards['setId'] == set_uuid])
     return total_cards
 
