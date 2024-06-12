@@ -35,29 +35,34 @@ const RecommendList = (props: any) => {
   }, [id]);
   return (
     <div>
-      <Card className="w-full border-none !bg-transparent !shadow-none">
-        <CardTitle className="m-6 text-blue-400">Recommend Sets</CardTitle>
-        <CardContent>
-          <Carousel>
-            <CarouselContent>
-              {Array.isArray(data) &&
-                data.map((set, index) => {
-                  // const mappedData =
-                  return (
-                    <CarouselItem
-                      key={index}
-                      className="basis-1/1 sm:basis-1/2 md:basis-1/5"
-                    >
-                      <SetItem data={set} onClick={gotoCard} />
-                    </CarouselItem>
-                  );
-                })}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </CardContent>
-      </Card>
+      {data.length ?
+        <>
+          <Card className="w-full border-none !bg-transparent !shadow-none">
+            <CardTitle className="m-6 text-blue-400">Because you have learned sets </CardTitle>
+            <CardContent>
+              <Carousel>
+                <CarouselContent>
+                  {Array.isArray(data) &&
+                    data
+                      .filter((set) => set.id !== id)
+                      .slice(0, 5) // Display max 5 items
+                      .map((set, index) => (
+                        <CarouselItem
+                          key={index}
+                          className="basis-1/1 sm:basis-1/2 md:basis-1/5"
+                        >
+                          <SetItem data={set} onClick={gotoCard} />
+                        </CarouselItem>
+                      ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </CardContent>
+          </Card>
+        </>
+        : <>
+        </>}
     </div>
   );
 };

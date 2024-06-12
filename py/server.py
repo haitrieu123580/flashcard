@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+load_dotenv()
 app = FastAPI()
 app.add_middleware(
   CORSMiddleware,
@@ -19,7 +20,6 @@ app.add_middleware(
 from sqlalchemy import create_engine
 
 # Sửa lại thông tin kết nối
-load_dotenv()
 
 db_username = os.getenv('DB_USERNAME')
 db_password = os.getenv('DB_PASSWORD')

@@ -21,6 +21,7 @@ import {
 } from '@/redux/user-sets/slice';
 import { getTestHistoryBySetIdAction } from '@/redux/user-tests/slice';
 import Constants from '@/lib/Constants';
+import RecommendList from '@/components/user-learning/recommend/RecommendList';
 
 const LearnFlashcard = () => {
   const { id } = useParams();
@@ -137,7 +138,7 @@ const LearnFlashcard = () => {
       <div className="flex w-full justify-end">
         {set?.status ? (
           <>
-            <Button onClick={() => {}} variant={buttonColor(set.status)}>
+            <Button onClick={() => { }} variant={buttonColor(set.status)}>
               {set?.status.toUpperCase()}
             </Button>
           </>
@@ -158,9 +159,11 @@ const LearnFlashcard = () => {
       <UserNotStudiedCards data={set} progress={progress} />
 
       <UserTestHistory history={history} />
+      <RecommendList id={id} />
+      {/* 
       <div className="mt-10">
         <NewsetSets />
-      </div>
+      </div> */}
     </div>
   );
 };

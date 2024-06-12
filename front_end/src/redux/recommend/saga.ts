@@ -8,7 +8,7 @@ import {
 } from '@redux-saga/core/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { getRecommendSetstBySetIdApi } from '@/api/RecommendSets';
+import { getRecommendSetstBySetIdApi } from '@/api/RecommendSetsApi';
 import {
   getMultipleChoiceTestBySetIdApi,
   submitMultipleChoiceTestApi,
