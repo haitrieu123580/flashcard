@@ -163,6 +163,7 @@ class VocabularySetService implements IVocabularySetService {
       description: data.set_description,
       image: set_image_url?.Location || '',
       is_public: is_public,
+      level: Number(data.level),
     };
     return this.setRepo.create_new_set_and_cards(userId, set, data?.cards);
   };
@@ -190,6 +191,7 @@ class VocabularySetService implements IVocabularySetService {
         : set_image_url
           ? set_image_url.Location
           : updateSet.image,
+      level: Number(data.level),
     };
     return this.setRepo.edit_set(set);
   };

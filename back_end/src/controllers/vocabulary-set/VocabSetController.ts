@@ -84,6 +84,7 @@ class VocabularySetController {
       set_name: formData.set_name,
       set_description: formData.set_description,
       set_image: files.find((file: any) => file.fieldname === 'set_image'),
+      level: formData.level,
       cards: cards,
     };
     await this.service.CreateSetAndCards(data);
@@ -102,6 +103,7 @@ class VocabularySetController {
       set_name: req.body.set_name,
       set_description: req.body.set_description,
       is_delete_image: req.body.is_delete_image,
+      level: req.body.level,
       files: req.files,
     };
     const response = await this.service.editSet(data);

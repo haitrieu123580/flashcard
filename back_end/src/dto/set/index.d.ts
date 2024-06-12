@@ -5,6 +5,7 @@ export type CreateNewSetData = {
   description?: string;
   image?: string;
   is_public: boolean;
+  level: number;
   created_by?: string;
   user?: User;
   cards?: {
@@ -36,6 +37,7 @@ export type UpdateSetRequest = {
   set_description?: string;
   is_delete_image?: 'true' | 'false' | undefined;
   files?: any;
+  level?: number | string;
   cards?: {
     term: string;
     define: string;
@@ -58,6 +60,7 @@ export type createNewSetAndCardsRequest = {
   set_image?: any;
   is_public?: boolean;
   files?: any;
+  level?: number | string;
   cards?: {
     term: string;
     define: string;

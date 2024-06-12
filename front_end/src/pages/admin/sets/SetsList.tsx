@@ -86,6 +86,7 @@ const SetsList = () => {
       set_name: values.set_name,
       set_description: values.set_description,
       set_image: values.set_image.image,
+      level: values.level,
       card: values.cards.map((card: any) => ({
         term: card.term,
         define: card.define,
@@ -205,7 +206,11 @@ const SetsList = () => {
         TriggerComponent={null}
         children={
           <ScrollArea className="h-[600px]">
-            <SetForm defaultValues={defaultValues} onCreate={onCreate} />
+            <SetForm
+              defaultValues={defaultValues}
+              onCreate={onCreate}
+              showLevel={true}
+            />
           </ScrollArea>
         }
         // title={"Create Set"}
