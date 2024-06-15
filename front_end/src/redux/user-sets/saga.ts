@@ -56,7 +56,7 @@ function* watchUserSetsList() {
         const res = yield call(GetUSerSetsListApi);
         if (res.status === ErrorCode.OK) {
           if (res.data.statusCode === ApiCode.SUCCESS) {
-            isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);
+            isFunction(payload?.onSuccess) && payload.onSuccess(res.data?.data);
             yield put(getUserSetsListSuccessAction({ data: res.data?.data }));
           }
         }

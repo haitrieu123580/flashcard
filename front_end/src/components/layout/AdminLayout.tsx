@@ -45,14 +45,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
     <div className="">
       <div className="flex min-h-screen w-full flex-col dark:bg-background">
-        <header className="sticky top-0 z-50 flex h-fit w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="fixed top-0 z-50 flex h-fit w-full bg-blue-300/80 backdrop-blur supports-[backdrop-filter]:bg-blue-500/60 dark:bg-background/95">
           <MaxWidthWrapper>
             <MainHeaderMobile isAdmin={true} />
             <MainHeader isAdmin={true} />
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="flex flex-1">
+        <div className="mt-20 flex flex-1">
           <MaxWidthWrapper className="h-full">
             <div className="relative mt-2 flex h-full w-full flex-col gap-4 md:flex-row">
               {/* <div className='flex md:fixed'

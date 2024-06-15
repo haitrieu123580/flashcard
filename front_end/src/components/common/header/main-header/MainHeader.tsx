@@ -51,22 +51,22 @@ const MainHeader = (props: any) => {
 
   return (
     <div className="hidden h-20 md:block md:w-full">
-      <div className="flex w-full items-center justify-between py-6">
+      <div className="flex h-full w-full items-center justify-between">
         <div className="row-span-1 flex w-fit items-center md:col-span-1">
           <Logo />
-          <Button variant={'link'}>
+          <Button variant={'link'} className="text-black">
             <Link to={routerPaths.PUBLIC_SETS}>Sets</Link>
           </Button>
           {loggedIn ? (
             profile?.role === Constants.ROLE.ADMIN ? (
               <>
-                <Button variant={'link'} className="w-fit">
+                <Button variant={'link'} className="w-fit text-black">
                   <Link to={routerPaths.ADMIN}>Admin site</Link>
                 </Button>
               </>
             ) : (
               <>
-                <Button variant={'link'} className="w-fit">
+                <Button variant={'link'} className="w-fit text-black">
                   <Link to={routerPaths.USER_SETS}>My sets</Link>
                 </Button>
               </>
@@ -103,43 +103,6 @@ const MainHeader = (props: any) => {
           </Form>
         </div>
         <div className="flex w-1/6 justify-end gap-1">
-          {isAdmin ? (
-            <>
-              <Popover>
-                <PopoverTrigger className="p-1 text-sm">
-                  <PlusCircle />
-                </PopoverTrigger>
-                <PopoverContent className="w-fit">
-                  <div className="grid gap-4">
-                    <div className="grid gap-2">
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <span>
-                          <Folder />
-                        </span>
-                        <Button
-                          className="col-span-2 h-8 text-sm"
-                          variant={'ghost'}
-                        >
-                          Vocabulary Sets
-                        </Button>
-                      </div>
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <span>
-                          <Folder />
-                        </span>
-                        <Button
-                          variant={'ghost'}
-                          className="col-span-2 h-8 text-sm"
-                        >
-                          Grammar Sets
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </>
-          ) : null}
           {loggedIn ? (
             <>
               <UserPopover />

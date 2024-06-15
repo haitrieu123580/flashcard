@@ -7,6 +7,7 @@ import NewsetSets from '@/components/home/newest-sets/NewsetSets';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import LearningCards from '@/components/user-learning/learning-cards/LearningCards';
+import RecommendList from '@/components/user-learning/recommend/RecommendList';
 import UserNotStudiedCards from '@/components/user-learning/user-progress/UserLearningProgress';
 import UserTestHistory from '@/components/user-learning/user-test-history/UserTestHistory';
 import {
@@ -21,7 +22,6 @@ import {
 } from '@/redux/user-sets/slice';
 import { getTestHistoryBySetIdAction } from '@/redux/user-tests/slice';
 import Constants from '@/lib/Constants';
-import RecommendList from '@/components/user-learning/recommend/RecommendList';
 
 const LearnFlashcard = () => {
   const { id } = useParams();
@@ -138,7 +138,7 @@ const LearnFlashcard = () => {
       <div className="flex w-full justify-end">
         {set?.status ? (
           <>
-            <Button onClick={() => { }} variant={buttonColor(set.status)}>
+            <Button onClick={() => {}} variant={buttonColor(set.status)}>
               {set?.status.toUpperCase()}
             </Button>
           </>

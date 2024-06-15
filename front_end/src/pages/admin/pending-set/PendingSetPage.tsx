@@ -233,7 +233,7 @@ const PendingSetPage = () => {
                       card={card}
                       setId={data?.id}
                       readMode={true}
-                    // isEdit={false}
+                      // isEdit={false}
                     />
                   </Card>
                 );

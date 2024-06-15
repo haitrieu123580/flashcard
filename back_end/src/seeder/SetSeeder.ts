@@ -39,7 +39,7 @@ export class SetSeeder implements Seeder {
       }
 
       newSet.is_public = set.is_public;
-      newSet.created_by = "flashcard.web";
+      newSet.created_by = 'flashcard.web';
       newSet.created_at = new Date();
 
       newSet.cards = [];

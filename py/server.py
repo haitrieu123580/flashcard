@@ -11,15 +11,13 @@ load_dotenv()
 app = FastAPI()
 app.add_middleware(
   CORSMiddleware,
-  allow_origins=[os.getenv('CLIENT_URL')],  # Địa chỉ nguồn được phép truy cập
+  allow_origins=[os.getenv('CLIENT_URL')],  
   allow_credentials=True,
   allow_methods=["GET"],
   allow_headers=["*"],
 )
 # Kết nối và truy vấn từ cơ sở dữ liệu (ví dụ dùng pandas và SQLAlchemy)
 from sqlalchemy import create_engine
-
-# Sửa lại thông tin kết nối
 
 db_username = os.getenv('DB_USERNAME')
 db_password = os.getenv('DB_PASSWORD')
@@ -29,13 +27,22 @@ db_name = os.getenv('DB_DATABASE')
 DATABASE_URI = f'postgresql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}'
 engine = create_engine(DATABASE_URI)
 
+# Hàm chuẩn hóa chuỗi
+def normalize_text(text):
+    text = text.lower()
+    text = ''.join([c for c in text if c.isalnum() or c.isspace()])
+    return text
+
 def get_recommendations(set_id):
     # Truy vấn dữ liệu từ các bảng
     df_sets = pd.read_sql('SELECT * FROM "sets"', engine)
     df_cards = pd.read_sql('SELECT * FROM "cards"', engine)
     df_user_progress = pd.read_sql('SELECT * FROM "user_progress"', engine)
     df_sets.fillna({'score': 0, 'level': 0}, inplace=True)
-    df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['description']} {x['level']} {x['created_by']}", axis=1)
+    df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['description']} {x['level']} {str(x['created_by'])}", axis=1)
+    df_sets['combined_features'] = df_sets['combined_features'].apply(normalize_text)
+    # Nếu có các trọng số khác nhau cho các đặc trưng
+
     # Tính TF-IDF matrix
     tfidf = TfidfVectorizer(stop_words='english')
     tfidf_matrix = tfidf.fit_transform(df_sets['combined_features'])
@@ -44,12 +51,10 @@ def get_recommendations(set_id):
     cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
 
     try:
-        # Chuyển đổi set_id thành UUID
         set_uuid = uuid.UUID(set_id)
     except ValueError:
         raise ValueError("Set ID không hợp lệ")
 
-    # Kiểm tra nếu set_id tồn tại trong df_sets
     if set_uuid not in df_sets['id'].values:
         raise ValueError("Set ID không tồn tại trong dữ liệu")
 

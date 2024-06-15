@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { routerPaths } from '@/routes/path';
 import { ChevronLeft, ChevronRight, NotebookPen } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import image from '@/assets/images/try_again.jpg';
 import FlipCard from '@/components/flash-card/FlipCard';
 import SentencesExampleBox from '@/components/flash-card/SentencesExampleBox';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 import {
@@ -25,7 +24,7 @@ import {
 } from '@/lib/utils';
 
 const LearningCards = (props: any) => {
-  const { data, progress, id, onFlip, showTest, testLevel } = props;
+  const { data, progress, id, onFlip, reset = false, setReset } = props;
   const [currentCard, setCurrentCard] = useState(0);
   const showCard = (index: number) => {
     if (index >= data?.cards?.length || index < 0) {
@@ -34,6 +33,14 @@ const LearningCards = (props: any) => {
     setCurrentCard(index);
   };
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (reset) {
+      setCurrentCard(0);
+      setReset(false);
+    }
+  }, [reset, setReset]);
+
   return (
     <div>
       <Card className="flex min-h-[500px] w-full flex-col justify-between border-none !bg-transparent !shadow-none">
@@ -47,7 +54,22 @@ const LearningCards = (props: any) => {
             )}
             <div className="flex flex-col justify-start gap-2">
               <div>
-                <div className="font-bold">{data?.name}</div>
+                <div className="flex items-end gap-4 font-bold">
+                  <span>{data?.name}</span>
+                  {data?.level && (
+                    <Badge
+                      className={setColorLevel(
+                        Constants.LEVEL[
+                          data?.level as number as 0 | 1 | 2 | 3
+                        ].toString(),
+                      )}
+                    >
+                      {Constants.LEVEL[
+                        data?.level as number as 0 | 1 | 2 | 3
+                      ]?.toString()}
+                    </Badge>
+                  )}
+                </div>
                 <div className="text-base">{data?.description}</div>
               </div>
               {data?.user?.avatar && (
@@ -132,7 +154,7 @@ const LearningCards = (props: any) => {
                             <FlipCard key={index} card={card} onFlip={onFlip} />
                             <div className="mt-2 text-center">{`${currentCard + 1}/${data?.cards?.length}`}</div>
                           </div>
-                          <div className="absolute top-1/2 translate-y-[-1/2] md:right-full">
+                          <div className="absolute top-1/2 translate-y-[-50%] md:right-full">
                             <Button
                               variant={'ghost'}
                               onClick={(e) => {
@@ -143,7 +165,7 @@ const LearningCards = (props: any) => {
                               <ChevronLeft />
                             </Button>
                           </div>
-                          <div className="absolute right-0 top-1/2 translate-y-[-1/2] md:left-full">
+                          <div className="absolute right-0 top-1/2 translate-y-[-50%] md:left-full">
                             <Button
                               variant={'ghost'}
                               onClick={(e) => {

@@ -40,14 +40,14 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <div className="bg-background-400">
       <div className="flex min-h-screen w-full flex-col dark:bg-background">
-        <header className="sticky top-0 z-50 flex h-fit w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="fixed top-0 z-50 flex h-fit w-full bg-blue-300/80 backdrop-blur supports-[backdrop-filter]:bg-blue-500/60 dark:bg-background/95">
           <MaxWidthWrapper>
             <MainHeaderMobile />
             <MainHeader className="p-0" />
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="flex flex-1">
+        <div className="my-20 flex flex-1">
           <MaxWidthWrapper className="m-auto h-full">
             <div className="mt-10 h-full">{profile && <Outlet />}</div>
             <div className="fixed bottom-10 right-10">

@@ -24,11 +24,12 @@ const LearnFlashcard = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [currentCard, setCurrentCard] = useState(0);
+  const [reset, setReset] = useState(false);
   const { data, isLoading } = useSelector((state: any) => state.Set);
   const { mySets } = useSelector((state: any) => state.UserSets);
   const { progress } = useSelector((state: any) => state.UserProgress);
   const { history } = useSelector((state: any) => state.UserTest);
+
   useEffect(() => {
     if (id) {
       getSetById(id);
@@ -36,16 +37,12 @@ const LearnFlashcard = () => {
   }, [id]);
 
   const getSetById = (id: string) => {
-    setCurrentCard(0);
+    setReset(true);
     scrollTo(0, 0);
     dispatch({
       type: getSetByIdAction.type,
       payload: {
         id: id,
-        // onSuccess: () => {
-        // },
-        // onError: (error: string) => {
-        // }
       },
     });
     dispatch({
@@ -62,24 +59,14 @@ const LearnFlashcard = () => {
         setId: id,
       },
     });
-  };
-  const getUserSetsList = () => {
     dispatch({
       type: getUserSetsListAction.type,
+      payload: {
+        onSuccess: () => {},
+      },
     });
   };
-  useEffect(() => {
-    if (!mySets?.sets) {
-      getUserSetsList();
-    }
-  }, [mySets]);
 
-  const showCard = (index: number) => {
-    if (index >= data?.cards?.length || index < 0) {
-      return;
-    }
-    setCurrentCard(index);
-  };
   const onFlip = (card: any) => {
     dispatch({
       type: updateUserProgressAction.type,
@@ -91,16 +78,21 @@ const LearnFlashcard = () => {
       },
     });
   };
+
   return (
     <div>
       <LoadingPopup open={isLoading} />
-      <LearningCards data={data} progress={progress} onFlip={onFlip} id={id} />
+      <LearningCards
+        data={data}
+        progress={progress}
+        onFlip={onFlip}
+        id={id}
+        reset={reset}
+        setReset={setReset}
+      />
       <UserNotStudiedCards data={data} progress={progress} />
       <UserTestHistory history={history} />
       <RecommendList id={id} />
-      {/* <div className="mt-10">
-        <NewsetSets />
-      </div> */}
     </div>
   );
 };

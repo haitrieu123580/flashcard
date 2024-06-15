@@ -35,10 +35,12 @@ const RecommendList = (props: any) => {
   }, [id]);
   return (
     <div>
-      {data.length ?
+      {data.length ? (
         <>
           <Card className="w-full border-none !bg-transparent !shadow-none">
-            <CardTitle className="m-6 text-blue-400">Because you have learned sets </CardTitle>
+            <CardTitle className="m-6 text-blue-400">
+              Because you have learned sets{' '}
+            </CardTitle>
             <CardContent>
               <Carousel>
                 <CarouselContent>
@@ -49,7 +51,7 @@ const RecommendList = (props: any) => {
                       .map((set, index) => (
                         <CarouselItem
                           key={index}
-                          className="basis-1/1 sm:basis-1/2 md:basis-1/5"
+                          className="basis-1/1 sm:basis-1/2 md:basis-1/4"
                         >
                           <SetItem data={set} onClick={gotoCard} />
                         </CarouselItem>
@@ -61,8 +63,9 @@ const RecommendList = (props: any) => {
             </CardContent>
           </Card>
         </>
-        : <>
-        </>}
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

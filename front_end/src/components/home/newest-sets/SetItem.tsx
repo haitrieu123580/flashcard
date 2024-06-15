@@ -1,6 +1,7 @@
 import { Pen, PencilIcon, Trash2Icon } from 'lucide-react';
 
 import defaultImageAvatar from '@/assets/images/flash-card.png';
+import defaultImageBg from '@/assets/images/flashcard_bg.jpeg';
 import DeletePopup from '@/components/common/popup/DeletePopup';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import {
   Tooltip,
   TooltipContent,
@@ -36,12 +38,25 @@ const SetItem = (props: any) => {
     showDeleteBtn = false,
     onEditBtn,
     onDeleteBtn,
+    learningProgress,
+    ratio,
+    checkMySet = false,
   } = props;
   const { name, description, totalCards, created_by, created_at, image, id } =
     data || {};
   return (
-    <Card className="group relative h-full overflow-hidden">
-      <CardHeader>
+    <Card
+      className="group relative flex h-full flex-col justify-between overflow-hidden"
+      onClick={(e) => {
+        e.preventDefault();
+        if (checkMySet) {
+          onClick(data);
+        } else {
+          onClick(id);
+        }
+      }}
+    >
+      <CardHeader className="max-h-30">
         <div className="grid grid-cols-3 gap-2">
           <div
             className={cn(
@@ -95,7 +110,9 @@ const SetItem = (props: any) => {
           </div>
         </div>
         <CardDescription className="flex flex-wrap gap-1">
-          <Badge variant="default">{`${totalCards} cards`}</Badge>
+          {data?.totalCards && (
+            <Badge variant="default">{`${totalCards} cards`}</Badge>
+          )}
           {data?.level && (
             <Badge
               className={setColorLevel(
@@ -111,20 +128,18 @@ const SetItem = (props: any) => {
           )}
         </CardDescription>
       </CardHeader>
-      <CardContent
-        className=""
-        onClick={(e) => {
-          e.preventDefault();
-          onClick(id);
-        }}
-      >
+      <CardContent className="">
         <div className="group relative overflow-hidden rounded-md hover:cursor-pointer">
           <AspectRatio
-            ratio={1 / 1}
+            ratio={ratio ? ratio : `${1 / 1}`}
             className="aspect-square h-auto w-auto object-cover transition-all hover:scale-105"
           >
             {!image ? (
-              <div className="absolute flex h-full w-full items-center justify-center bg-slate-300 text-2xl text-white"></div>
+              <img
+                src={defaultImageBg}
+                alt="set"
+                className="h-full w-full object-cover"
+              />
             ) : (
               <img
                 src={image}
@@ -139,23 +154,33 @@ const SetItem = (props: any) => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex items-center gap-2">
-        <Avatar>
-          <AvatarImage
-            src={data?.user?.avatar || defaultImageAvatar}
-            className="object-cover"
-          />
-          <AvatarFallback>
-            {data?.user?.username?.toString()?.[0]}
-          </AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col">
-          <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-            {created_by}
-          </span>
-          <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-            {convertDateToString(created_at)}
-          </span>
+      <CardFooter className="flex flex-col items-start gap-2">
+        {learningProgress && (
+          <div className="w-full">
+            <div className="flex w-full items-end justify-end">
+              {Math.floor(learningProgress)}%
+            </div>
+            <Progress value={learningProgress} className="h-2 w-full" />
+          </div>
+        )}
+        <div className="flex">
+          <Avatar>
+            <AvatarImage
+              src={data?.user?.avatar || defaultImageAvatar}
+              className="object-cover"
+            />
+            <AvatarFallback>
+              {data?.user?.username?.toString()?.[0]}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+              {created_by}
+            </span>
+            <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+              {convertDateToString(created_at)}
+            </span>
+          </div>
         </div>
       </CardFooter>
       <div className="absolute bottom-0 h-1 w-full group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>

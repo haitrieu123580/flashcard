@@ -58,26 +58,26 @@ const MainHeaderMobile = (props: any) => {
                 <Logo />
               </Link>
             </Button>
-            <Button variant={'link'}>
+            <Button variant={'link'} className="text-black">
               <Link to={routerPaths.PUBLIC_SETS}>Topic sets</Link>
             </Button>
             {loggedIn ? (
               profile?.role === Constants.ROLE.ADMIN ? (
                 <>
-                  <Button variant={'link'} className="w-fit">
+                  <Button variant={'link'} className="w-fit text-black">
                     <Link to={routerPaths.ADMIN}>Admin site</Link>
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button variant={'link'} className="w-fit">
+                  <Button variant={'link'} className="w-fit text-black">
                     <Link to={routerPaths.USER_SETS}>My sets</Link>
                   </Button>
                 </>
               )
             ) : null}
           </div>
-          <div className="col-span-1 flex justify-end">
+          <div className="col-span-1 flex justify-end gap-2">
             {loggedIn ? (
               <>
                 <UserPopover />
@@ -86,7 +86,7 @@ const MainHeaderMobile = (props: any) => {
             ) : (
               <>
                 <Dialog>
-                  <DialogTrigger className="rounded-sm border-[1px] p-2 hover:bg-slate-400 hover:text-white">
+                  <DialogTrigger className="w-fit rounded-sm bg-background p-1 text-sm font-semibold hover:dark:text-inherit">
                     Sign in
                   </DialogTrigger>
                   <DialogContent>
@@ -94,7 +94,7 @@ const MainHeaderMobile = (props: any) => {
                   </DialogContent>
                 </Dialog>
                 <Dialog>
-                  <DialogTrigger className="ml-2 rounded-sm border-[1px] p-2 hover:bg-slate-400 hover:text-white">
+                  <DialogTrigger className="w-fit rounded-sm bg-background p-1 text-sm font-semibold hover:dark:text-inherit">
                     Sign up
                   </DialogTrigger>
                   <DialogContent>
