@@ -38,7 +38,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="mt-20 flex flex-1">
+        <div className="my-10 flex flex-1">
           <MaxWidthWrapper className="m-auto h-full">
             <div className="mt-10 h-full">
               <Outlet />

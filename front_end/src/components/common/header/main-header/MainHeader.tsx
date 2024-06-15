@@ -54,19 +54,19 @@ const MainHeader = (props: any) => {
       <div className="flex h-full w-full items-center justify-between">
         <div className="row-span-1 flex w-fit items-center md:col-span-1">
           <Logo />
-          <Button variant={'link'} className="text-black">
+          <Button variant={'link'}>
             <Link to={routerPaths.PUBLIC_SETS}>Sets</Link>
           </Button>
           {loggedIn ? (
             profile?.role === Constants.ROLE.ADMIN ? (
               <>
-                <Button variant={'link'} className="w-fit text-black">
+                <Button variant={'link'} >
                   <Link to={routerPaths.ADMIN}>Admin site</Link>
                 </Button>
               </>
             ) : (
               <>
-                <Button variant={'link'} className="w-fit text-black">
+                <Button variant={'link'} >
                   <Link to={routerPaths.USER_SETS}>My sets</Link>
                 </Button>
               </>

@@ -61,7 +61,7 @@ const CurrentLearning = () => {
                       return (
                         <CarouselItem
                           key={index}
-                          className="basis-1/1 sm:basis-1/2 md:basis-1/3"
+                          className="basis-1/1 sm:basis-1/1 md:basis-1/3"
                         >
                           <SetItem
                             data={set}

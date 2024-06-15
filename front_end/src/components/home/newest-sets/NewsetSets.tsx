@@ -49,7 +49,7 @@ const NewsetSets = (props: any) => {
       >
         <CardHeader>
           <CardTitle className="flex items-end justify-between">
-            <span className="text-blue-500">Lastest Sets</span>
+            <span className="text-primary">Lastest Sets</span>
             <Button
               variant={'link'}
               className="h-fit p-0 text-blue-400 dark:text-blue-400"

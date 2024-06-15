@@ -183,7 +183,7 @@ const SetItem = (props: any) => {
           </div>
         </div>
       </CardFooter>
-      <div className="absolute bottom-0 h-1 w-full group-hover:bg-slate-700 dark:group-hover:bg-sky-700"></div>
+      <div className="absolute bottom-0 h-1 w-full group-hover:bg-blue-700 dark:group-hover:bg-blue-500"></div>
     </Card>
   );
 };

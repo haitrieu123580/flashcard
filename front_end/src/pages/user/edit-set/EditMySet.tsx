@@ -257,7 +257,6 @@ const EditMySet = () => {
           </Card>
         </form>
       </Form>
-      <Separator />
       <div className="my-6 flex items-center justify-between">
         <b>Cards</b>
       </div>

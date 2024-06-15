@@ -188,7 +188,7 @@ const SetForm = (props: any) => {
           </Card>
           {showCards && (
             <>
-              <Separator />
+              {/* <Separator /> */}
               <b>Cards</b>
               <div className="flex flex-col">
                 {/* <ScrollArea className="h-96 w-full "> */}

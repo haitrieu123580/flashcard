@@ -28,8 +28,8 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     dispatch({
       type: getProfileAction.type,
       payload: {
-        onSuccess: (data: any) => {},
-        onError: () => {},
+        onSuccess: (data: any) => { },
+        onError: () => { },
       },
     });
   };
@@ -47,7 +47,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="my-20 flex flex-1">
+        <div className="mt-10 flex flex-1">
           <MaxWidthWrapper className="m-auto h-full">
             <div className="mt-10 h-full">{profile && <Outlet />}</div>
             <div className="fixed bottom-10 right-10">

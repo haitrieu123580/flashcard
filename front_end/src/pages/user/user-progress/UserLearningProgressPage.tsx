@@ -29,7 +29,7 @@ import {
   replacePathWithId,
   setColorLevel,
 } from '@/lib/utils';
-
+import defaultImage from '@/assets/images/flashcard_bg.jpeg';
 const UserLearningProgressPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const UserLearningProgressPage = () => {
   };
   return (
     <div>
-      <CardTitle className="my-4 text-sky-500 dark:text-primary">
+      <CardTitle className="my-4 text-primary">
         Your learning progress
       </CardTitle>
 
@@ -71,7 +71,7 @@ const UserLearningProgressPage = () => {
                     <div className="grid grid-cols-12 gap-4">
                       <div className="col-span-3">
                         <img
-                          src={item?.set?.image}
+                          src={item?.set?.image || defaultImage}
                           alt="set"
                           className="max-h-full max-w-full object-cover"
                         />

@@ -38,7 +38,7 @@ const RecommendList = (props: any) => {
       {data.length ? (
         <>
           <Card className="w-full border-none !bg-transparent !shadow-none">
-            <CardTitle className="m-6 text-blue-400">
+            <CardTitle className="m-6 text-primary">
               Because you have learned sets{' '}
             </CardTitle>
             <CardContent>
