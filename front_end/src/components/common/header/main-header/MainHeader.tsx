@@ -54,7 +54,7 @@ const MainHeader = (props: any) => {
       <div className="flex h-full w-full items-center justify-between">
         <div className="row-span-1 flex w-fit items-center md:col-span-1">
           <Logo />
-          <Button variant={'link'}>
+          <Button variant={'link'} className="text-black">
             <Link to={routerPaths.PUBLIC_SETS}>Sets</Link>
           </Button>
           {loggedIn ? (
@@ -72,11 +72,11 @@ const MainHeader = (props: any) => {
               </>
             )
           ) : null}
-        </div>
+        </div >
         {/* <MaxWidthWrapper >
                    
                 </MaxWidthWrapper> */}
-        <div className="w-3/6">
+        <div className="w-3/6" >
           <Form {...form}>
             <form className="" onSubmit={form.handleSubmit(onSubmit)}>
               <FormInput
@@ -101,7 +101,7 @@ const MainHeader = (props: any) => {
               />
             </form>
           </Form>
-        </div>
+        </div >
         <div className="flex w-1/6 justify-end gap-1">
           {loggedIn ? (
             <>
@@ -132,8 +132,8 @@ const MainHeader = (props: any) => {
             </>
           )}
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
