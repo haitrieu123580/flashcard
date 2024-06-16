@@ -5,6 +5,7 @@
         "image": "./src/seeder/image/animal_cover.png",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 1,
         "cards": [
             {
                 "term": "Dog",
@@ -274,6 +275,7 @@
         "image": "./src/seeder/image/book/cover_book.jpg",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 1,
         "cards": [
             {
                 "term": "Book",
@@ -426,6 +428,7 @@
         "image": "./src/seeder/image/music/cover_music.jpg",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 2,
         "cards": [
             {
                 "term": "Guitar",
@@ -571,7 +574,7 @@
                 "created_by": "Seeder"
             },
             {
-                "term": "Folk_music",
+                "term": "Folk music",
                 "define": "Nhạc dân gian",
                 "set": null,
                 "image": "./src/seeder/image/music/folk_music.jpg",
@@ -695,6 +698,7 @@
         "image": "./src/seeder/image/film/cover_film.jpg",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 2,
         "cards": [
             {
                 "term": "Movie",
@@ -951,6 +955,7 @@
         "image": "./src/seeder/image/furniture/cover_furniture.png",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 2,
         "cards": [
             {
                 "term": "Chair",
@@ -1220,6 +1225,7 @@
         "image": "./src/seeder/image/env/cover_environment.jpg",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 2,
         "cards": [
             {
                 "term": "Environment",
@@ -1463,6 +1469,7 @@
         "image": "./src/seeder/image/school/cover_school.jpg",
         "created_by": "Seeder",
         "is_public": true,
+        "level": 1,
         "cards": [
             {
                 "term": "Teacher",

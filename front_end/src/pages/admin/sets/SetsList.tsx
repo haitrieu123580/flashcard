@@ -39,7 +39,7 @@ const SetsList = () => {
       pageNumber: searchParams.get('page_index')
         ? parseInt(searchParams.get('page_index')!)
         : 1,
-      filter: searchParams.get('filter') || '',
+      filter: searchParams.get('filter') || Constants.SORT_BY[0].key,
       name: searchParams.get('name') || '',
     });
   }, [searchParams]);
@@ -61,7 +61,7 @@ const SetsList = () => {
         page_index: pageNumber,
         filter: filter || Constants.SORT_BY[0].key,
         name: name || null,
-        onSuccess: () => {},
+        onSuccess: () => { },
         onError: (message: string) => {
           toast({
             title: 'Error',
@@ -129,7 +129,7 @@ const SetsList = () => {
       setOpen(true);
       // setSelectedId(id)
       GetSetById(id);
-    } catch (error) {}
+    } catch (error) { }
   };
   const onDelete = (id: string) => {
     dispatch({
@@ -213,7 +213,7 @@ const SetsList = () => {
             />
           </ScrollArea>
         }
-        // title={"Create Set"}
+      // title={"Create Set"}
       />
       <CustomPagination
         total={pagination?.total || 0}

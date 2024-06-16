@@ -57,7 +57,13 @@ function* watchUserSetsList() {
         if (res.status === ErrorCode.OK) {
           if (res.data.statusCode === ApiCode.SUCCESS) {
             isFunction(payload?.onSuccess) && payload.onSuccess(res.data?.data);
-            yield put(getUserSetsListSuccessAction({ data: res.data?.data }));
+            yield put(
+              getUserSetsListSuccessAction({
+                data: res.data?.data,
+                pagination: {
+                  total: res.data?.data?.count,
+                }
+              }));
           }
         }
       } catch (error: any) {

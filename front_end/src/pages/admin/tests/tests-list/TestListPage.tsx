@@ -37,7 +37,7 @@ const TestListPage = () => {
       pageNumber: searchParams.get('page_index')
         ? parseInt(searchParams.get('page_index')!)
         : 1,
-      filter: searchParams.get('filter') || '',
+      filter: searchParams.get('filter') || Constants.SORT_BY[0].key,
       name: searchParams.get('name') || '',
     });
   }, [searchParams]);
@@ -59,7 +59,7 @@ const TestListPage = () => {
         page_index: pageNumber,
         filter: filter,
         name: name || null,
-        onSuccess: () => {},
+        onSuccess: () => { },
         onError: (message: string) => {
           toast({
             title: 'Error',

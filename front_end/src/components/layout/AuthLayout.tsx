@@ -47,7 +47,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="mt-10 flex flex-1">
+        <div className="my-24 !md:my-10 flex flex-1">
           <MaxWidthWrapper className="m-auto h-full">
             <div className="mt-10 h-full">{profile && <Outlet />}</div>
             <div className="fixed bottom-10 right-10">

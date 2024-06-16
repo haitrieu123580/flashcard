@@ -39,7 +39,7 @@ def get_recommendations(set_id):
     df_cards = pd.read_sql('SELECT * FROM "cards"', engine)
     df_user_progress = pd.read_sql('SELECT * FROM "user_progress"', engine)
     df_sets.fillna({'score': 0, 'level': 0}, inplace=True)
-    df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['description']} {x['level']} {str(x['created_by'])}", axis=1)
+    df_sets['combined_features'] = df_sets.apply(lambda x: f"{x['name']} {x['level']*1.2} {str(x['created_by'])} {x['description']}", axis=1)
     df_sets['combined_features'] = df_sets['combined_features'].apply(normalize_text)
     # Nếu có các trọng số khác nhau cho các đặc trưng
 

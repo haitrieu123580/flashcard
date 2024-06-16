@@ -52,7 +52,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="my-10 flex flex-1">
+        <div className="mt-28 mb-24 !md:my-10 flex flex-1">
           <MaxWidthWrapper className="h-full">
             <div className="relative mt-2 flex h-full w-full flex-col gap-4 md:flex-row">
               {/* <div className='flex md:fixed'

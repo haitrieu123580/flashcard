@@ -27,7 +27,7 @@ export class SetSeeder implements Seeder {
       const newSet = new Sets();
       newSet.name = set.name;
       newSet.description = set.description;
-      newSet.level = Constants.LEVEL.EASY;
+      newSet.level = set.level || Constants.LEVEL.EASY;
 
       if (set?.image) {
         const image_url = await this.s3Service.uploadFile({

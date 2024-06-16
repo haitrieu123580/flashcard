@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   mySets: [],
   set: [],
+  pagination: {},
 };
 
 const UserSets = createSlice({
@@ -16,9 +17,12 @@ const UserSets = createSlice({
     getUserSetsListSuccessAction: (state, { payload }) => {
       state.isLoading = false;
       state.mySets = payload.data;
+      state.pagination = payload?.pagination;
     },
     getUserSetsListFailureAction: (state) => {
       state.isLoading = false;
+      state.pagination = {};
+      state.mySets = [];
     },
 
     addCardToMySetAction: (state) => {

@@ -31,6 +31,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
       newSet.description = set?.description || '';
       newSet.level = set.level || 1;
       newSet.image = set.image || '';
+      newSet.created_at = new Date();
       newSet.created_by =
         owner.role === Constants.USER_ROLE.ADMIN
           ? 'flashcard.web'
@@ -48,6 +49,7 @@ export class VocabularySetRepo implements IVocabularySetRepo {
           card.image = cards[i]?.image || '';
           card.example = cards[i].example;
           card.created_by = owner?.username;
+          newSet.created_at = new Date();
           newSet.cards.push(card);
         }
       }

@@ -29,7 +29,7 @@ export class Constants {
   };
 
   static LEVEL = {
-    BEGINER: 0,
+    // BEGINER: 0,
     EASY: 1,
     MEDIUM: 2,
     HARD: 3,
