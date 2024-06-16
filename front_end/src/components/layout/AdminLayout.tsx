@@ -34,7 +34,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             // setAuth(data)
           }
         },
-        onError: () => {},
+        onError: () => { },
       },
     });
   };
@@ -61,7 +61,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <div className="fixed z-[60] w-fit rounded-md bg-background md:h-fit md:w-fit">
                 <SidebarNav items={Constants.SidebarNavItems} />
               </div>
-              <div className="mt-10 w-full md:ml-24">
+              <div className="mt-10 w-full md:ml-24 md:mt-0">
                 <Card className="flex-1 border-none bg-transparent shadow-none md:ml-6 md:px-6">
                   {profile && <Outlet />}
                 </Card>

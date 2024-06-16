@@ -1,5 +1,4 @@
 import React from 'react';
-
 import defaultImage from '@/assets/images/flashcard_bg.jpeg';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 

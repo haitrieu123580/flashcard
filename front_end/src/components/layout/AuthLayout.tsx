@@ -28,8 +28,8 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     dispatch({
       type: getProfileAction.type,
       payload: {
-        onSuccess: (data: any) => {},
-        onError: () => {},
+        onSuccess: (data: any) => { },
+        onError: () => { },
       },
     });
   };
