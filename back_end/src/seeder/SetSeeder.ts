@@ -31,7 +31,7 @@ export class SetSeeder implements Seeder {
 
       if (set?.image) {
         const image_url = await this.s3Service.uploadFile({
-          filename: 'deploy' + String(set.name) + '.jpg',
+          filename: String(set.name) + '.jpg',
           path: set?.image,
           mimetype: 'image/*',
         });
@@ -48,7 +48,7 @@ export class SetSeeder implements Seeder {
         const newCard = new Cards();
         if (card?.image) {
           const image_url = await this.s3Service.uploadFile({
-            filename: 'deploy' + String(card.term) + '.jpg',
+            filename: String(card.term) + '.jpg',
             path: card?.image,
             mimetype: 'image/*',
           });

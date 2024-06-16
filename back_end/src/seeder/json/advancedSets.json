@@ -1,73 +1,255 @@
 [
     {
-        "name": "Advanced Vocabulary Set",
-        "description": "A set of advanced level vocabulary words.",
-        "image": "./src/seeder/image/advanced_vocabulary_cover.png",
+        "name": "Technology advanced",
+        "description": "A set of vocabulary related to technology.",
+        "image": "./src/seeder/image/technology_cover.jpg",
         "created_by": "Seeder",
         "is_public": true,
         "level": 3,
         "cards": [
             {
-                "term": "Phenomenon",
-                "define": "Hiện tượng",
+                "term": "Innovate (v.)",
+                "define": "Đổi mới",
                 "set": null,
-                "image": "./src/seeder/image/phenomenon.jpg",
+                "image": "./src/seeder/image/innovate.jpg",
                 "example": [
                     {
-                        "sentence": "A rainbow is a natural phenomenon.",
-                        "translation": "Cầu vồng là một hiện tượng tự nhiên."
+                        "sentence": "The company continues to innovate in the tech industry.",
+                        "translation": "Công ty tiếp tục đổi mới trong ngành công nghệ."
                     }
                 ],
                 "created_by": "Seeder"
             },
             {
-                "term": "Hypothesis",
-                "define": "Giả thuyết",
+                "term": "Upgrade (v.)",
+                "define": "Nâng cấp",
                 "set": null,
-                "image": "./src/seeder/image/hypothesis.jpg",
+                "image": "./src/seeder/image/upgrade.jpg",
                 "example": [
                     {
-                        "sentence": "The scientist formulated a new hypothesis.",
-                        "translation": "Nhà khoa học đã đưa ra một giả thuyết mới."
+                        "sentence": "You need to upgrade your software to the latest version.",
+                        "translation": "Bạn cần nâng cấp phần mềm của mình lên phiên bản mới nhất."
                     }
                 ],
                 "created_by": "Seeder"
             },
             {
-                "term": "Ecosystem",
-                "define": "Hệ sinh thái",
+                "term": "Efficient (adj.)",
+                "define": "Hiệu quả",
                 "set": null,
-                "image": "./src/seeder/image/ecosystem.jpg",
+                "image": "./src/seeder/image/efficient.jpg",
                 "example": [
                     {
-                        "sentence": "An ecosystem includes all living and non-living things in an area.",
-                        "translation": "Một hệ sinh thái bao gồm tất cả các sinh vật sống và không sống trong một khu vực."
+                        "sentence": "The new system is more efficient than the old one.",
+                        "translation": "Hệ thống mới hiệu quả hơn hệ thống cũ."
                     }
                 ],
                 "created_by": "Seeder"
             },
             {
-                "term": "Photosynthesis",
-                "define": "Quang hợp",
+                "term": "Connectivity (n.)",
+                "define": "Khả năng kết nối",
                 "set": null,
-                "image": "./src/seeder/image/photosynthesis.jpg",
+                "image": "./src/seeder/image/connectivity.jpg",
                 "example": [
                     {
-                        "sentence": "Photosynthesis is a process used by plants to convert light energy into chemical energy.",
-                        "translation": "Quang hợp là một quá trình mà thực vật sử dụng để chuyển đổi năng lượng ánh sáng thành năng lượng hóa học."
+                        "sentence": "High-speed internet improves connectivity.",
+                        "translation": "Internet tốc độ cao cải thiện khả năng kết nối."
                     }
                 ],
                 "created_by": "Seeder"
             },
             {
-                "term": "Quantum",
-                "define": "Lượng tử",
+                "term": "User-friendly (adj.)",
+                "define": "Dễ sử dụng",
                 "set": null,
-                "image": "./src/seeder/image/quantum.jpg",
+                "image": "./src/seeder/image/user_friendly.jpg",
                 "example": [
                     {
-                        "sentence": "Quantum mechanics is a fundamental theory in physics.",
-                        "translation": "Cơ học lượng tử là một lý thuyết cơ bản trong vật lý."
+                        "sentence": "The software is very user-friendly.",
+                        "translation": "Phần mềm này rất dễ sử dụng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Integrate (v.)",
+                "define": "Tích hợp",
+                "set": null,
+                "image": "./src/seeder/image/integrate.jpg",
+                "example": [
+                    {
+                        "sentence": "The new features will integrate seamlessly into the existing system.",
+                        "translation": "Các tính năng mới sẽ tích hợp một cách liền mạch vào hệ thống hiện tại."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Bandwidth (n.)",
+                "define": "Băng thông",
+                "set": null,
+                "image": "./src/seeder/image/bandwidth.jpg",
+                "example": [
+                    {
+                        "sentence": "The video call quality depends on your bandwidth.",
+                        "translation": "Chất lượng cuộc gọi video phụ thuộc vào băng thông của bạn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Backup (n.)",
+                "define": "Sao lưu",
+                "set": null,
+                "image": "./src/seeder/image/backup.jpg",
+                "example": [
+                    {
+                        "sentence": "Always remember to backup your data.",
+                        "translation": "Luôn nhớ sao lưu dữ liệu của bạn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Encryption (n.)",
+                "define": "Mã hóa",
+                "set": null,
+                "image": "./src/seeder/image/encryption.jpg",
+                "example": [
+                    {
+                        "sentence": "Encryption helps protect sensitive information.",
+                        "translation": "Mã hóa giúp bảo vệ thông tin nhạy cảm."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Responsive (adj.)",
+                "define": "Phản hồi nhanh",
+                "set": null,
+                "image": "./src/seeder/image/responsive.jpg",
+                "example": [
+                    {
+                        "sentence": "The website is responsive and works well on all devices.",
+                        "translation": "Trang web phản hồi nhanh và hoạt động tốt trên tất cả các thiết bị."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Automation (n.)",
+                "define": "Tự động hóa",
+                "set": null,
+                "image": "./src/seeder/image/automation.jpg",
+                "example": [
+                    {
+                        "sentence": "Automation can significantly reduce labor costs.",
+                        "translation": "Tự động hóa có thể giảm đáng kể chi phí lao động."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Latency (n.)",
+                "define": "Độ trễ",
+                "set": null,
+                "image": "./src/seeder/image/latency.jpg",
+                "example": [
+                    {
+                        "sentence": "Low latency is crucial for online gaming.",
+                        "translation": "Độ trễ thấp là rất quan trọng cho việc chơi game trực tuyến."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Scalable (adj.)",
+                "define": "Có thể mở rộng",
+                "set": null,
+                "image": "./src/seeder/image/scalable.jpg",
+                "example": [
+                    {
+                        "sentence": "The system is designed to be scalable.",
+                        "translation": "Hệ thống được thiết kế để có thể mở rộng."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Deploy (v.)",
+                "define": "Triển khai",
+                "set": null,
+                "image": "./src/seeder/image/deploy.jpg",
+                "example": [
+                    {
+                        "sentence": "The company will deploy the new software next month.",
+                        "translation": "Công ty sẽ triển khai phần mềm mới vào tháng tới."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Optimize (v.)",
+                "define": "Tối ưu hóa",
+                "set": null,
+                "image": "./src/seeder/image/optimize.jpg",
+                "example": [
+                    {
+                        "sentence": "We need to optimize the website for better performance.",
+                        "translation": "Chúng ta cần tối ưu hóa trang web để có hiệu suất tốt hơn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Virtual (adj.)",
+                "define": "Ảo",
+                "set": null,
+                "image": "./src/seeder/image/virtual.jpg",
+                "example": [
+                    {
+                        "sentence": "We attended a virtual conference last week.",
+                        "translation": "Chúng tôi đã tham dự một hội nghị ảo vào tuần trước."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Augmented Reality (n.)",
+                "define": "Thực tế tăng cường",
+                "set": null,
+                "image": "./src/seeder/image/augmented_reality.jpg",
+                "example": [
+                    {
+                        "sentence": "Augmented reality enhances the real-world environment.",
+                        "translation": "Thực tế tăng cường nâng cao môi trường thực."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "Malware (n.)",
+                "define": "Phần mềm độc hại",
+                "set": null,
+                "image": "./src/seeder/image/malware.jpg",
+                "example": [
+                    {
+                        "sentence": "Malware can compromise your computer's security.",
+                        "translation": "Phần mềm độc hại có thể làm ảnh hưởng đến bảo mật máy tính của bạn."
+                    }
+                ],
+                "created_by": "Seeder"
+            },
+            {
+                "term": "High-tech (adj.)",
+                "define": "Công nghệ cao",
+                "set": null,
+                "image": "./src/seeder/image/high_tech.jpg",
+                "example": [
+                    {
+                        "sentence": "They use high-tech equipment in their research lab.",
+                        "translation": "Họ sử dụng thiết bị công nghệ cao trong phòng thí nghiệm của mình."
                     }
                 ],
                 "created_by": "Seeder"
@@ -78,7 +260,7 @@
                 "level": 2,
                 "questions": [
                     {
-                        "questionText": "What process is used by plants to convert light energy into chemical energy?",
+                        "questionText": "Which process converts light energy into chemical energy in plants?",
                         "questionType": "choice",
                         "options": [
                             "Photosynthesis",
@@ -96,6 +278,90 @@
                         "explain": "Quantum mechanics is a fundamental theory in physics."
                     },
                     {
+                        "questionText": "What term is used for the speed at which data is transferred in a network?",
+                        "questionType": "choice",
+                        "options": [
+                            "Latency",
+                            "Bandwidth",
+                            "Throughput",
+                            "Frequency"
+                        ],
+                        "correctAnswer": "Bandwidth",
+                        "explain": "Bandwidth refers to the maximum rate of data transfer across a given path."
+                    },
+                    {
+                        "questionText": "The ability of a computer system to handle increasing amounts of work is called ...?",
+                        "questionType": "written",
+                        "correctAnswer": "scalability",
+                        "explain": "Scalability is the capability of a system to handle a growing amount of work or its potential to accommodate growth."
+                    },
+                    {
+                        "questionText": "Which of the following technologies enhances the real-world environment?",
+                        "questionType": "choice",
+                        "options": [
+                            "Virtual Reality",
+                            "Augmented Reality",
+                            "Artificial Intelligence",
+                            "Machine Learning"
+                        ],
+                        "correctAnswer": "Augmented Reality",
+                        "explain": "Augmented Reality enhances the real-world environment by overlaying digital information."
+                    },
+                    {
+                        "questionText": "Low latency is crucial for ...?",
+                        "questionType": "written",
+                        "correctAnswer": "online gaming",
+                        "explain": "Low latency is crucial for online gaming to ensure smooth and responsive gameplay."
+                    },
+                    {
+                        "questionText": "What process involves making a system or design as effective as possible?",
+                        "questionType": "choice",
+                        "options": [
+                            "Innovation",
+                            "Integration",
+                            "Optimization",
+                            "Automation"
+                        ],
+                        "correctAnswer": "Optimization",
+                        "explain": "Optimization involves making a system or design as effective or functional as possible."
+                    },
+                    {
+                        "questionText": "Automation is often used to reduce ...?",
+                        "questionType": "choice",
+                        "options": [
+                            "Efficiency",
+                            "Productivity",
+                            "Labor costs",
+                            "Bandwidth"
+                        ],
+                        "correctAnswer": "Labor costs",
+                        "explain": "Automation is used to perform tasks that would otherwise require human labor, thus reducing labor costs."
+                    },
+                    {
+                        "questionText": "Responsive design ensures that a website works well on ...?",
+                        "questionType": "written",
+                        "correctAnswer": "all devices",
+                        "explain": "Responsive design ensures that a website adapts to different screen sizes and devices for optimal viewing."
+                    },
+                    {
+                        "questionText": "Which of the following is used to protect data?",
+                        "questionType": "choice",
+                        "options": [
+                            "Encryption",
+                            "Bandwidth",
+                            "Latency",
+                            "Scalability"
+                        ],
+                        "correctAnswer": "Encryption",
+                        "explain": "Encryption is used to protect data by converting it into a code."
+                    },
+                    {
+                        "questionText": "The scientist formulated a new ...?",
+                        "questionType": "written",
+                        "correctAnswer": "hypothesis",
+                        "explain": "The scientist formulated a new hypothesis."
+                    },
+                    {
                         "questionText": "A hypothesis is a ...?",
                         "questionType": "choice",
                         "options": [
@@ -106,30 +372,6 @@
                         ],
                         "correctAnswer": "Prediction",
                         "explain": "A hypothesis is a prediction that can be tested through experiments."
-                    },
-                    {
-                        "questionText": "An ecosystem includes all living and non-living things in an ...?",
-                        "questionType": "written",
-                        "correctAnswer": "area",
-                        "explain": "An ecosystem includes all living and non-living things in an area."
-                    },
-                    {
-                        "questionText": "Which of the following is a natural phenomenon?",
-                        "questionType": "choice",
-                        "options": [
-                            "Car",
-                            "House",
-                            "Rainbow",
-                            "Computer"
-                        ],
-                        "correctAnswer": "Rainbow",
-                        "explain": "A rainbow is a natural phenomenon."
-                    },
-                    {
-                        "questionText": "The scientist formulated a new ...?",
-                        "questionType": "written",
-                        "correctAnswer": "hypothesis",
-                        "explain": "The scientist formulated a new hypothesis."
                     }
                 ]
             }

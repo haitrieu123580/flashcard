@@ -20,9 +20,6 @@ export class Constants {
   };
 
   static SET_STATUS = {
-    DRAFT: 'draft',
-    PUBLISHED: 'published',
-    ARCHIVED: 'archived',
     PENDING: 'pending',
     APPROVED: 'approved',
     REJECTED: 'rejected',

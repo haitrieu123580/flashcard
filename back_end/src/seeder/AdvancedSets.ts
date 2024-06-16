@@ -29,17 +29,17 @@ export class AdvancedSetSeeder implements Seeder {
       newSet.description = set.description;
       newSet.level = set.level || Constants.LEVEL.MEDIUM;
 
-      // if (set?.image) {
-      //     const image_url = await this.s3Service.uploadFile({
-      //         filename: String(set.name) + '.jpg',
-      //         path: set?.image,
-      //         mimetype: 'image/*',
-      //     });
-      //     newSet.image = image_url?.Location || "";
-      // }
+      if (set?.image) {
+        const image_url = await this.s3Service.uploadFile({
+          filename: String(set.name) + '.jpg',
+          path: set?.image,
+          mimetype: 'image/*',
+        });
+        newSet.image = image_url?.Location || "";
+      }
 
       newSet.is_public = set.is_public;
-      newSet.created_by = set.created_by;
+      newSet.created_by = 'flashcard.web';
       newSet.created_at = new Date();
 
       newSet.cards = [];

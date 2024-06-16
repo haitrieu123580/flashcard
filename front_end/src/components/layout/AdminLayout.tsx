@@ -52,13 +52,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="!md:my-10 mb-24 mt-28 flex flex-1">
+        <div className="mb-24 mt-28 flex flex-1">
           <MaxWidthWrapper className="h-full">
             <div className="relative mt-2 flex h-full w-full flex-col gap-4 md:flex-row">
               {/* <div className='flex md:fixed'
                             >
                             </div> */}
-              <div className="fixed z-[60] w-fit rounded-md bg-background md:h-fit md:w-fit">
+              <div className="fixed z-[49] w-fit rounded-md bg-background md:h-fit md:w-fit">
                 <SidebarNav items={Constants.SidebarNavItems} />
               </div>
               <div className="mt-10 w-full md:ml-24 md:mt-0">
