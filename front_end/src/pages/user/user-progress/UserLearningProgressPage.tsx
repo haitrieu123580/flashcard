@@ -4,6 +4,7 @@ import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import defaultImage from '@/assets/images/flashcard_bg.jpeg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -29,7 +30,7 @@ import {
   replacePathWithId,
   setColorLevel,
 } from '@/lib/utils';
-import defaultImage from '@/assets/images/flashcard_bg.jpeg';
+
 const UserLearningProgressPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

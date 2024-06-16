@@ -75,13 +75,13 @@ const SetItem = (props: any) => {
           </div>
           <div
             className={cn(
-              'col-span-1 flex flex-nowrap items-end justify-end gap-1',
+              'col-span-1 flex flex-nowrap items-start justify-end gap-1',
               showEditBtn || showDeleteBtn ? '' : 'hidden',
             )}
           >
             {showEditBtn && (
               <Button
-                variant={'ghost'}
+                variant={'default'}
                 className={'h-fit w-fit'}
                 onClick={(e) => {
                   e.stopPropagation();

@@ -46,7 +46,7 @@ const EditSetContainer = () => {
         z.string().optional(),
       ])
       .optional(),
-    level: z.string().optional(),
+    level: z.string().optional() || z.number().optional(),
     is_delete_image: z.string().optional(),
   });
 
@@ -162,7 +162,7 @@ const EditSetContainer = () => {
         image: null,
         path: data?.image || '',
       },
-      level: data?.level,
+      level: String(data?.level) || '',
     },
   });
 
@@ -172,6 +172,7 @@ const EditSetContainer = () => {
       set_image: values.set_image.image ? values.set_image.image : null,
       is_delete_image:
         !values.set_image.image && !values.set_image.path ? 'true' : 'false',
+      level: Number.parseInt(values.level),
     };
     const formData = objectToFormData(submitValues);
     dispatch({
@@ -205,7 +206,7 @@ const EditSetContainer = () => {
           image: null,
           path: data.image || '',
         },
-        level: data.level,
+        level: String(data.level) || '',
       });
     }
   }, [data]);

@@ -26,7 +26,6 @@ function* watchEditProfile() {
       const { data, onError, onSuccess } = payload;
       try {
         const res = yield call(EditProfileApi, data);
-        console.log(res);
         if (res.status === ErrorCode.OK) {
           if (res.data.statusCode === ApiCode.SUCCESS) {
             isFunction(payload.onSuccess) && payload.onSuccess(res.data?.data);

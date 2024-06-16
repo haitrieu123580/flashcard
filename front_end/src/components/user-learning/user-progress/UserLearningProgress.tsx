@@ -10,13 +10,14 @@ const UserNotStudiedCards = (props: any) => {
           <div className="m-6">
             <CardTitle className="text-primary">
               {`Not studied (
-                        ${typeof (
-                  data?.cards?.length - progress?.studiedCards?.length
-                ) === 'number' && progress?.studiedCards?.length
-                  ? data?.cards?.length -
-                  progress?.studiedCards?.length
-                  : data?.cards?.length
-                })`}
+                        ${
+                          typeof (
+                            data?.cards?.length - progress?.studiedCards?.length
+                          ) === 'number' && progress?.studiedCards?.length
+                            ? data?.cards?.length -
+                              progress?.studiedCards?.length
+                            : data?.cards?.length
+                        })`}
             </CardTitle>
             <div className="flex flex-wrap items-start justify-center space-x-4">
               {data?.cards

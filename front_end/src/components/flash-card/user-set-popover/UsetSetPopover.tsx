@@ -166,17 +166,15 @@ const UserSetPopover = (props: any) => {
               {Array.isArray(mySets?.sets) &&
                 mySets?.sets?.map((set: any, index: number) => {
                   return (
-                    <div key={index} className="w-full">
+                    <div key={index} className="h-fit w-full">
                       <Button
                         variant={'ghost'}
-                        className="flex h-full w-full flex-col overflow-hidden"
+                        className="flex h-fit w-full flex-col overflow-hidden"
                         onClick={() => {
                           starClick(set.id);
                         }}
                       >
-                        <p className="h-fit w-full truncate text-center hover:cursor-pointer">
-                          {set.name}
-                        </p>
+                        {set.name}
                       </Button>
                       <Separator />
                     </div>

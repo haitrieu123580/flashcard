@@ -72,26 +72,28 @@ const LearningCards = (props: any) => {
                 </div>
                 <div className="text-base">{data?.description}</div>
               </div>
-              {data?.user?.avatar && (
-                <Avatar>
-                  <AvatarImage
-                    src={data?.user?.avatar}
-                    className="object-cover"
-                  />
-                  <AvatarFallback>
-                    {data?.user?.username?.toString()?.[0]}
-                  </AvatarFallback>
-                </Avatar>
-              )}
-              <div className="flex flex-col">
-                <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-                  <span>Created by: </span>
-                  {data?.created_by}
-                </span>
-                <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
-                  <span>Created at: </span>
-                  {convertDateToString(data?.created_at)}
-                </span>
+              <div className="flex gap-2">
+                {data?.user?.avatar && (
+                  <Avatar>
+                    <AvatarImage
+                      src={data?.user?.avatar}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>
+                      {data?.user?.username?.toString()?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+                <div className="flex flex-col">
+                  <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+                    <span>Created by: </span>
+                    {data?.created_by}
+                  </span>
+                  <span className="block overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+                    <span>Created at: </span>
+                    {convertDateToString(data?.created_at)}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -123,7 +125,7 @@ const LearningCards = (props: any) => {
                 </PopoverContent>
               </Popover>
             )}
-            {progress?.studiedCards?.length != 0 && (
+            {progress?.studiedCards?.length > 0 && (
               <Button
                 variant={'outline'}
                 className={'bg-green-500 text-white hover:bg-green-500'}

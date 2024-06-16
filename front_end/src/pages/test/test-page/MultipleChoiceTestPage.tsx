@@ -3,7 +3,7 @@ import useReloadAlert from '@/hook/useReloadPage';
 import { routerPaths } from '@/routes/path';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { CheckIcon } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Link,
@@ -200,6 +200,12 @@ const MultipleChoiceTestPage = () => {
     setCurrentCard(0);
     setShowCorrectAnswer(false);
     startTimer();
+    // form.reset(
+    //   data?.questions?.reduce((acc: any, question: any) => {
+    //     acc[question.id] = '';
+    //     return acc;
+    //   }, {}),
+    // );
   };
 
   useReloadAlert();

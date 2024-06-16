@@ -59,7 +59,7 @@ const TestListPage = () => {
         page_index: pageNumber,
         filter: filter,
         name: name || null,
-        onSuccess: () => { },
+        onSuccess: () => {},
         onError: (message: string) => {
           toast({
             title: 'Error',

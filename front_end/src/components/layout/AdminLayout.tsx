@@ -34,7 +34,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             // setAuth(data)
           }
         },
-        onError: () => { },
+        onError: () => {},
       },
     });
   };
@@ -52,16 +52,20 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           </MaxWidthWrapper>
         </header>
         <Separator />
-        <div className="mt-28 mb-24 !md:my-10 flex flex-1">
+        <div className="!md:my-10 mb-24 mt-28 flex flex-1">
           <MaxWidthWrapper className="h-full">
             <div className="relative mt-2 flex h-full w-full flex-col gap-4 md:flex-row">
               {/* <div className='flex md:fixed'
                             >
                             </div> */}
-              <SidebarNav items={Constants.SidebarNavItems} />
-              <Card className="flex-1 border-none bg-transparent shadow-none md:ml-6 md:px-6">
-                {profile && <Outlet />}
-              </Card>
+              <div className="fixed z-[60] w-fit rounded-md bg-background md:h-fit md:w-fit">
+                <SidebarNav items={Constants.SidebarNavItems} />
+              </div>
+              <div className="mt-10 w-full md:ml-24">
+                <Card className="flex-1 border-none bg-transparent shadow-none md:ml-6 md:px-6">
+                  {profile && <Outlet />}
+                </Card>
+              </div>
             </div>
             <div className="fixed bottom-10 right-10">
               <ModeToggle />

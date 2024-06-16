@@ -60,23 +60,23 @@ const MainHeader = (props: any) => {
           {loggedIn ? (
             profile?.role === Constants.ROLE.ADMIN ? (
               <>
-                <Button variant={'link'} >
+                <Button variant={'link'}>
                   <Link to={routerPaths.ADMIN}>Admin site</Link>
                 </Button>
               </>
             ) : (
               <>
-                <Button variant={'link'} >
+                <Button variant={'link'}>
                   <Link to={routerPaths.USER_SETS}>My sets</Link>
                 </Button>
               </>
             )
           ) : null}
-        </div >
+        </div>
         {/* <MaxWidthWrapper >
                    
                 </MaxWidthWrapper> */}
-        <div className="w-3/6" >
+        <div className="w-3/6">
           <Form {...form}>
             <form className="" onSubmit={form.handleSubmit(onSubmit)}>
               <FormInput
@@ -101,7 +101,7 @@ const MainHeader = (props: any) => {
               />
             </form>
           </Form>
-        </div >
+        </div>
         <div className="flex w-1/6 justify-end gap-1">
           {loggedIn ? (
             <>
@@ -132,8 +132,8 @@ const MainHeader = (props: any) => {
             </>
           )}
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 

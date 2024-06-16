@@ -100,10 +100,6 @@ const CardForm = (props: any) => {
                             <div className="mb-2 flex items-center justify-center">
                               <EditPopup
                                 onConfirmEdit={() => {
-                                  console.log(
-                                    'onConfirmEdit',
-                                    form.handleSubmit(onSubmit)(),
-                                  );
                                   form.handleSubmit(onSubmit)();
                                 }}
                                 TriggerComponent={

@@ -62,8 +62,9 @@ function* watchUserSetsList() {
                 data: res.data?.data,
                 pagination: {
                   total: res.data?.data?.count,
-                }
-              }));
+                },
+              }),
+            );
           }
         }
       } catch (error: any) {

@@ -52,7 +52,7 @@ const Banner = (props: any) => {
             <div className="col-span-2 hidden md:block"></div>
             <div className="col-span-1 flex h-full items-start md:col-span-6">
               <Card className="border-none bg-transparent shadow-none">
-                <CardHeader className='!flex-row justify-end' >
+                <CardHeader className="!flex-row justify-end">
                   <CardTitle className="text-blue-500">{data?.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="rounded-sm bg-background p-8 dark:bg-inherit">

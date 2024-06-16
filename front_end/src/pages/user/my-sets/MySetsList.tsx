@@ -33,9 +33,7 @@ const MySetsList = () => {
     dispatch({
       type: getUserSetsListAction.type,
       payload: {
-        onSuccess: () => {
-          // console.log('success')
-        },
+        onSuccess: () => {},
         onError: (message: string) => {
           setErrorMessage(message || 'Something went wrong');
         },
