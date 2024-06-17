@@ -1,9 +1,12 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const firebaseConfig = {
-    apiKey: "AIzaSyC7OYiC3_52v5NOpZIardAqBjiDshFjVrY",
-    authDomain: "uploading-ce62a.firebaseapp.com",
-    projectId: "uploading-ce62a",
-    storageBucket: "uploading-ce62a.appspot.com",
-    messagingSenderId: "18233155661",
-    appId: "1:18233155661:web:134265c8987c8c3c363c04",
-    measurementId: "G-7YHJW7SKBH"
+    apiKey: String(process.env.FIREBASE_KEY),
+    authDomain: String(process.env.AUTH_DOMAIN),
+    projectId: String(process.env.PROJECT_ID),
+    storageBucket: String(process.env.STORAGE_BUCKET),
+    messagingSenderId: String(process.env.MESSAGING_SENDER_ID),
+    appId: String(process.env.APP_ID),
+    measurementId: String(process.env.MEASUREMENT_ID),
 };
