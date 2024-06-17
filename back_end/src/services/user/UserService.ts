@@ -17,17 +17,18 @@ import UserRepo from '@repositories/user/UseRepo';
 import UserRepoInterface from '@repositories/user/UserRepoInterface';
 
 import { UserServiceInterface } from './UserServiceInterface';
-
+import { FirebaseUploadService } from '../firebase/firebaseUploadService';
 @Service()
 export class UserService implements UserServiceInterface {
   private userRepo: UserRepoInterface;
   private s3Service: S3Service;
   private userSetsRepo: IUserSetsRepo;
-
+  private firebaseUploadService: FirebaseUploadService;
   constructor() {
     this.userRepo = Container.get(UserRepo);
     this.s3Service = Container.get(S3Service);
     this.userSetsRepo = Container.get(UserSetsRepo);
+    this.firebaseUploadService = Container.get(FirebaseUploadService);
   }
 
   editProfile = async (data: EditUserProfileRequest): Promise<any> => {
@@ -41,8 +42,12 @@ export class UserService implements UserServiceInterface {
       throw new AuthFailureError('User not found.');
     }
     if (data.image) {
-      const image_uploaded = await this.s3Service.uploadFile(data.image);
-      image_url = image_uploaded.Location;
+      // const image_uploaded = await this.s3Service.uploadFile(data.image);
+      // image_url = image_uploaded.Location;
+      const image_uploaded = await this.firebaseUploadService.uploadFile(
+        data.image,
+      );
+      image_url = image_uploaded.downloadURL;
     }
     const updatedData = {
       ...user,
@@ -95,6 +100,6 @@ export class UserService implements UserServiceInterface {
       }
       const sets = await this.userSetsRepo.getUserSetsList(id);
       return new SuccessResponse('User sets list', sets).send(res);
-    } catch (error) {}
+    } catch (error) { }
   };
 }
