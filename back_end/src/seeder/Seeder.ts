@@ -11,8 +11,8 @@ export class MainSeeder implements Seeder {
     factoryManager: SeederFactoryManager,
   ): Promise<void> {
     // await runSeeder(dataSource, UserSeeder);
-    // await runSeeder(dataSource, SetSeeder);
-    // await runSeeder(dataSource, AdvancedSetSeeder)
-    await runSeeder(dataSource, ApproveUserSet)
+    await runSeeder(dataSource, SetSeeder);
+    await runSeeder(dataSource, AdvancedSetSeeder)
+    // await runSeeder(dataSource, ApproveUserSet)
   }
 }

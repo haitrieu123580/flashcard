@@ -8,13 +8,16 @@ import { Sets } from '../entity/Sets';
 import { TestKits } from '../entity/TestKit';
 import { TestQuestion } from '../entity/TestQuestion';
 import { S3Service } from '../services/s3/S3Service';
+import { FirebaseUploadService } from '../services/firebase/firebaseUploadService';
 import setJson from './json/advancedSets.json';
 
 export class AdvancedSetSeeder implements Seeder {
   private s3Service: S3Service;
+  private firebaseService: FirebaseUploadService;
 
   constructor() {
     this.s3Service = Container.get(S3Service);
+    this.firebaseService = Container.get(FirebaseUploadService);
   }
 
   async run(
@@ -30,12 +33,20 @@ export class AdvancedSetSeeder implements Seeder {
       newSet.level = set.level || Constants.LEVEL.MEDIUM;
 
       if (set?.image) {
-        const image_url = await this.s3Service.uploadFile({
-          filename: String(set.name) + '.jpg',
-          path: set?.image,
-          mimetype: 'image/*',
-        });
-        newSet.image = image_url?.Location || "";
+        // const image_url = await this.s3Service.uploadFile({
+        //   filename: String(set.name) + '.jpg',
+        //   path: set?.image,
+        //   mimetype: 'image/*',
+        // });
+        // newSet.image = image_url?.Location || "";
+        const image_uploaded = await this.firebaseService.uploadFile(
+          {
+            originalname: String(set.name) + `${Date.now()}`,
+            path: set?.image,
+            mimetype: 'image/*',
+          });
+        const image_url = image_uploaded.downloadURL;
+        newSet.image = image_url;
       }
 
       newSet.is_public = set.is_public;
