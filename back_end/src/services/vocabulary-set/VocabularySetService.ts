@@ -25,7 +25,7 @@ import { IVocabularyCardRepo } from '@repositories/vocabulary-card/IVocabularyCa
 import { VocabularyCardRepo } from '@repositories/vocabulary-card/VocabularyCardRepo';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
-
+import { FirebaseUploadService } from '@services/firebase/firebaseUploadService';
 import { IVocabularySetService } from './IVocabularySetService';
 
 @Service()
@@ -33,11 +33,13 @@ class VocabularySetService implements IVocabularySetService {
   private setRepo: IVocabularySetRepo;
   private s3Service: S3Service;
   private cardRepo: IVocabularyCardRepo;
+  private firebaseUploadService: FirebaseUploadService;
 
   constructor() {
     this.setRepo = Container.get(VocabularySetRepo);
     this.s3Service = Container.get(S3Service);
     this.cardRepo = Container.get(VocabularyCardRepo);
+    this.firebaseUploadService = Container.get(FirebaseUploadService);
   }
 
   get_all_public_sets = async (
@@ -151,17 +153,17 @@ class VocabularySetService implements IVocabularySetService {
       for (let i = 0; i < data.cards.length; i++) {
         const card = data.cards[i];
         const image = card.image;
-        const image_url = image ? await this.s3Service.uploadFile(image) : null;
-        card.image = image_url?.Location || '';
+        const image_url = image ? await this.firebaseUploadService.uploadFile(image) : null;
+        card.image = image_url?.downloadURL || '';
       }
     }
     const set_image_url = data.set_image
-      ? await this.s3Service.uploadFile(data.set_image)
+      ? await this.firebaseUploadService.uploadFile(data.set_image)
       : null;
     const set = {
       name: data.set_name,
       description: data.set_description,
-      image: set_image_url?.Location || '',
+      image: set_image_url?.downloadURL || '',
       is_public: is_public,
       level: Number(data.level),
     };
@@ -175,7 +177,7 @@ class VocabularySetService implements IVocabularySetService {
     const { set_name, set_description } = data;
     const set_image = files.find((file: any) => file.fieldname === 'set_image');
     const set_image_url = set_image
-      ? await this.s3Service.uploadFile(set_image)
+      ? await this.firebaseUploadService.uploadFile(set_image)
       : null;
     const updateSet = await this.setRepo.get_set_by_id(setId);
     if (!updateSet) {
@@ -189,7 +191,7 @@ class VocabularySetService implements IVocabularySetService {
       image: isDeleteImage
         ? null
         : set_image_url
-          ? set_image_url.Location
+          ? set_image_url.downloadURL
           : updateSet.image,
       level: Number(data.level),
     };

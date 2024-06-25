@@ -26,6 +26,7 @@ import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/Vocabulary
 import { IVocabularySetRepo } from '@src/repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@src/repositories/vocabulary-set/VocabularySetRepo';
 import { S3Service } from '@services/s3/S3Service';
+import { FirebaseUploadService } from '@services/firebase/firebaseUploadService';
 
 import { ICardService } from './ICardService';
 
@@ -35,24 +36,27 @@ export class CardService implements ICardService {
   private s3Service: S3Service;
   private setRepo: IVocabularySetRepo;
   private userRepo: UserRepoInterface;
+  private firebaseUploadService: FirebaseUploadService;
 
   constructor() {
     this.cardRepo = Container.get(VocabularyCardRepo);
     this.s3Service = Container.get(S3Service);
     this.setRepo = Container.get(VocabularySetRepo);
     this.userRepo = Container.get(UserRepo);
+    this.firebaseUploadService = Container.get(FirebaseUploadService);
+
   }
   CreateCard = async (data: CreateCardDataRequest): Promise<Cards | null> => {
     // try {
     const image = data.image;
     const setId = data.set_id;
-    const image_url = image ? await this.s3Service.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
+    const image_url = image ? await this.firebaseUploadService.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
 
     const cardData = {
       term: data.term,
       define: data.define,
       example: data?.example,
-      image: image_url?.Location || '',
+      image: image_url?.downloadURL || '',
     };
     const set = await this.setRepo.get_set_by_id(setId);
     const user = await this.userRepo.getUserBy('id', data.user.id);
@@ -78,7 +82,7 @@ export class CardService implements ICardService {
     const isDeleteImage = data.is_delete_image === 'true';
     //todo delete image on S3
     const image_url = data.image
-      ? await this.s3Service.uploadFile(data.image)
+      ? await this.firebaseUploadService.uploadFile(data.image)
       : null; // Nếu có ảnh thì upload lên S3 và lấy url
     const updatedCard = await this.cardRepo.getCardById(id);
     if (!updatedCard) {
@@ -92,7 +96,7 @@ export class CardService implements ICardService {
       image: isDeleteImage
         ? null
         : image_url
-          ? image_url.Location
+          ? image_url.downloadURL
           : updatedCard.image,
       updated_by: user.email,
     };

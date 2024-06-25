@@ -38,6 +38,7 @@ import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRep
 
 import { S3Service } from '../s3/S3Service';
 import { IUserSetsService } from './IUserSetsService';
+import { FirebaseUploadService } from '@services/firebase/firebaseUploadService';
 
 @Service()
 export class UserSetsService implements IUserSetsService {
@@ -46,12 +47,16 @@ export class UserSetsService implements IUserSetsService {
   private setRepo: IVocabularySetRepo;
   private cardRepo: IVocabularyCardRepo;
   private s3Service: S3Service;
+  private firebaseUploadService: FirebaseUploadService;
+
   constructor() {
     this.userSetsRepo = Container.get(UserSetsRepo);
     this.userRepo = Container.get(UserRepo);
     this.setRepo = Container.get(VocabularySetRepo);
     this.cardRepo = Container.get(VocabularyCardRepo);
     this.s3Service = Container.get(S3Service);
+    this.firebaseUploadService = Container.get(FirebaseUploadService);
+
   }
   async getUserSetsList(userId: string): Promise<SetsListResponse | null> {
     const user = await this.userRepo.getUserBy('id', userId);
@@ -170,7 +175,7 @@ export class UserSetsService implements IUserSetsService {
       throw new AuthFailureError('Set not belong to user');
     }
     const set_image_url = set_image
-      ? await this.s3Service.uploadFile(set_image)
+      ? await this.firebaseUploadService.uploadFile(set_image)
       : null;
     const updateSet = await this.setRepo.get_set_by_id(setId);
     if (!updateSet) {
@@ -184,7 +189,7 @@ export class UserSetsService implements IUserSetsService {
       image: isDeleteImage
         ? null
         : set_image_url
-          ? set_image_url.Location
+          ? set_image_url.downloadURL
           : updateSet.image,
     };
     return this.setRepo.edit_set(set);
