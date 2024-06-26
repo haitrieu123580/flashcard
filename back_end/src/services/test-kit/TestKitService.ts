@@ -6,6 +6,7 @@ import { Sets } from '@src/entity/Sets';
 import { TestKits } from '@src/entity/TestKit';
 import { TestQuestion } from '@src/entity/TestQuestion';
 import { User } from '@src/entity/User';
+import { FirebaseUploadService } from '../firebase/firebaseUploadService';
 
 import { S3Service } from '../s3/S3Service';
 
@@ -16,12 +17,16 @@ export class TestKitService {
   private testQuestionRepo;
   private testKitsRepo;
   private s3Service: S3Service;
+  private firebaseUploadService: FirebaseUploadService;
+
   constructor() {
     this.userRepo = AppDataSource.getRepository(User);
     this.setRepo = AppDataSource.getRepository(Sets);
     this.testQuestionRepo = AppDataSource.getRepository(TestQuestion);
     this.testKitsRepo = AppDataSource.getRepository(TestKits);
     this.s3Service = Container.get(S3Service);
+    this.firebaseUploadService = Container.get(FirebaseUploadService);
+
   }
 
   createTestKit = async (data: any): Promise<any> => {
@@ -101,8 +106,8 @@ export class TestKitService {
     }
     const testQuestion = new TestQuestion();
     if (question.questionImage) {
-      const image = await this.s3Service.uploadFile(question.questionImage);
-      testQuestion.questionText = image?.Location || '';
+      const image = await this.firebaseUploadService.uploadFile(question.questionImage);
+      testQuestion.questionText = image?.downloadURL || '';
     } else {
       testQuestion.questionText = question.questionText;
     }
@@ -136,8 +141,8 @@ export class TestKitService {
       question.questionImage &&
       question.questionType === Constants.QUESTION_TYPE.IMAGE
     ) {
-      const image = await this.s3Service.uploadFile(question.questionImage);
-      testQuestion.questionText = image.Location;
+      const image = await this.firebaseUploadService.uploadFile(question.questionImage);
+      testQuestion.questionText = image.downloadURL;
     } else {
       testQuestion.questionText = question.questionText;
     }

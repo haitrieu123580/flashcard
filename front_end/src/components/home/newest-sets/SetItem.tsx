@@ -47,14 +47,7 @@ const SetItem = (props: any) => {
   return (
     <Card
       className="group relative flex h-full flex-col justify-between overflow-hidden"
-      onClick={(e) => {
-        e.preventDefault();
-        if (checkMySet) {
-          onClick(data);
-        } else {
-          onClick(id);
-        }
-      }}
+     
     >
       <CardHeader className="max-h-30">
         <div className="grid grid-cols-3 gap-2">
@@ -128,7 +121,16 @@ const SetItem = (props: any) => {
           )}
         </CardDescription>
       </CardHeader>
-      <CardContent className="">
+      <CardContent className=""
+       onClick={(e) => {
+        e.preventDefault();
+        if (checkMySet) {
+          onClick(data);
+        } else {
+          onClick(id);
+        }
+      }}
+      >
         <div className="group relative overflow-hidden rounded-md hover:cursor-pointer">
           <AspectRatio
             ratio={ratio ? ratio : `${1 / 1}`}
