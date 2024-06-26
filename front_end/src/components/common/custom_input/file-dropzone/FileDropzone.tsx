@@ -24,6 +24,7 @@ interface FileDropzoneProps {
   multipleFile: boolean;
   accept: string;
   name: string;
+  readOnly?: boolean;
 }
 
 export const FileDropzone: React.FC<FileDropzoneProps> = ({
@@ -36,12 +37,14 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
   multipleFile,
   accept,
   name,
+  readOnly=false,
 }) => {
   const { setValue, watch } = useFormContext();
   const [show, setShow] = useState(false);
   const [fileInfo, setFileInfo] = useState<FileInfo>({
     path: '',
   });
+
   const fileRef = useRef<HTMLInputElement>(null);
 
   const onUpdate = () => {
@@ -96,7 +99,6 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
     },
     noClick: true,
   });
-
   return (
     <>
       <div
@@ -143,6 +145,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
             path={fileInfo.path}
             onDelete={onDelete}
             onUpdate={onUpdate}
+            readonly={readOnly}
           />
         </div>
       </div>

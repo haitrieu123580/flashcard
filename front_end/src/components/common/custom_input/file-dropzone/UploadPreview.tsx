@@ -9,22 +9,26 @@ interface UploadPreviewProps {
   path?: string;
   onDelete?: () => void;
   onUpdate?: () => void;
+  readonly?: boolean;
 }
 
 const UploadPreview: FC<UploadPreviewProps> = ({
   show,
-
+  readonly,
   path,
   onDelete = () => {},
   onUpdate = () => {},
 }) => {
+  console.log("readonly  preview", readonly)
   return (
     <>
       {show && (
         <>
           <div className="flex w-full flex-col bg-transparent px-3 py-[23px] opacity-100">
             <div className="flex h-16 w-full justify-end gap-6">
-              <Button
+              {readonly ? null : (
+                <>
+                    <Button
                 type="button"
                 variant="secondary"
                 // className="p-0 h-4 "
@@ -46,7 +50,9 @@ const UploadPreview: FC<UploadPreviewProps> = ({
               >
                 Delete
               </Button>
-            </div>
+                </>
+                )}
+                      </div>
             <div className="w-full">
               <div className="h-80 w-full bg-transparent">
                 <img

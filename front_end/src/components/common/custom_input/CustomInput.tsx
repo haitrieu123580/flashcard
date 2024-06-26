@@ -120,11 +120,11 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
                   value,
                   options,
                   disabled,
-                  readOnly,
                   classNameIcon,
                   autoFocus,
                   classNameContent,
                   labelCheckbox,
+                  readOnly,
                 })}
               </FormControl>
               {description ? (
@@ -263,7 +263,7 @@ const renderInput = ({
           onKeyUp={onKeyUp}
           maxLength={maxLength}
           disabled={disabled}
-          readOnly={readOnly}
+          readOnly={readOnly}   
           onClickIcon={onClickIcon}
         />
       );
