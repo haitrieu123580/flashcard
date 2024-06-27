@@ -11,6 +11,7 @@ const Set = createSlice({
   reducers: {
     getSetByIdAction: (state, action) => {
       state.isLoading = true;
+      state.data = [];
     },
     getSetByIdSuccessAction: (state, { payload }) => {
       state.isLoading = false;

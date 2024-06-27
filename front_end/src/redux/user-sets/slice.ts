@@ -38,6 +38,7 @@ const UserSets = createSlice({
 
     getUserSetByIdAction: (state) => {
       state.isLoading = true;
+      state.set = [];
     },
     getUserSetByIdSuccessAction: (state, { payload }) => {
       state.isLoading = false;
