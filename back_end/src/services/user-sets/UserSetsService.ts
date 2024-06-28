@@ -35,27 +35,23 @@ import UserRepo from '@repositories/user/UseRepo';
 import UserRepoInterface from '@repositories/user/UserRepoInterface';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
-
-import { S3Service } from '../s3/S3Service';
 import { IUserSetsService } from './IUserSetsService';
-import { FirebaseUploadService } from '@services/firebase/firebaseUploadService';
-
+import {IUploadService} from "@services/upload/IUploadService";
+import { FirebaseUpload } from '@services/upload/FirebaseUpload';
 @Service()
 export class UserSetsService implements IUserSetsService {
   private userSetsRepo: IUserSetsRepo;
   private userRepo: UserRepoInterface;
   private setRepo: IVocabularySetRepo;
   private cardRepo: IVocabularyCardRepo;
-  private s3Service: S3Service;
-  private firebaseUploadService: FirebaseUploadService;
+  private uploadService: IUploadService;
 
   constructor() {
     this.userSetsRepo = Container.get(UserSetsRepo);
     this.userRepo = Container.get(UserRepo);
     this.setRepo = Container.get(VocabularySetRepo);
     this.cardRepo = Container.get(VocabularyCardRepo);
-    this.s3Service = Container.get(S3Service);
-    this.firebaseUploadService = Container.get(FirebaseUploadService);
+    this.uploadService = Container.get(FirebaseUpload);
 
   }
   async getUserSetsList(userId: string): Promise<SetsListResponse | null> {
@@ -175,8 +171,8 @@ export class UserSetsService implements IUserSetsService {
       throw new AuthFailureError('Set not belong to user');
     }
     const set_image_url = set_image
-      ? await this.firebaseUploadService.uploadFile(set_image)
-      : null;
+      ? await this.uploadService.uploadImage(set_image)
+      : "";
     const updateSet = await this.setRepo.get_set_by_id(setId);
     if (!updateSet) {
       throw new NotFoundError('Set not found!');
@@ -187,10 +183,10 @@ export class UserSetsService implements IUserSetsService {
       description: set_description ? set_description : updateSet.description,
       updated_by: user?.email || '',
       image: isDeleteImage
-        ? null
-        : set_image_url
-          ? set_image_url.downloadURL
-          : updateSet.image,
+        ? ""
+        : (typeof set_image_url == 'string')
+          ? set_image_url
+          : updateSet.image || '',
     };
     return this.setRepo.edit_set(set);
   };

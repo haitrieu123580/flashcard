@@ -8,37 +8,31 @@ import {
 } from '@src/core/ApiError';
 import {
   FailureMsgResponse,
-  FailureResponse,
   SuccessMsgResponse,
-  SuccessResponse,
 } from '@src/core/ApiResponse';
 import { CreateCardDataRequest, UpdateCardDataRequest } from '@src/dto/cards';
 import { Cards } from '@src/entity/Cards';
 import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
 import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
-import { S3Service } from '@services/s3/S3Service';
 import UserRepo from '@repositories/user/UseRepo';
 import UserRepoInterface from '@repositories/user/UserRepoInterface';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
-import { FirebaseUploadService } from '@services/firebase/firebaseUploadService';
-
 import { IUserCardsService } from './IUserCardsService';
-
+import {IUploadService} from "@services/upload/IUploadService";
+import { FirebaseUpload } from '@services/upload/FirebaseUpload';
 @Service()
 export class UserCardsService implements IUserCardsService {
   private cardRepo: IVocabularyCardRepo;
-  private s3Service: S3Service;
   private setRepo: IVocabularySetRepo;
   private userRepo: UserRepoInterface;
-  private firebaseUploadService: FirebaseUploadService;
+  private uploadService: IUploadService;
 
   constructor() {
     this.cardRepo = Container.get(VocabularyCardRepo);
-    this.s3Service = Container.get(S3Service);
     this.setRepo = Container.get(VocabularySetRepo);
     this.userRepo = Container.get(UserRepo);
-    this.firebaseUploadService = Container.get(FirebaseUploadService);
+    this.uploadService = Container.get(FirebaseUpload);
   }
   CreateCard = async (data: CreateCardDataRequest): Promise<Cards | null> => {
     const image = data.image;
@@ -46,13 +40,13 @@ export class UserCardsService implements IUserCardsService {
     if (!setId) {
       throw new BadRequestError('Set id is required!');
     }
-    const image_url = image ? await this.firebaseUploadService.uploadFile(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
+    const image_url = image ? await this.uploadService.uploadImage(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
 
     const cardData = {
       term: data.term,
       define: data.define,
       example: data?.example,
-      image: image_url?.downloadURL || '',
+      image: image_url || '',
     };
     const set = await this.setRepo.get_set_by_id(setId);
     const user = await this.userRepo.getUserBy('id', data.user.id);
@@ -84,7 +78,7 @@ export class UserCardsService implements IUserCardsService {
     const isDeleteImage = data.is_delete_image === 'true';
     //todo delete image on S3
     const image_url = data.image
-      ? await this.firebaseUploadService.uploadFile(data.image)
+      ? await this.uploadService.uploadImage(data.image)
       : null; // Nếu có ảnh thì upload lên S3 và lấy url
 
     const cardData = {
@@ -95,7 +89,7 @@ export class UserCardsService implements IUserCardsService {
       image: isDeleteImage
         ? null
         : image_url
-          ? image_url.downloadURL
+          ? image_url
           : updatedCard.image,
       updated_by: user.email,
     };

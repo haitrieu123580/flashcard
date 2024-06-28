@@ -23,18 +23,7 @@ import path from 'path';
 import passport from 'passport';
 import session from 'express-session';
 import { AppDataSource } from "./data-source"
-import authRoutes from '@routers/auth/index';
-import userRouter from '@routers/user/index';
-import passportRouter from '@routers/passport/index';
-import vocabRouter from '@routers/vocabulary-set/index';
-import cardRouter from '@routers/card/index';
-import userSetsRouter from '@routers/user-sets/index';
-import userCardsRouter from '@routers/user-cards/index';
-import testRouter from "@routers/test-sets/index";
-import userTestRouter from "@routers/user-tests/index";
-import userProgressRouter from "@routers/user-progress/index";
-import adminAprroveUserSetRouter from "@routers/approve-sets/index";
-import testKitRouter from '@routers/test-kit/index';
+import router from '@src/routers/index.router';
 import {
   NotFoundError,
   ApiError,
@@ -89,18 +78,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/api/auth', authRoutes)
-app.use('/api/user', userRouter)
-app.use('/passport', passportRouter)
-app.use('/api/vocabulary-set', vocabRouter)
-app.use('/api/card', cardRouter)
-app.use('/api/user-sets', userSetsRouter)
-app.use('/api/user-cards', userCardsRouter)
-app.use('/api/tests', testRouter)
-app.use('/api/user-tests', userTestRouter)
-app.use('/api/user-progress', userProgressRouter)
-app.use('/api/admin/approve-set', adminAprroveUserSetRouter)
-app.use('/api/test-kit', testKitRouter)
+app.use("/api", router);
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(new NotFoundError()));
 

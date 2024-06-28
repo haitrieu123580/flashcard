@@ -7,17 +7,13 @@ import { Cards } from '../entity/Cards';
 import { Sets } from '../entity/Sets';
 import { TestKits } from '../entity/TestKit';
 import { TestQuestion } from '../entity/TestQuestion';
-import { S3Service } from '../services/s3/S3Service';
-import { FirebaseUploadService } from '../services/firebase/firebaseUploadService';
 import setJson from './json/advancedSets.json';
-
+import { IUploadService } from '../services/upload/IUploadService';
+import { FirebaseUpload } from '../services/upload/FirebaseUpload';
 export class AdvancedSetSeeder implements Seeder {
-  private s3Service: S3Service;
-  private firebaseService: FirebaseUploadService;
-
+  private uploadService : IUploadService;
   constructor() {
-    this.s3Service = Container.get(S3Service);
-    this.firebaseService = Container.get(FirebaseUploadService);
+    this.uploadService = Container.get(FirebaseUpload);
   }
 
   async run(
@@ -39,13 +35,13 @@ export class AdvancedSetSeeder implements Seeder {
         //   mimetype: 'image/*',
         // });
         // newSet.image = image_url?.Location || "";
-        const image_uploaded = await this.firebaseService.uploadFile(
+        const image_uploaded = await this.uploadService.uploadImage(
           {
             originalname: String(set.name) + `${Date.now()}`,
             path: set?.image,
             mimetype: 'image/*',
           });
-        const image_url = image_uploaded.downloadURL;
+        const image_url = image_uploaded;
         newSet.image = image_url;
       }
 
