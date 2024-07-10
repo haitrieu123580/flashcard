@@ -19,7 +19,6 @@ const UploadPreview: FC<UploadPreviewProps> = ({
   onDelete = () => {},
   onUpdate = () => {},
 }) => {
-  console.log("readonly  preview", readonly)
   return (
     <>
       {show && (

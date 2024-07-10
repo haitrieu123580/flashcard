@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { getItem, setItem , removeItem} from '@/lib/LocalStorage';
 const initialState = {
   isLoading: false,
-  token: localStorage.getItem('access_token') || '',
-  refresh_token: localStorage.getItem('refresh_token') || '',
-  loggedIn: localStorage.getItem('access_token') ? true : false,
+  token: getItem('access_token') || '',
+  refresh_token: getItem('refresh_token') || '',
+  loggedIn: !!getItem('access_token'),
   profile: null,
 };
 
@@ -20,8 +20,8 @@ const authSlice = createSlice({
 
     loginActionSuccess: (state, { payload }) => {
       state.isLoading = false;
-      localStorage.setItem('access_token', String(payload.data.access_token));
-      localStorage.setItem('refresh_token', String(payload.data.refresh_token));
+      setItem('access_token', payload.data.access_token);
+      setItem('refresh_token', payload.data.access_token);
       state.token = String(payload.data.access_token);
       state.refresh_token = String(payload.data.refresh_token);
       state.loggedIn = true;
@@ -75,14 +75,14 @@ const authSlice = createSlice({
     logoutSuccessAction: (state) => {
       state.loggedIn = false;
       state.isLoading = false;
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      removeItem('access_token');
+      removeItem('refresh_token');
     },
     logoutErrorsAction: (state) => {
       state.loggedIn = false;
       state.isLoading = false;
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
+      removeItem('access_token');
+      removeItem('refresh_token');
     },
   },
 });

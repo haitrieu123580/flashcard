@@ -21,26 +21,26 @@ type AdminLayoutProps = {
 };
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { profile } = useSelector((state: any) => state.Auth);
-  // const { setAuth } = useAuth();
-  const getProfile = () => {
-    dispatch({
-      type: getProfileAction.type,
-      payload: {
-        onSuccess: (data: any) => {
-          if (data) {
-            // setAuth(data)
-          }
-        },
-        onError: () => { },
-      },
-    });
-  };
-  useEffect(() => {
-    getProfile();
-  }, []);
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const { profile } = useSelector((state: any) => state.Auth);
+  // // const { setAuth } = useAuth();
+  // const getProfile = () => {
+  //   dispatch({
+  //     type: getProfileAction.type,
+  //     payload: {
+  //       onSuccess: (data: any) => {
+  //         if (data) {
+  //           // setAuth(data)
+  //         }
+  //       },
+  //       onError: () => { },
+  //     },
+  //   });
+  // };
+  // useEffect(() => {
+  //   getProfile();
+  // }, []);
 
   return (
     <div className="">
@@ -63,7 +63,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               </div>
               <div className="mt-10 w-full md:ml-24 md:mt-0">
                 <Card className="flex-1 border-none bg-transparent shadow-none md:ml-6 md:px-6">
-                  {profile && <Outlet />}
+                  {/* {profile && <Outlet />} */}
+                  {<Outlet />}
                 </Card>
               </div>
             </div>

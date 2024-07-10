@@ -34,7 +34,7 @@ router.get(
 
 router.get('/me', [isValidKey, verifyToken], AsyncHandler(authController.me));
 
-router.post('/get-token', authController.get_token);
+router.post('/refresh-token', AsyncHandler(authController.refreshToken));
 
 router.post(
   '/forgot-password',

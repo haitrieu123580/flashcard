@@ -12,14 +12,10 @@ import RequireAuth from '@/components/common/RequireAuth';
 import AdminLayout from '@/components/layout/AdminLayout';
 import AuthLayout from '@/components/layout/AuthLayout';
 import MainLayout from '@/components/layout/MainLayout';
-import { getProfileAction } from '@/redux/auth/slice';
 import Constants from '@/lib/Constants';
-
 import { privateRouters, protectedRoutes, publicRoutes } from './MainRouters';
-import { routerPaths } from './path';
 
 const CustomRouterProvider = () => {
-  // const { profile } = useSelector((state: any) => state.Auth);
   // const dispatch = useDispatch();
   // useEffect(() => {
   //     if (profile) return;

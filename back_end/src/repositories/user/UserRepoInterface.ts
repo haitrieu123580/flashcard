@@ -2,7 +2,7 @@ import { Request } from 'express';
 
 import { User } from '../../entity/User';
 
-interface UserRepoInterface {
+export interface UserRepoInterface {
   createUser: (data: any) => Promise<User | null>;
 
   me: (id: string) => Promise<User | null>;

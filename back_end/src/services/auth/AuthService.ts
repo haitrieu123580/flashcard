@@ -117,24 +117,24 @@ class AuthService implements AuthServiceInterface {
   };
 
   public get_access_token_by_refresh_token = async (
-    req: Request,
-    res: Response,
+   refreshToken:string
   ): Promise<any> => {
-    try {
-      const refresh_token = req.body.refresh_token;
-      if (!refresh_token) {
-        return new FailureMsgResponse('Refresh Token is required').send(res);
+      if (!refreshToken) {
+        throw new BadRequestError('Refresh Token is required');
       }
 
       // Check validity with an existing token
-      const isExistingToken = await this.userRepo.getUserBy(
-        'token',
-        String(refresh_token),
-      );
-
-      if (isExistingToken) {
-        const user = verifyToken(refresh_token);
-
+      // const isExistingToken = await this.userRepo.getUserBy(
+      //   'token',
+      //   refreshToken      );
+      // console.log("refreshToken",refreshToken)
+      // console.log("isExistingToken",isExistingToken)
+      // if (isExistingToken) {
+        
+      // } else {
+      //   throw new AuthFailureError('Invalid Refresh Token');
+      // }
+      const user = await verifyToken(refreshToken);
         const access_token = genAccessToken({
           id: user.id,
           username: user.username,
@@ -146,18 +146,7 @@ class AuthService implements AuthServiceInterface {
           username: user.username,
           role: user.role,
         });
-        return new SuccessResponse('Token Refreshed', {
-          access_token,
-          refresh_token: new_refresh_token,
-          expires_access_token: String(process.env.TOKEN_EXPIRE_TIME),
-        }).send(res);
-      } else {
-        return new FailureMsgResponse('Token not existed').send(res);
-      }
-    } catch (error) {
-      console.log(error);
-      return new InternalErrorResponse('Internal Server Error').send(res);
-    }
+        return { accessToken:access_token, refreshToken: new_refresh_token};
   };
 
   public me = async (req: any, res: Response): Promise<any> => {

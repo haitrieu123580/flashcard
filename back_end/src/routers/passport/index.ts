@@ -11,9 +11,7 @@ const authController = new AuthController();
 
 router.get('/login/success', (req: Request, res: Response) => {
   if (req.user) {
-    // console.log("user Login", req.user)
     return authController.sign_in_success_oauth(req, res);
-    // return res.status(200).json({ message: "user Login", user: req.user })
   } else {
     return res.status(400).json({ message: 'Not Authorized' });
   }

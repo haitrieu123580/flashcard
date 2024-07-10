@@ -22,7 +22,8 @@ import Constants from '@/lib/Constants';
 
 import { FormInput } from '../../custom_input/CustomInput';
 import MaxWidthWrapper from '../../MaxWidthWrapper';
-
+import { getUserJWTDecode } from '@/lib/utils';
+const userProfile = getUserJWTDecode();
 const MainHeaderMobile = (props: any) => {
   const { isAdmin } = props;
   const { loggedIn, profile } = useSelector((state: any) => state.Auth);
@@ -62,7 +63,7 @@ const MainHeaderMobile = (props: any) => {
               <Link to={routerPaths.PUBLIC_SETS}>Topic sets</Link>
             </Button>
             {loggedIn ? (
-              profile?.role === Constants.ROLE.ADMIN ? (
+              userProfile?.role === Constants.ROLE.ADMIN ? (
                 <>
                   <Button variant={'link'} className="w-fit text-black">
                     <Link to={routerPaths.ADMIN}>Admin site</Link>

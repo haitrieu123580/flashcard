@@ -21,21 +21,21 @@ type AuthLayoutProps = {
 };
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { profile } = useSelector((state: any) => state.Auth);
-  const getProfile = () => {
-    dispatch({
-      type: getProfileAction.type,
-      payload: {
-        onSuccess: (data: any) => { },
-        onError: () => { },
-      },
-    });
-  };
-  useEffect(() => {
-    getProfile();
-  }, []);
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const { profile } = useSelector((state: any) => state.Auth);
+  // const getProfile = () => {
+  //   dispatch({
+  //     type: getProfileAction.type,
+  //     payload: {
+  //       onSuccess: (data: any) => { },
+  //       onError: () => { },
+  //     },
+  //   });
+  // };
+  // useEffect(() => {
+  //   getProfile();
+  // }, []);
 
   return (
     <div className="bg-background-400">
@@ -49,7 +49,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         <Separator />
         <div className="my-24 md:my-12 flex flex-1">
           <MaxWidthWrapper className="m-auto h-full">
-            <div className="mt-10 h-full">{profile && <Outlet />}</div>
+            <div className="mt-10 h-full">{<Outlet />}</div>
             <div className="fixed bottom-10 right-10">
               <ModeToggle />
             </div>

@@ -1,5 +1,4 @@
 import { routerPaths } from '@/routes/path';
-import { JwtPayload } from 'jwt-decode';
 import {
   CircleUserRound,
   History,
@@ -21,7 +20,7 @@ import {
 import { logoutAction } from '@/redux/auth/slice';
 import { getUserJWTDecode } from '@/lib/utils';
 
-const userProfile: JwtPayload | any = getUserJWTDecode() || {};
+const userProfile= getUserJWTDecode() || {};
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const UserPopover = () => {
@@ -38,7 +37,7 @@ const UserPopover = () => {
         },
       },
     });
-    window.open(`${BACKEND_URL}/passport/logout`, '_self');
+    // window.open(`${BACKEND_URL}/passport/logout`, '_self');
   };
   return (
     <Popover>
