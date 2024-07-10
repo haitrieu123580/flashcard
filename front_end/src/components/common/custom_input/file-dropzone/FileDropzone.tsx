@@ -37,7 +37,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
   multipleFile,
   accept,
   name,
-  readOnly=false,
+  readOnly = false,
 }) => {
   const { setValue, watch } = useFormContext();
   const [show, setShow] = useState(false);

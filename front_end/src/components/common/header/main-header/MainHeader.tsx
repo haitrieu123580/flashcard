@@ -19,10 +19,11 @@ import {
 } from '@/components/ui/popover';
 import { logoutAction } from '@/redux/auth/slice';
 import Constants from '@/lib/Constants';
+import { getUserJWTDecode } from '@/lib/utils';
 
 import { FormInput } from '../../custom_input/CustomInput';
 import MaxWidthWrapper from '../../MaxWidthWrapper';
-import { getUserJWTDecode } from '@/lib/utils';
+
 const userProfile = getUserJWTDecode();
 const MainHeader = (props: any) => {
   const { isAdmin, className } = props;
@@ -49,9 +50,7 @@ const MainHeader = (props: any) => {
   const onTextChanged = (value: any) => {
     setShowSubmit(value.length > 0);
   };
-useEffect(()=>{
-
-}, [isAdmin])
+  useEffect(() => {}, [isAdmin]);
   return (
     <div className="hidden h-20 md:block md:w-full">
       <div className="flex h-full w-full items-center justify-between">

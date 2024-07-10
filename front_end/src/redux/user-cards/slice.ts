@@ -11,8 +11,7 @@ const userCard = createSlice({
   reducers: {
     editUserCardAction: (state, action) => {},
 
-    editUserCardSuccessAction: (state, action) => {
-    },
+    editUserCardSuccessAction: (state, action) => {},
 
     createUserCardAction: (state, action) => {},
 

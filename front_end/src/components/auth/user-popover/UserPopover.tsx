@@ -20,7 +20,7 @@ import {
 import { logoutAction } from '@/redux/auth/slice';
 import { getUserJWTDecode } from '@/lib/utils';
 
-const userProfile= getUserJWTDecode() || {};
+const userProfile = getUserJWTDecode() || {};
 const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const UserPopover = () => {

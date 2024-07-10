@@ -58,7 +58,9 @@ export const LoginWithOauthApi = async () => {
   return response;
 };
 
-export const refreshTokenApi = async(refreshToken:string) => {
-  const response = await AxiosConfig.post(`${BASE_URL}/refresh-token`, { refresh_token: refreshToken});
+export const refreshTokenApi = async (refreshToken: string) => {
+  const response = await AxiosConfig.post(`${BASE_URL}/refresh-token`, {
+    refresh_token: refreshToken,
+  });
   return response;
-}
+};

@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getItem, setItem , removeItem} from '@/lib/LocalStorage';
+
+import { getItem, removeItem, setItem } from '@/lib/LocalStorage';
+
 const initialState = {
   isLoading: false,
   token: getItem('access_token') || '',

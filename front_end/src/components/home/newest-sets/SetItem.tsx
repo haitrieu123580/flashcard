@@ -45,10 +45,7 @@ const SetItem = (props: any) => {
   const { name, description, totalCards, created_by, created_at, image, id } =
     data || {};
   return (
-    <Card
-      className="group relative flex h-full flex-col justify-between overflow-hidden"
-     
-    >
+    <Card className="group relative flex h-full flex-col justify-between overflow-hidden">
       <CardHeader className="max-h-30">
         <div className="grid grid-cols-3 gap-2">
           <div
@@ -121,15 +118,16 @@ const SetItem = (props: any) => {
           )}
         </CardDescription>
       </CardHeader>
-      <CardContent className=""
-       onClick={(e) => {
-        e.preventDefault();
-        if (checkMySet) {
-          onClick(data);
-        } else {
-          onClick(id);
-        }
-      }}
+      <CardContent
+        className=""
+        onClick={(e) => {
+          e.preventDefault();
+          if (checkMySet) {
+            onClick(data);
+          } else {
+            onClick(id);
+          }
+        }}
       >
         <div className="group relative overflow-hidden rounded-md hover:cursor-pointer">
           <AspectRatio

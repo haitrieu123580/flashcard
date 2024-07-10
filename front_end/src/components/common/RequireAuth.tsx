@@ -5,6 +5,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import { getProfileAction } from '@/redux/auth/slice';
 import { getUserJWTDecode } from '@/lib/utils';
+
 const userProfile = getUserJWTDecode();
 const RequireAuth = ({
   allowedRoles,
@@ -18,20 +19,17 @@ const RequireAuth = ({
   const dispatch = useDispatch();
   return (
     <>
-      {
-        allowedRoles.includes(userProfile?.role) ? (
-          // ? <Outlet />
+      {allowedRoles.includes(userProfile?.role)
+        ? // ? <Outlet />
           children
-        )
-        //  : (
-        //   <Navigate
-        //     to={routerPaths.UNAUTHORIZED}
-        //     state={{ from: location }}
-        //     replace
-        //   />
-        // )
-        : null
-      }
+        : //  : (
+          //   <Navigate
+          //     to={routerPaths.UNAUTHORIZED}
+          //     state={{ from: location }}
+          //     replace
+          //   />
+          // )
+          null}
       {/* <Outlet /> */}
     </>
   );

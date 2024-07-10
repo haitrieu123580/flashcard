@@ -19,10 +19,11 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import Constants from '@/lib/Constants';
+import { getUserJWTDecode } from '@/lib/utils';
 
 import { FormInput } from '../../custom_input/CustomInput';
 import MaxWidthWrapper from '../../MaxWidthWrapper';
-import { getUserJWTDecode } from '@/lib/utils';
+
 const userProfile = getUserJWTDecode();
 const MainHeaderMobile = (props: any) => {
   const { isAdmin } = props;

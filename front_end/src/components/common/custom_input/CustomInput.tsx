@@ -263,7 +263,7 @@ const renderInput = ({
           onKeyUp={onKeyUp}
           maxLength={maxLength}
           disabled={disabled}
-          readOnly={readOnly}   
+          readOnly={readOnly}
           onClickIcon={onClickIcon}
         />
       );
