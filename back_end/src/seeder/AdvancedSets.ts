@@ -7,11 +7,12 @@ import { Cards } from '../entity/Cards';
 import { Sets } from '../entity/Sets';
 import { TestKits } from '../entity/TestKit';
 import { TestQuestion } from '../entity/TestQuestion';
-import setJson from './json/advancedSets.json';
-import { IUploadService } from '../services/upload/IUploadService';
 import { FirebaseUpload } from '../services/upload/FirebaseUpload';
+import { IUploadService } from '../services/upload/IUploadService';
+import setJson from './json/advancedSets.json';
+
 export class AdvancedSetSeeder implements Seeder {
-  private uploadService : IUploadService;
+  private uploadService: IUploadService;
   constructor() {
     this.uploadService = Container.get(FirebaseUpload);
   }
@@ -35,12 +36,11 @@ export class AdvancedSetSeeder implements Seeder {
         //   mimetype: 'image/*',
         // });
         // newSet.image = image_url?.Location || "";
-        const image_uploaded = await this.uploadService.uploadImage(
-          {
-            originalname: String(set.name) + `${Date.now()}`,
-            path: set?.image,
-            mimetype: 'image/*',
-          });
+        const image_uploaded = await this.uploadService.uploadImage({
+          originalname: String(set.name) + `${Date.now()}`,
+          path: set?.image,
+          mimetype: 'image/*',
+        });
         const image_url = image_uploaded;
         newSet.image = image_url;
       }

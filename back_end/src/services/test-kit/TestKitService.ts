@@ -7,7 +7,7 @@ import { TestKits } from '@src/entity/TestKit';
 import { TestQuestion } from '@src/entity/TestQuestion';
 import { User } from '@src/entity/User';
 import { FirebaseUpload } from '@services/upload/FirebaseUpload';
-import {IUploadService} from "@services/upload/IUploadService";
+import { IUploadService } from '@services/upload/IUploadService';
 
 @Service()
 export class TestKitService {
@@ -23,7 +23,6 @@ export class TestKitService {
     this.testQuestionRepo = AppDataSource.getRepository(TestQuestion);
     this.testKitsRepo = AppDataSource.getRepository(TestKits);
     this.uploadService = Container.get(FirebaseUpload);
-
   }
 
   createTestKit = async (data: any): Promise<any> => {
@@ -103,7 +102,9 @@ export class TestKitService {
     }
     const testQuestion = new TestQuestion();
     if (question.questionImage) {
-      const image = await this.uploadService.uploadImage(question.questionImage);
+      const image = await this.uploadService.uploadImage(
+        question.questionImage,
+      );
       testQuestion.questionText = image || '';
     } else {
       testQuestion.questionText = question.questionText;
@@ -138,7 +139,9 @@ export class TestKitService {
       question.questionImage &&
       question.questionType === Constants.QUESTION_TYPE.IMAGE
     ) {
-      const image = await this.uploadService.uploadImage(question.questionImage);
+      const image = await this.uploadService.uploadImage(
+        question.questionImage,
+      );
       testQuestion.questionText = image;
     } else {
       testQuestion.questionText = question.questionText;

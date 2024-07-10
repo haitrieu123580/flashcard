@@ -42,7 +42,8 @@ class AuthController {
   };
   refreshToken = async (req: Request, res: Response) => {
     const refreshToken = req.body.refresh_token;
-    const response =  await this.authService.get_access_token_by_refresh_token(refreshToken);
+    const response =
+      await this.authService.get_access_token_by_refresh_token(refreshToken);
     return new SuccessResponse('Refresh token success', response).send(res);
   };
   sign_in_success_oauth = async (req: Request, res: Response) => {

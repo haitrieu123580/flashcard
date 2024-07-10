@@ -5,10 +5,7 @@ import {
   ForbiddenError,
   NotFoundError,
 } from '@src/core/ApiError';
-import {
-  FailureMsgResponse,
-  SuccessMsgResponse,
-} from '@src/core/ApiResponse';
+import { FailureMsgResponse, SuccessMsgResponse } from '@src/core/ApiResponse';
 import { Constants } from '@src/core/Constant';
 import { CreateCardDataRequest, UpdateCardDataRequest } from '@src/dto/cards';
 import { Cards } from '@src/entity/Cards';
@@ -18,9 +15,10 @@ import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabula
 import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
 import { IVocabularySetRepo } from '@src/repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@src/repositories/vocabulary-set/VocabularySetRepo';
-import { ICardService } from './ICardService';
-import {IUploadService} from "@services/upload/IUploadService";
 import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+import { IUploadService } from '@services/upload/IUploadService';
+
+import { ICardService } from './ICardService';
 
 @Service()
 export class CardService implements ICardService {
@@ -34,13 +32,14 @@ export class CardService implements ICardService {
     this.setRepo = Container.get(VocabularySetRepo);
     this.userRepo = Container.get(UserRepo);
     this.uploadService = Container.get(FirebaseUpload);
-
   }
   CreateCard = async (data: CreateCardDataRequest): Promise<Cards | null> => {
     const image = data.image;
     const setId = data.set_id;
-    const image_url = image ? await this.uploadService.uploadImage(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
-    
+    const image_url = image
+      ? await this.uploadService.uploadImage(image)
+      : null; // Nếu có ảnh thì upload lên S3 và lấy url
+
     const cardData = {
       term: data.term,
       define: data.define,
@@ -82,11 +81,7 @@ export class CardService implements ICardService {
       term: data.term || updatedCard.term,
       define: data.define || updatedCard.define,
       example: data?.example || updatedCard.example,
-      image: isDeleteImage
-        ? null
-        : image_url
-          ? image_url
-          : updatedCard.image,
+      image: isDeleteImage ? null : image_url ? image_url : updatedCard.image,
       updated_by: user.email,
     };
     return this.cardRepo.edit_card(cardData);

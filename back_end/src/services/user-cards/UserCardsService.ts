@@ -6,21 +6,20 @@ import {
   ForbiddenError,
   NotFoundError,
 } from '@src/core/ApiError';
-import {
-  FailureMsgResponse,
-  SuccessMsgResponse,
-} from '@src/core/ApiResponse';
+import { FailureMsgResponse, SuccessMsgResponse } from '@src/core/ApiResponse';
 import { CreateCardDataRequest, UpdateCardDataRequest } from '@src/dto/cards';
 import { Cards } from '@src/entity/Cards';
 import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
 import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
+import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+import { IUploadService } from '@services/upload/IUploadService';
 import UserRepo from '@repositories/user/UseRepo';
 import UserRepoInterface from '@repositories/user/UserRepoInterface';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
+
 import { IUserCardsService } from './IUserCardsService';
-import {IUploadService} from "@services/upload/IUploadService";
-import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+
 @Service()
 export class UserCardsService implements IUserCardsService {
   private cardRepo: IVocabularyCardRepo;
@@ -40,7 +39,9 @@ export class UserCardsService implements IUserCardsService {
     if (!setId) {
       throw new BadRequestError('Set id is required!');
     }
-    const image_url = image ? await this.uploadService.uploadImage(image) : null; // Nếu có ảnh thì upload lên S3 và lấy url
+    const image_url = image
+      ? await this.uploadService.uploadImage(image)
+      : null; // Nếu có ảnh thì upload lên S3 và lấy url
 
     const cardData = {
       term: data.term,
@@ -86,11 +87,7 @@ export class UserCardsService implements IUserCardsService {
       term: data.term || updatedCard.term,
       define: data.define || updatedCard.define,
       example: data?.example || updatedCard?.example,
-      image: isDeleteImage
-        ? null
-        : image_url
-          ? image_url
-          : updatedCard.image,
+      image: isDeleteImage ? null : image_url ? image_url : updatedCard.image,
       updated_by: user.email,
     };
 

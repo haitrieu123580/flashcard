@@ -20,13 +20,15 @@ import {
 } from '@src/dto/set/SetsListResponse';
 import { Sets } from '@src/entity/Sets';
 import { TestKits } from '@src/entity/TestKit';
+import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+import { IUploadService } from '@services/upload/IUploadService';
 import { IVocabularyCardRepo } from '@repositories/vocabulary-card/IVocabularyCardRepo';
 import { VocabularyCardRepo } from '@repositories/vocabulary-card/VocabularyCardRepo';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
+
 import { IVocabularySetService } from './IVocabularySetService';
-import {IUploadService} from "@services/upload/IUploadService";
-import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+
 @Service()
 class VocabularySetService implements IVocabularySetService {
   private setRepo: IVocabularySetRepo;
@@ -37,7 +39,6 @@ class VocabularySetService implements IVocabularySetService {
     this.setRepo = Container.get(VocabularySetRepo);
     this.cardRepo = Container.get(VocabularyCardRepo);
     this.uploadService = Container.get(FirebaseUpload);
-
   }
 
   get_all_public_sets = async (
@@ -151,7 +152,9 @@ class VocabularySetService implements IVocabularySetService {
       for (let i = 0; i < data.cards.length; i++) {
         const card = data.cards[i];
         const image = card.image;
-        const image_url = image ? await this.uploadService.uploadImage(image) : null;
+        const image_url = image
+          ? await this.uploadService.uploadImage(image)
+          : null;
         card.image = image_url || '';
       }
     }
@@ -187,7 +190,7 @@ class VocabularySetService implements IVocabularySetService {
       name: set_name,
       description: set_description ? set_description : updateSet.description,
       image: isDeleteImage
-        ? ""
+        ? ''
         : set_image_url
           ? set_image_url
           : updateSet.image,

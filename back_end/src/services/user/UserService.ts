@@ -12,12 +12,13 @@ import { EditUserProfileRequest } from '@src/dto/user';
 import { comparePassword, hasingPassword } from '@src/helper/HashingPassword';
 import { IUserSetsRepo } from '@src/repositories/user-sets/IUserSetsRepo';
 import { UserSetsRepo } from '@src/repositories/user-sets/UserSetsRepo';
+import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+import { IUploadService } from '@services/upload/IUploadService';
 import UserRepo from '@repositories/user/UseRepo';
 import UserRepoInterface from '@repositories/user/UserRepoInterface';
 
 import { UserServiceInterface } from './UserServiceInterface';
-import {IUploadService} from "@services/upload/IUploadService";
-import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+
 @Service()
 export class UserService implements UserServiceInterface {
   private userRepo: UserRepoInterface;
@@ -40,7 +41,7 @@ export class UserService implements UserServiceInterface {
       throw new AuthFailureError('User not found.');
     }
     if (data.image) {
-       image_url = await this.uploadService.uploadImage(data.image);
+      image_url = await this.uploadService.uploadImage(data.image);
     }
     const updatedData = {
       ...user,
@@ -93,6 +94,6 @@ export class UserService implements UserServiceInterface {
       }
       const sets = await this.userSetsRepo.getUserSetsList(id);
       return new SuccessResponse('User sets list', sets).send(res);
-    } catch (error) { }
+    } catch (error) {}
   };
 }

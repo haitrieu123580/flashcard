@@ -31,13 +31,15 @@ import { IUserSetsRepo } from '@src/repositories/user-sets/IUserSetsRepo';
 import { UserSetsRepo } from '@src/repositories/user-sets/UserSetsRepo';
 import { IVocabularyCardRepo } from '@src/repositories/vocabulary-card/IVocabularyCardRepo';
 import { VocabularyCardRepo } from '@src/repositories/vocabulary-card/VocabularyCardRepo';
+import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+import { IUploadService } from '@services/upload/IUploadService';
 import UserRepo from '@repositories/user/UseRepo';
 import UserRepoInterface from '@repositories/user/UserRepoInterface';
 import { IVocabularySetRepo } from '@repositories/vocabulary-set/IVocabularySetRepo';
 import { VocabularySetRepo } from '@repositories/vocabulary-set/VocabularySetRepo';
+
 import { IUserSetsService } from './IUserSetsService';
-import {IUploadService} from "@services/upload/IUploadService";
-import { FirebaseUpload } from '@services/upload/FirebaseUpload';
+
 @Service()
 export class UserSetsService implements IUserSetsService {
   private userSetsRepo: IUserSetsRepo;
@@ -52,7 +54,6 @@ export class UserSetsService implements IUserSetsService {
     this.setRepo = Container.get(VocabularySetRepo);
     this.cardRepo = Container.get(VocabularyCardRepo);
     this.uploadService = Container.get(FirebaseUpload);
-
   }
   async getUserSetsList(userId: string): Promise<SetsListResponse | null> {
     const user = await this.userRepo.getUserBy('id', userId);
@@ -172,7 +173,7 @@ export class UserSetsService implements IUserSetsService {
     }
     const set_image_url = set_image
       ? await this.uploadService.uploadImage(set_image)
-      : "";
+      : '';
     const updateSet = await this.setRepo.get_set_by_id(setId);
     if (!updateSet) {
       throw new NotFoundError('Set not found!');
@@ -183,8 +184,8 @@ export class UserSetsService implements IUserSetsService {
       description: set_description ? set_description : updateSet.description,
       updated_by: user?.email || '',
       image: isDeleteImage
-        ? ""
-        : (typeof set_image_url == 'string')
+        ? ''
+        : typeof set_image_url == 'string'
           ? set_image_url
           : updateSet.image || '',
     };

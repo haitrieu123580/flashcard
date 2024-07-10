@@ -117,36 +117,36 @@ class AuthService implements AuthServiceInterface {
   };
 
   public get_access_token_by_refresh_token = async (
-   refreshToken:string
+    refreshToken: string,
   ): Promise<any> => {
-      if (!refreshToken) {
-        throw new BadRequestError('Refresh Token is required');
-      }
+    if (!refreshToken) {
+      throw new BadRequestError('Refresh Token is required');
+    }
 
-      // Check validity with an existing token
-      // const isExistingToken = await this.userRepo.getUserBy(
-      //   'token',
-      //   refreshToken      );
-      // console.log("refreshToken",refreshToken)
-      // console.log("isExistingToken",isExistingToken)
-      // if (isExistingToken) {
-        
-      // } else {
-      //   throw new AuthFailureError('Invalid Refresh Token');
-      // }
-      const user = await verifyToken(refreshToken);
-        const access_token = genAccessToken({
-          id: user.id,
-          username: user.username,
-          role: user.role,
-        });
+    // Check validity with an existing token
+    // const isExistingToken = await this.userRepo.getUserBy(
+    //   'token',
+    //   refreshToken      );
+    // console.log("refreshToken",refreshToken)
+    // console.log("isExistingToken",isExistingToken)
+    // if (isExistingToken) {
 
-        const new_refresh_token = genRefreshToken({
-          id: user.id,
-          username: user.username,
-          role: user.role,
-        });
-        return { accessToken:access_token, refreshToken: new_refresh_token};
+    // } else {
+    //   throw new AuthFailureError('Invalid Refresh Token');
+    // }
+    const user = await verifyToken(refreshToken);
+    const access_token = genAccessToken({
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    });
+
+    const new_refresh_token = genRefreshToken({
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    });
+    return { accessToken: access_token, refreshToken: new_refresh_token };
   };
 
   public me = async (req: any, res: Response): Promise<any> => {

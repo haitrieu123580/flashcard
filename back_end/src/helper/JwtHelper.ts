@@ -37,8 +37,8 @@ export const genRefreshToken = (data: any): string => {
   );
   return refresh_token;
 };
-export const verifyToken = async (token: string) :Promise<any>=> {
-  const data =  await jwt.verify(token, String(process.env.JWT_SECRET)) as {
+export const verifyToken = async (token: string): Promise<any> => {
+  const data = (await jwt.verify(token, String(process.env.JWT_SECRET))) as {
     id: string;
     username: string;
   };
