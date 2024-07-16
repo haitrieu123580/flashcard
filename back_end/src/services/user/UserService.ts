@@ -67,7 +67,10 @@ export class UserService implements UserServiceInterface {
       if (!user) {
         return new FailureMsgResponse('User not found.').send(res);
       }
-      if (!comparePassword(currentPassword, user.password)) {
+      if (!comparePassword({
+        inputPassword:currentPassword,
+        password: user.password
+      })) {
         return new FailureMsgResponse('Current password is incorrect.').send(
           res,
         );

@@ -52,7 +52,12 @@ class AuthService implements AuthServiceInterface {
       data.username,
     );
     if (userData) {
-      if (comparePassword(data.password, userData.password)) {
+      if (comparePassword(
+        {
+          inputPassword:data.password, 
+          password:userData.password
+        }
+        )) {
         const access_token = genAccessToken({
           id: userData.id,
           username: userData.username,
@@ -105,15 +110,9 @@ class AuthService implements AuthServiceInterface {
       const userProfile = await this.userRepo.me(newUser.id);
       if (!userProfile) {
         throw new InternalError('Get User Profile Failed');
-        // return new FailureMsgResponse('Get User Profile Failed').send(res);
       }
       return userProfile;
-      // return new SuccessResponse('User Created', userProfile).send(res);
     }
-    // } catch (error) {
-    //     console.log(error)
-    //     return new InternalErrorResponse('Internal Server Error').send(res);
-    // }
   };
 
   public get_access_token_by_refresh_token = async (

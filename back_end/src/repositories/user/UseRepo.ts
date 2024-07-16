@@ -13,7 +13,7 @@ export class UserRepo implements UserRepoInterface {
     const user = new User();
     user.email = data.email;
     user.username = data.username;
-    const { password } = hasingPassword(String(data.password));
+    const { password , salt} = hasingPassword(String(data.password));
     user.password = password;
     return this.userDataSource.save(user);
   };
