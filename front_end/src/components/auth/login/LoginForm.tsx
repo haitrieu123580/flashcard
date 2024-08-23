@@ -64,7 +64,7 @@ export function LoginForm(props: any) {
           dispatch({
             type: getProfileAction.type,
             payload: {
-              onSuccess: () => {},
+              onSuccess: () => {window.location.reload()},
               onError: () => {},
             },
           });

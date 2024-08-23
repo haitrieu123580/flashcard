@@ -193,7 +193,7 @@
                 "term": "Duck",
                 "define": "Con vịt",
                 "set": null,
-                "image": "./src/seeder/image/duck.jpg",
+                "image": "./src/seeder/image/Duck.jpg",
                 "example": [
                     {
                         "sentence": "We watched the ducks swim in the lake.",

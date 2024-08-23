@@ -8,7 +8,7 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { Service } from 'typedi';
-import { firebaseConfig } from '@src/core/config';
+import { firebaseConfig } from '../../core/config';
 
 import { IUploadService } from './IUploadService';
 
